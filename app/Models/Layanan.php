@@ -1,0 +1,142 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Layanan extends Model
+{
+    protected $table = 'layanan';
+    protected $primaryKey = 'layanan_id';
+
+    protected $fillable = [
+        'nama_layanan',
+        'jenis_layanan',
+        'deskripsi',
+        'harga_mulai',
+        'durasi_hari',
+        'status',
+        'catatan',
+        'lokasi_tujuan',
+        'fasilitas',
+        'gambar_destinasi'
+    ];
+
+    protected $casts = [
+        'harga_mulai' => 'decimal:2',
+        'durasi_hari' => 'integer',
+        'fasilitas' => 'array',
+        'gambar_destinasi' => 'array',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
+    ];
+
+    // Accessor untuk format harga
+    public function getHargaFormatAttribute()
+    {
+        return 'Rp ' . number_format($this->harga_mulai, 0, ',', '.');
+    }
+
+    // Accessor untuk format durasi
+    public function getDurasiFormatAttribute()
+    {
+        return $this->durasi_hari . ' hari ' . ($this->durasi_hari - 1) . ' malam';
+    }
+
+    // Accessor untuk gambar utama (gambar pertama)
+    public function getGambarUtamaAttribute()
+    {
+        $gambar = $this->gambar_destinasi;
+        return !empty($gambar) && is_array($gambar) ? $gambar[0] : null;
+    }
+
+    // Method untuk menambah gambar destinasi
+    public function addGambarDestinasi($imagePath)
+    {
+        $gambar = $this->gambar_destinasi ?? [];
+        
+        // Validasi maksimal 5 gambar
+        if (count($gambar) >= 5) {
+            throw new \Exception('Maksimal 5 gambar destinasi yang diizinkan');
+        }
+        
+        $gambar[] = $imagePath;
+        $this->gambar_destinasi = $gambar;
+        return $this;
+    }
+
+    // Method untuk menghapus gambar destinasi
+    public function removeGambarDestinasi($imagePath)
+    {
+        $gambar = $this->gambar_destinasi ?? [];
+        $gambar = array_filter($gambar, function($path) use ($imagePath) {
+            return $path !== $imagePath;
+        });
+        $this->gambar_destinasi = array_values($gambar);
+        return $this;
+    }
+
+    // Accessor untuk label jenis layanan
+    public function getJenisLayananLabelAttribute()
+    {
+        $labels = [
+            'paket_wisata' => 'Paket Wisata',
+            'tour_domestik' => 'Tour Domestik',
+            'tour_internasional' => 'Tour Internasional',
+            'honeymoon' => 'Honeymoon',
+            'family_trip' => 'Family Trip',
+            'adventure' => 'Adventure',
+            'cultural_tour' => 'Cultural Tour',
+            'business_trip' => 'Business Trip',
+            'pilgrimage' => 'Pilgrimage',
+            'cruise' => 'Cruise',
+            'backpacker' => 'Backpacker',
+            'luxury_tour' => 'Luxury Tour'
+        ];
+
+        return $labels[$this->jenis_layanan] ?? $this->jenis_layanan;
+    }
+
+
+
+    // Scope untuk status aktif
+    public function scopeAktif($query)
+
+    {
+        return $query->where('status', 'aktif');
+    }
+
+    // Scope untuk pencarian
+    public function scopeSearch($query, $search)
+    {
+        return $query->where(function($q) use ($search) {
+            $q->where('nama_layanan', 'like', "%{$search}%")
+              ->orWhere('deskripsi', 'like', "%{$search}%");
+        });
+    }
+
+    // Scope untuk filter jenis layanan
+    public function scopeJenisLayanan($query, $jenis)
+    {
+        return $query->where('jenis_layanan', $jenis);
+    }
+
+    // Static method untuk mendapatkan opsi jenis layanan
+    public static function getJenisLayananOptions()
+    {
+        return [
+            'paket_wisata' => 'Paket Wisata',
+            'tour_domestik' => 'Tour Domestik',
+            'tour_internasional' => 'Tour Internasional',
+            'honeymoon' => 'Honeymoon',
+            'family_trip' => 'Family Trip',
+            'adventure' => 'Adventure',
+            'cultural_tour' => 'Cultural Tour',
+            'business_trip' => 'Business Trip',
+            'pilgrimage' => 'Pilgrimage',
+            'cruise' => 'Cruise',
+            'backpacker' => 'Backpacker',
+            'luxury_tour' => 'Luxury Tour'
+        ];
+    }
+}
