@@ -41,32 +41,34 @@
                             <path d="M12 14V16C8.68629 16 6 18.6863 6 22H4C4 17.5817 7.58172 14 12 14ZM12 13C8.685 13 6 10.315 6 7C6 3.685 8.685 1 12 1C15.315 1 18 3.685 18 7C18 10.315 15.315 13 12 13ZM12 11C14.21 11 16 9.21 16 7C16 4.79 14.21 3 12 3C9.79 3 8 4.79 8 7C8 9.21 9.79 11 12 11ZM18 17V14H20V17H23V19H20V22H18V19H15V17H18Z"/>
                         </svg>
                     </div>
-                    <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-1 rounded-full">0</span>
+                    <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-1 rounded-full">{{ $newUsersToday ?? 0 }}</span>
                 </div>
                 <div>
                     <p class="text-sm font-medium text-gray-600 mb-1">Total Pengguna</p>
-                    <h3 class="text-3xl font-bold text-gray-900 mb-2">0</h3>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-2">{{ number_format($totalUsers ?? 0) }}</h3>
                     <div class="text-sm text-gray-500 space-y-1">
-                        <div><span class="text-gray-600">0 terverifikasi</span></div>
+                        <div><span class="text-gray-600">{{ $totalAdmins ?? 0 }} admin</span> • <span class="text-blue-600">{{ $totalRegularUsers ?? 0 }} user</span></div>
+                        <div><span class="text-green-600">{{ $newUsersThisMonth ?? 0 }} baru bulan ini</span></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Total Destinasi -->
+            <!-- Total Layanan -->
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-lg hover:border-green-200 transition-all duration-300 group">
                 <div class="flex items-start justify-between mb-4">
                     <div class="bg-green-50 p-3 rounded-xl group-hover:bg-green-100 transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-green-600" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5M12,2A7,7 0 0,1 19,9C19,14.25 12,22 12,22C12,22 5,14.25 5,9A7,7 0 0,1 12,2Z"/>
+                            <path d="M12,2A2,2 0 0,1 14,4C14,4.74 13.6,5.39 13,5.73V7H14A7,7 0 0,1 21,14H22A1,1 0 0,1 23,15V18A1,1 0 0,1 22,19H21V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V19H2A1,1 0 0,1 1,18V15A1,1 0 0,1 2,14H3A7,7 0 0,1 10,7H11V5.73C10.4,5.39 10,4.74 10,4A2,2 0 0,1 12,2M7.5,13A2.5,2.5 0 0,0 5,15.5A2.5,2.5 0 0,0 7.5,18A2.5,2.5 0 0,0 10,15.5A2.5,2.5 0 0,0 7.5,13M16.5,13A2.5,2.5 0 0,0 14,15.5A2.5,2.5 0 0,0 16.5,18A2.5,2.5 0 0,0 19,15.5A2.5,2.5 0 0,0 16.5,13Z"/>
                         </svg>
                     </div>
-                    <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-1 rounded-full">0 aktif</span>
+                    <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-1 rounded-full">{{ $activeDestinations ?? 0 }} aktif</span>
                 </div>
                 <div>
-                    <p class="text-sm font-medium text-gray-600 mb-1">Total Destinasi</p>
-                    <h3 class="text-3xl font-bold text-gray-900 mb-2">0</h3>
+                    <p class="text-sm font-medium text-gray-600 mb-1">Total Layanan</p>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-2">{{ number_format($totalDestinations ?? 0) }}</h3>
                     <div class="text-sm text-gray-500 space-y-1">
-                        <div><span class="text-green-600">0 aktif</span> • <span class="text-red-600">0 nonaktif</span></div>
+                        <div><span class="text-green-600">{{ $activeDestinations ?? 0 }} aktif</span> • <span class="text-red-600">{{ $inactiveDestinations ?? 0 }} nonaktif</span></div>
+                        <div><span class="text-blue-600">{{ $featuredProducts ?? 0 }} unggulan</span></div>
                     </div>
                 </div>
             </div>
@@ -79,20 +81,18 @@
                             <path d="M7,4V2A1,1 0 0,1 8,1H16A1,1 0 0,1 17,2V4H20A1,1 0 0,1 21,5V19A1,1 0 0,1 20,20H4A1,1 0 0,1 3,19V5A1,1 0 0,1 4,4H7M9,3V4H15V3H9M5,6V18H19V6H5Z"/>
                         </svg>
                     </div>
-                    <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-1 rounded-full">0 pending</span>
+                    <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-1 rounded-full">{{ $pendingBookings ?? 0 }} aktif</span>
                 </div>
                 <div>
-                    <p class="text-sm font-medium text-gray-600 mb-1">Total Booking</p>
-                    <h3 class="text-3xl font-bold text-gray-900 mb-2">0</h3>
+                    <p class="text-sm font-medium text-gray-600 mb-1">Special Offers</p>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-2">{{ number_format($totalBookings ?? 0) }}</h3>
                     <div class="text-sm text-gray-500 space-y-1">
                         <div>
-                            <span class="text-amber-600">0 pending</span> •
-                            <span class="text-blue-600">0 konfirmasi</span> •
-                            <span class="text-purple-600">0 diproses</span>
+                            <span class="text-amber-600">{{ $pendingBookings ?? 0 }} aktif</span> •
+                            <span class="text-green-600">{{ $completedBookings ?? 0 }} selesai</span>
                         </div>
                         <div>
-                            <span class="text-green-600">0 selesai</span> •
-                            <span class="text-red-600">0 dibatalkan</span>
+                            <span class="text-red-600">{{ $cancelledBookings ?? 0 }} nonaktif</span>
                         </div>
                     </div>
                 </div>
@@ -147,7 +147,7 @@
                     <h3 class="text-3xl font-bold text-gray-900 mb-2">{{ number_format($totalLayanan ?? 0) }}</h3>
                     <div class="text-sm text-gray-500 space-y-1">
                         <div><span class="text-indigo-600">{{ $layananAktif ?? 0 }} aktif</span> • <span class="text-red-600">{{ $layananNonaktif ?? 0 }} nonaktif</span></div>
-                        <div><span class="text-blue-600">{{ $totalLayananUkuran ?? 0 }} variasi ukuran</span></div>
+                        <div><span class="text-blue-600">Rp {{ number_format($averageProductPrice ?? 0, 0, ',', '.') }} rata-rata harga</span></div>
                     </div>
                 </div>
             </div>
@@ -160,21 +160,14 @@
                             <path d="M21,16.5C21,16.88 20.79,17.21 20.47,17.38L12.57,21.82C12.41,21.94 12.21,22 12,22C11.79,22 11.59,21.94 11.43,21.82L3.53,17.38C3.21,17.21 3,16.88 3,16.5V7.5C3,7.12 3.21,6.79 3.53,6.62L11.43,2.18C11.59,2.06 11.79,2 12,2C12.21,2 12.41,2.06 12.57,2.18L20.47,6.62C20.79,6.79 21,7.12 21,7.5V16.5M12,4.15L6.04,7.5L12,10.85L17.96,7.5L12,4.15Z"/>
                         </svg>
                     </div>
-                    <span class="bg-teal-100 text-teal-800 text-xs font-medium px-2.5 py-1 rounded-full">{{ $ukuranAktif ?? 0 }} aktif</span>
+                    <span class="bg-teal-100 text-teal-800 text-xs font-medium px-2.5 py-1 rounded-full">{{ $publishedNews ?? 0 }} published</span>
                 </div>
                 <div>
-                    <p class="text-sm font-medium text-gray-600 mb-1">Total Ukuran</p>
-                    <h3 class="text-3xl font-bold text-gray-900 mb-2">{{ number_format($totalUkuran ?? 0) }}</h3>
+                    <p class="text-sm font-medium text-gray-600 mb-1">Total Berita</p>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-2">{{ number_format($totalNews ?? 0) }}</h3>
                     <div class="text-sm text-gray-500 space-y-1">
-                        <div><span class="text-teal-600">{{ $ukuranAktif ?? 0 }} aktif</span> • <span class="text-red-600">{{ $ukuranNonaktif ?? 0 }} nonaktif</span></div>
-                        @if(isset($ukuranPerKategori) && count($ukuranPerKategori) > 0)
-                            <div>
-                                @foreach($ukuranPerKategori as $kategori => $jumlah)
-                                    <span class="text-gray-600">{{ $kategori }}: {{ $jumlah }}</span>
-                                    @if(!$loop->last) • @endif
-                                @endforeach
-                            </div>
-                        @endif
+                        <div><span class="text-teal-600">{{ $publishedNews ?? 0 }} published</span> • <span class="text-amber-600">{{ $featuredNews ?? 0 }} featured</span></div>
+                        <div><span class="text-blue-600">{{ number_format($totalViews ?? 0) }} total views</span></div>
                     </div>
                 </div>
             </div>
@@ -187,15 +180,15 @@
                             <path d="M16,6L18.29,8.29L13.41,13.17L9.41,9.17L2,16.59L3.41,18L9.41,12L13.41,16L19.71,9.71L22,12V6H16Z"/>
                         </svg>
                     </div>
-                    <span class="bg-pink-100 text-pink-800 text-xs font-medium px-2.5 py-1 rounded-full">Metrik</span>
+                    <span class="bg-pink-100 text-pink-800 text-xs font-medium px-2.5 py-1 rounded-full">Gallery</span>
                 </div>
                 <div>
-                    <p class="text-sm font-medium text-gray-600 mb-1">Performa Bisnis</p>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ number_format($averageOrdersPerDay ?? 0, 1) }}/hari</h3>
+                    <p class="text-sm font-medium text-gray-600 mb-1">Total Gallery</p>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ number_format($totalGallery ?? 0) }}</h3>
                     <div class="text-sm text-gray-500 space-y-1">
-                        <div><span class="text-pink-600">Rp {{ number_format($averageRevenuePerOrder ?? 0, 0, ',', '.') }} rata-rata per pesanan</span></div>
-                        <div><span class="text-green-600">{{ number_format($conversionRate ?? 0, 1) }}% tingkat konversi</span></div>
-                        <div><span class="text-red-600">{{ number_format($cancellationRate ?? 0, 1) }}% tingkat pembatalan</span></div>
+                        <div><span class="text-pink-600">{{ $publicGallery ?? 0 }} public</span> • <span class="text-purple-600">{{ $featuredGallery ?? 0 }} featured</span></div>
+                        <div><span class="text-green-600">{{ number_format($conversionRate ?? 0, 1) }}% destinasi aktif</span></div>
+                        <div><span class="text-blue-600">{{ number_format($averageOrdersPerDay ?? 0, 1) }} offers/bulan</span></div>
                     </div>
                 </div>
             </div>
@@ -229,12 +222,12 @@
                     <a href="#" class="flex items-center gap-3 p-4 bg-green-50 rounded-xl hover:bg-green-100 transition-all duration-200 border border-green-200">
                         <div class="bg-green-100 p-2 rounded-lg">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-green-600" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5M12,2A7,7 0 0,1 19,9C19,14.25 12,22 12,22C12,22 5,14.25 5,9A7,7 0 0,1 12,2Z"/>
+                                <path d="M12,2A2,2 0 0,1 14,4C14,4.74 13.6,5.39 13,5.73V7H14A7,7 0 0,1 21,14H22A1,1 0 0,1 23,15V18A1,1 0 0,1 22,19H21V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V19H2A1,1 0 0,1 1,18V15A1,1 0 0,1 2,14H3A7,7 0 0,1 10,7H11V5.73C10.4,5.39 10,4.74 10,4A2,2 0 0,1 12,2M7.5,13A2.5,2.5 0 0,0 5,15.5A2.5,2.5 0 0,0 7.5,18A2.5,2.5 0 0,0 10,15.5A2.5,2.5 0 0,0 7.5,13M16.5,13A2.5,2.5 0 0,0 14,15.5A2.5,2.5 0 0,0 16.5,18A2.5,2.5 0 0,0 19,15.5A2.5,2.5 0 0,0 16.5,13Z"/>
                             </svg>
                         </div>
                         <div>
-                            <p class="font-semibold text-gray-900">Tambah Destinasi</p>
-                            <p class="text-sm text-gray-600">Kelola destinasi wisata</p>
+                            <p class="font-semibold text-gray-900">Tambah Layanan</p>
+                            <p class="text-sm text-gray-600">Kelola layanan travel</p>
                         </div>
                     </a>
                     <a href="#" class="flex items-center gap-3 p-4 bg-purple-50 rounded-xl hover:bg-purple-100 transition-all duration-200 border border-purple-200">
@@ -267,7 +260,7 @@
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"></path>
                             </svg>
-                            Tambah Produk
+                            Tambah Layanan
                         </a>
                         <a href="" class="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-200 flex items-center gap-2 border border-white/20">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -305,7 +298,7 @@
                         </div>
                     </div>
                     <div class="text-center md:text-right">
-                        <p>© {{ date('Y') }} E-Jahit Dashboard</p>
+                        <p>© {{ date('Y') }} JustTrip Dashboard</p>
                         <p class="text-xs mt-1">Versi 1.0.0 - Build {{ date('Ymd') }}</p>
                     </div>
                 </div>

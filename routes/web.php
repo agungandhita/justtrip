@@ -44,33 +44,27 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/statistics', [DashboardController::class, 'getStatistics'])->name('dashboard.statistics');
     Route::get('/dashboard/chart-data', [DashboardController::class, 'getChartData'])->name('dashboard.chart-data');
-    
-    // About Us CRUD routes
-    Route::resource('about-us', AboutUsController::class, ['names' => 'about-us']);
-    
-    // Products CRUD routes
-    Route::resource('products', ProductController::class);
-    
+
     // Special Offers CRUD routes
     Route::resource('special-offers', SpecialOfferController::class, ['names' => 'special-offers']);
-    
+
     // News CRUD routes
     Route::resource('news', NewsController::class);
-    
+
     // Gallery CRUD routes
     Route::resource('galleries', GalleryController::class);
     Route::post('galleries/{gallery}/like', [GalleryController::class, 'toggleLike'])->name('galleries.like');
-    
+
     // Additional gallery routes for image management
     Route::delete('galleries/{gallery}/images/{imageIndex}', [GalleryController::class, 'deleteImage'])->name('galleries.delete-image');
     Route::post('galleries/{gallery}/add-images', [GalleryController::class, 'addImages'])->name('galleries.add-images');
     Route::post('galleries/cleanup-orphaned', [GalleryController::class, 'cleanupOrphanedFiles'])->name('galleries.cleanup-orphaned');
     Route::get('galleries/storage-stats', [GalleryController::class, 'getStorageStats'])->name('galleries.storage-stats');
-    
+
     // User Management CRUD routes
     Route::resource('users', UserController::class);
     Route::post('users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggle-status');
-    
+
     // Layanan CRUD routes
     Route::resource('layanan', LayananController::class);
     Route::post('layanan/{layanan}/toggle-status', [LayananController::class, 'toggleStatus'])->name('layanan.toggle-status');

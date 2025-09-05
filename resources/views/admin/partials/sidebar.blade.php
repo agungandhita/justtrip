@@ -44,14 +44,6 @@
                     <h6 class="text-blue-600 text-sm font-bold px-4">Manajemen Konten</h6>
                     <ul class="mt-3 space-y-2">
                         <li>
-                            <a href="{{ route('admin.about-us.index') }}" class="text-gray-800 text-sm flex items-center hover:bg-gray-100 rounded-md px-4 py-2 transition-all {{ request()->routeIs('admin.about-us.*') ? 'bg-blue-50 text-blue-600 border-r-2 border-blue-600' : '' }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-[18px] h-[18px] mr-3" viewBox="0 0 24 24">
-                                    <path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/>
-                                </svg>
-                                <span>About Us</span>
-                            </a>
-                        </li>
-                        <li>
                             <a href="{{ route('admin.news.index') }}" class="text-gray-800 text-sm flex items-center hover:bg-gray-100 rounded-md px-4 py-2 transition-all {{ request()->routeIs('admin.news.*') ? 'bg-blue-50 text-blue-600 border-r-2 border-blue-600' : '' }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-[18px] h-[18px] mr-3" viewBox="0 0 24 24">
                                     <path d="M20,11H23V13H20V11M1,11H4V13H1V11M13,1V4H11V1H13M4.92,3.5L7.05,5.64L5.63,7.05L3.5,4.93L4.92,3.5M16.95,5.63L19.07,3.5L20.5,4.93L18.37,7.05L16.95,5.63M12,6A6,6 0 0,1 18,12C18,14.22 16.79,16.16 15,17.2V19A1,1 0 0,1 14,20H10A1,1 0 0,1 9,19V17.2C7.21,16.16 6,14.22 6,12A6,6 0 0,1 12,6M14,21V22A1,1 0 0,1 13,23H11A1,1 0 0,1 10,22V21H14M11,16H13V8H11V16Z"/>
@@ -74,14 +66,6 @@
                 <div class="mt-6">
                     <h6 class="text-blue-600 text-sm font-bold px-4">Manajemen Produk & Layanan</h6>
                     <ul class="mt-3 space-y-2">
-                        <li>
-                            <a href="{{ route('admin.products.index') }}" class="text-gray-800 text-sm flex items-center hover:bg-gray-100 rounded-md px-4 py-2 transition-all {{ request()->routeIs('admin.products.*') ? 'bg-blue-50 text-blue-600 border-r-2 border-blue-600' : '' }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-[18px] h-[18px] mr-3" viewBox="0 0 24 24">
-                                    <path d="M12,2L13.09,8.26L22,9L17,14L18.18,23L12,19.77L5.82,23L7,14L2,9L10.91,8.26L12,2Z"/>
-                                </svg>
-                                <span>Products</span>
-                            </a>
-                        </li>
                         <li>
                             <a href="{{ route('admin.special-offers.index') }}" class="text-gray-800 text-sm flex items-center hover:bg-gray-100 rounded-md px-4 py-2 transition-all {{ request()->routeIs('admin.special-offers.*') ? 'bg-blue-50 text-blue-600 border-r-2 border-blue-600' : '' }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-[18px] h-[18px] mr-3" viewBox="0 0 24 24">
