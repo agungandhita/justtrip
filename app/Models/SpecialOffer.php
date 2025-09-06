@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class SpecialOffer extends Model
 {
     protected $fillable = [
+        'layanan_id',
         'title',
+        'slug',
         'description',
-        'offer_type',
         'original_price',
         'discounted_price',
         'discount_percentage',
-        'destination',
         'main_image',
         'gallery_images',
         'valid_from',
@@ -24,7 +24,9 @@ class SpecialOffer extends Model
         'is_featured',
         'is_active',
         'badge_text',
-        'badge_color'
+        'badge_color',
+        'meta_title',
+        'meta_description'
     ];
 
     protected $casts = [
@@ -52,5 +54,44 @@ class SpecialOffer extends Model
     {
         return $query->where('valid_from', '<=', now())
                     ->where('valid_until', '>=', now());
+    }
+
+    // Relationships
+    public function layanan()
+    {
+        return $this->belongsTo(Layanan::class, 'layanan_id', 'layanan_id');
+    }
+
+    // Accessors
+    public function getDestinationAttribute()
+    {
+        return $this->layanan ? $this->layanan->lokasi_tujuan : null;
+    }
+
+    public function getOfferTypeAttribute()
+    {
+        return $this->layanan ? $this->layanan->jenis_layanan_label : null;
+    }
+
+    // Method to calculate discounted price from original price and percentage
+    public function calculateDiscountedPrice()
+    {
+        if ($this->layanan && $this->discount_percentage) {
+            $originalPrice = $this->layanan->harga_mulai;
+            $discountAmount = ($originalPrice * $this->discount_percentage) / 100;
+            return $originalPrice - $discountAmount;
+        }
+        return $this->discounted_price;
+    }
+
+    // Method to update prices based on layanan
+    public function updatePricesFromLayanan()
+    {
+        if ($this->layanan && $this->discount_percentage) {
+            $this->original_price = $this->layanan->harga_mulai;
+            $this->discounted_price = $this->calculateDiscountedPrice();
+            return $this;
+        }
+        return $this;
     }
 }

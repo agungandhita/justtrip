@@ -5,16 +5,16 @@
 <section class="relative min-h-[60vh] flex items-center justify-center overflow-hidden">
     <!-- Background Images with Parallax Effect -->
     <div class="absolute inset-0 z-0">
-        <div class="absolute inset-0 bg-gradient-to-r from-purple-600/70 via-pink-600/70 to-red-600/70 z-10"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-teal-600/70 via-cyan-600/70 to-blue-600/70 z-10"></div>
         <div class="bg-cover bg-center h-full" style="background-image: url('https://images.unsplash.com/photo-1455390582262-044cdead277a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80')"></div>
     </div>
     
     <!-- Hero Content -->
     <div class="relative z-20 text-center text-white px-4 max-w-4xl mx-auto" data-aos="fade-up" data-aos-duration="1000">
-        <h1 class="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white to-pink-100 bg-clip-text text-transparent">
+        <h1 class="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white to-teal-100 bg-clip-text text-transparent">
             Travel Blog & Tips
         </h1>
-        <p class="text-lg md:text-xl mb-8 text-pink-100 font-medium" data-aos="fade-up" data-aos-delay="200">
+        <p class="text-lg md:text-xl mb-8 text-teal-100 font-medium" data-aos="fade-up" data-aos-delay="200">
             Inspirasi perjalanan, tips travel, dan cerita menarik dari seluruh dunia
         </p>
     </div>
@@ -66,7 +66,7 @@
                     <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Budget Travel Tips" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                     <div class="absolute top-4 left-4">
-                        <span class="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Tips</span>
+                        <span class="bg-gradient-to-r from-teal-500 to-cyan-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Tips</span>
                     </div>
                     <div class="absolute bottom-6 left-6 text-white">
                         <p class="text-sm opacity-80 mb-2">12 Januari 2024</p>
@@ -121,7 +121,7 @@
             
             <!-- Category 2 -->
             <div class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer" data-aos="fade-up" data-aos-delay="200">
-                <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
+                <div class="w-16 h-16 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
                     <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
                     </svg>
@@ -129,14 +129,14 @@
                 <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">Tips & Tricks</h3>
                 <p class="text-gray-600 text-center mb-6">Tips praktis untuk perjalanan yang lebih nyaman dan hemat</p>
                 <div class="text-center">
-                    <span class="text-2xl font-bold text-blue-600">32</span>
+                    <span class="text-2xl font-bold text-cyan-600">32</span>
                     <p class="text-gray-500 text-sm">artikel</p>
                 </div>
             </div>
             
             <!-- Category 3 -->
             <div class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer" data-aos="fade-up" data-aos-delay="300">
-                <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
+                <div class="w-16 h-16 bg-gradient-to-r from-orange-500 to-amber-500 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
                     <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
                     </svg>
@@ -144,7 +144,7 @@
                 <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">Kuliner</h3>
                 <p class="text-gray-600 text-center mb-6">Eksplorasi cita rasa kuliner khas dari berbagai negara</p>
                 <div class="text-center">
-                    <span class="text-2xl font-bold text-purple-600">28</span>
+                    <span class="text-2xl font-bold text-orange-600">28</span>
                     <p class="text-gray-500 text-sm">artikel</p>
                 </div>
             </div>

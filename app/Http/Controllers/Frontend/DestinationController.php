@@ -14,6 +14,6 @@ class DestinationController extends Controller
      */
     public function index()
     {
-        return view('Frontend.destinations.index');
+        // return view('Frontend.destinations.index');
     }
 }

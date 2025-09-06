@@ -5,11 +5,11 @@
             <!-- Logo -->
             <div class="flex items-center">
                 <a href="{{ route('home') }}" class="flex items-center space-x-3 group">
-                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform duration-200 overflow-hidden">
+                    <div class="w-10 h-10 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform duration-200 overflow-hidden">
                         <img src="{{ asset('image/logo4.png') }}" alt="JustTrip Logo" class="w-8 h-8 object-contain">
                     </div>
                     <div class="hidden sm:block">
-                        <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">JustTrip</h1>
+                        <h1 class="text-2xl font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent">JustTrip</h1>
                         <p class="text-xs text-gray-500 -mt-1">Your Travel Companion</p>
                     </div>
                 </a>
@@ -17,19 +17,19 @@
 
             <!-- Desktop Navigation -->
             <div class="hidden md:flex items-center space-x-8">
-                <a href="{{ route('home') }}" class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 {{ request()->routeIs('home') || request()->routeIs('beranda') ? 'text-blue-600' : '' }}">
+                <a href="{{ route('home') }}" class="text-gray-700 hover:text-teal-600 font-medium transition-colors duration-200 {{ request()->routeIs('home') || request()->routeIs('beranda') ? 'text-teal-600' : '' }}">
                     Beranda
                 </a>
-                <a href="{{ route('destinasi') }}" class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 {{ request()->routeIs('destinasi') ? 'text-blue-600' : '' }}">
-                    Destinasi
+                <a href="{{ route('gallery') }}" class="text-gray-700 hover:text-teal-600 font-medium transition-colors duration-200 {{ request()->routeIs('destinasi') ? 'text-teal-600' : '' }}">
+                    Galeri
                 </a>
-                <a href="{{ route('paket-tour') }}" class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 {{ request()->routeIs('paket-tour') ? 'text-blue-600' : '' }}">
+                <a href="{{ route('paket-tour') }}" class="text-gray-700 hover:text-teal-600 font-medium transition-colors duration-200 {{ request()->routeIs('paket-tour') ? 'text-teal-600' : '' }}">
                     Paket Tour
                 </a>
-                <a href="{{ route('tentang-kami') }}" class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 {{ request()->routeIs('tentang-kami') ? 'text-blue-600' : '' }}">
+                <a href="{{ route('tentang-kami') }}" class="text-gray-700 hover:text-teal-600 font-medium transition-colors duration-200 {{ request()->routeIs('tentang-kami') ? 'text-teal-600' : '' }}">
                     Tentang Kami
                 </a>
-                <a href="{{ route('artikel') }}" class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 {{ request()->routeIs('artikel') ? 'text-blue-600' : '' }}">
+                <a href="{{ route('artikel') }}" class="text-gray-700 hover:text-teal-600 font-medium transition-colors duration-200 {{ request()->routeIs('artikel') ? 'text-teal-600' : '' }}">
                     Artikel
                 </a>
             </div>
@@ -37,7 +37,7 @@
             <!-- CTA Button & Mobile Menu -->
             <div class="flex items-center space-x-4">
                 <!-- CTA Button -->
-                <a href="#booking" class="hidden sm:inline-flex items-center px-6 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold rounded-full hover:from-emerald-600 hover:to-teal-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl">
+                <a href="#booking" class="hidden sm:inline-flex items-center px-6 py-2.5 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-full hover:from-orange-600 hover:to-orange-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl">
                     <i class="fas fa-calendar-check mr-2"></i>
                     Booking
                 </a>
@@ -55,22 +55,22 @@
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-gray-100">
         <div class="px-4 py-3 space-y-3">
-            <a href="{{ route('home') }}" class="block px-3 py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 {{ request()->routeIs('home') || request()->routeIs('beranda') ? 'text-blue-600 bg-blue-50' : '' }} rounded-lg">
+            <a href="{{ route('home') }}" class="block px-3 py-2 text-gray-700 hover:text-teal-600 font-medium transition-colors duration-200 {{ request()->routeIs('home') || request()->routeIs('beranda') ? 'text-teal-600 bg-teal-50' : '' }} rounded-lg">
                 Beranda
             </a>
-            <a href="{{ route('destinasi') }}" class="block px-3 py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 rounded-lg {{ request()->routeIs('destinasi') ? 'text-blue-600 bg-blue-50' : '' }}">
+            <a href="{{ route('destinasi') }}" class="block px-3 py-2 text-gray-700 hover:text-teal-600 font-medium transition-colors duration-200 rounded-lg {{ request()->routeIs('destinasi') ? 'text-teal-600 bg-teal-50' : '' }}">
                 Destinasi
             </a>
-            <a href="{{ route('paket-tour') }}" class="block px-3 py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 rounded-lg {{ request()->routeIs('paket-tour') ? 'text-blue-600 bg-blue-50' : '' }}">
+            <a href="{{ route('paket-tour') }}" class="block px-3 py-2 text-gray-700 hover:text-teal-600 font-medium transition-colors duration-200 rounded-lg {{ request()->routeIs('paket-tour') ? 'text-teal-600 bg-teal-50' : '' }}">
                 Paket Tour
             </a>
-            <a href="{{ route('tentang-kami') }}" class="block px-3 py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 rounded-lg {{ request()->routeIs('tentang-kami') ? 'text-blue-600 bg-blue-50' : '' }}">
+            <a href="{{ route('tentang-kami') }}" class="block px-3 py-2 text-gray-700 hover:text-teal-600 font-medium transition-colors duration-200 rounded-lg {{ request()->routeIs('tentang-kami') ? 'text-teal-600 bg-teal-50' : '' }}">
                 Tentang Kami
             </a>
-            <a href="{{ route('artikel') }}" class="block px-3 py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 rounded-lg {{ request()->routeIs('artikel') ? 'text-blue-600 bg-blue-50' : '' }}">
+            <a href="{{ route('artikel') }}" class="block px-3 py-2 text-gray-700 hover:text-teal-600 font-medium transition-colors duration-200 rounded-lg {{ request()->routeIs('artikel') ? 'text-teal-600 bg-teal-50' : '' }}">
                 Artikel
             </a>
-            <a href="#booking" class="block mt-4 px-4 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold rounded-full text-center">
+            <a href="#booking" class="block mt-4 px-4 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-full text-center">
                 <i class="fas fa-calendar-check mr-2"></i>
                 Booking
             </a>

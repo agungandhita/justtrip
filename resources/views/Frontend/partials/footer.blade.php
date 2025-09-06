@@ -1,15 +1,15 @@
 <!-- JustTrip Footer with Tailwind CSS -->
-<footer class="bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 text-white">
+<footer class="bg-gradient-to-br from-gray-900 via-teal-900 to-slate-900 text-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <!-- Logo & About -->
             <div class="lg:col-span-2">
                 <div class="flex items-center space-x-3 mb-6">
-                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                    <div class="w-12 h-12 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-xl flex items-center justify-center">
                         <i class="fas fa-plane text-white text-xl"></i>
                     </div>
                     <div>
-                        <h3 class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">JustTrip</h3>
+                        <h3 class="text-2xl font-bold bg-gradient-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent">JustTrip</h3>
                         <p class="text-gray-300 text-sm">Your Ultimate Travel Companion</p>
                     </div>
                 </div>

@@ -78,8 +78,8 @@
                                     </td>
                                     <td class="px-6 py-4">
                                         <div class="flex items-center">
-                                            @if($item->image)
-                                                <img src="{{ Storage::url($item->image) }}" alt="{{ $item->title }}" class="w-12 h-12 object-cover rounded-lg mr-4">
+                                            @if($item->main_image)
+                                                <img src="{{ Storage::url($item->main_image) }}" alt="{{ $item->title }}" class="w-12 h-12 object-cover rounded-lg mr-4">
                                             @else
                                                 <div class="w-12 h-12 bg-gray-200 rounded-lg mr-4 flex items-center justify-center">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-400" viewBox="0 0 24 24" fill="currentColor">
@@ -94,30 +94,28 @@
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        @if($item->discount_type == 'percentage')
-                                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                                                {{ $item->discount_value }}% OFF
-                                            </span>
-                                        @else
-                                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                                                ${{ number_format($item->discount_value, 2) }} OFF
-                                            </span>
-                                        @endif
+                                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                            {{ $item->discount_percentage }}% OFF
+                                        </span>
+                                        <div class="text-xs text-gray-500 mt-1">
+                                            <div class="line-through">Rp {{ number_format($item->original_price, 0, ',', '.') }}</div>
+                                            <div class="font-semibold text-green-600">Rp {{ number_format($item->discounted_price, 0, ',', '.') }}</div>
+                                        </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                         <div>
-                                            <div>{{ $item->start_date->format('M d, Y') }}</div>
-                                            <div class="text-xs text-gray-500">sampai {{ $item->end_date->format('M d, Y') }}</div>
+                                            <div>{{ $item->valid_from ? $item->valid_from->format('d M Y') : 'Tanggal tidak tersedia' }}</div>
+                                            <div class="text-xs text-gray-500">sampai {{ $item->valid_until ? $item->valid_until->format('d M Y') : 'Tanggal tidak tersedia' }}</div>
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full {{ $item->status == 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                            {{ $item->status == 'active' ? 'Aktif' : 'Tidak Aktif' }}
+                                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full {{ $item->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                            {{ $item->is_active ? 'Aktif' : 'Tidak Aktif' }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full {{ $item->featured ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800' }}">
-                                            {{ $item->featured ? 'Ya' : 'Tidak' }}
+                                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full {{ $item->is_featured ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800' }}">
+                                            {{ $item->is_featured ? 'Ya' : 'Tidak' }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">

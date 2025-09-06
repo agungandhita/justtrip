@@ -13,14 +13,15 @@ return new class extends Migration
     {
         Schema::create('special_offers', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('layanan_id');
+            $table->foreign('layanan_id')->references('layanan_id')->on('layanan')->onDelete('cascade');
             $table->string('title');
+            $table->string('slug')->unique();
             $table->text('description');
-            $table->string('offer_type'); // flash_sale, early_bird, group_discount, etc.
             $table->decimal('original_price', 12, 2);
             $table->decimal('discounted_price', 12, 2);
-            $table->integer('discount_percentage')->nullable();
-            $table->string('destination');
-            $table->string('main_image');
+            $table->decimal('discount_percentage', 5, 2);
+            $table->string('main_image')->nullable();
             $table->json('gallery_images')->nullable();
             $table->date('valid_from');
             $table->date('valid_until');
@@ -31,6 +32,8 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->string('badge_text')->nullable(); // Flash Sale, Limited Time, etc.
             $table->string('badge_color')->default('red');
+            $table->string('meta_title')->nullable();
+            $table->text('meta_description')->nullable();
             $table->timestamps();
         });
     }

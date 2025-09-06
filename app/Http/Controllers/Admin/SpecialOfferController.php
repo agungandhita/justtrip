@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\SpecialOffer;
+use App\Models\Layanan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
-
 class SpecialOfferController extends Controller
 {
     /**
@@ -41,7 +41,7 @@ class SpecialOfferController extends Controller
 
         $specialOffers = $query->latest()->paginate(10);
 
-        return view('admin.SpecialOffers.index', compact('specialOffers'));
+        return view('admin.special-offers.index', compact('specialOffers'));
     }
 
     /**
@@ -49,7 +49,8 @@ class SpecialOfferController extends Controller
      */
     public function create()
     {
-        return view('admin.SpecialOffers.create');
+        $layananList = Layanan::where('status', 'aktif')->get();
+        return view('admin.special-offers.create', compact('layananList'));
     }
 
     /**
@@ -58,43 +59,49 @@ class SpecialOfferController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'layanan_id' => 'required|exists:layanan,layanan_id',
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'original_price' => 'required|numeric|min:0',
-            'discounted_price' => 'required|numeric|min:0|lt:original_price',
-            'main_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'valid_from' => 'required|date',
-            'valid_until' => 'required|date|after:valid_from',
+            'discount_percentage' => 'required|numeric|min:0|max:100',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
+            'status' => 'required|in:active,inactive',
+            'featured' => 'nullable|boolean',
             'terms_conditions' => 'nullable|string',
-            'is_featured' => 'boolean',
-            'is_active' => 'boolean'
+            'meta_title' => 'nullable|string|max:60',
+            'meta_description' => 'nullable|string|max:160'
         ]);
 
+        // Get layanan data
+        $layanan = Layanan::findOrFail($request->layanan_id);
+        
         $data = $request->all();
         $data['slug'] = Str::slug($request->title);
+        
+        // Map form fields to database fields
+        $data['valid_from'] = $request->start_date;
+        $data['valid_until'] = $request->end_date;
+        $data['is_active'] = $request->status === 'active';
+        $data['is_featured'] = $request->has('featured') ? true : false;
+        
+        // Calculate prices based on layanan and discount percentage
+        $data['original_price'] = $layanan->harga_mulai;
+        $discountAmount = ($layanan->harga_mulai * $request->discount_percentage) / 100;
+        $data['discounted_price'] = $layanan->harga_mulai - $discountAmount;
 
-        // Calculate discount percentage
-        $data['discount_percentage'] = round((($request->original_price - $request->discounted_price) / $request->original_price) * 100, 2);
-
-        // Handle main image upload
-        if ($request->hasFile('main_image')) {
-            $data['main_image'] = $request->file('main_image')->store('special-offers', 'public');
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $data['main_image'] = $request->file('image')->store('special-offers', 'public');
         }
-
-        // Handle gallery images upload
-        if ($request->hasFile('gallery_images')) {
-            $galleryImages = [];
-            foreach ($request->file('gallery_images') as $image) {
-                $galleryImages[] = $image->store('special-offers/gallery', 'public');
-            }
-            $data['gallery_images'] = $galleryImages;
-        }
+        
+        // Remove form-specific fields that don't exist in database
+        unset($data['start_date'], $data['end_date'], $data['status'], $data['featured'], $data['image']);
 
         SpecialOffer::create($data);
 
         Alert::success('Success', 'Special offer created successfully!');
-        return redirect()->route('admin.SpecialOffers.index');
+        return redirect()->route('admin.special-offers.index');
     }
 
     /**
@@ -102,7 +109,7 @@ class SpecialOfferController extends Controller
      */
     public function show(SpecialOffer $specialOffer)
     {
-        return view('admin.SpecialOffers.show', compact('specialOffer'));
+        return view('admin.special-offers.show', compact('specialOffer'));
     }
 
     /**
@@ -110,7 +117,8 @@ class SpecialOfferController extends Controller
      */
     public function edit(SpecialOffer $specialOffer)
     {
-        return view('admin.SpecialOffers.edit', compact('specialOffer'));
+        $layananList = Layanan::where('status', 'aktif')->get();
+        return view('admin.special-offers.edit', compact('specialOffer', 'layananList'));
     }
 
     /**
@@ -119,54 +127,53 @@ class SpecialOfferController extends Controller
     public function update(Request $request, SpecialOffer $specialOffer)
     {
         $request->validate([
+            'layanan_id' => 'required|exists:layanan,layanan_id',
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'original_price' => 'required|numeric|min:0',
-            'discounted_price' => 'required|numeric|min:0|lt:original_price',
-            'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'valid_from' => 'required|date',
-            'valid_until' => 'required|date|after:valid_from',
+            'discount_percentage' => 'required|numeric|min:0|max:100',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
+            'status' => 'required|in:active,inactive',
+            'featured' => 'nullable|boolean',
             'terms_conditions' => 'nullable|string',
-            'is_featured' => 'boolean',
-            'is_active' => 'boolean'
+            'meta_title' => 'nullable|string|max:60',
+            'meta_description' => 'nullable|string|max:160'
         ]);
 
+        // Get layanan data
+        $layanan = Layanan::findOrFail($request->layanan_id);
+        
         $data = $request->all();
         $data['slug'] = Str::slug($request->title);
+        
+        // Map form fields to database fields
+        $data['valid_from'] = $request->start_date;
+        $data['valid_until'] = $request->end_date;
+        $data['is_active'] = $request->status === 'active';
+        $data['is_featured'] = $request->has('featured') ? true : false;
 
-        // Calculate discount percentage
-        $data['discount_percentage'] = round((($request->original_price - $request->discounted_price) / $request->original_price) * 100, 2);
+        // Calculate prices based on layanan and discount percentage
+        $data['original_price'] = $layanan->harga_mulai;
+        $discountAmount = ($layanan->harga_mulai * $request->discount_percentage) / 100;
+        $data['discounted_price'] = $layanan->harga_mulai - $discountAmount;
 
-        // Handle main image upload
-        if ($request->hasFile('main_image')) {
+        // Handle image upload
+        if ($request->hasFile('image')) {
             // Delete old image
             if ($specialOffer->main_image) {
                 Storage::disk('public')->delete($specialOffer->main_image);
             }
-            $data['main_image'] = $request->file('main_image')->store('special-offers', 'public');
+            $data['main_image'] = $request->file('image')->store('special-offers', 'public');
         }
-
-        // Handle gallery images upload
-        if ($request->hasFile('gallery_images')) {
-            // Delete old gallery images
-            if ($specialOffer->gallery_images) {
-                foreach ($specialOffer->gallery_images as $oldImage) {
-                    Storage::disk('public')->delete($oldImage);
-                }
-            }
-
-            $galleryImages = [];
-            foreach ($request->file('gallery_images') as $image) {
-                $galleryImages[] = $image->store('special-offers/gallery', 'public');
-            }
-            $data['gallery_images'] = $galleryImages;
-        }
+        
+        // Remove form-specific fields that don't exist in database
+        unset($data['start_date'], $data['end_date'], $data['status'], $data['featured'], $data['image']);
 
         $specialOffer->update($data);
 
         Alert::success('Success', 'Special offer updated successfully!');
-        return redirect()->route('admin.SpecialOffers.index');
+        return redirect()->route('admin.special-offers.index');
     }
 
     /**
@@ -188,6 +195,6 @@ class SpecialOfferController extends Controller
         $specialOffer->delete();
 
         Alert::success('Success', 'Special offer deleted successfully!');
-        return redirect()->route('admin.SpecialOffers.index');
+        return redirect()->route('admin.special-offers.index');
     }
 }

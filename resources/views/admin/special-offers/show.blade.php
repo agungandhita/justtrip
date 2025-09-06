@@ -46,33 +46,32 @@
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-500 mb-1">Status</label>
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium {{ $specialOffer->status == 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                    {{ ucfirst($specialOffer->status) }}
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium {{ $specialOffer->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                    {{ $specialOffer->is_active ? 'Aktif' : 'Tidak Aktif' }}
                                 </span>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-500 mb-1">Jenis Diskon</label>
-                                <p class="text-gray-900">{{ ucfirst($specialOffer->discount_type) }}</p>
+                                <p class="text-gray-900">Persentase</p>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-500 mb-1">Nilai Diskon</label>
                                 <p class="text-gray-900 font-medium">
-                                    {{ $specialOffer->discount_value }}
-                                    {{ $specialOffer->discount_type == 'percentage' ? '%' : '$' }}
+                                    {{ $specialOffer->discount_percentage }}%
                                 </p>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-500 mb-1">Tanggal Mulai</label>
-                                <p class="text-gray-900">{{ $specialOffer->start_date ? $specialOffer->start_date->format('M d, Y') : 'N/A' }}</p>
+                                <p class="text-gray-900">{{ $specialOffer->valid_from ? $specialOffer->valid_from->format('M d, Y') : 'N/A' }}</p>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-500 mb-1">Tanggal Berakhir</label>
-                                <p class="text-gray-900">{{ $specialOffer->end_date ? $specialOffer->end_date->format('M d, Y') : 'N/A' }}</p>
+                                <p class="text-gray-900">{{ $specialOffer->valid_until ? $specialOffer->valid_until->format('M d, Y') : 'N/A' }}</p>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-500 mb-1">Unggulan</label>
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium {{ $specialOffer->featured ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800' }}">
-                                    {{ $specialOffer->featured ? 'Ya' : 'Tidak' }}
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium {{ $specialOffer->is_featured ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800' }}">
+                                    {{ $specialOffer->is_featured ? 'Ya' : 'Tidak' }}
                                 </span>
                             </div>
                         </div>
@@ -123,10 +122,10 @@
                 <!-- Sidebar -->
                 <div class="space-y-6">
                     <!-- Image -->
-                    @if($specialOffer->image)
+                    @if($specialOffer->main_image)
                         <div class="bg-white rounded-xl shadow-md p-6">
                             <h3 class="text-lg font-semibold text-gray-800 mb-4">Gambar Penawaran</h3>
-                            <img src="{{ asset('storage/' . $specialOffer->image) }}" alt="{{ $specialOffer->title }}" class="w-full h-64 object-cover rounded-lg border">
+                            <img src="{{ asset('storage/' . $specialOffer->main_image) }}" alt="{{ $specialOffer->title }}" class="w-full h-64 object-cover rounded-lg border">
                         </div>
                     @endif
 

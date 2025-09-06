@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class Gallery extends Model
 {
@@ -66,5 +67,49 @@ class Gallery extends Model
     public function scopeByCategory(Builder $query, string $category): Builder
     {
         return $query->where('category', $category);
+    }
+
+    // Relationships
+    public function galleryLikes()
+    {
+        return $this->hasMany(GalleryLike::class);
+    }
+
+    // Helper Methods
+    public function isLikedByUser($userId = null)
+    {
+        if (!$userId && !Auth::check()) {
+            return false;
+        }
+        
+        $userId = $userId ?? Auth::id();
+        
+        return $this->galleryLikes()->where('user_id', $userId)->exists();
+    }
+
+    public function incrementViews()
+    {
+        $this->increment('views');
+    }
+
+    public function toggleLike($userId = null)
+    {
+        if (!$userId && !Auth::check()) {
+            return false;
+        }
+        
+        $userId = $userId ?? Auth::id();
+        
+        $existingLike = $this->galleryLikes()->where('user_id', $userId)->first();
+        
+        if ($existingLike) {
+            $existingLike->delete();
+            $this->decrement('likes');
+            return false; // unliked
+        } else {
+            $this->galleryLikes()->create(['user_id' => $userId]);
+            $this->increment('likes');
+            return true; // liked
+        }
     }
 }

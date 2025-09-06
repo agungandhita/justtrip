@@ -42,26 +42,44 @@
                                 @enderror
                             </div>
 
-                            <!-- Discount Type -->
+                            <!-- Layanan -->
                             <div>
-                                <label for="discount_type" class="block text-sm font-medium text-gray-700 mb-2">Jenis Diskon *</label>
-                                <select id="discount_type" name="discount_type" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('discount_type') border-red-500 @enderror">
-                                    <option value="">Pilih Jenis Diskon</option>
-                                    <option value="percentage" {{ old('discount_type', $specialOffer->discount_type) == 'percentage' ? 'selected' : '' }}>Persentase (%)</option>
-                                    <option value="fixed" {{ old('discount_type', $specialOffer->discount_type) == 'fixed' ? 'selected' : '' }}>Jumlah Tetap ($)</option>
+                                <label for="layanan_id" class="block text-sm font-medium text-gray-700 mb-2">Layanan *</label>
+                                <select id="layanan_id" name="layanan_id" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('layanan_id') border-red-500 @enderror">
+                                    <option value="">Pilih Layanan</option>
+                                    @foreach($layananList as $layanan)
+                                        <option value="{{ $layanan->layanan_id }}" 
+                                                data-price="{{ $layanan->harga_mulai }}"
+                                                data-destination="{{ $layanan->destinasi->nama ?? '' }}"
+                                                {{ old('layanan_id', $specialOffer->layanan_id) == $layanan->layanan_id ? 'selected' : '' }}>
+                                            {{ $layanan->nama_layanan }} - {{ $layanan->destinasi->nama ?? '' }} (Rp {{ number_format($layanan->harga_mulai, 0, ',', '.') }})
+                                        </option>
+                                    @endforeach
                                 </select>
-                                @error('discount_type')
+                                @error('layanan_id')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
 
-                            <!-- Discount Value -->
+                            <!-- Discount Percentage -->
                             <div>
-                                <label for="discount_value" class="block text-sm font-medium text-gray-700 mb-2">Nilai Diskon *</label>
-                                <input type="number" id="discount_value" name="discount_value" value="{{ old('discount_value', $specialOffer->discount_value) }}" required step="0.01" min="0" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('discount_value') border-red-500 @enderror" placeholder="Masukkan nilai diskon">
-                                @error('discount_value')
+                                <label for="discount_percentage" class="block text-sm font-medium text-gray-700 mb-2">Persentase Diskon (%) *</label>
+                                <input type="number" id="discount_percentage" name="discount_percentage" value="{{ old('discount_percentage', $specialOffer->discount_percentage) }}" required min="0" max="100" step="0.01" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('discount_percentage') border-red-500 @enderror" placeholder="Masukkan persentase diskon">
+                                @error('discount_percentage')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
+                            </div>
+
+                            <!-- Price Display -->
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label for="original_price_display" class="block text-sm font-medium text-gray-700 mb-2">Harga Asli</label>
+                                    <input type="text" id="original_price_display" readonly class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50" placeholder="Pilih layanan terlebih dahulu">
+                                </div>
+                                <div>
+                                    <label for="discounted_price_display" class="block text-sm font-medium text-gray-700 mb-2">Harga Setelah Diskon</label>
+                                    <input type="text" id="discounted_price_display" readonly class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50" placeholder="Masukkan persentase diskon">
+                                </div>
                             </div>
 
                             <!-- Start Date -->
@@ -180,3 +198,48 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+<script>
+$(document).ready(function() {
+    // Function to format number as currency
+    function formatCurrency(amount) {
+        return 'Rp ' + new Intl.NumberFormat('id-ID').format(amount);
+    }
+
+    // Function to calculate discount
+    function calculateDiscount() {
+        const selectedOption = $('#layanan_id option:selected');
+        const originalPrice = parseFloat(selectedOption.data('price')) || 0;
+        const discountPercentage = parseFloat($('#discount_percentage').val()) || 0;
+        
+        if (originalPrice > 0) {
+            $('#original_price_display').val(formatCurrency(originalPrice));
+            
+            if (discountPercentage > 0) {
+                const discountAmount = (originalPrice * discountPercentage) / 100;
+                const discountedPrice = originalPrice - discountAmount;
+                $('#discounted_price_display').val(formatCurrency(discountedPrice));
+            } else {
+                $('#discounted_price_display').val('');
+            }
+        } else {
+            $('#original_price_display').val('');
+            $('#discounted_price_display').val('');
+        }
+    }
+
+    // Event listeners
+    $('#layanan_id').on('change', function() {
+        calculateDiscount();
+    });
+
+    $('#discount_percentage').on('input', function() {
+        calculateDiscount();
+    });
+
+    // Initial calculation if values are already selected
+    calculateDiscount();
+});
+</script>
+@endpush

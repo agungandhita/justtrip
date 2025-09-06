@@ -13,11 +13,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Call the AdminSeeder
-        $this->call(AdminSeeder::class);
+        // Call all seeders in proper order
+        $this->call([
+            AdminSeeder::class,
+            // UserSeeder::class,
+            // SpecialOfferSeeder::class,
+            // NewsSeeder::class,
+            // GallerySeeder::class,
+            // LayananSeeder::class,
+            // GalleryLikeSeeder::class, // Must be last to ensure galleries and users exist
+        ]);
 
-        // User::factory(10)->create();
-
+        // Create additional test user
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',

@@ -6,6 +6,7 @@ use App\Http\Controllers\Frontend\DestinationController;
 use App\Http\Controllers\Frontend\PackageController;
 use App\Http\Controllers\Frontend\AboutController;
 use App\Http\Controllers\Frontend\ArticleController;
+use App\Http\Controllers\Frontend\GalleryController as FrontendGalleryController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -24,6 +25,12 @@ Route::get('/destinasi', [DestinationController::class, 'index'])->name('destina
 Route::get('/paket-tour', [PackageController::class, 'index'])->name('paket-tour');
 Route::get('/tentang-kami', [AboutController::class, 'index'])->name('tentang-kami');
 Route::get('/artikel', [ArticleController::class, 'index'])->name('artikel');
+
+// Gallery routes (public)
+Route::get('/gallery', [FrontendGalleryController::class, 'index'])->name('gallery');
+Route::get('/gallery/{slug}', [FrontendGalleryController::class, 'show'])->name('gallery.show');
+Route::post('/gallery/{gallery}/like', [FrontendGalleryController::class, 'toggleLike'])->name('gallery.like');
+Route::get('/api/gallery/search', [FrontendGalleryController::class, 'search'])->name('gallery.search');
 
 // Authentication routes (guest only)
 Route::middleware('guest')->group(function () {

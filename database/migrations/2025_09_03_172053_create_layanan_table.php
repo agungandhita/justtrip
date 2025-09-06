@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nama_layanan');
             $table->enum('jenis_layanan', [
                 'paket_wisata',
-                'tour_domestik', 
+                'tour_domestik',
                 'tour_internasional',
                 'honeymoon',
                 'family_trip',

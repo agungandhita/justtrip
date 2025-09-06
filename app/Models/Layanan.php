@@ -139,4 +139,40 @@ class Layanan extends Model
             'luxury_tour' => 'Luxury Tour'
         ];
     }
+
+    // Relationships
+    public function specialOffers()
+    {
+        return $this->hasMany(SpecialOffer::class, 'layanan_id', 'layanan_id');
+    }
+
+    // Method to check if layanan has active special offers
+    public function hasActiveSpecialOffers()
+    {
+        return $this->specialOffers()
+            ->where('is_active', true)
+            ->where('valid_from', '<=', now())
+            ->where('valid_until', '>=', now())
+            ->exists();
+    }
+
+    // Method to get current active special offer
+    public function getCurrentSpecialOffer()
+    {
+        return $this->specialOffers()
+            ->where('is_active', true)
+            ->where('valid_from', '<=', now())
+            ->where('valid_until', '>=', now())
+            ->first();
+    }
+
+    // Method to get discounted price if special offer exists
+    public function getDiscountedPrice()
+    {
+        $specialOffer = $this->getCurrentSpecialOffer();
+        if ($specialOffer) {
+            return $specialOffer->discounted_price;
+        }
+        return $this->harga_mulai;
+    }
 }

@@ -5,7 +5,7 @@
 <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
     <!-- Background Slider -->
     <div class="absolute inset-0 z-0" id="heroSlider">
-        <div class="absolute inset-0 bg-gradient-to-r from-blue-600/70 via-purple-600/70 to-violet-600/70 z-10"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-teal-600/70 via-cyan-600/70 to-slate-600/70 z-10"></div>
         
         <!-- Slider Images -->
         <div class="slider-container h-full relative overflow-hidden">
@@ -36,17 +36,17 @@
     
     <!-- Hero Content -->
     <div class="relative z-20 text-center text-white px-4 max-w-6xl mx-auto" data-aos="fade-up" data-aos-duration="1000">
-        <h1 class="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
+        <h1 class="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-teal-100 bg-clip-text text-transparent">
             Explore the World with JustTrip
         </h1>
-        <p class="text-xl md:text-2xl mb-8 text-blue-100 font-medium" data-aos="fade-up" data-aos-delay="200">
+        <p class="text-xl md:text-2xl mb-8 text-teal-100 font-medium" data-aos="fade-up" data-aos-delay="200">
             Liburan jadi gampang, cukup sekali klik dengan JustTrip.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center" data-aos="fade-up" data-aos-delay="400">
-            <button class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl">
+            <button class="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl">
                 Pesan Sekarang
             </button>
-            <button class="border-2 border-white text-white hover:bg-white hover:text-purple-600 font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300 transform hover:scale-105">
+            <button class="border-2 border-white text-white hover:bg-white hover:text-teal-600 font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300 transform hover:scale-105">
                 Lihat Destinasi
             </button>
         </div>
@@ -61,7 +61,7 @@
 </section>
 
 <!-- About Us Section -->
-<section class="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
+<section class="py-20 bg-gradient-to-br from-slate-50 to-teal-50">
     <div class="container mx-auto px-4">
         <div class="text-center mb-16" data-aos="fade-up">
             <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Tentang JustTrip</h2>
@@ -70,7 +70,7 @@
         
         <div class="grid md:grid-cols-3 gap-8 mb-20">
             <div class="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100">
-                <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mb-6 mx-auto">
+                <div class="w-16 h-16 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full flex items-center justify-center mb-6 mx-auto">
                     <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
@@ -80,7 +80,7 @@
             </div>
             
             <div class="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200">
-                <div class="w-16 h-16 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full flex items-center justify-center mb-6 mx-auto">
+                <div class="w-16 h-16 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center mb-6 mx-auto">
                     <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
@@ -90,7 +90,7 @@
             </div>
             
             <div class="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="300">
-                <div class="w-16 h-16 bg-gradient-to-r from-violet-500 to-purple-500 rounded-full flex items-center justify-center mb-6 mx-auto">
+                <div class="w-16 h-16 bg-gradient-to-r from-slate-500 to-slate-600 rounded-full flex items-center justify-center mb-6 mx-auto">
                     <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                     </svg>
@@ -111,7 +111,7 @@
         </div>
         
         <div class="grid md:grid-cols-3 gap-8">
-            <div class="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-8 shadow-lg" data-aos="fade-up" data-aos-delay="100">
+            <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-8 shadow-lg" data-aos="fade-up" data-aos-delay="100">
                 <div class="flex items-center mb-6">
                     <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Sarah" class="w-16 h-16 rounded-full object-cover mr-4">
                     <div>
@@ -125,7 +125,7 @@
                 <p class="text-gray-700 italic">"Booking trip ke Bali jadi super mudah! Pelayanannya ramah dan harga sangat kompetitif. Pasti bakal pakai JustTrip lagi!"</p>
             </div>
             
-            <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-8 shadow-lg" data-aos="fade-up" data-aos-delay="200">
+            <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-8 shadow-lg" data-aos="fade-up" data-aos-delay="200">
                 <div class="flex items-center mb-6">
                     <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Andi" class="w-16 h-16 rounded-full object-cover mr-4">
                     <div>
@@ -139,7 +139,7 @@
                 <p class="text-gray-700 italic">"Honeymoon ke Jepang jadi tak terlupakan berkat JustTrip. Semua terorganisir dengan baik, recommended banget!"</p>
             </div>
             
-            <div class="bg-gradient-to-br from-violet-50 to-purple-50 rounded-xl p-8 shadow-lg" data-aos="fade-up" data-aos-delay="300">
+            <div class="bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl p-8 shadow-lg" data-aos="fade-up" data-aos-delay="300">
                 <div class="flex items-center mb-6">
                     <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Maya" class="w-16 h-16 rounded-full object-cover mr-4">
                     <div>
@@ -157,7 +157,7 @@
 </section>
 
 <!-- Product/Destinations Section -->
-<section class="py-20 bg-gradient-to-br from-gray-50 to-slate-100">
+<section class="py-20 bg-gradient-to-br from-gray-50 to-teal-50">
     <div class="container mx-auto px-4">
         <div class="text-center mb-16" data-aos="fade-up">
             <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Destinasi Populer</h2>
@@ -179,7 +179,7 @@
                     <div class="relative overflow-hidden">
                         <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Tokyo" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
                         <div class="absolute top-4 left-4">
-                            <span class="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Populer</span>
+                            <span class="bg-gradient-to-r from-teal-500 to-cyan-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Populer</span>
                         </div>
                         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
@@ -188,10 +188,10 @@
                         <p class="text-gray-600 mb-4">5 Hari 4 Malam • Hotel Bintang 4 • Termasuk Visa</p>
                         <div class="flex items-center justify-between">
                             <div>
-                                <span class="text-2xl font-bold text-emerald-600">Rp 12.500.000</span>
-                                <span class="text-gray-500 text-sm">/orang</span>
-                            </div>
-                            <button class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">Detail</button>
+                                <span class="text-2xl font-bold text-teal-600">Rp 12.500.000</span>
+                            <span class="text-gray-500 text-sm">/orang</span>
+                        </div>
+                        <button class="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">Detail</button>
                         </div>
                     </div>
                 </div>
@@ -200,7 +200,7 @@
                     <div class="relative overflow-hidden">
                         <img src="https://images.unsplash.com/photo-1502602898536-47ad22581b52?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Paris" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
                         <div class="absolute top-4 left-4">
-                            <span class="bg-gradient-to-r from-fuchsia-500 to-pink-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Promo</span>
+                            <span class="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-3 py-1 rounded-full text-sm font-semibold">Promo</span>
                         </div>
                         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
@@ -209,10 +209,10 @@
                         <p class="text-gray-600 mb-4">6 Hari 5 Malam • Hotel Bintang 5 • City Tour</p>
                         <div class="flex items-center justify-between">
                             <div>
-                                <span class="text-2xl font-bold text-emerald-600">Rp 18.900.000</span>
-                                <span class="text-gray-500 text-sm">/orang</span>
-                            </div>
-                            <button class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">Detail</button>
+                                <span class="text-2xl font-bold text-teal-600">Rp 18.900.000</span>
+                            <span class="text-gray-500 text-sm">/orang</span>
+                        </div>
+                        <button class="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">Detail</button>
                         </div>
                     </div>
                 </div>
@@ -221,7 +221,7 @@
                     <div class="relative overflow-hidden">
                         <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Santorini" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
                         <div class="absolute top-4 left-4">
-                            <span class="bg-gradient-to-r from-indigo-500 to-blue-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Eksklusif</span>
+                            <span class="bg-gradient-to-r from-slate-500 to-slate-600 text-white px-3 py-1 rounded-full text-sm font-semibold">Eksklusif</span>
                         </div>
                         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
@@ -230,10 +230,10 @@
                         <p class="text-gray-600 mb-4">7 Hari 6 Malam • Resort Mewah • Private Tour</p>
                         <div class="flex items-center justify-between">
                             <div>
-                                <span class="text-2xl font-bold text-emerald-600">Rp 25.000.000</span>
-                                <span class="text-gray-500 text-sm">/orang</span>
-                            </div>
-                            <button class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">Detail</button>
+                                <span class="text-2xl font-bold text-teal-600">Rp 25.000.000</span>
+                            <span class="text-gray-500 text-sm">/orang</span>
+                        </div>
+                        <button class="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">Detail</button>
                         </div>
                     </div>
                 </div>
@@ -243,26 +243,32 @@
         <!-- Domestic Destinations -->
         <div id="domestic" class="tab-content hidden">
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100">
+                @foreach($popularPackages->where('jenis_layanan', 'tour_domestik')->take(3) as $index => $package)
+                <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
                     <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Bali" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
+                        @if($package->gambar_destinasi && count($package->gambar_destinasi) > 0)
+                            <img src="{{ asset('storage/' . $package->gambar_destinasi[0]) }}" alt="{{ $package->lokasi_tujuan }}" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
+                        @else
+                            <img src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="{{ $package->lokasi_tujuan }}" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
+                        @endif
                         <div class="absolute top-4 left-4">
-                            <span class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Favorit</span>
+                            <span class="bg-gradient-to-r from-teal-500 to-cyan-500 text-white px-3 py-1 rounded-full text-sm font-semibold">{{ $package->jenis_layanan_label }}</span>
                         </div>
                         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">Bali, Indonesia</h3>
-                        <p class="text-gray-600 mb-4">4 Hari 3 Malam • Hotel Bintang 4 • Antar Jemput</p>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">{{ $package->lokasi_tujuan }}</h3>
+                        <p class="text-gray-600 mb-4">{{ $package->durasi_hari }} Hari {{ $package->durasi_hari - 1 }} Malam • {{ $package->nama_layanan }}</p>
                         <div class="flex items-center justify-between">
                             <div>
-                                <span class="text-2xl font-bold text-emerald-600">Rp 2.500.000</span>
+                                <span class="text-2xl font-bold text-teal-600">Rp {{ number_format($package->harga_mulai, 0, ',', '.') }}</span>
                                 <span class="text-gray-500 text-sm">/orang</span>
                             </div>
-                            <button class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">Detail</button>
+                            <button class="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">Detail</button>
                         </div>
                     </div>
                 </div>
+                @endforeach
                 
                 <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200">
                     <div class="relative overflow-hidden">
@@ -277,10 +283,10 @@
                         <p class="text-gray-600 mb-4">3 Hari 2 Malam • Wisata Budaya • Kuliner</p>
                         <div class="flex items-center justify-between">
                             <div>
-                                <span class="text-2xl font-bold text-emerald-600">Rp 1.200.000</span>
+                                <span class="text-2xl font-bold text-teal-600">Rp 1.200.000</span>
                                 <span class="text-gray-500 text-sm">/orang</span>
                             </div>
-                            <button class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">Detail</button>
+                            <button class="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">Detail</button>
                         </div>
                     </div>
                 </div>
@@ -289,7 +295,7 @@
                     <div class="relative overflow-hidden">
                         <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Raja Ampat" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
                         <div class="absolute top-4 left-4">
-                            <span class="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Diving</span>
+                            <span class="bg-gradient-to-r from-slate-500 to-slate-600 text-white px-3 py-1 rounded-full text-sm font-semibold">Diving</span>
                         </div>
                         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
@@ -298,10 +304,10 @@
                         <p class="text-gray-600 mb-4">5 Hari 4 Malam • Diving Paradise • Liveaboard</p>
                         <div class="flex items-center justify-between">
                             <div>
-                                <span class="text-2xl font-bold text-emerald-600">Rp 8.500.000</span>
+                                <span class="text-2xl font-bold text-teal-600">Rp 8.500.000</span>
                                 <span class="text-gray-500 text-sm">/orang</span>
                             </div>
-                            <button class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">Detail</button>
+                            <button class="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">Detail</button>
                         </div>
                     </div>
                 </div>
@@ -309,7 +315,7 @@
         </div>
         
         <div class="text-center mt-12" data-aos="fade-up" data-aos-delay="400">
-            <button class="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl">
+            <button class="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl">
                 Lihat Semua Destinasi
             </button>
         </div>
@@ -317,7 +323,7 @@
 </section>
 
 <!-- Special Offers Section -->
-<section class="py-20 bg-gradient-to-br from-fuchsia-50 via-purple-50 to-indigo-50">
+<section class="py-20 bg-gradient-to-br from-orange-50 via-orange-100 to-teal-50">
     <div class="container mx-auto px-4">
         <div class="text-center mb-16" data-aos="fade-up">
             <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Penawaran Spesial</h2>
@@ -328,7 +334,7 @@
             <!-- Special Deal 1 -->
             <div class="relative bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3" data-aos="fade-up" data-aos-delay="100">
                 <div class="absolute top-0 right-0 z-10">
-                    <div class="bg-gradient-to-r from-fuchsia-500 to-pink-500 text-white px-6 py-2 rounded-bl-2xl font-bold text-lg">
+                    <div class="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-2 rounded-bl-2xl font-bold text-lg">
                         <span class="text-2xl">50%</span> OFF
                     </div>
                 </div>
@@ -344,13 +350,13 @@
                     <div class="flex items-center justify-between mb-4">
                         <div>
                             <span class="text-gray-400 line-through text-lg">Rp 5.000.000</span>
-                            <span class="text-3xl font-bold text-fuchsia-600 ml-2">Rp 2.500.000</span>
+                            <span class="text-3xl font-bold text-orange-600 ml-2">Rp 2.500.000</span>
                         </div>
                     </div>
                     <p class="text-gray-600 mb-4">4D3N • Villa Private • All Inclusive</p>
                     <div class="flex items-center justify-between">
                         <span class="text-sm text-red-500 font-semibold">⏰ Berakhir dalam 12 jam</span>
-                        <button class="bg-gradient-to-r from-fuchsia-500 to-pink-500 hover:from-fuchsia-600 hover:to-pink-600 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
+                        <button class="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
                             Ambil Promo
                         </button>
                     </div>
@@ -360,7 +366,7 @@
             <!-- Special Deal 2 -->
             <div class="relative bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3" data-aos="fade-up" data-aos-delay="200">
                 <div class="absolute top-0 right-0 z-10">
-                    <div class="bg-gradient-to-r from-indigo-500 to-blue-500 text-white px-6 py-2 rounded-bl-2xl font-bold text-lg">
+                    <div class="bg-gradient-to-r from-slate-500 to-slate-600 text-white px-6 py-2 rounded-bl-2xl font-bold text-lg">
                         <span class="text-2xl">30%</span> OFF
                     </div>
                 </div>
@@ -376,13 +382,13 @@
                     <div class="flex items-center justify-between mb-4">
                         <div>
                             <span class="text-gray-400 line-through text-lg">Rp 15.000.000</span>
-                            <span class="text-3xl font-bold text-indigo-600 ml-2">Rp 10.500.000</span>
+                            <span class="text-3xl font-bold text-slate-600 ml-2">Rp 10.500.000</span>
                         </div>
                     </div>
                     <p class="text-gray-600 mb-4">6D5N • Seoul & Busan • K-Pop Tour</p>
                     <div class="flex items-center justify-between">
                         <span class="text-sm text-orange-500 font-semibold">🔥 Hanya 20 slot tersisa</span>
-                        <button class="bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
+                        <button class="bg-gradient-to-r from-slate-500 to-slate-600 hover:from-slate-600 hover:to-slate-700 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
                             Book Now
                         </button>
                     </div>
@@ -392,7 +398,7 @@
             <!-- Special Deal 3 -->
             <div class="relative bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3" data-aos="fade-up" data-aos-delay="300">
                 <div class="absolute top-0 right-0 z-10">
-                    <div class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-6 py-2 rounded-bl-2xl font-bold text-lg">
+                    <div class="bg-gradient-to-r from-teal-500 to-cyan-500 text-white px-6 py-2 rounded-bl-2xl font-bold text-lg">
                         <span class="text-2xl">40%</span> OFF
                     </div>
                 </div>
@@ -408,7 +414,7 @@
                     <div class="flex items-center justify-between mb-4">
                         <div>
                             <span class="text-gray-400 line-through text-lg">Rp 35.000.000</span>
-                            <span class="text-3xl font-bold text-emerald-600 ml-2">Rp 21.000.000</span>
+                            <span class="text-3xl font-bold text-teal-600 ml-2">Rp 21.000.000</span>
                         </div>
                     </div>
                     <p class="text-gray-600 mb-4">12D11N • 7 Countries • Luxury Hotels</p>
@@ -423,14 +429,14 @@
         </div>
         
         <!-- CTA Banner -->
-        <div class="mt-16 bg-gradient-to-r from-fuchsia-500 via-purple-500 to-indigo-500 rounded-3xl p-8 md:p-12 text-center text-white relative overflow-hidden" data-aos="fade-up" data-aos-delay="400">
+        <div class="mt-16 bg-gradient-to-r from-teal-500 via-cyan-500 to-slate-500 rounded-3xl p-8 md:p-12 text-center text-white relative overflow-hidden" data-aos="fade-up" data-aos-delay="400">
             <div class="absolute inset-0 bg-black/10"></div>
             <div class="relative z-10">
                 <h3 class="text-3xl md:text-4xl font-bold mb-4">Dapatkan Notifikasi Promo Terbaru!</h3>
                 <p class="text-xl mb-8 opacity-90">Subscribe newsletter kami dan jadi yang pertama tahu promo eksklusif</p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
                     <input type="email" placeholder="Masukkan email Anda" class="flex-1 px-6 py-3 rounded-full text-gray-800 focus:outline-none focus:ring-4 focus:ring-white/30">
-                    <button class="bg-white text-purple-600 font-bold px-8 py-3 rounded-full hover:bg-gray-100 transition-all duration-300 transform hover:scale-105">
+                    <button class="bg-white text-teal-600 font-bold px-8 py-3 rounded-full hover:bg-gray-100 transition-all duration-300 transform hover:scale-105">
                         Subscribe
                     </button>
                 </div>
@@ -453,7 +459,7 @@
                 <div class="relative overflow-hidden">
                     <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Travel Tips" class="w-full h-64 object-cover hover:scale-110 transition-transform duration-500">
                     <div class="absolute top-4 left-4">
-                        <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Tips Travel</span>
+                        <span class="bg-teal-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Tips Travel</span>
                     </div>
                 </div>
                 <div class="p-6">
@@ -465,7 +471,7 @@
                         <span class="mx-2">•</span>
                         <span>5 min read</span>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-3 hover:text-blue-600 transition-colors duration-300">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3 hover:text-teal-600 transition-colors duration-300">
                         10 Tips Hemat Budget untuk Backpacker Pemula
                     </h3>
                     <p class="text-gray-600 mb-4 line-clamp-3">
@@ -476,7 +482,7 @@
                             <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80" alt="Author" class="w-8 h-8 rounded-full object-cover mr-3">
                             <span class="text-gray-600 text-sm">Ahmad Rizki</span>
                         </div>
-                        <button class="text-blue-600 hover:text-blue-800 font-semibold text-sm transition-colors duration-300">
+                        <button class="text-teal-600 hover:text-teal-800 font-semibold text-sm transition-colors duration-300">
                             Baca Selengkapnya →
                         </button>
                     </div>
@@ -488,7 +494,7 @@
                 <div class="relative overflow-hidden">
                     <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Hidden Gems" class="w-full h-64 object-cover hover:scale-110 transition-transform duration-500">
                     <div class="absolute top-4 left-4">
-                        <span class="bg-emerald-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Destinasi</span>
+                        <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Destinasi</span>
                     </div>
                 </div>
                 <div class="p-6">
@@ -500,7 +506,7 @@
                         <span class="mx-2">•</span>
                         <span>8 min read</span>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-3 hover:text-blue-600 transition-colors duration-300">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3 hover:text-teal-600 transition-colors duration-300">
                         5 Hidden Gems di Indonesia yang Wajib Dikunjungi
                     </h3>
                     <p class="text-gray-600 mb-4 line-clamp-3">
@@ -511,7 +517,7 @@
                             <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80" alt="Author" class="w-8 h-8 rounded-full object-cover mr-3">
                             <span class="text-gray-600 text-sm">Sari Dewi</span>
                         </div>
-                        <button class="text-blue-600 hover:text-blue-800 font-semibold text-sm transition-colors duration-300">
+                        <button class="text-teal-600 hover:text-teal-800 font-semibold text-sm transition-colors duration-300">
                             Baca Selengkapnya →
                         </button>
                     </div>
@@ -523,7 +529,7 @@
                 <div class="relative overflow-hidden">
                     <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Solo Travel" class="w-full h-64 object-cover hover:scale-110 transition-transform duration-500">
                     <div class="absolute top-4 left-4">
-                        <span class="bg-purple-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Solo Travel</span>
+                        <span class="bg-slate-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Solo Travel</span>
                     </div>
                 </div>
                 <div class="p-6">
@@ -535,7 +541,7 @@
                         <span class="mx-2">•</span>
                         <span>6 min read</span>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-3 hover:text-blue-600 transition-colors duration-300">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3 hover:text-teal-600 transition-colors duration-300">
                         Panduan Lengkap Solo Traveling untuk Wanita
                     </h3>
                     <p class="text-gray-600 mb-4 line-clamp-3">
@@ -546,7 +552,7 @@
                             <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80" alt="Author" class="w-8 h-8 rounded-full object-cover mr-3">
                             <span class="text-gray-600 text-sm">Maya Putri</span>
                         </div>
-                        <button class="text-blue-600 hover:text-blue-800 font-semibold text-sm transition-colors duration-300">
+                        <button class="text-teal-600 hover:text-teal-800 font-semibold text-sm transition-colors duration-300">
                             Baca Selengkapnya →
                         </button>
                     </div>
@@ -570,7 +576,7 @@
                         <span class="mx-2">•</span>
                         <span>7 min read</span>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-3 hover:text-blue-600 transition-colors duration-300">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3 hover:text-teal-600 transition-colors duration-300">
                         Teknik Fotografi Travel untuk Hasil Instagramable
                     </h3>
                     <p class="text-gray-600 mb-4 line-clamp-3">
@@ -581,7 +587,7 @@
                             <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80" alt="Author" class="w-8 h-8 rounded-full object-cover mr-3">
                             <span class="text-gray-600 text-sm">Budi Santoso</span>
                         </div>
-                        <button class="text-blue-600 hover:text-blue-800 font-semibold text-sm transition-colors duration-300">
+                        <button class="text-teal-600 hover:text-teal-800 font-semibold text-sm transition-colors duration-300">
                             Baca Selengkapnya →
                         </button>
                     </div>
@@ -593,7 +599,7 @@
                 <div class="relative overflow-hidden">
                     <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Culinary" class="w-full h-64 object-cover hover:scale-110 transition-transform duration-500">
                     <div class="absolute top-4 left-4">
-                        <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Kuliner</span>
+                        <span class="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Kuliner</span>
                     </div>
                 </div>
                 <div class="p-6">
@@ -605,7 +611,7 @@
                         <span class="mx-2">•</span>
                         <span>4 min read</span>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-3 hover:text-blue-600 transition-colors duration-300">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3 hover:text-teal-600 transition-colors duration-300">
                         Wisata Kuliner Terbaik di Asia Tenggara
                     </h3>
                     <p class="text-gray-600 mb-4 line-clamp-3">
@@ -616,7 +622,7 @@
                             <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80" alt="Author" class="w-8 h-8 rounded-full object-cover mr-3">
                             <span class="text-gray-600 text-sm">Chef Andi</span>
                         </div>
-                        <button class="text-blue-600 hover:text-blue-800 font-semibold text-sm transition-colors duration-300">
+                        <button class="text-teal-600 hover:text-teal-800 font-semibold text-sm transition-colors duration-300">
                             Baca Selengkapnya →
                         </button>
                     </div>
@@ -640,7 +646,7 @@
                         <span class="mx-2">•</span>
                         <span>6 min read</span>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-3 hover:text-blue-600 transition-colors duration-300">
+                    <h3 class="text-xl font-bold text-gray-800 mb-3 hover:text-teal-600 transition-colors duration-300">
                         Liburan Mewah dengan Budget Minim? Bisa!
                     </h3>
                     <p class="text-gray-600 mb-4 line-clamp-3">
@@ -651,7 +657,7 @@
                             <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80" alt="Author" class="w-8 h-8 rounded-full object-cover mr-3">
                             <span class="text-gray-600 text-sm">Lisa Maharani</span>
                         </div>
-                        <button class="text-blue-600 hover:text-blue-800 font-semibold text-sm transition-colors duration-300">
+                        <button class="text-teal-600 hover:text-teal-800 font-semibold text-sm transition-colors duration-300">
                             Baca Selengkapnya →
                         </button>
                     </div>
@@ -660,7 +666,7 @@
         </div>
         
         <div class="text-center mt-12" data-aos="fade-up" data-aos-delay="700">
-            <button class="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl">
+            <button class="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl">
                 Lihat Semua Artikel
             </button>
         </div>
