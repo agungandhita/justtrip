@@ -29,7 +29,7 @@
                 <a href="{{ route('tentang-kami') }}" class="text-gray-700 hover:text-teal-600 font-medium transition-colors duration-200 {{ request()->routeIs('tentang-kami') ? 'text-teal-600' : '' }}">
                     Tentang Kami
                 </a>
-                <a href="{{ route('artikel') }}" class="text-gray-700 hover:text-teal-600 font-medium transition-colors duration-200 {{ request()->routeIs('artikel') ? 'text-teal-600' : '' }}">
+                <a href="{{ route('articles.index') }}" class="text-gray-700 hover:text-teal-600 font-medium transition-colors duration-200 {{ request()->routeIs('articles.index') ? 'text-teal-600' : '' }}">
                     Artikel
                 </a>
             </div>
@@ -67,7 +67,7 @@
             <a href="{{ route('tentang-kami') }}" class="block px-3 py-2 text-gray-700 hover:text-teal-600 font-medium transition-colors duration-200 rounded-lg {{ request()->routeIs('tentang-kami') ? 'text-teal-600 bg-teal-50' : '' }}">
                 Tentang Kami
             </a>
-            <a href="{{ route('artikel') }}" class="block px-3 py-2 text-gray-700 hover:text-teal-600 font-medium transition-colors duration-200 rounded-lg {{ request()->routeIs('artikel') ? 'text-teal-600 bg-teal-50' : '' }}">
+            <a href="{{ route('articles.index') }}" class="block px-3 py-2 text-gray-700 hover:text-teal-600 font-medium transition-colors duration-200 rounded-lg {{ request()->routeIs('articles.index') ? 'text-teal-600 bg-teal-50' : '' }}">
                 Artikel
             </a>
             <a href="#booking" class="block mt-4 px-4 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-full text-center">

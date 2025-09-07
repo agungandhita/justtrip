@@ -117,7 +117,11 @@ class SpecialOfferController extends Controller
      */
     public function edit(SpecialOffer $specialOffer)
     {
-        $layananList = Layanan::where('status', 'aktif')->get();
+        // Load the special offer with its related layanan
+        $specialOffer->load('layanan');
+        $layananList = Layanan::where('status', 'aktif')
+                             ->orderBy('nama_layanan')
+                             ->get();
         return view('admin.special-offers.edit', compact('specialOffer', 'layananList'));
     }
 
@@ -144,14 +148,21 @@ class SpecialOfferController extends Controller
         // Get layanan data
         $layanan = Layanan::findOrFail($request->layanan_id);
         
-        $data = $request->all();
-        $data['slug'] = Str::slug($request->title);
-        
-        // Map form fields to database fields
-        $data['valid_from'] = $request->start_date;
-        $data['valid_until'] = $request->end_date;
-        $data['is_active'] = $request->status === 'active';
-        $data['is_featured'] = $request->has('featured') ? true : false;
+        // Prepare data for update
+        $data = [
+            'layanan_id' => $request->layanan_id,
+            'title' => $request->title,
+            'slug' => Str::slug($request->title),
+            'description' => $request->description,
+            'discount_percentage' => $request->discount_percentage,
+            'valid_from' => $request->start_date,
+            'valid_until' => $request->end_date,
+            'is_active' => $request->status === 'active',
+            'is_featured' => $request->has('featured'),
+            'terms_conditions' => $request->terms_conditions,
+            'meta_title' => $request->meta_title,
+            'meta_description' => $request->meta_description
+        ];
 
         // Calculate prices based on layanan and discount percentage
         $data['original_price'] = $layanan->harga_mulai;
@@ -166,9 +177,6 @@ class SpecialOfferController extends Controller
             }
             $data['main_image'] = $request->file('image')->store('special-offers', 'public');
         }
-        
-        // Remove form-specific fields that don't exist in database
-        unset($data['start_date'], $data['end_date'], $data['status'], $data['featured'], $data['image']);
 
         $specialOffer->update($data);
 

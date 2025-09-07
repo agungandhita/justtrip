@@ -102,31 +102,15 @@
             <p class="text-xl text-gray-600 max-w-3xl mx-auto">Jelajahi artikel berdasarkan kategori yang Anda minati</p>
         </div>
         
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <!-- Category 1 -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-5 gap-8">
+            <!-- Travel Tips -->
             <div class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer" data-aos="fade-up" data-aos-delay="100">
-                <div class="w-16 h-16 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                    </svg>
-                </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">Destinasi</h3>
-                <p class="text-gray-600 text-center mb-6">Panduan lengkap destinasi wisata menarik di seluruh dunia</p>
-                <div class="text-center">
-                    <span class="text-2xl font-bold text-emerald-600">45</span>
-                    <p class="text-gray-500 text-sm">artikel</p>
-                </div>
-            </div>
-            
-            <!-- Category 2 -->
-            <div class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer" data-aos="fade-up" data-aos-delay="200">
                 <div class="w-16 h-16 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
                     <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
                     </svg>
                 </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">Tips & Tricks</h3>
+                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">Travel Tips</h3>
                 <p class="text-gray-600 text-center mb-6">Tips praktis untuk perjalanan yang lebih nyaman dan hemat</p>
                 <div class="text-center">
                     <span class="text-2xl font-bold text-cyan-600">32</span>
@@ -134,33 +118,63 @@
                 </div>
             </div>
             
-            <!-- Category 3 -->
-            <div class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer" data-aos="fade-up" data-aos-delay="300">
-                <div class="w-16 h-16 bg-gradient-to-r from-orange-500 to-amber-500 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
+            <!-- Destinations -->
+            <div class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer" data-aos="fade-up" data-aos-delay="200">
+                <div class="w-16 h-16 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
                     <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                     </svg>
                 </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">Kuliner</h3>
-                <p class="text-gray-600 text-center mb-6">Eksplorasi cita rasa kuliner khas dari berbagai negara</p>
+                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">Destinations</h3>
+                <p class="text-gray-600 text-center mb-6">Panduan lengkap destinasi wisata menarik di seluruh dunia</p>
                 <div class="text-center">
-                    <span class="text-2xl font-bold text-orange-600">28</span>
+                    <span class="text-2xl font-bold text-emerald-600">45</span>
                     <p class="text-gray-500 text-sm">artikel</p>
                 </div>
             </div>
             
-            <!-- Category 4 -->
-            <div class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer" data-aos="fade-up" data-aos-delay="400">
-                <div class="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
+            <!-- Company News -->
+            <div class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer" data-aos="fade-up" data-aos-delay="300">
+                <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
                     <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
                     </svg>
                 </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">Fotografi</h3>
-                <p class="text-gray-600 text-center mb-6">Tips fotografi travel untuk mengabadikan momen terbaik</p>
+                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">Company News</h3>
+                <p class="text-gray-600 text-center mb-6">Berita terbaru dan update dari perusahaan travel</p>
                 <div class="text-center">
-                    <span class="text-2xl font-bold text-orange-600">19</span>
+                    <span class="text-2xl font-bold text-purple-600">18</span>
+                    <p class="text-gray-500 text-sm">artikel</p>
+                </div>
+            </div>
+            
+            <!-- Travel Guides -->
+            <div class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer" data-aos="fade-up" data-aos-delay="400">
+                <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">Travel Guides</h3>
+                <p class="text-gray-600 text-center mb-6">Panduan perjalanan lengkap untuk berbagai destinasi</p>
+                <div class="text-center">
+                    <span class="text-2xl font-bold text-green-600">28</span>
+                    <p class="text-gray-500 text-sm">artikel</p>
+                </div>
+            </div>
+            
+            <!-- Promotions -->
+            <div class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer" data-aos="fade-up" data-aos-delay="500">
+                <div class="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">Promotions</h3>
+                <p class="text-gray-600 text-center mb-6">Promo dan penawaran menarik untuk perjalanan Anda</p>
+                <div class="text-center">
+                    <span class="text-2xl font-bold text-orange-600">15</span>
                     <p class="text-gray-500 text-sm">artikel</p>
                 </div>
             </div>
@@ -177,144 +191,67 @@
         </div>
         
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Article 1 -->
-            <article class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer" data-aos="fade-up" data-aos-delay="100">
-                <div class="relative overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Tokyo Travel" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500">
-                    <div class="absolute top-4 left-4">
-                        <span class="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Destinasi</span>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <p class="text-gray-500 text-sm mb-2">10 Januari 2024</p>
-                    <h3 class="text-xl font-bold text-gray-800 mb-3 group-hover:text-emerald-600 transition-colors">Panduan Lengkap Liburan ke Tokyo untuk Pemula</h3>
-                    <p class="text-gray-600 mb-4 line-clamp-3">Temukan tips dan trik untuk menjelajahi Tokyo dengan mudah, mulai dari transportasi hingga tempat wisata wajib dikunjungi.</p>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Author" class="w-8 h-8 rounded-full mr-2">
-                            <span class="text-gray-700 text-sm font-medium">Sarah Wijaya</span>
+            @forelse($articles as $index => $article)
+            <article class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
+                <a href="{{ route('articles.show', $article->slug) }}" class="block">
+                    <div class="relative overflow-hidden">
+                        <img src="{{ $article->featured_image ? asset('storage/' . $article->featured_image) : 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' }}" 
+                             alt="{{ $article->title }}" 
+                             class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute top-4 left-4">
+                            <span class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                {{ $article->category }}
+                            </span>
                         </div>
-                        <span class="text-gray-500 text-sm">7 min read</span>
                     </div>
-                </div>
+                    <div class="p-6">
+                        <p class="text-gray-500 text-sm mb-2">
+                            {{ $article->published_at ? $article->published_at->format('d M Y') : $article->created_at->format('d M Y') }}
+                        </p>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 group-hover:text-emerald-600 transition-colors line-clamp-2">
+                            {{ $article->title }}
+                        </h3>
+                        @if($article->excerpt)
+                        <p class="text-gray-600 mb-4 line-clamp-3">
+                            {{ $article->excerpt }}
+                        </p>
+                        @endif
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <img src="{{ $article->author_image ? asset('storage/' . $article->author_image) : 'https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80' }}" 
+                                     alt="{{ $article->author_name }}" 
+                                     class="w-8 h-8 rounded-full mr-2">
+                                <span class="text-gray-700 text-sm font-medium">{{ $article->author_name ?? 'Admin' }}</span>
+                            </div>
+                            <div class="flex items-center text-gray-500 text-sm space-x-3">
+                                <span>{{ $article->read_time ?? 5 }} min read</span>
+                                <div class="flex items-center">
+                                    <i class="fas fa-eye mr-1"></i>
+                                    {{ number_format($article->views) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
             </article>
+            @empty
+            <div class="col-span-full text-center py-12">
+                <div class="text-gray-400 mb-4">
+                    <i class="fas fa-newspaper text-6xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-600 mb-2">Belum Ada Artikel</h3>
+                <p class="text-gray-500">Artikel akan segera hadir. Pantau terus untuk update terbaru!</p>
+            </div>
+            @endforelse
             
-            <!-- Article 2 -->
-            <article class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer" data-aos="fade-up" data-aos-delay="200">
-                <div class="relative overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Mountain Travel" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500">
-                    <div class="absolute top-4 left-4">
-                        <span class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Tips</span>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <p class="text-gray-500 text-sm mb-2">8 Januari 2024</p>
-                    <h3 class="text-xl font-bold text-gray-800 mb-3 group-hover:text-emerald-600 transition-colors">5 Persiapan Penting Sebelum Mendaki Gunung</h3>
-                    <p class="text-gray-600 mb-4 line-clamp-3">Panduan lengkap persiapan fisik dan mental sebelum melakukan pendakian gunung untuk pemula hingga expert.</p>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Author" class="w-8 h-8 rounded-full mr-2">
-                            <span class="text-gray-700 text-sm font-medium">Budi Santoso</span>
-                        </div>
-                        <span class="text-gray-500 text-sm">6 min read</span>
-                    </div>
-                </div>
-            </article>
-            
-            <!-- Article 3 -->
-            <article class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer" data-aos="fade-up" data-aos-delay="300">
-                <div class="relative overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1414016642750-7fdd78dc33d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Food Travel" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500">
-                    <div class="absolute top-4 left-4">
-                        <span class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Kuliner</span>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <p class="text-gray-500 text-sm mb-2">5 Januari 2024</p>
-                    <h3 class="text-xl font-bold text-gray-800 mb-3 group-hover:text-emerald-600 transition-colors">Kuliner Khas Thailand yang Wajib Dicoba</h3>
-                    <p class="text-gray-600 mb-4 line-clamp-3">Jelajahi cita rasa autentik Thailand melalui 10 makanan khas yang akan memanjakan lidah Anda.</p>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Author" class="w-8 h-8 rounded-full mr-2">
-                            <span class="text-gray-700 text-sm font-medium">Andi Pratama</span>
-                        </div>
-                        <span class="text-gray-500 text-sm">5 min read</span>
-                    </div>
-                </div>
-            </article>
-            
-            <!-- Article 4 -->
-            <article class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer" data-aos="fade-up" data-aos-delay="400">
-                <div class="relative overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Budget Travel" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500">
-                    <div class="absolute top-4 left-4">
-                        <span class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Tips</span>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <p class="text-gray-500 text-sm mb-2">3 Januari 2024</p>
-                    <h3 class="text-xl font-bold text-gray-800 mb-3 group-hover:text-emerald-600 transition-colors">Cara Menghemat Biaya Akomodasi Saat Traveling</h3>
-                    <p class="text-gray-600 mb-4 line-clamp-3">Tips praktis untuk mendapatkan akomodasi terbaik dengan budget terbatas tanpa mengorbankan kenyamanan.</p>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Author" class="w-8 h-8 rounded-full mr-2">
-                            <span class="text-gray-700 text-sm font-medium">Sarah Wijaya</span>
-                        </div>
-                        <span class="text-gray-500 text-sm">4 min read</span>
-                    </div>
-                </div>
-            </article>
-            
-            <!-- Article 5 -->
-            <article class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer" data-aos="fade-up" data-aos-delay="500">
-                <div class="relative overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1502602898536-47ad22581b52?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Europe Travel" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500">
-                    <div class="absolute top-4 left-4">
-                        <span class="bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Destinasi</span>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <p class="text-gray-500 text-sm mb-2">1 Januari 2024</p>
-                    <h3 class="text-xl font-bold text-gray-800 mb-3 group-hover:text-emerald-600 transition-colors">Itinerary 2 Minggu Keliling Eropa dengan Kereta</h3>
-                    <p class="text-gray-600 mb-4 line-clamp-3">Panduan lengkap perjalanan 14 hari menggunakan Eurail Pass untuk menjelajahi 8 negara Eropa.</p>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Author" class="w-8 h-8 rounded-full mr-2">
-                            <span class="text-gray-700 text-sm font-medium">Budi Santoso</span>
-                        </div>
-                        <span class="text-gray-500 text-sm">12 min read</span>
-                    </div>
-                </div>
-            </article>
-            
-            <!-- Article 6 -->
-            <article class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer" data-aos="fade-up" data-aos-delay="600">
-                <div class="relative overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Photography" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500">
-                    <div class="absolute top-4 left-4">
-                        <span class="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Fotografi</span>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <p class="text-gray-500 text-sm mb-2">28 Desember 2023</p>
-                    <h3 class="text-xl font-bold text-gray-800 mb-3 group-hover:text-emerald-600 transition-colors">Tips Fotografi Landscape untuk Pemula</h3>
-                    <p class="text-gray-600 mb-4 line-clamp-3">Teknik dasar fotografi landscape yang akan membantu Anda menghasilkan foto pemandangan yang menakjubkan.</p>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Author" class="w-8 h-8 rounded-full mr-2">
-                            <span class="text-gray-700 text-sm font-medium">Andi Pratama</span>
-                        </div>
-                        <span class="text-gray-500 text-sm">9 min read</span>
-                    </div>
-                </div>
-            </article>
         </div>
         
-        <div class="text-center mt-12" data-aos="fade-up" data-aos-delay="700">
-            <button class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl">
-                Lihat Semua Artikel
-            </button>
+        <!-- Pagination -->
+        @if($articles->hasPages())
+        <div class="mt-12" data-aos="fade-up">
+            {{ $articles->links() }}
         </div>
+        @endif
     </div>
 </section>
 

@@ -24,7 +24,8 @@ Route::get('/home', [HomeController::class, 'index'])->name('beranda');
 Route::get('/destinasi', [DestinationController::class, 'index'])->name('destinasi');
 Route::get('/paket-tour', [PackageController::class, 'index'])->name('paket-tour');
 Route::get('/tentang-kami', [AboutController::class, 'index'])->name('tentang-kami');
-Route::get('/artikel', [ArticleController::class, 'index'])->name('artikel');
+Route::get('/artikel', [ArticleController::class, 'index'])->name('articles.index');
+Route::get('/artikel/{slug}', [ArticleController::class, 'show'])->name('articles.show');
 
 // Gallery routes (public)
 Route::get('/gallery', [FrontendGalleryController::class, 'index'])->name('gallery');

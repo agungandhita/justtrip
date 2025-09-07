@@ -167,7 +167,7 @@
                         <!-- Gambar Destinasi -->
                         <div class="md:col-span-2">
                             <label for="gambar_destinasi" class="block text-sm font-medium text-gray-700 mb-2">Gambar Destinasi (Maksimal 5 gambar)</label>
-                            
+
                             <!-- Existing Images -->
                             @if($layanan->gambar_destinasi && count($layanan->gambar_destinasi) > 0)
                                 <div class="mb-4">
@@ -186,7 +186,7 @@
                                     </div>
                                 </div>
                             @endif
-                            
+
                             <!-- Upload New Images -->
                             <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-indigo-400 transition-colors duration-200">
                                 <input type="file" id="gambar_destinasi" name="gambar_destinasi[]" multiple accept="image/*" class="hidden" onchange="previewImages(this)">
@@ -245,11 +245,11 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Edit layanan travel form loaded');
         });
-        
+
         function addFasilitas() {
             addFasilitasItem('');
         }
-        
+
         function addFasilitasItem(value = '') {
             const container = document.getElementById('fasilitas-container');
             const div = document.createElement('div');
@@ -266,7 +266,7 @@
             `;
             container.appendChild(div);
         }
-        
+
         function removeFasilitas(button) {
             const container = document.getElementById('fasilitas-container');
             if (container.children.length > 1) {
@@ -277,15 +277,15 @@
                 input.value = '';
             }
         }
-        
+
         function previewImages(input) {
             const previewContainer = document.getElementById('image-preview');
             const uploadArea = document.getElementById('upload-area');
             const existingImagesCount = document.querySelectorAll('.existing-image-item:not(.removed)').length;
-            
+
             // Clear previous previews
             previewContainer.innerHTML = '';
-            
+
             if (input.files && input.files.length > 0) {
                 // Check total images (existing + new)
                 const totalImages = existingImagesCount + input.files.length;
@@ -294,10 +294,10 @@
                     input.value = '';
                     return;
                 }
-                
+
                 // Hide upload area when files are selected
                 uploadArea.style.display = 'none';
-                
+
                 Array.from(input.files).forEach((file, index) => {
                     if (file.type.startsWith('image/')) {
                         const reader = new FileReader();
@@ -316,7 +316,7 @@
                         reader.readAsDataURL(file);
                     }
                 });
-                
+
                 // Add upload more button if total less than 5 images
                 if (totalImages < 5) {
                     const addMoreDiv = document.createElement('div');
@@ -337,21 +337,21 @@
                 uploadArea.style.display = 'block';
             }
         }
-        
+
         function removeNewImage(index) {
             const input = document.getElementById('gambar_destinasi');
             const dt = new DataTransfer();
-            
+
             Array.from(input.files).forEach((file, i) => {
                 if (i !== index) {
                     dt.items.add(file);
                 }
             });
-            
+
             input.files = dt.files;
             previewImages(input);
         }
-        
+
         function removeExistingImage(index) {
             const imageItem = document.querySelector(`.existing-image-item[data-index="${index}"]`);
             if (imageItem) {

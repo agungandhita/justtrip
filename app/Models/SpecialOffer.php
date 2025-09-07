@@ -73,6 +73,32 @@ class SpecialOffer extends Model
         return $this->layanan ? $this->layanan->jenis_layanan_label : null;
     }
 
+    // Accessors for form fields
+    public function getStartDateAttribute()
+    {
+        return $this->valid_from;
+    }
+
+    public function getEndDateAttribute()
+    {
+        return $this->valid_until;
+    }
+
+    public function getStatusAttribute()
+    {
+        return $this->is_active ? 'active' : 'inactive';
+    }
+
+    public function getFeaturedAttribute()
+    {
+        return $this->is_featured;
+    }
+
+    public function getImageAttribute()
+    {
+        return $this->main_image;
+    }
+
     // Method to calculate discounted price from original price and percentage
     public function calculateDiscountedPrice()
     {

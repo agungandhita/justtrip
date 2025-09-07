@@ -66,20 +66,20 @@
                 <div class="mt-6">
                     <h6 class="text-blue-600 text-sm font-bold px-4">Manajemen Produk & Layanan</h6>
                     <ul class="mt-3 space-y-2">
+                         <li>
+                            <a href="{{ route('admin.layanan.index') }}" class="text-gray-800 text-sm flex items-center hover:bg-gray-100 rounded-md px-4 py-2 transition-all {{ request()->routeIs('admin.layanan.*') ? 'bg-blue-50 text-blue-600 border-r-2 border-blue-600' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-[18px] h-[18px] mr-3" viewBox="0 0 24 24">
+                                    <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                                </svg>
+                                <span>Layanan Travel</span>
+                            </a>
+                        </li>
                         <li>
                             <a href="{{ route('admin.special-offers.index') }}" class="text-gray-800 text-sm flex items-center hover:bg-gray-100 rounded-md px-4 py-2 transition-all {{ request()->routeIs('admin.special-offers.*') ? 'bg-blue-50 text-blue-600 border-r-2 border-blue-600' : '' }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-[18px] h-[18px] mr-3" viewBox="0 0 24 24">
                                     <path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6M12,8A4,4 0 0,0 8,12A4,4 0 0,0 12,16A4,4 0 0,0 16,12A4,4 0 0,0 12,8Z"/>
                                 </svg>
                                 <span>Special Offers</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('admin.layanan.index') }}" class="text-gray-800 text-sm flex items-center hover:bg-gray-100 rounded-md px-4 py-2 transition-all {{ request()->routeIs('admin.layanan.*') ? 'bg-blue-50 text-blue-600 border-r-2 border-blue-600' : '' }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-[18px] h-[18px] mr-3" viewBox="0 0 24 24">
-                                    <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
-                                </svg>
-                                <span>Layanan Travel</span>
                             </a>
                         </li>
                     </ul>

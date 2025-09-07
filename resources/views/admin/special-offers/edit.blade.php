@@ -50,9 +50,9 @@
                                     @foreach($layananList as $layanan)
                                         <option value="{{ $layanan->layanan_id }}" 
                                                 data-price="{{ $layanan->harga_mulai }}"
-                                                data-destination="{{ $layanan->destinasi->nama ?? '' }}"
+                                                data-destination="{{ $layanan->lokasi_tujuan ?? '' }}"
                                                 {{ old('layanan_id', $specialOffer->layanan_id) == $layanan->layanan_id ? 'selected' : '' }}>
-                                            {{ $layanan->nama_layanan }} - {{ $layanan->destinasi->nama ?? '' }} (Rp {{ number_format($layanan->harga_mulai, 0, ',', '.') }})
+                                            {{ $layanan->nama_layanan }} - {{ $layanan->lokasi_tujuan ?? '' }} (Rp {{ number_format($layanan->harga_mulai, 0, ',', '.') }})
                                         </option>
                                     @endforeach
                                 </select>

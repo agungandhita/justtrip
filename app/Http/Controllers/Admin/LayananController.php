@@ -137,6 +137,8 @@ class LayananController extends Controller
             'lokasi_tujuan' => 'required|string|max:255',
             'fasilitas' => 'nullable|array',
             'gambar_destinasi.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'existing_images' => 'nullable|array',
+            'existing_images.*' => 'nullable|string',
             'status' => 'required|in:aktif,nonaktif',
             'catatan' => 'nullable|string'
         ]);
@@ -152,30 +154,41 @@ class LayananController extends Controller
             $data['fasilitas'] = array_filter($request->fasilitas);
         }
         
-        // Handle gambar destinasi upload
+        // Handle gambar destinasi
+        $finalGambarPaths = [];
+        
+        // Get existing images that are kept (not removed)
+        if ($request->has('existing_images') && is_array($request->existing_images)) {
+            $finalGambarPaths = array_filter($request->existing_images);
+        }
+        
+        // Handle new uploaded images
         if ($request->hasFile('gambar_destinasi')) {
-            // Delete old images
-            if ($layanan->gambar_destinasi) {
-                foreach ($layanan->gambar_destinasi as $oldImage) {
-                    Storage::disk('public')->delete($oldImage);
-                }
-            }
-            
-            $gambarPaths = [];
             $files = $request->file('gambar_destinasi');
             
-            // Validasi maksimal 5 gambar
-            if (count($files) > 5) {
+            // Validasi maksimal 5 gambar total (existing + new)
+            $totalImages = count($finalGambarPaths) + count($files);
+            if ($totalImages > 5) {
                 Alert::error('Error', 'Maksimal 5 gambar destinasi yang diizinkan!');
                 return redirect()->back()->withInput();
             }
             
             foreach ($files as $file) {
                 $path = $file->store('layanan/destinasi', 'public');
-                $gambarPaths[] = $path;
+                $finalGambarPaths[] = $path;
             }
-            $data['gambar_destinasi'] = $gambarPaths;
         }
+        
+        // Delete images that are no longer used
+        if ($layanan->gambar_destinasi) {
+            foreach ($layanan->gambar_destinasi as $oldImage) {
+                if (!in_array($oldImage, $finalGambarPaths)) {
+                    Storage::disk('public')->delete($oldImage);
+                }
+            }
+        }
+        
+        $data['gambar_destinasi'] = $finalGambarPaths;
         
         $layanan->update($data);
         
