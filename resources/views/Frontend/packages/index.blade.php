@@ -8,7 +8,7 @@
         <div class="absolute inset-0 bg-gradient-to-r from-emerald-600/70 via-teal-600/70 to-cyan-600/70 z-10"></div>
         <div class="bg-cover bg-center h-full" style="background-image: url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80')"></div>
     </div>
-    
+
     <!-- Hero Content -->
     <div class="relative z-20 text-center text-white px-4 max-w-4xl mx-auto" data-aos="fade-up" data-aos-duration="1000">
         <h1 class="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white to-emerald-100 bg-clip-text text-transparent">
@@ -27,97 +27,57 @@
             <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Penawaran Spesial</h2>
             <p class="text-xl text-gray-600 max-w-3xl mx-auto">Jangan lewatkan promo terbatas dan penawaran eksklusif dari JustTrip</p>
         </div>
-        
+
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Special Deal 1 -->
-            <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100">
+            @forelse($featuredOffers as $index => $offer)
+            <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
                 <div class="relative overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Bali Package" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
+                    @if($offer->image)
+                        <img src="{{ asset('storage/' . $offer->image) }}" alt="{{ $offer->title }}" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
+                    @else
+                        <img src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="{{ $offer->title }}" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
+                    @endif
                     <div class="absolute top-4 left-4">
-                        <span class="bg-gradient-to-r from-red-500 to-pink-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Flash Sale</span>
+                        @if($offer->badge)
+                            <span class="bg-gradient-to-r from-red-500 to-orange-500 text-white px-3 py-1 rounded-full text-sm font-semibold">{{ $offer->badge }}</span>
+                        @else
+                            <span class="bg-gradient-to-r from-red-500 to-orange-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Special Offer</span>
+                        @endif
                     </div>
                     <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                     <div class="absolute bottom-4 left-4 text-white">
-                        <h3 class="text-2xl font-bold mb-2">Bali Paradise</h3>
-                        <p class="text-lg">Limited Time Offer</p>
+                        <h3 class="text-2xl font-bold mb-2">{{ $offer->title }}</h3>
+                        <p class="text-lg">{{ $offer->discount_percentage }}% OFF</p>
                     </div>
                 </div>
                 <div class="p-6">
                     <div class="flex items-center justify-between mb-4">
                         <div>
-                            <span class="text-gray-400 line-through text-lg">Rp 3.500.000</span>
-                            <span class="text-3xl font-bold text-emerald-600 ml-2">Rp 2.499.000</span>
+                            <span class="text-gray-400 line-through text-lg">Rp {{ number_format($offer->original_price, 0, ',', '.') }}</span>
+                            <span class="text-3xl font-bold text-red-600 ml-2">Rp {{ number_format($offer->discounted_price, 0, ',', '.') }}</span>
                         </div>
                     </div>
-                    <p class="text-gray-600 mb-4">4D3N • Ubud & Seminyak • Private Pool Villa</p>
+                    <p class="text-gray-600 mb-2">{{ Str::limit($offer->description, 60) }}</p>
+                    @if($offer->layanan && $offer->layanan->maks_orang)
+                        <p class="text-sm text-blue-600 font-semibold mb-4">👥 Kapasitas maksimal: {{ $offer->layanan->maks_orang }} orang</p>
+                    @endif
                     <div class="flex items-center justify-between">
-                        <span class="text-sm text-red-500 font-semibold">🔥 Berakhir dalam 2 hari</span>
-                        <button class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
+                        @if($offer->valid_until < now()->addDays(3))
+                            <span class="text-sm text-red-500 font-semibold">🔥 Berakhir dalam {{ $offer->valid_until->diffInDays(now()) }} hari</span>
+                        @else
+                            <span class="text-sm text-green-500 font-semibold">✅ Tersedia</span>
+                        @endif
+                        <a href="{{ route('packages.show', $offer->slug) }}" class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
                             Book Now
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
-            
-            <!-- Special Deal 2 -->
-            <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200">
-                <div class="relative overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Korea Package" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
-                    <div class="absolute top-4 left-4">
-                        <span class="bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Early Bird</span>
-                    </div>
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                    <div class="absolute bottom-4 left-4 text-white">
-                        <h3 class="text-2xl font-bold mb-2">Korea Autumn</h3>
-                        <p class="text-lg">Early Bird Special</p>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <div>
-                            <span class="text-gray-400 line-through text-lg">Rp 15.000.000</span>
-                            <span class="text-3xl font-bold text-indigo-600 ml-2">Rp 10.500.000</span>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 mb-4">6D5N • Seoul & Busan • K-Pop Tour</p>
-                    <div class="flex items-center justify-between">
-                        <span class="text-sm text-orange-500 font-semibold">🔥 Hanya 20 slot tersisa</span>
-                        <button class="bg-gradient-to-r from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
-                            Book Now
-                        </button>
-                    </div>
-                </div>
+            @empty
+            <div class="col-span-3 text-center py-12">
+                <p class="text-gray-500 text-lg">Belum ada penawaran khusus tersedia</p>
             </div>
-            
-            <!-- Special Deal 3 -->
-            <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="300">
-                <div class="relative overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1502602898536-47ad22581b52?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Europe Package" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
-                    <div class="absolute top-4 left-4">
-                        <span class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Group Tour</span>
-                    </div>
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                    <div class="absolute bottom-4 left-4 text-white">
-                        <h3 class="text-2xl font-bold mb-2">Europe Grand Tour</h3>
-                        <p class="text-lg">Group Package</p>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <div>
-                            <span class="text-gray-400 line-through text-lg">Rp 45.000.000</span>
-                            <span class="text-3xl font-bold text-emerald-600 ml-2">Rp 32.000.000</span>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 mb-4">12D11N • 7 Countries • Luxury Hotels</p>
-                    <div class="flex items-center justify-between">
-                        <span class="text-sm text-green-500 font-semibold">✅ Min. 10 orang</span>
-                        <button class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
-                            Join Group
-                        </button>
-                    </div>
-                </div>
-            </div>
+            @endforelse
         </div>
     </div>
 </section>
@@ -129,7 +89,7 @@
             <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Kategori Paket Tour</h2>
             <p class="text-xl text-gray-600 max-w-3xl mx-auto">Pilih paket tour sesuai dengan preferensi dan budget Anda</p>
         </div>
-        
+
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <!-- Honeymoon Package -->
             <div class="group bg-gradient-to-br from-pink-50 to-rose-50 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100">
@@ -145,7 +105,7 @@
                     <p class="text-gray-500 text-sm">/couple</p>
                 </div>
             </div>
-            
+
             <!-- Family Package -->
             <div class="group bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200">
                 <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
@@ -160,7 +120,7 @@
                     <p class="text-gray-500 text-sm">/orang</p>
                 </div>
             </div>
-            
+
             <!-- Adventure Package -->
             <div class="group bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="300">
                 <div class="w-16 h-16 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
@@ -175,7 +135,7 @@
                     <p class="text-gray-500 text-sm">/orang</p>
                 </div>
             </div>
-            
+
             <!-- Luxury Package -->
             <div class="group bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="400">
                 <div class="w-16 h-16 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
@@ -201,115 +161,70 @@
             <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Paket Tour Populer</h2>
             <p class="text-xl text-gray-600 max-w-3xl mx-auto">Paket tour terlaris yang dipilih oleh ribuan pelanggan JustTrip</p>
         </div>
-        
+
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Package 1 -->
-            <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100">
-                <div class="relative overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Tokyo Package" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
-                    <div class="absolute top-4 left-4">
-                        <span class="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Best Seller</span>
-                    </div>
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </div>
-                <div class="p-6">
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">Tokyo Cherry Blossom</h3>
-                    <p class="text-gray-600 mb-4">5D4N • Tokyo & Kyoto • Sakura Season • Hotel 4★</p>
-                    <div class="flex items-center justify-between mb-4">
-                        <div>
-                            <span class="text-2xl font-bold text-emerald-600">Rp 12.500.000</span>
-                            <span class="text-gray-500 text-sm">/orang</span>
-                        </div>
-                        <div class="flex items-center">
-                            <span class="text-yellow-400 mr-1">★★★★★</span>
-                            <span class="text-gray-600 text-sm">(4.8)</span>
-                        </div>
-                    </div>
-                    <ul class="text-gray-600 text-sm mb-4 space-y-1">
-                        <li>✓ Tiket pesawat PP</li>
-                        <li>✓ Hotel 4 bintang</li>
-                        <li>✓ Makan 3x sehari</li>
-                        <li>✓ Tour guide lokal</li>
-                    </ul>
-                    <button class="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
-                        Lihat Detail
-                    </button>
-                </div>
+            @forelse($regularPackages as $index => $package)
+             <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
+                 <div class="relative overflow-hidden">
+                     @if($package->gambar_destinasi && count($package->gambar_destinasi) > 0)
+                         <img src="{{ asset('storage/' . $package->gambar_destinasi[0]) }}" alt="{{ $package->nama_layanan }}" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
+                     @else
+                         <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="{{ $package->nama_layanan }}" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
+                     @endif
+                     <div class="absolute top-4 left-4">
+                         <span class="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-3 py-1 rounded-full text-sm font-semibold">{{ ucfirst($package->jenis_layanan) }}</span>
+                     </div>
+                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                 </div>
+                 <div class="p-6">
+                     <h3 class="text-xl font-bold text-gray-800 mb-2">{{ $package->nama_layanan }}</h3>
+                     <p class="text-gray-600 mb-4">
+                         {{ $package->durasi_hari }} Hari • {{ $package->lokasi_tujuan }}
+                         • Maks {{ $package->maks_orang }} orang
+                         <br>{{ Str::limit($package->deskripsi, 50) }}
+                     </p>
+                     <div class="flex items-center justify-between mb-4">
+                         <div>
+                             <span class="text-2xl font-bold text-emerald-600">Rp {{ number_format($package->harga_mulai, 0, ',', '.') }}</span>
+                             <span class="text-gray-500 text-sm">/orang</span>
+                         </div>
+                         <div class="flex items-center">
+                             <span class="text-yellow-400 mr-1">★★★★★</span>
+                             <span class="text-gray-600 text-sm">(4.8)</span>
+                         </div>
+                     </div>
+                     <ul class="text-gray-600 text-sm mb-4 space-y-1">
+                         @if($package->fasilitas && is_array($package->fasilitas))
+                             @foreach(array_slice($package->fasilitas, 0, 4) as $fasilitas)
+                                 <li>✓ {{ trim($fasilitas) }}</li>
+                             @endforeach
+                         @elseif($package->fasilitas && is_string($package->fasilitas))
+                             @foreach(array_slice(explode(',', $package->fasilitas), 0, 4) as $fasilitas)
+                                 <li>✓ {{ trim($fasilitas) }}</li>
+                             @endforeach
+                         @else
+                             <li>✓ Paket lengkap</li>
+                             <li>✓ Tour guide berpengalaman</li>
+                             <li>✓ Transportasi nyaman</li>
+                             <li>✓ Akomodasi terbaik</li>
+                         @endif
+                     </ul>
+                     <a href="{{ route('packages.show', $package->slug) }}" class="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 block text-center">
+                         Lihat Detail
+                     </a>
+                 </div>
+             </div>
+            @empty
+            <div class="col-span-3 text-center py-12">
+                <p class="text-gray-500 text-lg">Belum ada paket tour tersedia</p>
             </div>
-            
-            <!-- Package 2 -->
-            <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200">
-                <div class="relative overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Bali Package" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
-                    <div class="absolute top-4 left-4">
-                        <span class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Favorit</span>
-                    </div>
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </div>
-                <div class="p-6">
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">Bali Romantic Getaway</h3>
-                    <p class="text-gray-600 mb-4">4D3N • Ubud & Seminyak • Private Villa • Couple Package</p>
-                    <div class="flex items-center justify-between mb-4">
-                        <div>
-                            <span class="text-2xl font-bold text-emerald-600">Rp 4.200.000</span>
-                            <span class="text-gray-500 text-sm">/couple</span>
-                        </div>
-                        <div class="flex items-center">
-                            <span class="text-yellow-400 mr-1">★★★★★</span>
-                            <span class="text-gray-600 text-sm">(4.9)</span>
-                        </div>
-                    </div>
-                    <ul class="text-gray-600 text-sm mb-4 space-y-1">
-                        <li>✓ Private villa dengan pool</li>
-                        <li>✓ Romantic dinner</li>
-                        <li>✓ Spa couple treatment</li>
-                        <li>✓ Airport transfer</li>
-                    </ul>
-                    <button class="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
-                        Lihat Detail
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Package 3 -->
-            <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="300">
-                <div class="relative overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1502602898536-47ad22581b52?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Europe Package" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
-                    <div class="absolute top-4 left-4">
-                        <span class="bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Premium</span>
-                    </div>
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </div>
-                <div class="p-6">
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">Europe Classic Tour</h3>
-                    <p class="text-gray-600 mb-4">10D9N • Paris, Rome, London • Luxury Hotels • Small Group</p>
-                    <div class="flex items-center justify-between mb-4">
-                        <div>
-                            <span class="text-2xl font-bold text-emerald-600">Rp 28.500.000</span>
-                            <span class="text-gray-500 text-sm">/orang</span>
-                        </div>
-                        <div class="flex items-center">
-                            <span class="text-yellow-400 mr-1">★★★★★</span>
-                            <span class="text-gray-600 text-sm">(4.7)</span>
-                        </div>
-                    </div>
-                    <ul class="text-gray-600 text-sm mb-4 space-y-1">
-                        <li>✓ Hotel mewah 5 bintang</li>
-                        <li>✓ High-speed train</li>
-                        <li>✓ Museum & attraction tickets</li>
-                        <li>✓ Professional guide</li>
-                    </ul>
-                    <button class="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
-                        Lihat Detail
-                    </button>
-                </div>
-            </div>
+            @endforelse
         </div>
-        
+
         <div class="text-center mt-12" data-aos="fade-up" data-aos-delay="400">
-            <button class="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl">
+            <a href="{{ route('packages.index') }}" class="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl inline-block">
                 Lihat Semua Paket Tour
-            </button>
+            </a>
         </div>
     </div>
 </section>

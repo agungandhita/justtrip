@@ -102,6 +102,17 @@
                             @enderror
                         </div>
 
+                        <!-- Maksimal Orang -->
+                        <div>
+                            <label for="maks_orang" class="block text-sm font-medium text-gray-700 mb-2">Maksimal Orang *</label>
+                            <input type="number" id="maks_orang" name="maks_orang" value="{{ old('maks_orang', $layanan->maks_orang) }}"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('maks_orang') border-red-500 @enderror"
+                                   placeholder="Contoh: 10" min="1" required>
+                            @error('maks_orang')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                         <!-- Lokasi Tujuan -->
                         <div>
                             <label for="lokasi_tujuan" class="block text-sm font-medium text-gray-700 mb-2">Lokasi Tujuan *</label>
@@ -244,6 +255,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Edit layanan travel form loaded');
+
+            // Field maks_orang sekarang selalu ditampilkan sebagai required field
         });
 
         function addFasilitas() {

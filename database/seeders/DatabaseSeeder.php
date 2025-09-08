@@ -16,12 +16,12 @@ class DatabaseSeeder extends Seeder
         // Call all seeders in proper order
         $this->call([
             AdminSeeder::class,
-            // UserSeeder::class,
-            // SpecialOfferSeeder::class,
-            // NewsSeeder::class,
-            // GallerySeeder::class,
-            // LayananSeeder::class,
-            // GalleryLikeSeeder::class, // Must be last to ensure galleries and users exist
+            UserSeeder::class,
+            LayananSeeder::class,
+            SpecialOfferSeeder::class,
+            NewsSeeder::class,
+            GallerySeeder::class,
+            GalleryLikeSeeder::class, // Must be last to ensure galleries and users exist
         ]);
 
         // Create additional test user

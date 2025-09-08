@@ -80,6 +80,17 @@
                                 <p class="text-lg font-bold text-purple-600">{{ $layanan->durasi_format }}</p>
                             </div>
 
+                            <!-- Maksimal Orang -->
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-600" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M16,4C18.11,4 20,5.89 20,8C20,10.11 18.11,12 16,12C13.89,12 12,10.11 12,8C12,5.89 13.89,4 16,4M16,14C20.42,14 24,15.79 24,18V20H8V18C8,15.79 11.58,14 16,14M6,6C7.11,6 8,6.89 8,8C8,9.11 7.11,10 6,10C4.89,10 4,9.11 4,8C4,6.89 4.89,6 6,6M6,12C8.67,12 10,12.67 10,14V16H0V14C0,12.67 1.33,12 6,12Z"/>
+                                    </svg>
+                                    <h3 class="font-semibold text-gray-700">Kapasitas Maksimal</h3>
+                                </div>
+                                <p class="text-lg font-bold text-blue-600">{{ $layanan->maks_orang }} orang</p>
+                            </div>
+
                             <!-- Tanggal Dibuat -->
                             <div class="bg-gray-50 rounded-lg p-4">
                                 <div class="flex items-center gap-3 mb-2">
@@ -118,8 +129,8 @@
                                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                         @foreach($layanan->gambar_destinasi as $index => $gambar)
                                             <div class="relative group">
-                                                <img src="{{ Storage::url($gambar) }}" 
-                                                     alt="Gambar Destinasi {{ $index + 1 }}" 
+                                                <img src="{{ Storage::url($gambar) }}"
+                                                     alt="Gambar Destinasi {{ $index + 1 }}"
                                                      class="w-full h-48 object-cover rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer"
                                                      onclick="openImageModal('{{ Storage::url($gambar) }}', 'Gambar Destinasi {{ $index + 1 }}')">
                                                 <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-200 rounded-lg flex items-center justify-center">

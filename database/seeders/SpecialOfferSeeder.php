@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\SpecialOffer;
+use App\Models\Layanan;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
 use Carbon\Carbon;
@@ -51,14 +52,20 @@ class SpecialOfferSeeder extends Seeder
             $discountPercentage = $faker->numberBetween(10, 70);
             $discountedPrice = $originalPrice * (100 - $discountPercentage) / 100;
 
+            // Get random layanan for this offer
+            $layanan = Layanan::where('lokasi_tujuan', $destination)->first();
+            if (!$layanan) {
+                $layanan = Layanan::inRandomOrder()->first();
+            }
+            
             SpecialOffer::create([
+                'layanan_id' => $layanan->layanan_id,
                 'title' => 'Paket Wisata ' . $destination . ' ' . $faker->randomElement(['Ekslusif', 'Premium', 'Hemat', 'Spesial']),
+                'slug' => strtolower(str_replace(' ', '-', 'paket-wisata-' . $destination . '-' . $faker->randomElement(['ekslusif', 'premium', 'hemat', 'spesial']))) . '-' . $faker->numberBetween(1000, 9999),
                 'description' => $faker->paragraph(3) . ' Nikmati keindahan ' . $destination . ' dengan fasilitas terbaik dan harga terjangkau.',
-                'offer_type' => $faker->randomElement($offerTypes),
                 'original_price' => $originalPrice,
                 'discounted_price' => $discountedPrice,
                 'discount_percentage' => $discountPercentage,
-                'destination' => $destination,
                 'main_image' => 'images/destinations/' . strtolower($destination) . '_main.jpg',
                 'gallery_images' => [
                     'images/destinations/' . strtolower($destination) . '_1.jpg',
@@ -86,14 +93,20 @@ class SpecialOfferSeeder extends Seeder
             $discountPercentage = $faker->numberBetween(40, 60);
             $discountedPrice = $originalPrice * (100 - $discountPercentage) / 100;
 
+            $destination = $faker->randomElement($destinations);
+            $layanan = Layanan::where('lokasi_tujuan', $destination)->first();
+            if (!$layanan) {
+                $layanan = Layanan::inRandomOrder()->first();
+            }
+            
             SpecialOffer::create([
-                'title' => 'Flash Sale ' . $faker->randomElement($destinations),
+                'layanan_id' => $layanan->layanan_id,
+                'title' => 'Flash Sale ' . $destination,
+                'slug' => 'flash-sale-' . strtolower($destination) . '-' . $faker->numberBetween(1000, 9999),
                 'description' => 'Penawaran terbatas! Hanya tersisa beberapa slot lagi. ' . $faker->paragraph(2),
-                'offer_type' => 'flash_sale',
                 'original_price' => $originalPrice,
                 'discounted_price' => $discountedPrice,
                 'discount_percentage' => $discountPercentage,
-                'destination' => $faker->randomElement($destinations),
                 'main_image' => 'images/flash_sale_' . ($i + 1) . '.jpg',
                 'gallery_images' => [
                     'images/flash_sale_' . ($i + 1) . '_1.jpg',
@@ -124,14 +137,20 @@ class SpecialOfferSeeder extends Seeder
             $discountPercentage = $faker->numberBetween(15, 45);
             $discountedPrice = $originalPrice * (100 - $discountPercentage) / 100;
 
+            $destination = $faker->randomElement($destinations);
+            $layanan = Layanan::where('lokasi_tujuan', $destination)->first();
+            if (!$layanan) {
+                $layanan = Layanan::inRandomOrder()->first();
+            }
+            
             SpecialOffer::create([
-                'title' => 'Promo Berakhir - ' . $faker->randomElement($destinations),
+                'layanan_id' => $layanan->layanan_id,
+                'title' => 'Promo Berakhir - ' . $destination,
+                'slug' => 'promo-berakhir-' . strtolower($destination) . '-' . $faker->numberBetween(1000, 9999),
                 'description' => $faker->paragraph(2),
-                'offer_type' => $faker->randomElement(['early_bird', 'seasonal']),
                 'original_price' => $originalPrice,
                 'discounted_price' => $discountedPrice,
                 'discount_percentage' => $discountPercentage,
-                'destination' => $faker->randomElement($destinations),
                 'main_image' => 'images/expired_offer_' . ($i + 1) . '.jpg',
                 'gallery_images' => ['images/expired_offer_' . ($i + 1) . '_1.jpg'],
                 'valid_from' => Carbon::now()->subDays($faker->numberBetween(60, 120)),
@@ -159,14 +178,20 @@ class SpecialOfferSeeder extends Seeder
             $discountPercentage = $faker->numberBetween(20, 50);
             $discountedPrice = $originalPrice * (100 - $discountPercentage) / 100;
 
+            $destination = $faker->randomElement($destinations);
+            $layanan = Layanan::where('lokasi_tujuan', $destination)->first();
+            if (!$layanan) {
+                $layanan = Layanan::inRandomOrder()->first();
+            }
+            
             SpecialOffer::create([
-                'title' => 'Coming Soon - ' . $faker->randomElement($destinations),
+                'layanan_id' => $layanan->layanan_id,
+                'title' => 'Coming Soon - ' . $destination,
+                'slug' => 'coming-soon-' . strtolower($destination) . '-' . $faker->numberBetween(1000, 9999),
                 'description' => 'Segera hadir! ' . $faker->paragraph(2),
-                'offer_type' => 'early_bird',
                 'original_price' => $originalPrice,
                 'discounted_price' => $discountedPrice,
                 'discount_percentage' => $discountPercentage,
-                'destination' => $faker->randomElement($destinations),
                 'main_image' => 'images/coming_soon_' . ($i + 1) . '.jpg',
                 'gallery_images' => [
                     'images/coming_soon_' . ($i + 1) . '_1.jpg',
@@ -191,14 +216,15 @@ class SpecialOfferSeeder extends Seeder
     private function createEdgeCaseOffers($faker)
     {
         // Offer with very high discount
+        $layanan = Layanan::where('lokasi_tujuan', 'Bali')->first() ?? Layanan::inRandomOrder()->first();
         SpecialOffer::create([
+            'layanan_id' => $layanan->layanan_id,
             'title' => 'Super Mega Sale Bali - Diskon Gila!',
+            'slug' => 'super-mega-sale-bali-diskon-gila-' . $faker->numberBetween(1000, 9999),
             'description' => 'Diskon fantastis untuk paket wisata Bali. Kesempatan langka!',
-            'offer_type' => 'flash_sale',
             'original_price' => 10000000,
             'discounted_price' => 2000000,
             'discount_percentage' => 80,
-            'destination' => 'Bali',
             'main_image' => 'images/mega_sale_bali.jpg',
             'gallery_images' => ['images/mega_sale_bali_1.jpg'],
             'valid_from' => Carbon::now(),
@@ -213,14 +239,15 @@ class SpecialOfferSeeder extends Seeder
         ]);
 
         // Offer with no discount (regular price)
+        $layanan = Layanan::where('lokasi_tujuan', 'Lombok')->first() ?? Layanan::inRandomOrder()->first();
         SpecialOffer::create([
+            'layanan_id' => $layanan->layanan_id,
             'title' => 'Paket Premium Lombok - Tanpa Diskon',
+            'slug' => 'paket-premium-lombok-tanpa-diskon-' . $faker->numberBetween(1000, 9999),
             'description' => 'Paket premium dengan fasilitas terbaik, harga tetap.',
-            'offer_type' => 'premium',
             'original_price' => 5000000,
             'discounted_price' => 5000000,
             'discount_percentage' => 0,
-            'destination' => 'Lombok',
             'main_image' => 'images/premium_lombok.jpg',
             'gallery_images' => ['images/premium_lombok_1.jpg'],
             'valid_from' => Carbon::now()->subDays(10),
@@ -235,14 +262,15 @@ class SpecialOfferSeeder extends Seeder
         ]);
 
         // Offer ending today
+        $layanan = Layanan::where('lokasi_tujuan', 'Yogyakarta')->first() ?? Layanan::inRandomOrder()->first();
         SpecialOffer::create([
+            'layanan_id' => $layanan->layanan_id,
             'title' => 'Last Day Sale - Yogyakarta',
+            'slug' => 'last-day-sale-yogyakarta-' . $faker->numberBetween(1000, 9999),
             'description' => 'Hari terakhir! Jangan sampai terlewat.',
-            'offer_type' => 'last_minute',
             'original_price' => 3000000,
             'discounted_price' => 2100000,
             'discount_percentage' => 30,
-            'destination' => 'Yogyakarta',
             'main_image' => 'images/last_day_yogya.jpg',
             'gallery_images' => ['images/last_day_yogya_1.jpg'],
             'valid_from' => Carbon::now()->subDays(7),

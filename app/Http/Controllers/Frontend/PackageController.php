@@ -114,7 +114,7 @@ class PackageController extends Controller
             $type = 'layanan';
             // Get related layanan
             $relatedPackages = Layanan::where('status', 'aktif')
-                                     ->where('id', '!=', $package->id)
+                                     ->where('layanan_id', '!=', $package->layanan_id)
                                      ->where('jenis_layanan', $package->jenis_layanan)
                                      ->latest()
                                      ->take(3)

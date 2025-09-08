@@ -48,4 +48,28 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Check if user has a specific role
+     */
+    public function hasRole($role)
+    {
+        return $this->role === $role;
+    }
+
+    /**
+     * Check if user is admin
+     */
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    /**
+     * Relationship with bookings
+     */
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
 }

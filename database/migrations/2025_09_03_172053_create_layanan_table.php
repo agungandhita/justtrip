@@ -14,23 +14,18 @@ return new class extends Migration
         Schema::create('layanan', function (Blueprint $table) {
             $table->id('layanan_id');
             $table->string('nama_layanan');
+            $table->string('slug')->unique();
             $table->enum('jenis_layanan', [
                 'paket_wisata',
-                'tour_domestik',
                 'tour_internasional',
+                'private_trip',
                 'honeymoon',
                 'family_trip',
-                'adventure',
-                'cultural_tour',
-                'business_trip',
-                'pilgrimage',
-                'cruise',
-                'backpacker',
-                'luxury_tour'
             ]);
             $table->text('deskripsi')->nullable();
             $table->decimal('harga_mulai', 15, 2);
             $table->integer('durasi_hari');
+            $table->integer('maks_orang');
             $table->string('lokasi_tujuan');
             $table->json('fasilitas')->nullable();
             $table->json('gambar_destinasi')->nullable(); // Array untuk menyimpan path gambar (maksimal 5)

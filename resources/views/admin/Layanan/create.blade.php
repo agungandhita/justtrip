@@ -93,6 +93,17 @@
                             @enderror
                         </div>
 
+                        <!-- Maksimal Orang -->
+                        <div>
+                            <label for="maks_orang" class="block text-sm font-medium text-gray-700 mb-2">Maksimal Orang *</label>
+                            <input type="number" id="maks_orang" name="maks_orang" value="{{ old('maks_orang') }}"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('maks_orang') border-red-500 @enderror"
+                                   placeholder="Contoh: 10" min="1" required>
+                            @error('maks_orang')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                         <!-- Lokasi Tujuan -->
                         <div>
                             <label for="lokasi_tujuan" class="block text-sm font-medium text-gray-700 mb-2">Lokasi Tujuan *</label>
@@ -205,19 +216,21 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Script untuk form layanan travel
     console.log('Form layanan travel siap digunakan');
-    
+
+    // Field maks_orang sekarang selalu ditampilkan sebagai required field
+
     // Add old fasilitas values if they exist
     @if(old('fasilitas'))
         const oldFasilitas = @json(old('fasilitas'));
         const container = document.getElementById('fasilitas-container');
         container.innerHTML = '';
-        
+
         oldFasilitas.forEach((fasilitas, index) => {
             if (fasilitas.trim() !== '') {
                 addFasilitasItem(fasilitas);
             }
         });
-        
+
         // Add empty item if no items exist
         if (container.children.length === 0) {
             addFasilitasItem('');
@@ -260,10 +273,10 @@ function removeFasilitas(button) {
 function previewImages(input) {
     const previewContainer = document.getElementById('image-preview');
     const uploadArea = document.getElementById('upload-area');
-    
+
     // Clear previous previews
     previewContainer.innerHTML = '';
-    
+
     if (input.files && input.files.length > 0) {
         // Check if more than 5 files
         if (input.files.length > 5) {
@@ -271,10 +284,10 @@ function previewImages(input) {
             input.value = '';
             return;
         }
-        
+
         // Hide upload area when files are selected
         uploadArea.style.display = 'none';
-        
+
         Array.from(input.files).forEach((file, index) => {
             if (file.type.startsWith('image/')) {
                 const reader = new FileReader();
@@ -293,7 +306,7 @@ function previewImages(input) {
                 reader.readAsDataURL(file);
             }
         });
-        
+
         // Add upload more button if less than 5 images
         if (input.files.length < 5) {
             const addMoreDiv = document.createElement('div');
@@ -318,13 +331,13 @@ function previewImages(input) {
 function removeImage(index) {
     const input = document.getElementById('gambar_destinasi');
     const dt = new DataTransfer();
-    
+
     Array.from(input.files).forEach((file, i) => {
         if (i !== index) {
             dt.items.add(file);
         }
     });
-    
+
     input.files = dt.files;
     previewImages(input);
 }

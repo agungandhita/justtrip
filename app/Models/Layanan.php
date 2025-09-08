@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Layanan extends Model
 {
@@ -11,10 +12,12 @@ class Layanan extends Model
 
     protected $fillable = [
         'nama_layanan',
+        'slug',
         'jenis_layanan',
         'deskripsi',
         'harga_mulai',
         'durasi_hari',
+        'maks_orang',
         'status',
         'catatan',
         'lokasi_tujuan',
@@ -54,12 +57,12 @@ class Layanan extends Model
     public function addGambarDestinasi($imagePath)
     {
         $gambar = $this->gambar_destinasi ?? [];
-        
+
         // Validasi maksimal 5 gambar
         if (count($gambar) >= 5) {
             throw new \Exception('Maksimal 5 gambar destinasi yang diizinkan');
         }
-        
+
         $gambar[] = $imagePath;
         $this->gambar_destinasi = $gambar;
         return $this;
@@ -174,5 +177,38 @@ class Layanan extends Model
             return $specialOffer->discounted_price;
         }
         return $this->harga_mulai;
+    }
+
+    // Boot method untuk auto generate slug
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($layanan) {
+            if (empty($layanan->slug)) {
+                $layanan->slug = $layanan->generateSlug($layanan->nama_layanan);
+            }
+        });
+
+        static::updating(function ($layanan) {
+            if ($layanan->isDirty('nama_layanan') && empty($layanan->slug)) {
+                $layanan->slug = $layanan->generateSlug($layanan->nama_layanan);
+            }
+        });
+    }
+
+    // Method untuk generate slug
+    private function generateSlug($name)
+    {
+        $slug = Str::slug($name);
+        $originalSlug = $slug;
+        $counter = 1;
+
+        while (static::where('slug', $slug)->where('layanan_id', '!=', $this->layanan_id ?? 0)->exists()) {
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+
+        return $slug;
     }
 }
