@@ -24,6 +24,10 @@ class Invoice extends Model
         'pdf_path',
         'sent_at',
         'paid_at',
+        'payment_uploaded_at',
+        'payment_confirmed_at',
+        'payment_confirmed_by',
+        'payment_confirmation_notes',
         'payment_details',
         'notes'
     ];
@@ -37,6 +41,8 @@ class Invoice extends Model
         'total_amount' => 'decimal:2',
         'sent_at' => 'datetime',
         'paid_at' => 'datetime',
+        'payment_uploaded_at' => 'datetime',
+        'payment_confirmed_at' => 'datetime',
         'payment_details' => 'array',
         'created_at' => 'datetime',
         'updated_at' => 'datetime'
@@ -46,6 +52,16 @@ class Invoice extends Model
     public function booking(): BelongsTo
     {
         return $this->belongsTo(Booking::class, 'booking_id', 'booking_id');
+    }
+
+    public function paymentConfirmations()
+    {
+        return $this->hasMany(PaymentConfirmation::class, 'invoice_id', 'invoice_id');
+    }
+
+    public function paymentConfirmedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'payment_confirmed_by', 'id');
     }
 
     // Scopes
@@ -67,10 +83,22 @@ class Invoice extends Model
     public function scopeOverdue($query)
     {
         return $query->where('status', 'overdue')
-                    ->orWhere(function($q) {
-                        $q->where('status', 'sent')
-                          ->where('due_date', '<', now());
-                    });
+            ->where('due_date', '<', now());
+    }
+
+    public function scopeAwaitingPayment($query)
+    {
+        return $query->where('status', 'awaiting_payment');
+    }
+
+    public function scopePaymentUploaded($query)
+    {
+        return $query->where('status', 'payment_uploaded');
+    }
+
+    public function scopePaymentConfirmed($query)
+    {
+        return $query->where('status', 'payment_confirmed');
     }
 
     // Accessors

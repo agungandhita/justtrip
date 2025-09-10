@@ -21,21 +21,28 @@ return new class extends Migration
             $table->decimal('original_amount', 15, 2);
             $table->decimal('discount_amount', 15, 2)->default(0);
             $table->decimal('total_amount', 15, 2);
-            $table->enum('status', ['pending', 'confirmed', 'cancelled', 'completed'])->default('pending');
+            $table->enum('status', ['pending', 'approved', 'rejected', 'awaiting_payment', 'payment_uploaded', 'confirmed', 'cancelled', 'completed'])->default('pending');
             $table->json('customer_info'); // nama, email, phone, alamat, dll
             $table->integer('jumlah_peserta')->default(1);
             $table->date('tanggal_keberangkatan');
             $table->text('catatan_khusus')->nullable();
             $table->text('admin_notes')->nullable();
             $table->timestamp('confirmed_at')->nullable();
+            $table->timestamp('approved_at')->nullable();
+            $table->timestamp('rejected_at')->nullable();
+            $table->unsignedBigInteger('approved_by')->nullable();
+            $table->unsignedBigInteger('rejected_by')->nullable();
+            $table->text('rejection_reason')->nullable();
             $table->timestamp('cancelled_at')->nullable();
             $table->timestamps();
-            
+
             // Foreign key constraints
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('layanan_id')->references('layanan_id')->on('layanan')->onDelete('cascade');
             $table->foreign('special_offer_id')->references('id')->on('special_offers')->onDelete('set null');
-            
+            $table->foreign('approved_by')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('rejected_by')->references('id')->on('users')->onDelete('set null');
+
             // Indexes
             $table->index(['status', 'booking_date']);
             $table->index('booking_number');

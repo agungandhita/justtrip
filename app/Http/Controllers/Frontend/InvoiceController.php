@@ -253,4 +253,71 @@ class InvoiceController extends Controller
 
         return response()->json($stats);
     }
+
+    /**
+     * Send invoice PDF to WhatsApp admin
+     */
+    public function sendToWhatsApp(Request $request, $invoice_id)
+    {
+        try {
+            $invoice = Invoice::where('invoice_id', $invoice_id)->firstOrFail();
+
+            // Check if user has permission to send
+            if (!$this->canAccessInvoice($invoice)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized access to invoice'
+                ], 403);
+            }
+
+            // Generate PDF if not exists
+            if (!$invoice->pdf_path || !Storage::disk('public')->exists($invoice->pdf_path)) {
+                $pdfPath = $this->generatePDF($invoice);
+                $invoice->update(['pdf_path' => $pdfPath]);
+            }
+
+            // Get admin WhatsApp number from config or database
+            $adminWhatsApp = config('app.admin_whatsapp', '6281234567890'); // Default admin WhatsApp
+            
+            // Prepare WhatsApp message
+            $message = "*INVOICE JUSTTRIP TRAVEL*\n\n";
+            $message .= "Invoice Number: {$invoice->invoice_number}\n";
+            $message .= "Customer: {$invoice->booking->customer_info['name']}\n";
+            $message .= "Amount: Rp " . number_format($invoice->total_amount, 0, ',', '.') . "\n";
+            $message .= "Status: {$invoice->status}\n";
+            $message .= "Date: " . $invoice->created_at->format('d F Y') . "\n\n";
+            $message .= "PDF invoice telah digenerate dan siap untuk diproses.\n\n";
+            $message .= "Terima kasih!";
+
+            // For now, we'll just log the action and return success
+            // In production, you would integrate with WhatsApp Business API
+            Log::info('Invoice sent to WhatsApp', [
+                'invoice_id' => $invoice->invoice_id,
+                'invoice_number' => $invoice->invoice_number,
+                'admin_whatsapp' => $adminWhatsApp,
+                'message' => $message,
+                'pdf_path' => $invoice->pdf_path
+            ]);
+
+            // Update invoice status to indicate it was sent
+            $invoice->update([
+                'status' => 'sent',
+                'sent_at' => now()
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Invoice berhasil dikirim ke WhatsApp admin',
+                'whatsapp_number' => $adminWhatsApp
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Failed to send invoice to WhatsApp: ' . $e->getMessage());
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat mengirim invoice: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }

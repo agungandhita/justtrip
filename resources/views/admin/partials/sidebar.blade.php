@@ -94,7 +94,15 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-[18px] h-[18px] mr-3" viewBox="0 0 24 24">
                                     <path d="M19,3H18V1H16V3H8V1H6V3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M19,19H5V8H19V19M16,10V12H14V10H16M12,10V12H10V10H12M8,10V12H6V10H8M16,14V16H14V14H16M12,14V16H10V14H12M8,14V16H6V14H8"/>
                                 </svg>
-                                <span>Kelola Booking</span>
+                                <span>Booking</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.payment-confirmations.index') }}" class="text-gray-800 text-sm flex items-center hover:bg-gray-100 rounded-md px-4 py-2 transition-all {{ request()->routeIs('admin.payment-confirmations.*') ? 'bg-blue-50 text-blue-600 border-r-2 border-blue-600' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-[18px] h-[18px] mr-3" viewBox="0 0 24 24">
+                                    <path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M11,16.5L6.5,12L7.91,10.59L11,13.67L16.59,8.09L18,9.5L11,16.5Z"/>
+                                </svg>
+                                <span>Konfirmasi Pembayaran</span>
                             </a>
                         </li>
                     </ul>

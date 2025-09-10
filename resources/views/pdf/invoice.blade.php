@@ -30,18 +30,31 @@
             justify-content: space-between;
             align-items: flex-start;
             margin-bottom: 30px;
-            border-bottom: 3px solid #2563eb;
+            border-bottom: 3px solid #22c55e;
             padding-bottom: 20px;
         }
         
         .company-info {
+            flex: 1;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        
+        .company-logo {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+        
+        .company-details-wrapper {
             flex: 1;
         }
         
         .company-name {
             font-size: 28px;
             font-weight: bold;
-            color: #2563eb;
+            color: #22c55e;
             margin-bottom: 5px;
         }
         
@@ -71,7 +84,7 @@
         
         .invoice-number {
             font-size: 16px;
-            color: #2563eb;
+            color: #22c55e;
             font-weight: bold;
             margin-bottom: 5px;
         }
@@ -162,7 +175,7 @@
         }
         
         .items-table th {
-            background: #2563eb;
+            background: #22c55e;
             color: white;
             padding: 15px 12px;
             text-align: left;
@@ -219,7 +232,7 @@
         }
         
         .summary-total {
-            background: #2563eb;
+            background: #22c55e;
             color: white;
             font-weight: bold;
             font-size: 14px;
@@ -285,8 +298,8 @@
         }
         
         .status-sent {
-            background: #dbeafe;
-            color: #1d4ed8;
+            background: #dcfce7;
+            color: #166534;
         }
         
         .status-paid {
@@ -315,24 +328,22 @@
         <!-- Header -->
         <div class="header">
             <div class="company-info">
-                <div class="company-name">{{ $company['name'] }}</div>
-                <div class="company-tagline">Your Trusted Travel Partner</div>
-                <div class="company-details">
-                    {{ $company['address'] }}<br>
-                    Telepon: {{ $company['phone'] }}<br>
-                    Email: {{ $company['email'] }}<br>
-                    Website: {{ $company['website'] }}
+                <img src="{{ asset('image/logo6.png') }}" alt="{{ $company['name'] }} Logo" class="company-logo">
+                <div class="company-details-wrapper">
+                    <div class="company-name">{{ $company['name'] }}</div>
+                    <div class="company-details">
+                        {{ $company['address'] }}<br>
+                        {{ $company['phone'] }}<br>
+                        Email: {{ $company['email'] }}
+                    </div>
                 </div>
             </div>
             <div class="invoice-info">
                 <div class="invoice-title">INVOICE</div>
-                <div class="invoice-number">#{{ $invoice->invoice_number }}</div>
+                <div class="invoice-number">No: {{ $invoice->invoice_number }}</div>
                 <div class="invoice-date">
-                    Tanggal: {{ $invoice->invoice_date->format('d F Y') }}<br>
-                    Jatuh Tempo: {{ $invoice->due_date->format('d F Y') }}
-                </div>
-                <div style="margin-top: 10px;">
-                    <span class="status-badge status-{{ $invoice->status }}">{{ ucfirst($invoice->status) }}</span>
+                    Tanggal: {{ $invoice->invoice_date->format('d M Y') }}<br>
+                    Dibayar: {{ $invoice->due_date->format('d M Y') }}
                 </div>
             </div>
         </div>
@@ -344,17 +355,27 @@
                 <div class="billing-details">
                     <strong>{{ $customer['name'] }}</strong><br>
                     {{ $customer['email'] }}<br>
-                    {{ $customer['phone'] }}<br>
-                    {{ $customer['address'] }}
+                    {{ $customer['phone'] }}
                 </div>
             </div>
             <div class="billing-info">
-                <div class="billing-title">Detail Booking:</div>
+                <div class="billing-title">Status Pesanan:</div>
                 <div class="billing-details">
-                    <strong>Booking ID:</strong> {{ $booking->booking_number }}<br>
-                    <strong>Tanggal Booking:</strong> {{ $booking->booking_date->format('d F Y') }}<br>
-                    <strong>Status:</strong> {{ ucfirst($booking->status) }}
+                    <span class="status-badge status-{{ $invoice->status }}">{{ strtoupper($invoice->status == 'paid' ? 'SUDAH DIBAYAR' : 'BELUM DIBAYAR') }}</span><br><br>
+                    <strong>Metode Pembayaran:</strong> BRI
                 </div>
+            </div>
+        </div>
+
+        <!-- Alamat Pengiriman -->
+        <div style="margin-bottom: 20px;">
+            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <span style="color: #ef4444; margin-right: 8px;">📍</span>
+                <strong style="color: #1f2937;">Alamat Pengiriman</strong>
+            </div>
+            <div style="font-size: 12px; color: #6b7280; margin-left: 20px;">
+                {{ $customer['address'] ?? 'Dolor eligendi in ex' }}<br>
+                <strong>Catatan:</strong> {{ $booking->catatan_khusus ?? 'Neque modi explicabo' }}
             </div>
         </div>
 
@@ -378,12 +399,6 @@
                     <span class="booking-label">Durasi:</span>
                     <span class="booking-value">{{ $layanan->durasi ?? 'Sesuai Paket' }}</span>
                 </div>
-                @if($booking->catatan_khusus)
-                <div class="booking-item" style="grid-column: 1 / -1;">
-                    <span class="booking-label">Catatan Khusus:</span>
-                    <span class="booking-value">{{ $booking->catatan_khusus }}</span>
-                </div>
-                @endif
             </div>
         </div>
 
@@ -391,21 +406,22 @@
         <table class="items-table">
             <thead>
                 <tr>
-                    <th style="width: 50%;">Deskripsi</th>
-                    <th style="width: 15%;" class="text-center">Qty</th>
-                    <th style="width: 20%;" class="text-right">Harga Satuan</th>
-                    <th style="width: 15%;" class="text-right">Total</th>
+                    <th style="width: 8%;" class="text-center">No</th>
+                    <th style="width: 35%;">Produk</th>
+                    <th style="width: 20%;">Kategori</th>
+                    <th style="width: 10%;" class="text-center">Qty</th>
+                    <th style="width: 15%;" class="text-right">Harga</th>
+                    <th style="width: 12%;" class="text-right">Subtotal</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
+                    <td class="text-center">1</td>
                     <td>
                         <strong>{{ $layanan->nama_layanan }}</strong><br>
-                        <small style="color: #6b7280;">{{ $layanan->deskripsi_singkat ?? 'Paket wisata lengkap' }}</small>
-                        @if($booking->specialOffer)
-                            <br><small style="color: #059669; font-weight: 600;">🎉 Special Offer: {{ $booking->specialOffer->title }}</small>
-                        @endif
+                        <small style="color: #6b7280;">{{ $layanan->deskripsi_singkat ?? 'Occaecat culpa sint' }}</small>
                     </td>
+                    <td>Travel</td>
                     <td class="text-center">{{ $booking->jumlah_peserta }}</td>
                     <td class="text-right">Rp {{ number_format($layanan->harga_mulai, 0, ',', '.') }}</td>
                     <td class="text-right">Rp {{ number_format($booking->original_amount, 0, ',', '.') }}</td>
@@ -420,44 +436,25 @@
                     <td class="summary-label">Subtotal:</td>
                     <td class="summary-value">Rp {{ number_format($invoice->subtotal, 0, ',', '.') }}</td>
                 </tr>
-                @if($invoice->discount_amount > 0)
                 <tr>
-                    <td class="summary-label">Diskon:</td>
-                    <td class="summary-value">- Rp {{ number_format($invoice->discount_amount, 0, ',', '.') }}</td>
-                </tr>
-                @endif
-                <tr>
-                    <td class="summary-label">Pajak (PPN 11%):</td>
-                    <td class="summary-value">Rp {{ number_format($invoice->tax_amount, 0, ',', '.') }}</td>
+                    <td class="summary-label">Ongkos Kirim:</td>
+                    <td class="summary-value">Rp 0</td>
                 </tr>
                 <tr class="summary-total">
-                    <td>TOTAL PEMBAYARAN:</td>
+                    <td>TOTAL:</td>
                     <td>Rp {{ number_format($invoice->total_amount, 0, ',', '.') }}</td>
                 </tr>
             </table>
         </div>
 
-        <!-- Payment Information -->
-        <div class="payment-info">
-            <div class="payment-title">Informasi Pembayaran</div>
-            <div class="payment-details">
-                <strong>Metode Pembayaran:</strong> Transfer Bank<br>
-                <strong>Bank:</strong> BCA<br>
-                <strong>No. Rekening:</strong> 1234567890<br>
-                <strong>Atas Nama:</strong> PT JustTrip Indonesia<br><br>
-                <strong>Batas Waktu Pembayaran:</strong> {{ $invoice->due_date->format('d F Y') }}<br>
-                Mohon sertakan nomor invoice <strong>{{ $invoice->invoice_number }}</strong> sebagai keterangan transfer.
-            </div>
-        </div>
-
         <!-- Footer -->
         <div class="footer">
             <div class="footer-note">
-                Terima kasih telah memilih {{ $company['name'] }} sebagai partner perjalanan Anda!
+                Terima kasih atas kepercayaan Anda berbelanja di {{ $company['name'] }}!
             </div>
             <div>
-                Invoice ini dibuat secara otomatis pada {{ $generated_at }}<br>
-                Untuk pertanyaan, hubungi kami di {{ $company['email'] }} atau {{ $company['phone'] }}
+                Invoice ini digenerate secara otomatis pada {{ $generated_at ?? now()->format('d M Y H:i') }}<br>
+                Untuk pertanyaan, hubungi customer service kami di {{ $company['email'] }}
             </div>
         </div>
     </div>

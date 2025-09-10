@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
+use App\Models\Invoice;
 use App\Models\User;
 use App\Models\Layanan;
 use Illuminate\Http\Request;
@@ -176,48 +177,61 @@ class BookingController extends Controller
     }
     
     /**
-     * Confirm/Approve booking
+     * Confirm/Approve booking (legacy method - kept for compatibility)
      */
     public function confirm(Request $request, Booking $booking)
     {
+        // Redirect to new approve method
+        return $this->approve($request, $booking);
+    }
+    
+    /**
+     * Reject booking (new flow)
+     */
+    public function reject(Request $request, Booking $booking)
+    {
+        $request->validate([
+            'rejection_reason' => 'required|string|max:500'
+        ]);
+        
         if ($booking->status !== 'pending') {
-            Alert::error('Gagal!', 'Booking ini tidak dapat dikonfirmasi.');
+            Alert::error('Gagal!', 'Booking ini tidak dapat ditolak.');
             return back();
         }
         
         DB::beginTransaction();
         
         try {
-            $booking->confirm();
+            $booking->reject(Auth::id(), $request->rejection_reason);
             
             // Log audit trail
-            $this->logBookingChange($booking, 'confirmed', [], [], $request->admin_notes);
+            $this->logBookingChange($booking, 'rejected', [], [], $request->rejection_reason);
             
             // Send notification (implement later)
-            // $this->sendBookingNotification($booking, 'confirmed');
+            // $this->sendBookingNotification($booking, 'rejected');
             
             DB::commit();
             
-            Alert::success('Berhasil!', 'Booking berhasil dikonfirmasi.');
+            Alert::success('Berhasil!', 'Booking berhasil ditolak.');
             return back();
             
         } catch (\Exception $e) {
             DB::rollback();
-            Alert::error('Gagal!', 'Terjadi kesalahan saat mengkonfirmasi booking.');
+            Alert::error('Gagal!', 'Terjadi kesalahan saat menolak booking.');
             return back();
         }
     }
     
     /**
-     * Reject/Cancel booking
+     * Cancel booking (legacy method - kept for compatibility)
      */
-    public function reject(Request $request, Booking $booking)
+    public function cancel(Request $request, Booking $booking)
     {
         $request->validate([
             'reason' => 'required|string|max:500'
         ]);
         
-        if (!in_array($booking->status, ['pending', 'confirmed'])) {
+        if (!in_array($booking->status, ['pending', 'confirmed', 'approved'])) {
             Alert::error('Gagal!', 'Booking ini tidak dapat dibatalkan.');
             return back();
         }
@@ -369,6 +383,209 @@ class BookingController extends Controller
         }
         
         return collect($timeline)->sortBy('timestamp');
+    }
+    
+    /**
+     * Approve booking
+     */
+    public function approve(Request $request, Booking $booking)
+    {
+        if ($booking->status !== 'pending') {
+            Alert::error('Gagal!', 'Booking ini tidak dapat disetujui.');
+            return back();
+        }
+        
+        $request->validate([
+            'admin_notes' => 'nullable|string|max:1000'
+        ]);
+        
+        DB::beginTransaction();
+        
+        try {
+            $booking->approve(Auth::id(), $request->admin_notes);
+            
+            // Log audit trail
+            $this->logBookingChange($booking, 'approved', [], [], $request->admin_notes);
+            
+            // Send notification to user
+            // $this->sendBookingNotification($booking, 'approved');
+            
+            DB::commit();
+            
+            Alert::success('Berhasil!', 'Booking berhasil disetujui. User dapat melakukan pembayaran.');
+            return back();
+            
+        } catch (\Exception $e) {
+            DB::rollback();
+            Alert::error('Gagal!', 'Terjadi kesalahan saat menyetujui booking.');
+            return back();
+        }
+    }
+    
+    /**
+     * Reject booking
+     */
+    public function rejectBooking(Request $request, Booking $booking)
+    {
+        $request->validate([
+            'rejection_reason' => 'required|string|max:500'
+        ]);
+        
+        if ($booking->status !== 'pending') {
+            Alert::error('Gagal!', 'Booking ini tidak dapat ditolak.');
+            return back();
+        }
+        
+        DB::beginTransaction();
+        
+        try {
+            $booking->reject(Auth::id(), $request->rejection_reason);
+            
+            // Log audit trail
+            $this->logBookingChange($booking, 'rejected', [], [], $request->rejection_reason);
+            
+            // Send notification to user
+            // $this->sendBookingNotification($booking, 'rejected');
+            
+            DB::commit();
+            
+            Alert::success('Berhasil!', 'Booking berhasil ditolak.');
+            return back();
+            
+        } catch (\Exception $e) {
+            DB::rollback();
+            Alert::error('Gagal!', 'Terjadi kesalahan saat menolak booking.');
+            return back();
+        }
+    }
+    
+    /**
+     * Confirm payment
+     */
+    public function confirmPayment(Booking $booking)
+    {
+        if (!$booking->canConfirmPayment()) {
+            Alert::error('Gagal!', 'Pembayaran booking ini tidak dapat dikonfirmasi.');
+            return back();
+        }
+        
+        DB::beginTransaction();
+        
+        try {
+            $booking->update([
+                'payment_status' => 'confirmed',
+                'payment_confirmed_at' => now(),
+                'payment_confirmed_by' => Auth::id(),
+                'status' => 'confirmed'
+            ]);
+            
+            // Generate invoice after payment confirmation
+            if (!$booking->invoice) {
+                $this->createInvoiceAfterPayment($booking);
+            } else {
+                // Update existing invoice status
+                $booking->invoice->update([
+                    'status' => 'paid',
+                    'paid_at' => now()
+                ]);
+            }
+            
+            // Log audit trail
+            $this->logBookingChange($booking, 'payment_confirmed');
+            
+            // Send notification to user with invoice
+            // $this->sendBookingNotification($booking, 'payment_confirmed');
+            
+            DB::commit();
+            
+            Alert::success('Berhasil!', 'Pembayaran berhasil dikonfirmasi dan invoice telah dibuat.');
+            return back();
+            
+        } catch (\Exception $e) {
+            DB::rollback();
+            Alert::error('Gagal!', 'Terjadi kesalahan saat mengkonfirmasi pembayaran.');
+            return back();
+        }
+    }
+    
+    /**
+     * Reject payment
+     */
+    public function rejectPayment(Request $request, Booking $booking)
+    {
+        $request->validate([
+            'rejection_reason' => 'required|string|max:500'
+        ]);
+        
+        if ($booking->payment_status !== 'waiting_confirmation') {
+            Alert::error('Gagal!', 'Pembayaran booking ini tidak dapat ditolak.');
+            return back();
+        }
+        
+        DB::beginTransaction();
+        
+        try {
+            $booking->update([
+                'payment_status' => 'pending',
+                'payment_proof' => null,
+                'payment_uploaded_at' => null,
+                'rejection_reason' => $request->rejection_reason
+            ]);
+            
+            // Log audit trail
+            $this->logBookingChange($booking, 'payment_rejected', [], [], $request->rejection_reason);
+            
+            // Send notification to user
+            // $this->sendBookingNotification($booking, 'payment_rejected');
+            
+            DB::commit();
+            
+            Alert::success('Berhasil!', 'Pembayaran ditolak. User perlu mengupload ulang bukti pembayaran.');
+            return back();
+            
+        } catch (\Exception $e) {
+            DB::rollback();
+            Alert::error('Gagal!', 'Terjadi kesalahan saat menolak pembayaran.');
+            return back();
+        }
+    }
+    
+    /**
+     * Create invoice after payment confirmation
+     */
+    private function createInvoiceAfterPayment(Booking $booking)
+    {
+        $invoice = Invoice::create([
+            'booking_id' => $booking->booking_id,
+            'invoice_number' => $this->generateInvoiceNumber(),
+            'invoice_date' => now()->toDateString(),
+            'due_date' => now()->addDays(30)->toDateString(),
+            'subtotal' => $booking->original_amount,
+            'discount_amount' => $booking->discount_amount,
+            'tax_amount' => 0,
+            'total_amount' => $booking->total_amount,
+            'status' => 'paid',
+            'paid_at' => now(),
+            'payment_details' => $booking->payment_details
+        ]);
+        
+        return $invoice;
+    }
+    
+    /**
+     * Generate invoice number
+     */
+    private function generateInvoiceNumber()
+    {
+        $prefix = 'INV';
+        $date = now()->format('Ymd');
+        $lastInvoice = Invoice::whereDate('created_at', today())
+            ->orderBy('invoice_id', 'desc')
+            ->first();
+        
+        $sequence = $lastInvoice ? (int)substr($lastInvoice->invoice_number, -4) + 1 : 1;
+        
+        return $prefix . $date . str_pad($sequence, 4, '0', STR_PAD_LEFT);
     }
     
     /**

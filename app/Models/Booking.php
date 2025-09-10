@@ -28,7 +28,12 @@ class Booking extends Model
         'catatan_khusus',
         'admin_notes',
         'confirmed_at',
-        'cancelled_at'
+        'cancelled_at',
+        'approved_at',
+        'rejected_at',
+        'approved_by',
+        'rejected_by',
+        'rejection_reason'
     ];
 
     protected $casts = [
@@ -40,6 +45,8 @@ class Booking extends Model
         'customer_info' => 'array',
         'confirmed_at' => 'datetime',
         'cancelled_at' => 'datetime',
+        'approved_at' => 'datetime',
+        'rejected_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime'
     ];
@@ -65,6 +72,21 @@ class Booking extends Model
         return $this->hasOne(Invoice::class, 'booking_id', 'booking_id');
     }
 
+    public function paymentConfirmations()
+    {
+        return $this->hasMany(PaymentConfirmation::class, 'booking_id', 'booking_id');
+    }
+
+    public function approvedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'approved_by', 'id');
+    }
+
+    public function rejectedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'rejected_by', 'id');
+    }
+
     // Scopes
     public function scopePending($query)
     {
@@ -79,6 +101,26 @@ class Booking extends Model
     public function scopeCancelled($query)
     {
         return $query->where('status', 'cancelled');
+    }
+
+    public function scopeApproved($query)
+    {
+        return $query->where('status', 'approved');
+    }
+
+    public function scopeRejected($query)
+    {
+        return $query->where('status', 'rejected');
+    }
+
+    public function scopeAwaitingPayment($query)
+    {
+        return $query->where('status', 'awaiting_payment');
+    }
+
+    public function scopePaymentUploaded($query)
+    {
+        return $query->where('status', 'payment_uploaded');
     }
 
     public function scopeCompleted($query)
@@ -134,9 +176,9 @@ class Booking extends Model
         $lastBooking = self::whereDate('created_at', today())
             ->orderBy('booking_id', 'desc')
             ->first();
-        
+
         $sequence = $lastBooking ? (int)substr($lastBooking->booking_number, -4) + 1 : 1;
-        
+
         return $prefix . $date . str_pad($sequence, 4, '0', STR_PAD_LEFT);
     }
 
@@ -164,13 +206,46 @@ class Booking extends Model
         ]);
     }
 
+    public function approve($adminId)
+    {
+        $this->update([
+            'status' => 'approved',
+            'approved_at' => now(),
+            'approved_by' => $adminId
+        ]);
+
+        // Update invoice status to awaiting payment
+        if ($this->invoice) {
+            $this->invoice->update([
+                'status' => 'awaiting_payment'
+            ]);
+        }
+    }
+
+    public function reject($adminId, $reason)
+    {
+        $this->update([
+            'status' => 'rejected',
+            'rejected_at' => now(),
+            'rejected_by' => $adminId,
+            'rejection_reason' => $reason
+        ]);
+
+        // Update invoice status to cancelled
+        if ($this->invoice) {
+            $this->invoice->update([
+                'status' => 'cancelled'
+            ]);
+        }
+    }
+
     public function calculateDiscount()
     {
         if ($this->specialOffer) {
             $discountPercentage = $this->specialOffer->discount_percentage;
             return ($this->original_amount * $discountPercentage) / 100;
         }
-        
+
         return 0;
     }
 

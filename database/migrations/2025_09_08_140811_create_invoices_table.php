@@ -21,17 +21,23 @@ return new class extends Migration
             $table->decimal('discount_amount', 15, 2)->default(0);
             $table->decimal('tax_amount', 15, 2)->default(0);
             $table->decimal('total_amount', 15, 2);
-            $table->enum('status', ['draft', 'sent', 'paid', 'overdue', 'cancelled'])->default('draft');
+            $table->enum('status', ['draft', 'sent', 'awaiting_payment', 'payment_uploaded', 'payment_confirmed', 'paid', 'overdue', 'cancelled'])->default('draft');
             $table->string('pdf_path')->nullable();
             $table->timestamp('sent_at')->nullable();
             $table->timestamp('paid_at')->nullable();
+            $table->timestamp('payment_uploaded_at')->nullable();
+            $table->unsignedBigInteger('payment_uploaded_by')->nullable();
+            $table->timestamp('payment_confirmed_at')->nullable();
+            $table->unsignedBigInteger('payment_confirmed_by')->nullable();
+            $table->text('payment_confirmation_notes')->nullable();
             $table->json('payment_details')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
-            
+
             // Foreign key constraint
             $table->foreign('booking_id')->references('booking_id')->on('bookings')->onDelete('cascade');
-            
+            $table->foreign('payment_confirmed_by')->references('id')->on('users')->onDelete('set null');
+
             // Indexes
             $table->index('invoice_number');
             $table->index(['status', 'due_date']);
