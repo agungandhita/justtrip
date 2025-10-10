@@ -108,8 +108,8 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
-                                            {{ $user->email_verified_at ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                            {{ $user->email_verified_at ? 'Active' : 'Inactive' }}
+                                            {{ $user->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                            {{ $user->is_active ? 'Active' : 'Inactive' }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -130,14 +130,21 @@
                                             @if($user->id !== auth()->id())
                                                 <form action="{{ route('admin.users.toggle-status', $user) }}" method="POST" class="inline">
                                                     @csrf
-                                                    <button type="submit" class="text-{{ $user->email_verified_at ? 'red' : 'green' }}-600 hover:text-{{ $user->email_verified_at ? 'red' : 'green' }}-900 transition-colors duration-200">
-                                                        @if($user->email_verified_at)
+                                                    {{-- 
+                                                        LOGIKA IKON:
+                                                        - Jika user AKTIF (is_active = true) → Tampilkan ikon BAN MERAH (untuk deactivate)
+                                                        - Jika user TIDAK AKTIF (is_active = false) → Tampilkan ikon CHECK HIJAU (untuk activate)
+                                                    --}}
+                                                    <button type="submit" class="text-{{ $user->is_active ? 'red' : 'green' }}-600 hover:text-{{ $user->is_active ? 'red' : 'green' }}-900 transition-colors duration-200" title="{{ $user->is_active ? 'Deactivate User' : 'Activate User' }}">
+                                                        @if($user->is_active)
+                                                            {{-- USER AKTIF: Tampilkan ikon BAN/BLOCK untuk DEACTIVATE --}}
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                                                                <path d="M12 2C6.48 2 2 6.48 2 12S6.48 22 12 22 22 17.52 22 12 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12S7.59 4 12 4 20 7.59 20 12 16.41 20 12 20ZM15.88 8.29L10 14.17L8.12 12.29C7.73 11.9 7.1 11.9 6.71 12.29S6.32 13.32 6.71 13.71L9.3 16.3C9.69 16.69 10.32 16.69 10.71 16.3L17.3 9.71C17.69 9.32 17.69 8.69 17.3 8.3C16.91 7.91 16.28 7.91 15.89 8.3L15.88 8.29Z"/>
+                                                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM4 12c0-4.42 3.58-8 8-8 1.85 0 3.55.63 4.9 1.69L5.69 16.9C4.63 15.55 4 13.85 4 12zm8 8c-1.85 0-3.55-.63-4.9-1.69L18.31 7.1C19.37 8.45 20 10.15 20 12c0 4.42-3.58 8-8 8z"/>
                                                             </svg>
                                                         @else
+                                                            {{-- USER TIDAK AKTIF: Tampilkan ikon CHECK CIRCLE untuk ACTIVATE --}}
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                                                                <path d="M12 2C6.48 2 2 6.48 2 12S6.48 22 12 22 22 17.52 22 12 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12S7.59 4 12 4 20 7.59 20 12 16.41 20 12 20ZM15.88 8.29L10 14.17L8.12 12.29C7.73 11.9 7.1 11.9 6.71 12.29S6.32 13.32 6.71 13.71L9.3 16.3C9.69 16.69 10.32 16.69 10.71 16.3L17.3 9.71C17.69 9.32 17.69 8.69 17.3 8.3C16.91 7.91 16.28 7.91 15.89 8.3L15.88 8.29Z"/>
+                                                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                                                             </svg>
                                                         @endif
                                                     </button>

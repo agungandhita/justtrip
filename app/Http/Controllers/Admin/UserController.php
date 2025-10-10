@@ -34,9 +34,9 @@ class UserController extends Controller
         // Filter by status
         if ($request->filled('status')) {
             if ($request->status === 'active') {
-                $query->whereNotNull('email_verified_at');
+                $query->where('is_active', true);
             } elseif ($request->status === 'inactive') {
-                $query->whereNull('email_verified_at');
+                $query->where('is_active', false);
             }
         }
         
@@ -72,6 +72,7 @@ class UserController extends Controller
         $data = $request->all();
         $data['password'] = Hash::make($request->password);
         $data['email_verified_at'] = now(); // Auto-verify admin created users
+        $data['is_active'] = true; // Default active for new users
         
         User::create($data);
         
@@ -142,15 +143,15 @@ class UserController extends Controller
     }
     
     /**
-     * Toggle user status (verify/unverify email)
+     * Toggle user status (active/inactive)
      */
     public function toggleStatus(User $user)
     {
-        if ($user->email_verified_at) {
-            $user->update(['email_verified_at' => null]);
+        if ($user->is_active) {
+            $user->update(['is_active' => false]);
             Alert::success('Success', 'User deactivated successfully!');
         } else {
-            $user->update(['email_verified_at' => now()]);
+            $user->update(['is_active' => true]);
             Alert::success('Success', 'User activated successfully!');
         }
         

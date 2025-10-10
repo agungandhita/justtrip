@@ -401,40 +401,95 @@
 
         function setMainImage(imagePath) {
             if (confirm('Set this image as the main image?')) {
-                // Create a hidden input to send the main image path
-                const existingInput = document.querySelector('input[name="main_image"]');
-                if (existingInput) {
-                    existingInput.remove();
-                }
-                
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'main_image';
-                input.value = imagePath;
-                document.querySelector('form').appendChild(input);
-                
-                // Update UI to show which image is main
-                document.querySelectorAll('.bg-green-500').forEach(el => {
-                    el.classList.remove('bg-green-500');
-                    el.classList.add('bg-gray-500');
-                    el.textContent = 'Set Main';
-                });
-                
-                // Find and update the clicked image
-                const images = document.querySelectorAll('[id^="image-"]');
-                images.forEach(imageDiv => {
-                    const img = imageDiv.querySelector('img');
-                    if (img.src.includes(imagePath.replace('galleries/', ''))) {
-                        const mainBadge = imageDiv.querySelector('.bg-gray-500, .bg-green-500');
-                        if (mainBadge && mainBadge.textContent !== 'Main') {
-                            mainBadge.classList.remove('bg-gray-500');
-                            mainBadge.classList.add('bg-green-500');
-                            mainBadge.textContent = 'Main';
+                // Show loading state
+                const button = event.target;
+                const originalText = button.textContent;
+                button.textContent = 'Setting...';
+                button.disabled = true;
+
+                // Make AJAX request to set main image
+                fetch(`{{ route('admin.galleries.set-main-image', $gallery->id) }}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({
+                        image_path: imagePath
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update UI to show which image is main
+                        document.querySelectorAll('.bg-green-500').forEach(el => {
+                            if (el.textContent.includes('Main')) {
+                                el.classList.remove('bg-green-500');
+                                el.classList.add('bg-gray-500');
+                                el.textContent = 'Set Main';
+                            }
+                        });
+                        
+                        // Find and update the clicked image
+                        const images = document.querySelectorAll('[id^="image-"]');
+                        images.forEach(imageDiv => {
+                            const img = imageDiv.querySelector('img');
+                            if (img.src.includes(imagePath.replace('galleries/', ''))) {
+                                const mainButton = imageDiv.querySelector('button[onclick*="setMainImage"]');
+                                if (mainButton) {
+                                    mainButton.classList.remove('bg-gray-500');
+                                    mainButton.classList.add('bg-green-500');
+                                    mainButton.textContent = 'Main Image';
+                                    mainButton.disabled = true;
+                                }
+                            }
+                        });
+                        
+                        // Show success message
+                        if (typeof Swal !== 'undefined') {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil!',
+                                text: data.message,
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                        } else {
+                            alert(data.message);
                         }
+                    } else {
+                        // Show error message
+                        if (typeof Swal !== 'undefined') {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: data.message
+                            });
+                        } else {
+                            alert('Error: ' + data.message);
+                        }
+                        
+                        // Reset button
+                        button.textContent = originalText;
+                        button.disabled = false;
                     }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'Terjadi kesalahan saat mengatur main image'
+                        });
+                    } else {
+                        alert('Terjadi kesalahan saat mengatur main image');
+                    }
+                    
+                    // Reset button
+                    button.textContent = originalText;
+                    button.disabled = false;
                 });
-                
-                alert('Main image updated! Save the form to apply changes.');
             }
         }
 

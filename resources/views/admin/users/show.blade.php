@@ -54,8 +54,8 @@
                                     {{ ucfirst($user->role) }}
                                 </span>
                                 <span class="inline-flex px-3 py-1 text-sm font-semibold rounded-full 
-                                    {{ $user->email_verified_at ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                    {{ $user->email_verified_at ? 'Verified' : 'Unverified' }}
+                                    {{ $user->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                    {{ $user->is_active ? 'Active' : 'Inactive' }}
                                 </span>
                             </div>
                             
@@ -64,8 +64,8 @@
                                 @if($user->id !== auth()->id())
                                     <form action="{{ route('admin.users.toggle-status', $user) }}" method="POST" class="w-full">
                                         @csrf
-                                        <button type="submit" class="w-full bg-{{ $user->email_verified_at ? 'red' : 'green' }}-600 hover:bg-{{ $user->email_verified_at ? 'red' : 'green' }}-700 text-white px-4 py-2 rounded-md transition-colors duration-200">
-                                            {{ $user->email_verified_at ? 'Deactivate' : 'Activate' }} User
+                                        <button type="submit" class="w-full bg-{{ $user->is_active ? 'red' : 'green' }}-600 hover:bg-{{ $user->is_active ? 'red' : 'green' }}-700 text-white px-4 py-2 rounded-md transition-colors duration-200">
+                                            {{ $user->is_active ? 'Deactivate' : 'Activate' }} User
                                         </button>
                                     </form>
                                     <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="w-full" onsubmit="return confirm('Are you sure you want to delete this user? This action cannot be undone.')">

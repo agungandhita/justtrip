@@ -13,8 +13,8 @@
         
         body {
             font-family: 'Arial', sans-serif;
-            font-size: 12px;
-            line-height: 1.4;
+            font-size: 10px;
+            line-height: 1.2;
             color: #333;
             background: #fff;
         }
@@ -22,28 +22,28 @@
         .container {
             max-width: 800px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 10px;
         }
         
         .header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 30px;
-            border-bottom: 3px solid #22c55e;
-            padding-bottom: 20px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #22c55e;
+            padding-bottom: 10px;
         }
         
         .company-info {
             flex: 1;
             display: flex;
             align-items: flex-start;
-            gap: 15px;
+            gap: 10px;
         }
         
         .company-logo {
-            width: 60px;
-            height: 60px;
+            width: 40px;
+            height: 40px;
             object-fit: contain;
         }
         
@@ -52,22 +52,16 @@
         }
         
         .company-name {
-            font-size: 28px;
+            font-size: 18px;
             font-weight: bold;
             color: #22c55e;
-            margin-bottom: 5px;
-        }
-        
-        .company-tagline {
-            font-size: 14px;
-            color: #6b7280;
-            margin-bottom: 10px;
+            margin-bottom: 2px;
         }
         
         .company-details {
-            font-size: 11px;
+            font-size: 9px;
             color: #6b7280;
-            line-height: 1.5;
+            line-height: 1.3;
         }
         
         .invoice-info {
@@ -76,125 +70,130 @@
         }
         
         .invoice-title {
-            font-size: 24px;
+            font-size: 16px;
             font-weight: bold;
             color: #1f2937;
-            margin-bottom: 10px;
-        }
-        
-        .invoice-number {
-            font-size: 16px;
-            color: #22c55e;
-            font-weight: bold;
             margin-bottom: 5px;
         }
         
-        .invoice-date {
+        .invoice-number {
             font-size: 12px;
+            color: #22c55e;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+        
+        .invoice-date {
+            font-size: 9px;
             color: #6b7280;
+        }
+        
+        .main-content {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .left-section {
+            flex: 2;
+        }
+        
+        .right-section {
+            flex: 1;
         }
         
         .billing-section {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
         }
         
         .billing-info {
             flex: 1;
-            margin-right: 20px;
+            margin-right: 10px;
         }
         
         .billing-title {
-            font-size: 14px;
+            font-size: 10px;
             font-weight: bold;
             color: #1f2937;
-            margin-bottom: 10px;
-            padding: 8px 0;
-            border-bottom: 2px solid #e5e7eb;
-        }
-        
-        .billing-details {
-            font-size: 12px;
-            line-height: 1.6;
-        }
-        
-        .booking-details {
-            background: #f8fafc;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .booking-title {
-            font-size: 16px;
-            font-weight: bold;
-            color: #1f2937;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .booking-title::before {
-            content: "🏖️";
-            margin-right: 8px;
-        }
-        
-        .booking-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        
-        .booking-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
+            margin-bottom: 5px;
+            padding: 3px 0;
             border-bottom: 1px solid #e5e7eb;
         }
         
-        .booking-label {
-            font-weight: 600;
-            color: #4b5563;
+        .billing-details {
+            font-size: 9px;
+            line-height: 1.3;
         }
         
-        .booking-value {
+        .compact-section {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            padding: 8px;
+            margin-bottom: 8px;
+            font-size: 9px;
+        }
+        
+        .section-title {
+            font-size: 10px;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 8px;
+        }
+        
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            padding: 3px 0;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #4b5563;
+            font-size: 8px;
+        }
+        
+        .info-value {
             color: #1f2937;
             font-weight: 500;
+            font-size: 9px;
         }
         
         .items-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
             background: #fff;
-            border-radius: 8px;
+            border-radius: 4px;
             overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
         }
         
         .items-table th {
             background: #22c55e;
             color: white;
-            padding: 15px 12px;
+            padding: 6px 8px;
             text-align: left;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 9px;
         }
         
         .items-table td {
-            padding: 12px;
+            padding: 6px 8px;
             border-bottom: 1px solid #e5e7eb;
-            font-size: 12px;
+            font-size: 9px;
         }
         
         .items-table tr:last-child td {
             border-bottom: none;
-        }
-        
-        .items-table tr:nth-child(even) {
-            background: #f8fafc;
         }
         
         .text-right {
@@ -208,16 +207,17 @@
         .summary-section {
             display: flex;
             justify-content: flex-end;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
         }
         
         .summary-table {
-            width: 300px;
+            width: 200px;
             border-collapse: collapse;
+            font-size: 9px;
         }
         
         .summary-table td {
-            padding: 8px 12px;
+            padding: 4px 8px;
             border-bottom: 1px solid #e5e7eb;
         }
         
@@ -235,59 +235,31 @@
             background: #22c55e;
             color: white;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 10px;
         }
         
         .summary-total td {
             border-bottom: none;
         }
         
-        .payment-info {
-            background: #fef3c7;
-            border: 1px solid #f59e0b;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .payment-title {
-            font-size: 14px;
-            font-weight: bold;
-            color: #92400e;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .payment-title::before {
-            content: "💳";
-            margin-right: 8px;
-        }
-        
-        .payment-details {
-            font-size: 12px;
-            color: #92400e;
-            line-height: 1.6;
-        }
-        
         .footer {
-            border-top: 2px solid #e5e7eb;
-            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 8px;
             text-align: center;
-            font-size: 11px;
+            font-size: 8px;
             color: #6b7280;
         }
         
         .footer-note {
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             font-style: italic;
         }
         
         .status-badge {
             display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 8px;
             font-weight: 600;
             text-transform: uppercase;
         }
@@ -314,11 +286,40 @@
         
         @media print {
             .container {
-                padding: 0;
+                padding: 5px;
+                max-width: 100%;
             }
             
             body {
-                font-size: 11px;
+                font-size: 9px;
+                line-height: 1.1;
+            }
+            
+            .header {
+                margin-bottom: 10px;
+                padding-bottom: 8px;
+            }
+            
+            .main-content {
+                margin-bottom: 8px;
+            }
+            
+            .compact-section {
+                margin-bottom: 5px;
+                padding: 5px;
+            }
+            
+            .items-table {
+                margin-bottom: 8px;
+            }
+            
+            .summary-section {
+                margin-bottom: 5px;
+            }
+            
+            .footer {
+                padding-top: 5px;
+                font-size: 7px;
             }
         }
     </style>
@@ -348,56 +349,50 @@
             </div>
         </div>
 
-        <!-- Billing Information -->
-        <div class="billing-section">
-            <div class="billing-info">
-                <div class="billing-title">Tagihan Kepada:</div>
-                <div class="billing-details">
-                    <strong>{{ $customer['name'] }}</strong><br>
-                    {{ $customer['email'] }}<br>
-                    {{ $customer['phone'] }}
+        <!-- Customer & Order Info -->
+        <div class="main-content">
+            <div class="left-section">
+                <div class="compact-section">
+                    <div class="section-title">Informasi Pelanggan</div>
+                    <div><strong>{{ $customer['name'] }}</strong></div>
+                    <div>{{ $customer['email'] }} | {{ $customer['phone'] }}</div>
+                    <div><strong>Alamat:</strong> {{ $customer['address'] ?? 'Alamat tidak tersedia' }}</div>
+                    @if($booking->catatan_khusus)
+                    <div><strong>Catatan:</strong> {{ $booking->catatan_khusus }}</div>
+                    @endif
+                </div>
+                
+                <div class="compact-section">
+                    <div class="section-title">Detail Perjalanan</div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Destinasi</span>
+                            <span class="info-value">{{ $layanan->nama_layanan }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Peserta</span>
+                            <span class="info-value">{{ $booking->jumlah_peserta }} orang</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Keberangkatan</span>
+                            <span class="info-value">{{ $booking->tanggal_keberangkatan->format('d M Y') }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Durasi</span>
+                            <span class="info-value">{{ $layanan->durasi ?? 'Sesuai Paket' }}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="billing-info">
-                <div class="billing-title">Status Pesanan:</div>
-                <div class="billing-details">
-                    <span class="status-badge status-{{ $invoice->status }}">{{ strtoupper($invoice->status == 'paid' ? 'SUDAH DIBAYAR' : 'BELUM DIBAYAR') }}</span><br><br>
-                    <strong>Metode Pembayaran:</strong> BRI
-                </div>
-            </div>
-        </div>
-
-        <!-- Alamat Pengiriman -->
-        <div style="margin-bottom: 20px;">
-            <div style="display: flex; align-items: center; margin-bottom: 10px;">
-                <span style="color: #ef4444; margin-right: 8px;">📍</span>
-                <strong style="color: #1f2937;">Alamat Pengiriman</strong>
-            </div>
-            <div style="font-size: 12px; color: #6b7280; margin-left: 20px;">
-                {{ $customer['address'] ?? 'Dolor eligendi in ex' }}<br>
-                <strong>Catatan:</strong> {{ $booking->catatan_khusus ?? 'Neque modi explicabo' }}
-            </div>
-        </div>
-
-        <!-- Booking Details -->
-        <div class="booking-details">
-            <div class="booking-title">Detail Perjalanan</div>
-            <div class="booking-grid">
-                <div class="booking-item">
-                    <span class="booking-label">Destinasi:</span>
-                    <span class="booking-value">{{ $layanan->nama_layanan }}</span>
-                </div>
-                <div class="booking-item">
-                    <span class="booking-label">Jumlah Peserta:</span>
-                    <span class="booking-value">{{ $booking->jumlah_peserta }} orang</span>
-                </div>
-                <div class="booking-item">
-                    <span class="booking-label">Tanggal Keberangkatan:</span>
-                    <span class="booking-value">{{ $booking->tanggal_keberangkatan->format('d F Y') }}</span>
-                </div>
-                <div class="booking-item">
-                    <span class="booking-label">Durasi:</span>
-                    <span class="booking-value">{{ $layanan->durasi ?? 'Sesuai Paket' }}</span>
+            
+            <div class="right-section">
+                <div class="compact-section">
+                    <div class="section-title">Status Pembayaran</div>
+                    <div style="margin-bottom: 5px;">
+                        <span class="status-badge status-{{ $invoice->status }}">{{ strtoupper($invoice->status == 'paid' ? 'SUDAH DIBAYAR' : 'BELUM DIBAYAR') }}</span>
+                    </div>
+                    <div><strong>Metode:</strong> BRI</div>
+                    <div><strong>Jatuh Tempo:</strong> {{ $invoice->due_date->format('d M Y') }}</div>
                 </div>
             </div>
         </div>
@@ -406,22 +401,20 @@
         <table class="items-table">
             <thead>
                 <tr>
-                    <th style="width: 8%;" class="text-center">No</th>
-                    <th style="width: 35%;">Produk</th>
-                    <th style="width: 20%;">Kategori</th>
-                    <th style="width: 10%;" class="text-center">Qty</th>
-                    <th style="width: 15%;" class="text-right">Harga</th>
-                    <th style="width: 12%;" class="text-right">Subtotal</th>
+                    <th style="width: 50%;">Layanan</th>
+                    <th style="width: 15%;" class="text-center">Qty</th>
+                    <th style="width: 20%;" class="text-right">Harga</th>
+                    <th style="width: 15%;" class="text-right">Total</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td class="text-center">1</td>
                     <td>
-                        <strong>{{ $layanan->nama_layanan }}</strong><br>
-                        <small style="color: #6b7280;">{{ $layanan->deskripsi_singkat ?? 'Occaecat culpa sint' }}</small>
+                        <strong>{{ $layanan->nama_layanan }}</strong>
+                        @if($layanan->deskripsi_singkat)
+                        <br><small style="color: #6b7280;">{{ $layanan->deskripsi_singkat }}</small>
+                        @endif
                     </td>
-                    <td>Travel</td>
                     <td class="text-center">{{ $booking->jumlah_peserta }}</td>
                     <td class="text-right">Rp {{ number_format($layanan->harga_mulai, 0, ',', '.') }}</td>
                     <td class="text-right">Rp {{ number_format($booking->original_amount, 0, ',', '.') }}</td>
@@ -449,13 +442,7 @@
 
         <!-- Footer -->
         <div class="footer">
-            <div class="footer-note">
-                Terima kasih atas kepercayaan Anda berbelanja di {{ $company['name'] }}!
-            </div>
-            <div>
-                Invoice ini digenerate secara otomatis pada {{ $generated_at ?? now()->format('d M Y H:i') }}<br>
-                Untuk pertanyaan, hubungi customer service kami di {{ $company['email'] }}
-            </div>
+            <div class="footer-note">Terima kasih atas kepercayaan Anda! | {{ $company['email'] }} | Generated: {{ $generated_at ?? now()->format('d M Y H:i') }}</div>
         </div>
     </div>
 </body>

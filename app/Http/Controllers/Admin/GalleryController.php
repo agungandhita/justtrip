@@ -177,28 +177,65 @@ class GalleryController extends Controller
      */
     public function update(Request $request, Gallery $gallery)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'destination' => 'required|string|max:255',
-            'category' => 'required|string|max:100',
-            'images' => 'required|array|min:1|max:20', // Batasi maksimal 20 foto
-            'images.*' => 'required|image|mimes:jpeg,png,jpg,webp|max:5120', // Maksimal 5MB per foto
-            'trip_date' => 'required|date',
-            'participants_count' => 'nullable|integer|min:1',
-            'trip_highlights' => 'nullable|string',
-            'tags' => 'nullable|string',
-            'alt_text' => 'nullable|string|max:255',
-            'caption' => 'nullable|string|max:255',
-            'status' => 'nullable|string|in:active,inactive',
-            'featured' => 'nullable|boolean',
-            'sort_order' => 'nullable|integer|min:0',
-            'location' => 'nullable|string|max:255',
-            'photographer' => 'nullable|string|max:255',
-            'date_taken' => 'nullable|date',
-            'is_public' => 'nullable|boolean',
-            'keep_existing_images' => 'boolean' // Option to keep existing images
-        ]);
+        try {
+            // Check if this is a simple status update (only status field is provided)
+            $isStatusUpdate = $request->has('status') && count($request->all()) <= 3; // status, _token, _method
+            
+            if ($isStatusUpdate) {
+                // Simple status update validation
+                $request->validate([
+                    'status' => 'required|string|in:active,inactive'
+                ]);
+                
+                $oldStatus = $gallery->status;
+                $gallery->update(['status' => $request->status]);
+                
+                $statusText = $request->status === 'active' ? 'diaktifkan' : 'dinonaktifkan';
+                Alert::success(
+                    'Berhasil!', 
+                    "Gallery '{$gallery->title}' berhasil {$statusText}!"
+                )->autoClose(3000);
+                
+                return redirect()->back();
+            }
+            
+            // Full update validation
+            $request->validate([
+                'title' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'destination' => 'required|string|max:255',
+                'category' => 'required|string|max:100',
+                'images' => 'nullable|array|max:20', // Made nullable for updates
+                'images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+                'trip_date' => 'required|date',
+                'participants_count' => 'nullable|integer|min:1',
+                'trip_highlights' => 'nullable|string',
+                'tags' => 'nullable|string',
+                'alt_text' => 'nullable|string|max:255',
+                'caption' => 'nullable|string|max:255',
+                'status' => 'nullable|string|in:active,inactive',
+                'featured' => 'nullable|boolean',
+                'sort_order' => 'nullable|integer|min:0',
+                'location' => 'nullable|string|max:255',
+                'photographer' => 'nullable|string|max:255',
+                'date_taken' => 'nullable|date',
+                'is_public' => 'nullable|boolean',
+                'keep_existing_images' => 'boolean'
+            ]);
+            
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Alert::error(
+                'Validasi Gagal!', 
+                'Mohon periksa kembali data yang Anda masukkan.'
+            )->persistent(true);
+            return back()->withErrors($e->errors())->withInput();
+        } catch (\Exception $e) {
+            Alert::error(
+                'Terjadi Kesalahan!', 
+                'Gagal memperbarui gallery. Silakan coba lagi.'
+            )->persistent(true);
+            return back()->withInput();
+        }
 
         $data = $request->all();
         $data['slug'] = Str::slug($request->title);
@@ -257,25 +294,18 @@ class GalleryController extends Controller
             $data['images'] = $images;
             $data['main_image'] = $mainImage;
         } else {
-            // No new images uploaded, handle based on keep_existing_images option
-            if (!$request->boolean('keep_existing_images')) {
-                // User wants to remove all images
-                $this->deleteImages($oldImages);
-                if ($oldMainImage) {
-                    Storage::disk('public')->delete($oldMainImage);
-                }
-                $data['images'] = [];
-                $data['main_image'] = null;
-            } else {
-                // Keep existing images as they are
-                $data['images'] = $oldImages;
-                $data['main_image'] = $oldMainImage;
-            }
+            // No new images uploaded, keep existing images for full update
+            $data['images'] = $oldImages;
+            $data['main_image'] = $oldMainImage;
         }
 
         $gallery->update($data);
 
-        Alert::success('Success', 'Gallery berhasil diupdate dengan ' . count($gallery->images) . ' foto!');
+        $imageCount = is_array($gallery->fresh()->images) ? count($gallery->fresh()->images) : 0;
+        Alert::success(
+            'Berhasil!', 
+            "Gallery '{$gallery->title}' berhasil diperbarui dengan {$imageCount} foto!"
+        )->autoClose(4000);
         return redirect()->route('admin.galleries.index');
     }
 
@@ -587,5 +617,37 @@ class GalleryController extends Controller
         imagedestroy($newImage);
 
         return $compressedData;
+    }
+
+    /**
+     * Set main image for a gallery
+     */
+    public function setMainImage(Gallery $gallery, Request $request)
+    {
+        $request->validate([
+            'image_path' => 'required|string'
+        ]);
+
+        $imagePath = $request->image_path;
+        $images = $gallery->images ?? [];
+
+        // Check if image exists in gallery
+        if (!in_array($imagePath, $images)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Image tidak ditemukan dalam gallery'
+            ], 404);
+        }
+
+        // Update main image
+        $gallery->update([
+            'main_image' => $imagePath
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Main image berhasil diubah',
+            'main_image' => $imagePath
+        ]);
     }
 }
