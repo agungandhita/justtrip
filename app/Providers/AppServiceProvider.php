@@ -21,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Register view composer for navbar special offers
+        view()->composer('Frontend.partials.navbar', \App\Http\View\Composers\NavbarComposer::class);
     }
 }

@@ -36,58 +36,61 @@
 
     <!-- Hero Content -->
     <div class="relative z-20 text-center text-white px-4 max-w-6xl mx-auto" data-aos="fade-up" data-aos-duration="1000">
-        <h1 class="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
+        <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 md:mb-6 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent leading-tight">
             Liburan Jadi Gampang
         </h1>
-        <p class="text-xl md:text-2xl mb-8 text-blue-100 font-medium" data-aos="fade-up" data-aos-delay="200">
+        <p class="text-sm sm:text-base md:text-lg lg:text-xl mb-4 sm:mb-6 md:mb-8 text-blue-100 font-medium max-w-4xl mx-auto" data-aos="fade-up" data-aos-delay="200">
             Cukup sekali klik dengan JustTrip. Temukan destinasi impian dan nikmati perjalanan tak terlupakan.
         </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center" data-aos="fade-up" data-aos-delay="400">
-            <a href="{{ route('special-offers.index') }}" class="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl text-center">
-                <i class="fas fa-tags mr-2"></i>
+        <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 md:gap-4 justify-center" data-aos="fade-up" data-aos-delay="400">
+            <a href="{{ route('special-offers.index') }}" class="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-2 sm:py-3 md:py-4 px-4 sm:px-6 md:px-8 rounded-xl text-xs sm:text-sm md:text-base lg:text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl text-center">
+                <i class="fas fa-tags mr-1 sm:mr-2"></i>
                 Lihat Promo Spesial
             </a>
-            <a href="{{ route('packages.index') }}" class="border-2 border-white text-white hover:bg-white hover:text-blue-600 font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 text-center">
-                <i class="fas fa-plane mr-2"></i>
+            <a href="{{ route('packages.index') }}" class="border-2 border-white text-white hover:bg-white hover:text-blue-600 font-bold py-2 sm:py-3 md:py-4 px-4 sm:px-6 md:px-8 rounded-xl text-xs sm:text-sm md:text-base lg:text-lg transition-all duration-300 transform hover:scale-105 text-center">
+                <i class="fas fa-plane mr-1 sm:mr-2"></i>
                 Jelajahi Destinasi
             </a>
         </div>
 
         <!-- Quick Search Form -->
-        <div class="mt-12 bg-white/10 backdrop-blur-md rounded-2xl p-6 max-w-4xl mx-auto" data-aos="fade-up" data-aos-delay="600">
-            <h3 class="text-xl font-semibold mb-4 text-white">Cari Destinasi Impian</h3>
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div>
-                    <label class="block text-sm font-medium text-white/80 mb-2">Tanggal Keberangkatan</label>
-                    <input type="date" class="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-orange-500">
+        <div class="mt-8 sm:mt-10 md:mt-12 bg-white/95 backdrop-blur-sm rounded-2xl p-3 sm:p-4 md:p-6 shadow-2xl max-w-4xl mx-auto" data-aos="fade-up" data-aos-delay="600">
+            <h3 class="text-gray-800 text-base sm:text-lg md:text-xl font-bold mb-2 sm:mb-3 md:mb-4 text-center">Cari Perjalanan Impian Anda</h3>
+            <form class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                <div class="relative">
+                    <label class="block text-gray-700 text-xs sm:text-sm font-semibold mb-2">Destinasi</label>
+                    <div class="relative">
+                        <input type="text" placeholder="Mau ke mana?" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent pl-8 sm:pl-10 text-sm sm:text-base">
+                        <i class="fas fa-map-marker-alt absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-white/80 mb-2">Destinasi</label>
-                    <select class="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white focus:outline-none focus:ring-2 focus:ring-orange-500">
-                        <option value="">Pilih Destinasi</option>
-                        <option value="bali">Bali</option>
-                        <option value="yogyakarta">Yogyakarta</option>
-                        <option value="bandung">Bandung</option>
-                        <option value="lombok">Lombok</option>
-                    </select>
+                <div class="relative">
+                    <label class="block text-gray-700 text-xs sm:text-sm font-semibold mb-2">Tanggal Berangkat</label>
+                    <div class="relative">
+                        <input type="date" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent pl-8 sm:pl-10 text-sm sm:text-base">
+                        <i class="fas fa-calendar-alt absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-white/80 mb-2">Jumlah Traveler</label>
-                    <select class="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white focus:outline-none focus:ring-2 focus:ring-orange-500">
-                        <option value="">Pilih Jumlah</option>
-                        <option value="1">1 Orang</option>
-                        <option value="2">2 Orang</option>
-                        <option value="3-5">3-5 Orang</option>
-                        <option value="6+">6+ Orang</option>
-                    </select>
+                <div class="relative">
+                    <label class="block text-gray-700 text-xs sm:text-sm font-semibold mb-2">Jumlah Orang</label>
+                    <div class="relative">
+                        <select class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent pl-8 sm:pl-10 appearance-none text-sm sm:text-base">
+                            <option>1 Orang</option>
+                            <option>2 Orang</option>
+                            <option>3-5 Orang</option>
+                            <option>6+ Orang</option>
+                        </select>
+                        <i class="fas fa-users absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
+                        <i class="fas fa-chevron-down absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
+                    </div>
                 </div>
-                <div class="flex items-end">
-                    <button class="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105">
-                        <i class="fas fa-search mr-2"></i>
-                        Cari Paket
+                <div class="flex items-end sm:col-span-2 lg:col-span-1">
+                    <button type="submit" class="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg text-sm sm:text-base">
+                        <i class="fas fa-search mr-1 sm:mr-2"></i>
+                        Cari Sekarang
                     </button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 
@@ -100,92 +103,49 @@
 </section>
 
 <!-- About Us Section -->
-<section class="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
+<section class="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-slate-50 to-blue-50">
     <div class="container mx-auto px-4">
-        <div class="text-center mb-16" data-aos="fade-up">
-            <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Mengapa Pilih JustTrip?</h2>
-            <p class="text-xl text-gray-600 max-w-3xl mx-auto">Partner terpercaya untuk mewujudkan perjalanan impian Anda dengan layanan travel terbaik dan pengalaman tak terlupakan</p>
+        <div class="text-center mb-12 sm:mb-16" data-aos="fade-up">
+            <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-3 sm:mb-4">Mengapa Pilih JustTrip?</h2>
+            <p class="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto px-4">Partner terpercaya untuk mewujudkan perjalanan impian Anda dengan layanan travel terbaik dan pengalaman tak terlupakan</p>
         </div>
 
-        <div class="grid md:grid-cols-3 gap-8 mb-20">
-            <div class="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100">
-                <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mb-6 mx-auto">
-                    <i class="fas fa-map-marked-alt text-white text-2xl"></i>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16 lg:mb-20">
+            <div class="bg-white rounded-xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100">
+                <div class="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mb-4 sm:mb-6 mx-auto">
+                    <i class="fas fa-map-marked-alt text-white text-lg sm:text-2xl"></i>
                 </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">Destinasi Terlengkap</h3>
-                <p class="text-gray-600 text-center">Ratusan destinasi menarik dari dalam dan luar negeri dengan paket tour yang disesuaikan kebutuhan Anda</p>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-3 sm:mb-4 text-center">Destinasi Terlengkap</h3>
+                <p class="text-sm sm:text-base text-gray-600 text-center leading-relaxed">Ratusan destinasi menarik dari dalam dan luar negeri dengan paket tour yang disesuaikan kebutuhan Anda</p>
             </div>
 
-            <div class="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200">
-                <div class="w-16 h-16 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center mb-6 mx-auto">
-                    <i class="fas fa-shield-alt text-white text-2xl"></i>
+            <div class="bg-white rounded-xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200">
+                <div class="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center mb-4 sm:mb-6 mx-auto">
+                    <i class="fas fa-shield-alt text-white text-lg sm:text-2xl"></i>
                 </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">Harga Transparan</h3>
-                <p class="text-gray-600 text-center">Tidak ada biaya tersembunyi, harga kompetitif dengan kualitas pelayanan terbaik untuk setiap perjalanan</p>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-3 sm:mb-4 text-center">Harga Transparan</h3>
+                <p class="text-sm sm:text-base text-gray-600 text-center leading-relaxed">Tidak ada biaya tersembunyi, harga kompetitif dengan kualitas pelayanan terbaik untuk setiap perjalanan</p>
             </div>
 
-            <div class="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="300">
-                <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mb-6 mx-auto">
-                    <i class="fas fa-headset text-white text-2xl"></i>
+            <div class="bg-white rounded-xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 sm:col-span-2 lg:col-span-1" data-aos="fade-up" data-aos-delay="300">
+                <div class="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mb-4 sm:mb-6 mx-auto">
+                    <i class="fas fa-headset text-white text-lg sm:text-2xl"></i>
                 </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">Pelayanan 24/7</h3>
-                <p class="text-gray-600 text-center">Tim customer service berpengalaman siap membantu Anda kapan saja untuk perjalanan yang sempurna</p>
+                <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-3 sm:mb-4 text-center">Pelayanan 24/7</h3>
+                <p class="text-sm sm:text-base text-gray-600 text-center leading-relaxed">Tim customer service berpengalaman siap membantu Anda kapan saja untuk perjalanan yang sempurna</p>
             </div>
         </div>
 
-        <!-- Travel Services Section -->
-        <div class="grid md:grid-cols-3 gap-8">
-            <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-8 shadow-lg" data-aos="fade-up" data-aos-delay="100">
-                <div class="text-center mb-6">
-                    <i class="fas fa-plane text-4xl text-blue-600 mb-4"></i>
-                    <h3 class="text-xl font-bold text-gray-800">Paket Internasional</h3>
-                    <p class="text-blue-600 font-semibold">Asia & Eropa</p>
-                </div>
-                <ul class="text-gray-600 space-y-2">
-                    <li><i class="fas fa-check text-green-500 mr-2"></i>Tiket pesawat & visa</li>
-                    <li><i class="fas fa-check text-green-500 mr-2"></i>Hotel berbintang</li>
-                    <li><i class="fas fa-check text-green-500 mr-2"></i>Tour guide berpengalaman</li>
-                    <li><i class="fas fa-check text-green-500 mr-2"></i>Asuransi perjalanan</li>
-                </ul>
-            </div>
 
-            <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-8 shadow-lg" data-aos="fade-up" data-aos-delay="200">
-                <div class="text-center mb-6">
-                    <i class="fas fa-mountain text-4xl text-orange-600 mb-4"></i>
-                    <h3 class="text-xl font-bold text-gray-800">Paket Domestik</h3>
-                    <p class="text-orange-600 font-semibold">Nusantara</p>
-                </div>
-                <ul class="text-gray-600 space-y-2">
-                    <li><i class="fas fa-check text-green-500 mr-2"></i>Transportasi lengkap</li>
-                    <li><i class="fas fa-check text-green-500 mr-2"></i>Akomodasi terbaik</li>
-                    <li><i class="fas fa-check text-green-500 mr-2"></i>Makan sesuai itinerary</li>
-                    <li><i class="fas fa-check text-green-500 mr-2"></i>Dokumentasi perjalanan</li>
-                </ul>
-            </div>
-
-            <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-8 shadow-lg" data-aos="fade-up" data-aos-delay="300">
-                <div class="text-center mb-6">
-                    <i class="fas fa-users text-4xl text-green-600 mb-4"></i>
-                    <h3 class="text-xl font-bold text-gray-800">Custom Trip</h3>
-                    <p class="text-green-600 font-semibold">Sesuai Keinginan</p>
-                </div>
-                <ul class="text-gray-600 space-y-2">
-                    <li><i class="fas fa-check text-green-500 mr-2"></i>Itinerary fleksibel</li>
-                    <li><i class="fas fa-check text-green-500 mr-2"></i>Budget sesuai kebutuhan</li>
-                    <li><i class="fas fa-check text-green-500 mr-2"></i>Grup kecil atau besar</li>
-                    <li><i class="fas fa-check text-green-500 mr-2"></i>Konsultasi gratis</li>
-                </ul>
-            </div>
-        </div>
     </div>
 </section>
 
 <!-- Testimonials Section -->
-<section class="py-20 bg-white">
+<section class="py-12 sm:py-16 md:py-20 bg-white">
     <div class="container mx-auto px-4">
-        <div class="text-center mb-16" data-aos="fade-up">
-            <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Testimoni Pelanggan</h2>
-            <p class="text-xl text-gray-600">Pengalaman nyata dari pelanggan yang telah menggunakan layanan sewa bus JustTrip</p>
+        <div class="text-center mb-8 sm:mb-12 md:mb-16" data-aos="fade-up">
+            <h2 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-2 sm:mb-3 md:mb-4">Testimoni Pelanggan</h2>
+            <p class="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600">Pengalaman nyata dari pelanggan yang telah menggunakan layanan sewa bus JustTrip</p>
         </div>
 
         <div class="grid md:grid-cols-3 gap-8">
@@ -238,11 +198,11 @@
 </section>
 
 <!-- Destinations Section -->
-<section class="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+<section class="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-gray-50 to-blue-50">
     <div class="container mx-auto px-4">
-        <div class="text-center mb-16" data-aos="fade-up">
-            <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Destinasi Populer</h2>
-            <p class="text-xl text-gray-600 max-w-3xl mx-auto">Jelajahi destinasi menakjubkan dengan paket tour terbaik dari JustTrip</p>
+        <div class="text-center mb-8 sm:mb-12 md:mb-16" data-aos="fade-up">
+            <h2 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-2 sm:mb-3 md:mb-4">Destinasi Populer</h2>
+            <p class="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto">Jelajahi destinasi menakjubkan dengan paket tour terbaik dari JustTrip</p>
         </div>
 
         <!-- Tabs -->
@@ -255,24 +215,24 @@
 
         <!-- International Destinations -->
         <div id="international" class="tab-content active">
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
                 <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100">
                     <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Bali" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute top-4 left-4">
-                            <span class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">Populer</span>
+                        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Bali" class="w-full h-48 sm:h-56 md:h-64 object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute top-3 left-3 sm:top-4 sm:left-4">
+                            <span class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-semibold">Populer</span>
                         </div>
                         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">Bali</h3>
-                        <p class="text-gray-600 mb-4">4D3N • Hotel 4* • Breakfast • Tour Guide</p>
+                    <div class="p-4 sm:p-5 md:p-6">
+                        <h3 class="text-base sm:text-lg md:text-xl font-bold text-gray-800 mb-1 sm:mb-2">Bali</h3>
+                        <p class="text-xs sm:text-sm md:text-base text-gray-600 mb-3 sm:mb-4">4D3N • Hotel 4* • Breakfast • Tour Guide</p>
                         <div class="flex items-center justify-between">
                             <div>
-                                <span class="text-2xl font-bold text-blue-600">Rp 2.500.000</span>
-                            <span class="text-gray-500 text-sm">/person</span>
+                                <span class="text-lg sm:text-xl md:text-2xl font-bold text-blue-600">Rp 2.500.000</span>
+                            <span class="text-gray-500 text-xs sm:text-sm">/person</span>
                         </div>
-                        <button class="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">Book Now</button>
+                        <button class="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-3 py-1 sm:px-4 sm:py-2 md:px-6 md:py-2 rounded-full text-xs sm:text-sm md:text-base font-semibold transition-all duration-300 transform hover:scale-105">Book Now</button>
                         </div>
                     </div>
                 </div>
@@ -391,7 +351,7 @@
 
         <div class="text-center mt-12" data-aos="fade-up" data-aos-delay="400">
             <a href="{{ route('packages.index') }}" class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl inline-block">
-                Lihat Semua Layanan Bus
+                Lihat Semua Paket Tour
             </a>
         </div>
     </div>

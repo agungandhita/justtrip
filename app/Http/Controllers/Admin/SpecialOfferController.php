@@ -109,6 +109,11 @@ class SpecialOfferController extends Controller
      */
     public function show(SpecialOffer $specialOffer)
     {
+        // Load galleries for standalone offers
+        $specialOffer->load(['galleries' => function($query) {
+            $query->orderedBySort();
+        }]);
+        
         return view('admin.special-offers.show', compact('specialOffer'));
     }
 
@@ -203,6 +208,85 @@ class SpecialOfferController extends Controller
         $specialOffer->delete();
 
         Alert::success('Success', 'Special offer deleted successfully!');
+        return redirect()->route('admin.special-offers.index');
+    }
+
+    /**
+     * Show the form for creating a standalone special offer.
+     */
+    public function createStandalone()
+    {
+        return view('admin.special-offers.create-standalone');
+    }
+
+    /**
+     * Store a newly created standalone special offer.
+     */
+    public function storeStandalone(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'original_price' => 'required|numeric|min:0',
+            'discounted_price' => 'required|numeric|min:0|lt:original_price',
+            'gallery_images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
+            'status' => 'required|in:active,inactive',
+            'featured' => 'nullable|boolean',
+            'terms_conditions' => 'nullable|string',
+            'meta_title' => 'nullable|string|max:60',
+            'meta_description' => 'nullable|string|max:160'
+        ]);
+
+        $data = $request->all();
+        $data['slug'] = Str::slug($request->title);
+        
+        // Map form fields to database fields
+        $data['valid_from'] = $request->start_date;
+        $data['valid_until'] = $request->end_date;
+        $data['is_active'] = $request->status === 'active';
+        $data['is_featured'] = $request->has('featured') ? true : false;
+        
+        // Calculate discount percentage for standalone offers
+        $data['discount_percentage'] = (($request->original_price - $request->discounted_price) / $request->original_price) * 100;
+        
+        // Set layanan_id to null for standalone offers
+        $data['layanan_id'] = null;
+        
+        // Remove form-specific fields that don't exist in database
+        unset($data['start_date'], $data['end_date'], $data['status'], $data['featured'], $data['gallery_images']);
+
+        // Create the special offer
+        $specialOffer = SpecialOffer::create($data);
+
+        // Handle gallery images upload
+        if ($request->hasFile('gallery_images')) {
+            $galleryImages = $request->file('gallery_images');
+            
+            foreach ($galleryImages as $index => $image) {
+                // Store the image
+                $imagePath = $image->store('special-offers/gallery', 'public');
+                
+                // Create gallery record
+                $specialOffer->galleries()->create([
+                    'image_path' => $imagePath,
+                    'title' => $request->title . ' - Gambar ' . ($index + 1),
+                    'description' => 'Gambar galeri untuk ' . $request->title,
+                    'alt_text' => $request->title . ' - Gambar ' . ($index + 1),
+                    'is_main' => $index === 0, // First image is main image
+                    'sort_order' => $index + 1
+                ]);
+            }
+            
+            // Set main_image from first gallery image if exists
+            $firstGalleryImage = $specialOffer->galleries()->where('is_main', true)->first();
+            if ($firstGalleryImage) {
+                $specialOffer->update(['main_image' => $firstGalleryImage->image_path]);
+            }
+        }
+
+        Alert::success('Success', 'Standalone special offer created successfully!');
         return redirect()->route('admin.special-offers.index');
     }
 }

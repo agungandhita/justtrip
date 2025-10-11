@@ -56,6 +56,12 @@ class PackageController extends Controller
 
         $specialOffers = $specialOffersQuery->paginate(12);
 
+        // Process images for special offers
+        $specialOffers->getCollection()->transform(function($offer) {
+            $offer->processed_image = $offer->image ? asset('storage/' . $offer->image) : null;
+            return $offer;
+        });
+
         // Get featured special offers for hero section
         $featuredOffers = SpecialOffer::where('is_active', true)
                                      ->where('valid_until', '>=', now())
@@ -64,11 +70,23 @@ class PackageController extends Controller
                                      ->take(3)
                                      ->get();
 
+        // Process images for featured offers
+        $featuredOffers->transform(function($offer) {
+            $offer->processed_image = $offer->image ? asset('storage/' . $offer->image) : null;
+            return $offer;
+        });
+
         // Get regular travel packages (Layanan)
         $regularPackages = Layanan::where('status', 'aktif')
                                  ->latest()
                                  ->take(6)
                                  ->get();
+
+        // Process images for regular packages
+        $regularPackages->transform(function($package) {
+            $package->processed_image = $package->gambar ? asset('storage/' . $package->gambar) : null;
+            return $package;
+        });
 
         // Get price ranges for filtering
         $priceRanges = [
@@ -99,6 +117,9 @@ class PackageController extends Controller
 
         if ($package) {
             $type = 'special_offer';
+            // Process image for special offer package
+            $package->processed_image = $package->image ? asset('storage/' . $package->image) : null;
+            
             // Get related special offers
             $relatedPackages = SpecialOffer::where('is_active', true)
                                           ->where('valid_until', '>=', now())
@@ -106,12 +127,21 @@ class PackageController extends Controller
                                           ->latest()
                                           ->take(3)
                                           ->get();
+            
+            // Process images for related special offers
+            $relatedPackages->transform(function($relatedPackage) {
+                $relatedPackage->processed_image = $relatedPackage->image ? asset('storage/' . $relatedPackage->image) : null;
+                return $relatedPackage;
+            });
         } else {
             // Try to find in regular packages (Layanan)
             $package = Layanan::where('slug', $slug)
                              ->where('status', 'aktif')
                              ->firstOrFail();
             $type = 'layanan';
+            // Process image for layanan package
+            $package->processed_image = $package->gambar ? asset('storage/' . $package->gambar) : null;
+            
             // Get related layanan
             $relatedPackages = Layanan::where('status', 'aktif')
                                      ->where('layanan_id', '!=', $package->layanan_id)
@@ -119,6 +149,12 @@ class PackageController extends Controller
                                      ->latest()
                                      ->take(3)
                                      ->get();
+            
+            // Process images for related layanan
+            $relatedPackages->transform(function($relatedPackage) {
+                $relatedPackage->processed_image = $relatedPackage->gambar ? asset('storage/' . $relatedPackage->gambar) : null;
+                return $relatedPackage;
+            });
         }
 
         return view('Frontend.packages.show', compact('package', 'relatedPackages', 'type'));

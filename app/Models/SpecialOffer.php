@@ -56,10 +56,36 @@ class SpecialOffer extends Model
                     ->where('valid_until', '>=', now());
     }
 
+    public function scopeStandalone($query)
+    {
+        return $query->whereNull('layanan_id');
+    }
+
+    public function scopeWithLayanan($query)
+    {
+        return $query->whereNotNull('layanan_id');
+    }
+
+    // Route key name for model binding
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     // Relationships
     public function layanan()
     {
         return $this->belongsTo(Layanan::class, 'layanan_id', 'layanan_id');
+    }
+
+    public function galleries()
+    {
+        return $this->hasMany(SpecialOfferGallery::class)->orderedBySort();
+    }
+
+    public function mainGalleryImage()
+    {
+        return $this->hasOne(SpecialOfferGallery::class)->mainImage();
     }
 
     // Accessors
@@ -119,5 +145,23 @@ class SpecialOffer extends Model
             return $this;
         }
         return $this;
+    }
+
+    // Check if this is a standalone offer (not related to any layanan)
+    public function isStandalone()
+    {
+        return is_null($this->layanan_id);
+    }
+
+    // Check if this offer is related to a layanan
+    public function hasLayanan()
+    {
+        return !is_null($this->layanan_id);
+    }
+
+    // Get offer type for standalone offers
+    public function getStandaloneTypeAttribute()
+    {
+        return $this->isStandalone() ? 'Penawaran Khusus' : null;
     }
 }

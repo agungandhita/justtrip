@@ -5,8 +5,8 @@
 <section class="relative h-64 sm:h-80 md:h-96 lg:h-[28rem] bg-gradient-to-r from-blue-600 to-purple-600 overflow-hidden">
     <div class="absolute inset-0 bg-black/30"></div>
     @if($type === 'special_offer')
-        @if($package->image)
-            <img src="{{ asset('storage/' . $package->image) }}" alt="{{ $package->title }}" class="absolute inset-0 w-full h-full object-cover">
+        @if($package->main_image)
+            <img src="{{ asset('storage/' . $package->main_image) }}" alt="{{ $package->title }}" class="absolute inset-0 w-full h-full object-cover">
         @endif
     @else
         @if($package->gambar_destinasi && count($package->gambar_destinasi) > 0)
@@ -21,14 +21,14 @@
                 <div class="mb-2 sm:mb-3 md:mb-4">
                     <span class="bg-red-500 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-semibold shadow-lg">{{ $package->badge ?? 'Special Offer' }}</span>
                 </div>
-                <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-2 sm:mb-3 md:mb-4 leading-tight">{{ $package->title }}</h1>
-                <p class="text-sm sm:text-base md:text-lg lg:text-xl mb-3 sm:mb-4 md:mb-6 opacity-90">{{ $package->discount_percentage }}% OFF - Hemat Rp {{ number_format($package->original_price - $package->discounted_price, 0, ',', '.') }}</p>
+                <h1 class="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold mb-2 sm:mb-3 md:mb-4 leading-tight">{{ $package->title }}</h1>
+                <p class="text-xs sm:text-sm md:text-base lg:text-lg mb-3 sm:mb-4 md:mb-6 opacity-90">{{ $package->discount_percentage }}% OFF - Hemat Rp {{ number_format($package->original_price - $package->discounted_price, 0, ',', '.') }}</p>
             @else
                 <div class="mb-2 sm:mb-3 md:mb-4">
                     <span class="bg-blue-500 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-semibold shadow-lg">{{ ucfirst($package->jenis_layanan) }}</span>
                 </div>
-                <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-2 sm:mb-3 md:mb-4 leading-tight">{{ $package->nama_layanan }}</h1>
-                <p class="text-sm sm:text-base md:text-lg lg:text-xl mb-3 sm:mb-4 md:mb-6 opacity-90">
+                <h1 class="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold mb-2 sm:mb-3 md:mb-4 leading-tight">{{ $package->nama_layanan }}</h1>
+                <p class="text-xs sm:text-sm md:text-base lg:text-lg mb-3 sm:mb-4 md:mb-6 opacity-90">
                     {{ $package->durasi_hari }} Hari di {{ $package->lokasi_tujuan }}
                     <span class="block sm:inline mt-1 sm:mt-0">• Maks {{ $package->maks_orang }} Orang</span>
                 </p>
@@ -36,15 +36,15 @@
 
             <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 md:gap-6">
                 <div class="flex items-center">
-                    <span class="text-yellow-400 mr-2 text-sm sm:text-base">★★★★★</span>
-                    <span class="text-xs sm:text-sm md:text-base lg:text-lg opacity-90">(4.8) • 150+ Reviews</span>
+                    <span class="text-yellow-400 mr-2 text-xs sm:text-sm">★★★★★</span>
+                    <span class="text-xs sm:text-sm md:text-base opacity-90">(4.8) • 150+ Reviews</span>
                 </div>
                 <div class="flex items-center">
-                    <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                     </svg>
-                    <span class="text-xs sm:text-sm md:text-base lg:text-lg opacity-90">{{ $type === 'special_offer' ? $package->layanan->lokasi_tujuan : $package->lokasi_tujuan }}</span>
+                    <span class="text-xs sm:text-sm md:text-base opacity-90">{{ $type === 'special_offer' ? $package->layanan->lokasi_tujuan : $package->lokasi_tujuan }}</span>
                 </div>
             </div>
         </div>
@@ -63,15 +63,15 @@
                         <div class="order-1 md:order-1">
                             @if($type === 'special_offer')
                                 <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-4 mb-2">
-                                    <span class="text-gray-400 line-through text-base sm:text-lg md:text-xl lg:text-2xl">Rp {{ number_format($package->original_price, 0, ',', '.') }}</span>
+                                    <span class="text-gray-400 line-through text-sm sm:text-base md:text-lg lg:text-xl">Rp {{ number_format($package->original_price, 0, ',', '.') }}</span>
                                     <span class="bg-red-500 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-semibold mt-1 sm:mt-0 self-start">-{{ $package->discount_percentage }}%</span>
                                 </div>
-                                <div class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-emerald-600">Rp {{ number_format($package->discounted_price, 0, ',', '.') }}</div>
-                                <p class="text-gray-600 text-sm sm:text-base">per orang</p>
+                                <div class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-emerald-600">Rp {{ number_format($package->discounted_price, 0, ',', '.') }}</div>
+                                <p class="text-gray-600 text-xs sm:text-sm">per orang</p>
                                 <p class="text-xs sm:text-sm text-red-600 font-semibold mt-2">⏰ Berakhir {{ $package->valid_until->format('d M Y') }}</p>
                             @else
-                                <div class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-emerald-600">Rp {{ number_format($package->harga_mulai, 0, ',', '.') }}</div>
-                                <p class="text-gray-600 text-sm sm:text-base">per orang</p>
+                                <div class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-emerald-600">Rp {{ number_format($package->harga_mulai, 0, ',', '.') }}</div>
+                                <p class="text-gray-600 text-xs sm:text-sm">per orang</p>
                                 @if($package->maks_orang)
                                     <p class="text-xs sm:text-sm text-blue-600 font-semibold mt-1">👥 Kapasitas maksimal: {{ $package->maks_orang }} orang</p>
                                 @endif
@@ -81,20 +81,20 @@
                         <div class="flex flex-col gap-3 sm:gap-4 order-2 md:order-2 w-full md:w-auto">
                             @auth
                                 @if($type === 'special_offer')
-                                    <a href="{{ route('booking.create-from-offer', $package->id) }}" class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold py-3 px-6 sm:py-4 sm:px-8 rounded-xl text-sm sm:text-base lg:text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl text-center min-w-[200px]">
+                                    <a href="{{ route('booking.create-from-offer', $package->id) }}" class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold py-2 px-4 sm:py-3 sm:px-6 md:py-4 md:px-8 rounded-xl text-xs sm:text-sm md:text-base transition-all duration-300 transform hover:scale-105 hover:shadow-xl text-center min-w-[180px] sm:min-w-[200px]">
                                         📅 Book Sekarang
                                     </a>
                                 @else
-                                    <a href="{{ route('booking.create', $package->layanan_id) }}" class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold py-3 px-6 sm:py-4 sm:px-8 rounded-xl text-sm sm:text-base lg:text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl text-center min-w-[200px]">
+                                    <a href="{{ route('booking.create', $package->layanan_id) }}" class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold py-2 px-4 sm:py-3 sm:px-6 md:py-4 md:px-8 rounded-xl text-xs sm:text-sm md:text-base transition-all duration-300 transform hover:scale-105 hover:shadow-xl text-center min-w-[180px] sm:min-w-[200px]">
                                         📅 Book Sekarang
                                     </a>
                                 @endif
                             @else
-                                <a href="{{ route('login') }}" class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold py-3 px-6 sm:py-4 sm:px-8 rounded-xl text-sm sm:text-base lg:text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl text-center min-w-[200px]">
+                                <a href="{{ route('login') }}" class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold py-2 px-4 sm:py-3 sm:px-6 md:py-4 md:px-8 rounded-xl text-xs sm:text-sm md:text-base transition-all duration-300 transform hover:scale-105 hover:shadow-xl text-center min-w-[180px] sm:min-w-[200px]">
                                     🔐 Login untuk Book
                                 </a>
                             @endauth
-                            <button class="bg-white border-2 border-emerald-500 text-emerald-500 hover:bg-emerald-50 font-bold py-3 px-6 sm:py-4 sm:px-8 rounded-xl text-sm sm:text-base lg:text-lg transition-all duration-300 text-center min-w-[200px]">
+                            <button class="bg-white border-2 border-emerald-500 text-emerald-500 hover:bg-emerald-50 font-bold py-2 px-4 sm:py-3 sm:px-6 md:py-4 md:px-8 rounded-xl text-xs sm:text-sm md:text-base transition-all duration-300 text-center min-w-[180px] sm:min-w-[200px]">
                                 💬 Chat Admin
                             </button>
                         </div>
@@ -103,7 +103,7 @@
 
                 <!-- Description -->
                 <div class="mb-6 sm:mb-8">
-                    <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-4 sm:mb-6">Deskripsi Paket</h2>
+                    <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-3 sm:mb-4 md:mb-6">Deskripsi Paket</h2>
                     <div class="prose prose-sm sm:prose-base lg:prose-lg max-w-none text-gray-600">
                         @if($type === 'special_offer')
                             <p class="text-sm sm:text-base leading-relaxed mb-4">{{ $package->description }}</p>
@@ -119,7 +119,7 @@
 
                 <!-- Facilities -->
                 <div class="mb-6 sm:mb-8">
-                    <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-4 sm:mb-6">Fasilitas Termasuk</h2>
+                    <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-3 sm:mb-4 md:mb-6">Fasilitas Termasuk</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                         @if($type === 'special_offer' && $package->layanan && $package->layanan->fasilitas)
                             @php
@@ -187,9 +187,9 @@
                 </div>
 
                 <!-- Gallery -->
-                @if(($type === 'layanan' && $package->gambar_destinasi && count($package->gambar_destinasi) > 1) || ($type === 'special_offer' && $package->layanan && $package->layanan->gambar_destinasi && count($package->layanan->gambar_destinasi) > 1))
+                @if(($type === 'layanan' && $package->gambar_destinasi && count($package->gambar_destinasi) > 0) || ($type === 'special_offer' && $package->layanan && $package->layanan->gambar_destinasi && count($package->layanan->gambar_destinasi) > 0))
                 <div class="mb-6 sm:mb-8">
-                    <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-4 sm:mb-6">Galeri Foto</h2>
+                    <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-3 sm:mb-4 md:mb-6">Galeri Foto</h2>
                     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
                         @php
                             $images = $type === 'special_offer' ? $package->layanan->gambar_destinasi : $package->gambar_destinasi;
@@ -214,7 +214,7 @@
             <div class="lg:col-span-1 order-1 lg:order-2">
                 <!-- Quick Info -->
                 <div class="bg-white rounded-2xl shadow-lg p-4 sm:p-6 mb-6 sm:mb-8 border border-gray-100">
-                    <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-3 sm:mb-4">Info Singkat</h3>
+                    <h3 class="text-base sm:text-lg font-bold text-gray-800 mb-3 sm:mb-4">Info Singkat</h3>
                     <div class="space-y-3 sm:space-y-4">
                         <div class="flex items-center justify-between py-2 border-b border-gray-100 last:border-b-0">
                             <span class="text-gray-600 text-sm sm:text-base flex items-center">
@@ -270,7 +270,7 @@
 
                 <!-- Contact -->
                 <div class="bg-white rounded-2xl shadow-lg p-4 sm:p-6 border border-gray-100">
-                    <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-3 sm:mb-4">Butuh Bantuan?</h3>
+                    <h3 class="text-base sm:text-lg font-bold text-gray-800 mb-3 sm:mb-4">Butuh Bantuan?</h3>
                     <div class="space-y-3 sm:space-y-4">
                         <a href="tel:+6281234567890" class="flex items-center p-3 sm:p-4 bg-blue-50 rounded-xl hover:bg-blue-100 transition-colors group">
                             <div class="w-10 h-10 sm:w-12 sm:h-12 bg-blue-500 rounded-full flex items-center justify-center mr-3 sm:mr-4 group-hover:bg-blue-600 transition-colors">
@@ -300,13 +300,17 @@
                 <!-- Related Packages -->
                 @if($relatedPackages && count($relatedPackages) > 0)
                 <div class="bg-white rounded-2xl shadow-lg p-4 sm:p-6 border border-gray-100">
-                    <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-3 sm:mb-4">Paket Lainnya</h3>
+                    <h3 class="text-base sm:text-lg font-bold text-gray-800 mb-3 sm:mb-4">Paket Lainnya</h3>
                     <div class="space-y-3 sm:space-y-4">
                         @foreach($relatedPackages->take(3) as $related)
                             <a href="{{ route('packages.show', $related->slug) }}" class="block group">
                                 <div class="flex space-x-3 p-2 sm:p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                                    @if($related->gambar_destinasi && count($related->gambar_destinasi) > 0)
-                                        <img src="{{ asset('storage/' . $related->gambar_destinasi[0]) }}" alt="{{ $related->nama_layanan ?? $related->title }}" class="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded-lg flex-shrink-0">
+                                    @if(($related->gambar_destinasi && count($related->gambar_destinasi) > 0) || $related->main_image)
+                                        @if($related->main_image)
+                                            <img src="{{ asset('storage/' . $related->main_image) }}" alt="{{ $related->nama_layanan ?? $related->title }}" class="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded-lg flex-shrink-0">
+                                        @else
+                                            <img src="{{ asset('storage/' . $related->gambar_destinasi[0]) }}" alt="{{ $related->nama_layanan ?? $related->title }}" class="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded-lg flex-shrink-0">
+                                        @endif
                                     @else
                                         <div class="w-12 h-12 sm:w-16 sm:h-16 bg-gray-200 rounded-lg flex items-center justify-center flex-shrink-0">
                                             <svg class="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

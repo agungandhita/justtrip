@@ -29,12 +29,13 @@ Route::get('/destinasi', [DestinationController::class, 'index'])->name('destina
 Route::get('/paket-tour', [PackageController::class, 'index'])->name('paket-tour');
 Route::get('/packages', [PackageController::class, 'index'])->name('packages.index');
 Route::get('/packages/{slug}', [PackageController::class, 'show'])->name('packages.show');
-Route::get('/special-offers', [FrontendSpecialOfferController::class, 'index'])->name('special-offers.index');
-Route::get('/special-offers/{slug}', [FrontendSpecialOfferController::class, 'show'])->name('special-offers.show');
-Route::get('/api/special-offers', [FrontendSpecialOfferController::class, 'getData'])->name('special-offers.data');
 Route::get('/tentang-kami', [AboutController::class, 'index'])->name('tentang-kami');
 Route::get('/artikel', [ArticleController::class, 'index'])->name('articles.index');
 Route::get('/artikel/{slug}', [ArticleController::class, 'show'])->name('articles.show');
+
+// Special Offers routes (public)
+Route::get('/special-offers', [FrontendSpecialOfferController::class, 'index'])->name('special-offers.index');
+Route::get('/special-offers/{specialOffer}', [FrontendSpecialOfferController::class, 'show'])->name('special-offers.show');
 
 // Gallery routes (public)
 Route::get('/gallery', [FrontendGalleryController::class, 'index'])->name('gallery');
@@ -68,6 +69,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // Special Offers CRUD routes
     Route::resource('special-offers', SpecialOfferController::class, ['names' => 'special-offers']);
+    
+    // Standalone Special Offers routes
+    Route::get('special-offers-standalone/create', [SpecialOfferController::class, 'createStandalone'])->name('special-offers.create-standalone');
+    Route::post('special-offers-standalone', [SpecialOfferController::class, 'storeStandalone'])->name('special-offers.store-standalone');
 
     // News CRUD routes
     Route::resource('news', NewsController::class);
@@ -113,6 +118,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/booking/create/{layanan}', [BookingController::class, 'create'])->name('booking.create');
     Route::get('/booking/create-from-offer/{specialOffer}', [BookingController::class, 'createFromOffer'])->name('booking.create-from-offer');
     Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
+    Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store'); // Alternative route for special offers
     Route::get('/booking/{booking}', [BookingController::class, 'show'])->name('booking.show');
     Route::patch('/booking/{booking}/cancel', [BookingController::class, 'cancel'])->name('booking.cancel');
 

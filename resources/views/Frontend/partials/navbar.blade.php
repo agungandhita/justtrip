@@ -20,12 +20,24 @@
                 <a href="{{ route('home') }}" class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 {{ request()->routeIs('home') || request()->routeIs('beranda') ? 'text-blue-600' : '' }}">
                     Beranda
                 </a>
-                <a href="{{ route('gallery') }}" class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 {{ request()->routeIs('destinasi') ? 'text-blue-600' : '' }}">
+
+                <a href="{{ route('gallery') }}" class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 {{ request()->routeIs('gallery') ? 'text-blue-600' : '' }}">
                     Galeri
                 </a>
                 <a href="{{ route('paket-tour') }}" class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 {{ request()->routeIs('paket-tour') ? 'text-blue-600' : '' }}">
                     Paket Tour
                 </a>
+
+                <!-- Special Offers with Badge -->
+                <a href="{{ route('special-offers.index') }}" class="relative text-gray-700 hover:text-red-600 font-medium transition-colors duration-200 {{ request()->routeIs('special-offers.*') ? 'text-red-600' : '' }}">
+                    <span class="flex items-center">
+                        Promo Spesial
+                        <span class="ml-2 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-pulse">
+                            <i class="fas fa-fire text-xs"></i>
+                        </span>
+                    </span>
+                </a>
+
                 <a href="{{ route('tentang-kami') }}" class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 {{ request()->routeIs('tentang-kami') ? 'text-blue-600' : '' }}">
                     Tentang Kami
                 </a>
@@ -133,50 +145,52 @@
 
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="md:hidden hidden bg-white border-t border-gray-100">
-        <div class="px-4 py-3 space-y-3">
+        <div class="px-4 py-3 space-y-2">
             <a href="{{ route('home') }}" class="block px-3 py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 {{ request()->routeIs('home') || request()->routeIs('beranda') ? 'text-blue-600 bg-blue-50' : '' }} rounded-lg">
+                <i class="fas fa-home mr-2"></i>
                 Beranda
             </a>
-            <a href="{{ route('gallery') }}" class="block px-3 py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 rounded-lg {{ request()->routeIs('destinasi') ? 'text-blue-600 bg-blue-50' : '' }}">
-                Destinasi
+            
+            <a href="{{ route('gallery') }}" class="block px-3 py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 rounded-lg {{ request()->routeIs('gallery') ? 'text-blue-600 bg-blue-50' : '' }}">
+                <i class="fas fa-images mr-2"></i>
+                Galeri
             </a>
+            
             <a href="{{ route('paket-tour') }}" class="block px-3 py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 rounded-lg {{ request()->routeIs('paket-tour') ? 'text-blue-600 bg-blue-50' : '' }}">
+                <i class="fas fa-map-marked-alt mr-2"></i>
                 Paket Tour
             </a>
+
+            <a href="{{ route('special-offers.index') }}" class="block px-3 py-2 text-gray-700 hover:text-red-600 font-medium transition-colors duration-200 rounded-lg {{ request()->routeIs('special-offers.*') ? 'text-red-600 bg-red-50' : '' }}">
+                <i class="fas fa-fire mr-2"></i>
+                Promo Spesial
+                <span class="ml-2 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs rounded-full w-5 h-5 inline-flex items-center justify-center animate-pulse">
+                    <i class="fas fa-percent text-xs"></i>
+                </span>
+            </a>
+
             <a href="{{ route('tentang-kami') }}" class="block px-3 py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 rounded-lg {{ request()->routeIs('tentang-kami') ? 'text-blue-600 bg-blue-50' : '' }}">
+                <i class="fas fa-info-circle mr-2"></i>
                 Tentang Kami
             </a>
+            
             <a href="{{ route('articles.index') }}" class="block px-3 py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 rounded-lg {{ request()->routeIs('articles.index') ? 'text-blue-600 bg-blue-50' : '' }}">
+                <i class="fas fa-newspaper mr-2"></i>
                 Artikel
             </a>
 
             @auth
-            <!-- User Menu for Mobile -->
-            <div class="border-t border-gray-200 mt-3 pt-3">
-                <div class="flex items-center px-3 py-2 mb-3">
-                    <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mr-3">
-                        <i class="fas fa-user-circle text-white text-sm"></i>
-                    </div>
-                    <div>
-                        <p class="text-sm font-medium text-gray-900">{{ Auth::user()->name }}</p>
-                        <p class="text-xs text-gray-500">{{ Auth::user()->email }}</p>
-                    </div>
-                </div>
-
+            <!-- Simple User Links for Mobile -->
+            <div class="border-t border-gray-200 mt-3 pt-3 space-y-2">
                 <a href="{{ route('user.profile') }}" class="block px-3 py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 rounded-lg">
                     <i class="fas fa-user-circle mr-2"></i>
                     Profil Saya
                 </a>
                 <a href="{{ route('user.bookings') }}" class="block px-3 py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 rounded-lg">
                     <i class="fas fa-history mr-2"></i>
-                    Riwayat Sewa Bus
+                    Riwayat Booking
                 </a>
-                <a href="{{ route('user.settings') }}" class="block px-3 py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 rounded-lg">
-                    <i class="fas fa-cog mr-2"></i>
-                    Pengaturan
-                </a>
-
-                <form method="POST" action="{{ route('logout') }}" class="mt-2">
+                <form method="POST" action="{{ route('logout') }}" class="block">
                     @csrf
                     <button type="submit" class="block w-full text-left px-3 py-2 text-red-600 hover:bg-red-50 font-medium transition-colors duration-200 rounded-lg">
                         <i class="fas fa-sign-out-alt mr-2"></i>
@@ -185,7 +199,7 @@
                 </form>
             </div>
             @else
-            <!-- Login/Register for Mobile -->
+            <!-- Simple Login/Register for Mobile -->
             <div class="border-t border-gray-200 mt-3 pt-3 space-y-2">
                 <a href="{{ route('login') }}" class="block px-3 py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 rounded-lg">
                     <i class="fas fa-sign-in-alt mr-2"></i>
@@ -199,7 +213,7 @@
             @endauth
 
             <a href="#booking" class="block mt-4 px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-full text-center">
-                <i class="fas fa-plane mr-2"></i>
+                <i class="fas fa-bus mr-2"></i>
                 Book Now
             </a>
         </div>

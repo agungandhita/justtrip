@@ -87,6 +87,36 @@
                         </div>
                     @endif
 
+                    <!-- Gallery Section for Standalone Offers -->
+                    @if($specialOffer->isStandalone() && $specialOffer->galleries->count() > 0)
+                        <div class="bg-white rounded-xl shadow-md p-6">
+                            <h2 class="text-xl font-semibold text-gray-800 mb-4">Galeri ({{ $specialOffer->galleries->count() }} gambar)</h2>
+                            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                @foreach($specialOffer->galleries as $gallery)
+                                <div class="relative group">
+                                    <img src="{{ asset('storage/' . $gallery->image_path) }}" 
+                                         alt="{{ $gallery->alt_text }}" 
+                                         class="w-full h-32 object-cover rounded-lg border border-gray-200">
+                                    @if($gallery->is_main)
+                                    <div class="absolute top-2 left-2 bg-indigo-600 text-white px-2 py-1 rounded text-xs font-semibold">
+                                        Utama
+                                    </div>
+                                    @endif
+                                    <div class="absolute bottom-2 left-2 bg-black bg-opacity-75 text-white px-2 py-1 rounded text-xs">
+                                        {{ $gallery->sort_order }}
+                                    </div>
+                                    <div class="mt-2">
+                                        <p class="text-sm font-medium text-gray-800 truncate">{{ $gallery->title }}</p>
+                                        @if($gallery->description)
+                                        <p class="text-xs text-gray-600 truncate">{{ $gallery->description }}</p>
+                                        @endif
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+
                     <!-- Terms and Conditions -->
                     @if($specialOffer->terms_conditions)
                         <div class="bg-white rounded-xl shadow-md p-6">
