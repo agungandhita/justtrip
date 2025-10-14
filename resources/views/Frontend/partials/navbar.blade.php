@@ -48,12 +48,6 @@
 
             <!-- CTA Button & User Menu & Mobile Menu -->
             <div class="flex items-center space-x-4">
-                <!-- CTA Button -->
-                <a href="#booking" class="hidden sm:inline-flex items-center px-6 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-full hover:from-blue-600 hover:to-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl">
-                    <i class="fas fa-bus mr-2"></i>
-                    Book Now
-                </a>
-
                 <!-- User Dropdown Menu -->
                 @auth
                 <div class="relative">
@@ -150,12 +144,12 @@
                 <i class="fas fa-home mr-2"></i>
                 Beranda
             </a>
-            
+
             <a href="{{ route('gallery') }}" class="block px-3 py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 rounded-lg {{ request()->routeIs('gallery') ? 'text-blue-600 bg-blue-50' : '' }}">
                 <i class="fas fa-images mr-2"></i>
                 Galeri
             </a>
-            
+
             <a href="{{ route('paket-tour') }}" class="block px-3 py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 rounded-lg {{ request()->routeIs('paket-tour') ? 'text-blue-600 bg-blue-50' : '' }}">
                 <i class="fas fa-map-marked-alt mr-2"></i>
                 Paket Tour
@@ -173,7 +167,7 @@
                 <i class="fas fa-info-circle mr-2"></i>
                 Tentang Kami
             </a>
-            
+
             <a href="{{ route('articles.index') }}" class="block px-3 py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 rounded-lg {{ request()->routeIs('articles.index') ? 'text-blue-600 bg-blue-50' : '' }}">
                 <i class="fas fa-newspaper mr-2"></i>
                 Artikel

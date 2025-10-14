@@ -21,6 +21,7 @@ use App\Http\Controllers\Frontend\BookingController;
 use App\Http\Controllers\Frontend\InvoiceController;
 use App\Http\Controllers\Frontend\PaymentController;
 use App\Http\Controllers\Frontend\SpecialOfferController as FrontendSpecialOfferController;
+use App\Http\Controllers\GuestBookingController;
 
 // Public routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -47,6 +48,15 @@ Route::get('/api/gallery/search', [FrontendGalleryController::class, 'search'])-
 Route::get('/layanan', [LayananController::class, 'publicIndex'])->name('layanan.index');
 Route::get('/layanan/{layanan}', [LayananController::class, 'publicShow'])->name('layanan.show');
 
+// Guest Booking routes (public)
+Route::prefix('guest-booking')->name('guest-booking.')->group(function () {
+    Route::get('/', [GuestBookingController::class, 'index'])->name('index');
+    Route::post('/search', [GuestBookingController::class, 'search'])->name('search');
+    Route::get('/form', [GuestBookingController::class, 'showForm'])->name('form');
+    Route::post('/store', [GuestBookingController::class, 'store'])->name('store');
+    Route::get('/success/{booking_number}', [GuestBookingController::class, 'success'])->name('success');
+});
+
 // Authentication routes (guest only)
 Route::middleware('guest')->group(function () {
     // Login routes
@@ -69,7 +79,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // Special Offers CRUD routes
     Route::resource('special-offers', SpecialOfferController::class, ['names' => 'special-offers']);
-    
+
     // Standalone Special Offers routes
     Route::get('special-offers-standalone/create', [SpecialOfferController::class, 'createStandalone'])->name('special-offers.create-standalone');
     Route::post('special-offers-standalone', [SpecialOfferController::class, 'storeStandalone'])->name('special-offers.store-standalone');
@@ -103,6 +113,18 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::patch('bookings/{booking}/complete', [AdminBookingController::class, 'complete'])->name('bookings.complete');
     Route::get('bookings/statistics', [AdminBookingController::class, 'getStatistics'])->name('bookings.statistics');
     Route::get('bookings/export', [AdminBookingController::class, 'export'])->name('bookings.export');
+
+    // Guest Booking Management routes
+    Route::prefix('guest-bookings')->name('guest-bookings.')->group(function () {
+        Route::get('/', [GuestBookingController::class, 'adminIndex'])->name('index');
+        Route::get('/{guestBooking}', [GuestBookingController::class, 'adminShow'])->name('show');
+        Route::patch('/{guestBooking}/status', [GuestBookingController::class, 'updateStatus'])->name('update-status');
+        Route::post('/{guestBooking}/contact-whatsapp', [GuestBookingController::class, 'contactViaWhatsApp'])->name('contact-whatsapp');
+        Route::post('/{guestBooking}/send-email', [GuestBookingController::class, 'sendCustomEmail'])->name('send-email');
+        Route::get('/export/excel', [GuestBookingController::class, 'exportExcel'])->name('export-excel');
+        Route::get('/statistics', [GuestBookingController::class, 'getStatistics'])->name('statistics');
+    });
+
 
     // Payment confirmation management
     Route::resource('payment-confirmations', \App\Http\Controllers\Admin\PaymentConfirmationController::class)->only(['index', 'show']);
@@ -141,7 +163,6 @@ Route::middleware(['auth', 'user'])->prefix('user')->name('user.')->group(functi
         return view('Frontend.user.profile');
     })->name('profile');
 
-    Route::get('/bookings', [BookingController::class, 'userBookings'])->name('bookings');
 
     Route::get('/settings', function () {
         return view('Frontend.user.settings');

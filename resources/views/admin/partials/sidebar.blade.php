@@ -94,7 +94,15 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-[18px] h-[18px] mr-3" viewBox="0 0 24 24">
                                     <path d="M19,3H18V1H16V3H8V1H6V3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M19,19H5V8H19V19M16,10V12H14V10H16M12,10V12H10V10H12M8,10V12H6V10H8M16,14V16H14V14H16M12,14V16H10V14H12M8,14V16H6V14H8"/>
                                 </svg>
-                                <span>Booking</span>
+                                <span>Booking Member</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.guest-bookings.index') }}" class="text-gray-800 text-sm flex items-center hover:bg-gray-100 rounded-md px-4 py-2 transition-all {{ request()->routeIs('admin.guest-bookings.*') ? 'bg-blue-50 text-blue-600 border-r-2 border-blue-600' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-[18px] h-[18px] mr-3" viewBox="0 0 24 24">
+                                    <path d="M16,4C18.11,4 19.8,5.69 19.8,7.8C19.8,9.91 18.11,11.6 16,11.6C13.89,11.6 12.2,9.91 12.2,7.8C12.2,5.69 13.89,4 16,4M16,13.4C18.67,13.4 24,14.73 24,17.4V20H8V17.4C8,14.73 13.33,13.4 16,13.4M12.51,7.71C12.56,9.81 10.81,11.6 8.7,11.55C6.58,11.5 4.8,9.75 4.85,7.64C4.9,5.53 6.65,3.75 8.76,3.8C10.37,3.83 11.7,4.96 12.1,6.5C12.17,6.74 12.2,6.98 12.2,7.23C12.2,7.4 12.17,7.56 12.15,7.71H12.51M7.71,13.4C8.78,13.4 9.8,13.54 10.76,13.77C9.36,14.68 8.6,15.84 8.6,17.4V20H0V17.4C0,14.73 5.33,13.4 7.71,13.4Z"/>
+                                </svg>
+                                <span>Guest Booking</span>
                             </a>
                         </li>
                         <li>

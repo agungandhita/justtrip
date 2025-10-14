@@ -33,7 +33,13 @@ class BookingController extends Controller
                   })
                   ->orWhereHas('layanan', function($layananQuery) use ($search) {
                       $layananQuery->where('nama_layanan', 'like', "%{$search}%");
-                  });
+                  })
+                  // Search in guest booking customer_info
+                  ->orWhere('customer_info->name', 'like', "%{$search}%")
+                  ->orWhere('customer_info->email', 'like', "%{$search}%")
+                  ->orWhere('customer_info->phone', 'like', "%{$search}%")
+                  // Search in custom booking info
+                  ->orWhere('custom_booking_info->destination', 'like', "%{$search}%");
             });
         }
         

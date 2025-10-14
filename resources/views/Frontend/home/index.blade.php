@@ -54,35 +54,46 @@
         </div>
 
         <!-- Quick Search Form -->
-        <div class="mt-8 sm:mt-10 md:mt-12 bg-white/95 backdrop-blur-sm rounded-2xl p-3 sm:p-4 md:p-6 shadow-2xl max-w-4xl mx-auto" data-aos="fade-up" data-aos-delay="600">
-            <h3 class="text-gray-800 text-base sm:text-lg md:text-xl font-bold mb-2 sm:mb-3 md:mb-4 text-center">Cari Perjalanan Impian Anda</h3>
-            <form class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <div class="mt-8 sm:mt-10 md:mt-12 bg-white rounded-2xl p-3 sm:p-4 md:p-6 shadow-2xl max-w-4xl mx-auto" data-aos="fade-up" data-aos-delay="600">
+            <h3 class="text-gray-900 text-base sm:text-lg md:text-xl font-bold mb-2 sm:mb-3 md:mb-4 text-center">Cari Perjalanan Impian Anda</h3>
+            <form action="{{ route('guest-booking.search') }}" method="POST" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                @csrf
                 <div class="relative">
-                    <label class="block text-gray-700 text-xs sm:text-sm font-semibold mb-2">Destinasi</label>
+                    <label class="block text-gray-800 text-xs sm:text-sm font-semibold mb-2">Destinasi</label>
                     <div class="relative">
-                        <input type="text" placeholder="Mau ke mana?" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent pl-8 sm:pl-10 text-sm sm:text-base">
-                        <i class="fas fa-map-marker-alt absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
+                        <input type="text" name="destinasi" placeholder="Mau ke mana?" value="{{ old('destinasi') }}" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent pl-8 sm:pl-10 text-sm sm:text-base text-gray-900 placeholder-gray-500 bg-white" required>
+                        <i class="fas fa-map-marker-alt absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm"></i>
                     </div>
+                    @error('destinasi')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
                 <div class="relative">
-                    <label class="block text-gray-700 text-xs sm:text-sm font-semibold mb-2">Tanggal Berangkat</label>
+                    <label class="block text-gray-800 text-xs sm:text-sm font-semibold mb-2">Tanggal Berangkat</label>
                     <div class="relative">
-                        <input type="date" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent pl-8 sm:pl-10 text-sm sm:text-base">
-                        <i class="fas fa-calendar-alt absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
+                        <input type="date" name="departure_date" value="{{ old('departure_date') }}" min="{{ date('Y-m-d', strtotime('+1 day')) }}" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent pl-8 sm:pl-10 text-sm sm:text-base text-gray-900 bg-white" required>
+                        <i class="fas fa-calendar-alt absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm"></i>
                     </div>
+                    @error('departure_date')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
                 <div class="relative">
-                    <label class="block text-gray-700 text-xs sm:text-sm font-semibold mb-2">Jumlah Orang</label>
+                    <label class="block text-gray-800 text-xs sm:text-sm font-semibold mb-2">Jumlah Orang</label>
                     <div class="relative">
-                        <select class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent pl-8 sm:pl-10 appearance-none text-sm sm:text-base">
-                            <option>1 Orang</option>
-                            <option>2 Orang</option>
-                            <option>3-5 Orang</option>
-                            <option>6+ Orang</option>
+                        <select name="participants" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent pl-8 sm:pl-10 appearance-none text-sm sm:text-base text-gray-900 bg-white" required>
+                            <option value="" class="text-gray-500">Pilih jumlah orang</option>
+                            <option value="1" {{ old('participants') == '1' ? 'selected' : '' }} class="text-gray-900">1 Orang</option>
+                            <option value="2" {{ old('participants') == '2' ? 'selected' : '' }} class="text-gray-900">2 Orang</option>
+                            <option value="3-5" {{ old('participants') == '3-5' ? 'selected' : '' }} class="text-gray-900">3-5 Orang</option>
+                            <option value="6+" {{ old('participants') == '6+' ? 'selected' : '' }} class="text-gray-900">6+ Orang</option>
                         </select>
-                        <i class="fas fa-users absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
-                        <i class="fas fa-chevron-down absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
+                        <i class="fas fa-users absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm"></i>
+                        <i class="fas fa-chevron-down absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm"></i>
                     </div>
+                    @error('participants')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
                 <div class="flex items-end sm:col-span-2 lg:col-span-1">
                     <button type="submit" class="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg text-sm sm:text-base">

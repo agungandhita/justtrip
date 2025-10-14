@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('bookings', function (Blueprint $table) {
             $table->id('booking_id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('layanan_id');
+            $table->unsignedBigInteger('layanan_id')->nullable(false);
             $table->unsignedBigInteger('special_offer_id')->nullable();
             $table->string('booking_number')->unique();
             $table->datetime('booking_date');
@@ -23,6 +23,7 @@ return new class extends Migration
             $table->decimal('total_amount', 15, 2);
             $table->enum('status', ['pending', 'approved', 'rejected', 'awaiting_payment', 'payment_uploaded', 'confirmed', 'cancelled', 'completed'])->default('pending');
             $table->json('customer_info'); // nama, email, phone, alamat, dll
+            $table->json('custom_booking_info')->nullable();
             $table->integer('jumlah_peserta')->default(1);
             $table->date('tanggal_keberangkatan');
             $table->text('catatan_khusus')->nullable();

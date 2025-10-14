@@ -139,6 +139,7 @@
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Booking</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Telepon</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Layanan</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal Keberangkatan</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Peserta</th>
@@ -155,12 +156,38 @@
                                 <div class="text-sm text-gray-500">{{ $booking->formatted_booking_date }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">{{ $booking->user->name }}</div>
-                                <div class="text-sm text-gray-500">{{ $booking->user->email }}</div>
+                                @if($booking->user)
+                                    <div class="text-sm font-medium text-gray-900">{{ $booking->user->name }}</div>
+                                    <div class="text-sm text-gray-500">{{ $booking->user->email }}</div>
+                                    <div class="text-xs text-blue-600">Member</div>
+                                @else
+                                    <div class="text-sm font-medium text-gray-900">{{ $booking->customer_info['name'] ?? 'N/A' }}</div>
+                                    <div class="text-sm text-gray-500">{{ $booking->customer_info['email'] ?? 'N/A' }}</div>
+                                    <div class="text-xs text-orange-600">Guest</div>
+                                @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">{{ $booking->layanan->nama_layanan }}</div>
-                                <div class="text-sm text-gray-500">{{ $booking->layanan->jenis_layanan }}</div>
+                                @if($booking->user)
+                                    <div class="text-sm text-gray-900">{{ $booking->customer_info['phone'] ?? $booking->user->phone ?? 'N/A' }}</div>
+                                @else
+                                    <div class="text-sm text-gray-900">{{ $booking->customer_info['phone'] ?? 'N/A' }}</div>
+                                @endif
+                                @if(isset($booking->customer_info['phone']))
+                                    <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $booking->customer_info['phone']) }}" 
+                                       target="_blank" 
+                                       class="text-xs text-green-600 hover:text-green-800">
+                                        WhatsApp
+                                    </a>
+                                @endif
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                @if($booking->layanan)
+                                    <div class="text-sm font-medium text-gray-900">{{ $booking->layanan->nama_layanan }}</div>
+                                    <div class="text-sm text-gray-500">{{ $booking->layanan->jenis_layanan }}</div>
+                                @else
+                                    <div class="text-sm font-medium text-gray-900">Custom Trip</div>
+                                    <div class="text-sm text-gray-500">{{ $booking->custom_booking_info['destination'] ?? 'Custom Destination' }}</div>
+                                @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">{{ $booking->formatted_tanggal_keberangkatan }}</div>
@@ -204,7 +231,7 @@
                         </tr>
                         @empty
                          <tr>
-                             <td colspan="8" class="px-6 py-12 text-center">
+                             <td colspan="9" class="px-6 py-12 text-center">
                                  <div class="text-gray-500">
                                      <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
