@@ -28,6 +28,10 @@
                     Paket Tour
                 </a>
 
+                <a href="{{ route('guest-booking.index') }}" class="text-gray-700 hover:text-green-600 font-medium transition-colors duration-200 {{ request()->routeIs('guest-booking.*') ? 'text-green-600' : '' }}">
+                    Guest Booking
+                </a>
+
                 <!-- Special Offers with Badge -->
                 <a href="{{ route('special-offers.index') }}" class="relative text-gray-700 hover:text-red-600 font-medium transition-colors duration-200 {{ request()->routeIs('special-offers.*') ? 'text-red-600' : '' }}">
                     <span class="flex items-center">
@@ -155,6 +159,11 @@
                 Paket Tour
             </a>
 
+            <a href="{{ route('guest-booking.index') }}" class="block px-3 py-2 text-gray-700 hover:text-green-600 font-medium transition-colors duration-200 rounded-lg {{ request()->routeIs('guest-booking.*') ? 'text-green-600 bg-green-50' : '' }}">
+                <i class="fas fa-calendar-plus mr-2"></i>
+                Guest Booking
+            </a>
+
             <a href="{{ route('special-offers.index') }}" class="block px-3 py-2 text-gray-700 hover:text-red-600 font-medium transition-colors duration-200 rounded-lg {{ request()->routeIs('special-offers.*') ? 'text-red-600 bg-red-50' : '' }}">
                 <i class="fas fa-fire mr-2"></i>
                 Promo Spesial
@@ -205,11 +214,6 @@
                 </a>
             </div>
             @endauth
-
-            <a href="#booking" class="block mt-4 px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-full text-center">
-                <i class="fas fa-bus mr-2"></i>
-                Book Now
-            </a>
         </div>
     </div>
 </nav>
