@@ -96,7 +96,7 @@
                                     <i class="fas fa-user-circle mr-3 text-gray-400"></i>
                                     Profil Saya
                                 </a>
-                                <a href="{{ route('user.bookings') }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-200">
+                                <a href="{{ route('booking.index') }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-200">
                                     <i class="fas fa-history mr-3 text-gray-400"></i>
                                     Riwayat Booking
                                 </a>
@@ -189,7 +189,7 @@
                     <i class="fas fa-user-circle mr-2"></i>
                     Profil Saya
                 </a>
-                <a href="{{ route('user.bookings') }}" class="block px-3 py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 rounded-lg">
+                <a href="{{ route('booking.index') }}" class="block px-3 py-2 text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 rounded-lg">
                     <i class="fas fa-history mr-2"></i>
                     Riwayat Booking
                 </a>
