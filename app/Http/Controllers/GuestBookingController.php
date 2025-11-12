@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\GuestBookingFeedback;
 use App\Models\GuestBooking;
 use App\Models\Layanan;
 use Illuminate\Http\Request;
@@ -155,7 +156,9 @@ class GuestBookingController extends Controller
 
             // Kirim notifikasi ke admin (bisa via email atau WhatsApp)
             $this->notifyAdmin($guestBooking);
-
+            Mail::to($validated['email'])->send(new GuestBookingFeedback(
+                datas: $validated
+            ));
             DB::commit();
 
             Alert::success('Berhasil!', 'Booking Anda telah berhasil dikirim. Kami akan menghubungi Anda segera.');
@@ -164,6 +167,7 @@ class GuestBookingController extends Controller
 
         } catch (\Exception $e) {
             DB::rollback();
+            dd($e->getMessage());
             Log::error('Error creating guest booking: ' . $e->getMessage());
 
             Alert::error('Gagal!', 'Terjadi kesalahan saat memproses booking Anda. Silakan coba lagi.');

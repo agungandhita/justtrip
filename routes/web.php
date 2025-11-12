@@ -119,7 +119,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/', [GuestBookingController::class, 'adminIndex'])->name('index');
         Route::get('/{guestBooking}', [GuestBookingController::class, 'adminShow'])->name('show');
         Route::patch('/{guestBooking}/status', [GuestBookingController::class, 'updateStatus'])->name('update-status');
-        Route::post('/{guestBooking}/contact-whatsapp', [GuestBookingController::class, 'contactViaWhatsApp'])->name('contact-whatsapp');
+        Route::get('/{guestBooking}/contact-whatsapp', [GuestBookingController::class, 'contactViaWhatsApp'])->name('contact-whatsapp');
         Route::post('/{guestBooking}/send-email', [GuestBookingController::class, 'sendCustomEmail'])->name('send-email');
         Route::get('/export/excel', [GuestBookingController::class, 'exportExcel'])->name('export-excel');
         Route::get('/statistics', [GuestBookingController::class, 'getStatistics'])->name('statistics');
