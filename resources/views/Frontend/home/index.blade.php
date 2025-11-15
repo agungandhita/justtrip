@@ -482,12 +482,13 @@
             <div class="relative z-10">
                 <h3 class="mb-4 text-3xl font-bold md:text-4xl">Dapatkan Notifikasi Promo Terbaru!</h3>
                 <p class="mb-8 text-xl opacity-90">Subscribe newsletter kami dan jadi yang pertama tahu promo eksklusif</p>
-                <div class="flex flex-col justify-center max-w-md gap-4 mx-auto sm:flex-row">
-                    <input type="email" placeholder="Masukkan email Anda" class="flex-1 px-6 py-3 text-gray-800 rounded-full focus:outline-none focus:ring-4 focus:ring-white/30">
-                    <button class="px-8 py-3 font-bold text-teal-600 transition-all duration-300 transform bg-white rounded-full hover:bg-gray-100 hover:scale-105">
+                <form  method="POST" action="{{ route('subscribe-users.store-frontend') }}" class="flex flex-col justify-center max-w-md gap-4 mx-auto sm:flex-row">
+                    @csrf
+                  <input type="email" name="email" placeholder="Masukkan email Anda" required class="flex-1 px-4 py-2 sm:px-6 sm:py-3 rounded-full text-gray-800 text-sm sm:text-base focus:outline-none focus:ring-4 focus:ring-white/30 @error('email') border-red-500 @enderror" value="{{ old('email') }}">
+                    <button type="submit" class="px-6 py-2 text-sm font-bold text-purple-600 transition-all duration-300 transform bg-white rounded-full sm:px-8 sm:py-3 sm:text-base hover:bg-gray-100 hover:scale-105">
                         Subscribe
                     </button>
-                </div>
+                </form>
             </div>
         </div>
     </div>

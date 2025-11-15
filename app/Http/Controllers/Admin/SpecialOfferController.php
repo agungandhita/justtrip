@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SpecialOfferNotification;
 class SpecialOfferController extends Controller
 {
     /**
@@ -60,7 +62,7 @@ class SpecialOfferController extends Controller
     {
         $request->validate([
             'layanan_id' => 'required|exists:layanan,layanan_id',
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|max:255|unique:special_offers,title',
             'description' => 'required|string',
             'discount_percentage' => 'required|numeric|min:0|max:100',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
@@ -98,9 +100,14 @@ class SpecialOfferController extends Controller
         // Remove form-specific fields that don't exist in database
         unset($data['start_date'], $data['end_date'], $data['status'], $data['featured'], $data['image']);
 
-        SpecialOffer::create($data);
+        $specialOffer = SpecialOffer::create($data);
+        // Kirim email ke semua subscribe user yang belum unsubscribe
+        $subscribers = \App\Models\SubscribeUser::subscribed()->get();
+        foreach ($subscribers as $subscriber) {
+            Mail::to($subscriber->email)->queue(new SpecialOfferNotification($specialOffer));
+        }
 
-        Alert::success('Success', 'Special offer created successfully!');
+        Alert::success('Success', 'Special offer created successfully! Email notifikasi dikirim ke subscriber.');
         return redirect()->route('admin.special-offers.index');
     }
 
