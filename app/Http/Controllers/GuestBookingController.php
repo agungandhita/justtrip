@@ -156,8 +156,10 @@ class GuestBookingController extends Controller
 
             // Kirim notifikasi ke admin (bisa via email atau WhatsApp)
             $this->notifyAdmin($guestBooking);
+            // Send guest booking data to the Mailable as an array with key 'guestBooking'
+            // so the admin notification view can access the full model (including booking_number, id, created_at, relations)
             Mail::to($validated['email'])->send(new GuestBookingFeedback(
-                datas: $validated
+                datas: ['guestBooking' => $guestBooking]
             ));
             DB::commit();
 
@@ -251,9 +253,9 @@ class GuestBookingController extends Controller
 
         $layanan = Layanan::where('status', 'aktif')
             ->where(function($query) use ($destinasi) {
-                $query->where('nama_layanan', 'LIKE', "%{$destinasi}%")
-                      ->orWhere('lokasi_tujuan', 'LIKE', "%{$destinasi}%")
-                      ->orWhere('deskripsi', 'LIKE', "%{$destinasi}%");
+                $query->whereLike('nama_layanan',  "%{$destinasi}%")
+                      ->orWhereLike('lokasi_tujuan',  "%{$destinasi}%")
+                      ->orWhereLike('deskripsi',  "%{$destinasi}%");
             })
             ->select('layanan_id', 'nama_layanan', 'lokasi_tujuan', 'harga_mulai', 'durasi_hari')
             ->get();

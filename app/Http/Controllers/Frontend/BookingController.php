@@ -86,20 +86,32 @@ class BookingController extends Controller
         $validator = Validator::make($request->all(), [
             'layanan_id' => 'required|exists:layanan,layanan_id',
             'special_offer_id' => 'nullable|exists:special_offers,id',
-            'customer_name' => 'required|string|max:255',
-            'customer_email' => 'required|email|max:255',
-            'customer_phone' => 'required|string|max:20',
-            'customer_address' => 'required|string',
+            // 'customer_name' => 'required|string|max:255',
+            // 'customer_email' => 'required|email|max:255',
+            // 'customer_phone' => 'required|string|max:20',
+            // 'customer_address' => 'required|string',
             'jumlah_peserta' => 'required|integer|min:1|max:50',
             'tanggal_keberangkatan' => 'required|date|after:today',
             'catatan_khusus' => 'nullable|string|max:1000'
         ]);
 
+        $user = Auth::user();
+
         if ($validator->fails()) {
-            Alert::error('Error', 'Data yang Anda masukkan tidak valid.');
+            // Build a readable list of field-specific validation errors
+            $messages = [];
+            foreach ($validator->errors()->messages() as $field => $fieldMessages) {
+                $label = ucwords(str_replace(['_', '-'], ' ', $field));
+                $messages[] = $label . ': ' . implode(', ', $fieldMessages);
+            }
+            $errorText = implode(' | ', $messages);
+
+            // Show SweetAlert with specific fields that failed validation
+            Alert::error('Pemesanan tidak berhasil');
             return redirect()->back()
                            ->withErrors($validator)
-                           ->withInput();
+                           ->withInput()
+                           ->with('scroll_to_booking', true);
         }
 
         try {
@@ -130,10 +142,10 @@ class BookingController extends Controller
                 'total_amount' => $totalAmount,
                 'status' => 'pending',
                 'customer_info' => [
-                    'name' => $request->customer_name,
-                    'email' => $request->customer_email,
-                    'phone' => $request->customer_phone,
-                    'address' => $request->customer_address
+                    'name' => $user->customer_name,
+                    'email' => $user->customer_email,
+                    'phone' => $user->customer_phone,
+                    'address' => $user->customer_address
                 ],
                 'jumlah_peserta' => $request->jumlah_peserta,
                 'tanggal_keberangkatan' => $request->tanggal_keberangkatan,
@@ -208,10 +220,18 @@ class BookingController extends Controller
         $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
-            Alert::error('Error', 'Data yang Anda masukkan tidak valid. Silakan periksa kembali.');
+            $messages = [];
+            foreach ($validator->errors()->messages() as $field => $fieldMessages) {
+                $label = ucwords(str_replace(['_', '-'], ' ', $field));
+                $messages[] = $label . ': ' . implode(', ', $fieldMessages);
+            }
+            $errorText = implode(' | ', $messages);
+
+            Alert::error('Validasi Gagal', $errorText);
             return redirect()->back()
                            ->withErrors($validator)
-                           ->withInput();
+                           ->withInput()
+                           ->with('scroll_to_booking', true);
         }
 
         try {
@@ -289,10 +309,11 @@ class BookingController extends Controller
      */
     public function show($booking_id)
     {
-        $booking = Booking::with(['layanan', 'specialOffer', 'invoice'])
+        $booking = Booking::with(['layanan', 'specialOffer', 'invoice', 'user'])
                          ->where('booking_id', $booking_id)
                          ->where('user_id', Auth::id())
-                         ->firstOrFail();
+                         ->first();
+        abort_if($booking?->user_id !== Auth::user()->id,403, "Anda tidak memiliki akses");
 
         return view('Frontend.booking.show', compact('booking'));
     }
@@ -474,8 +495,15 @@ class BookingController extends Controller
         ]);
 
         if ($validator->fails()) {
-            Alert::error('Validasi Gagal', 'Mohon periksa kembali data yang Anda masukkan.');
-            return redirect()->back()->withErrors($validator)->withInput();
+            $messages = [];
+            foreach ($validator->errors()->messages() as $field => $fieldMessages) {
+                $label = ucwords(str_replace(['_', '-'], ' ', $field));
+                $messages[] = $label . ': ' . implode(', ', $fieldMessages);
+            }
+            $errorText = implode(' | ', $messages);
+
+            Alert::error('Validasi Gagal', $errorText);
+            return redirect()->back()->withErrors($validator)->withInput()->with('scroll_to_booking', true);
         }
 
         DB::beginTransaction();

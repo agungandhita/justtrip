@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,7 @@ use App\Http\Controllers\Frontend\InvoiceController;
 use App\Http\Controllers\Frontend\PaymentController;
 use App\Http\Controllers\Frontend\SpecialOfferController as FrontendSpecialOfferController;
 use App\Http\Controllers\GuestBookingController;
+use App\Http\Controllers\SubscribeUserController;
 
 // Public routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -47,6 +49,9 @@ Route::get('/api/gallery/search', [FrontendGalleryController::class, 'search'])-
 // Layanan routes (public)
 Route::get('/layanan', [LayananController::class, 'publicIndex'])->name('layanan.index');
 Route::get('/layanan/{layanan}', [LayananController::class, 'publicShow'])->name('layanan.show');
+
+// API: cari layanan berdasarkan destinasi (dipakai oleh guest-booking frontend JS)
+Route::get('/api/layanan/search', [GuestBookingController::class, 'getLayananByDestination'])->name('api.layanan.search');
 
 // Guest Booking routes (public)
 Route::prefix('guest-booking')->name('guest-booking.')->group(function () {
@@ -79,6 +84,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // Special Offers CRUD routes
     Route::resource('special-offers', SpecialOfferController::class, ['names' => 'special-offers']);
+
+    // Subscribe Users CRUD routes
+    Route::resource('subscribe-users', \App\Http\Controllers\SubscribeUserController::class, ['names' => 'subscribe-users']);
+
+    // Mass unsubscribe
+    Route::post('subscribe-users/mass-unsubscribe', [\App\Http\Controllers\SubscribeUserController::class, 'massUnsubscribe'])->name('subscribe-users.mass-unsubscribe');
 
     // Standalone Special Offers routes
     Route::get('special-offers-standalone/create', [SpecialOfferController::class, 'createStandalone'])->name('special-offers.create-standalone');
@@ -168,6 +179,8 @@ Route::middleware(['auth', 'user'])->prefix('user')->name('user.')->group(functi
         return view('Frontend.user.settings');
     })->name('settings');
 });
+
+Route::post('/subscribe-newsletter', [SubscribeUserController::class, 'storeFrontend'])->name('subscribe-users.store-frontend');
 
 // Admin Invoice Management
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {

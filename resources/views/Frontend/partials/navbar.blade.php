@@ -1,11 +1,11 @@
 <!-- JustTrip Bus Rental Navbar -->
-<nav class="fixed top-0 right-0 left-0 z-50 border-b border-gray-100 shadow-sm backdrop-blur-md transition-all duration-300 bg-white/95">
+<nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-gray-100 shadow-sm backdrop-blur-md bg-white/95">
     <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
+        <div class="flex items-center justify-between h-16">
             <!-- Logo -->
             <div class="flex items-center">
                 <a href="{{ route('home') }}" class="flex items-center space-x-3 group">
-                    <div class="flex overflow-hidden justify-center items-center w-10 h-10 bg-blue-500 rounded-xl shadow-sm transition-transform duration-200 group-hover:scale-105">
+                    <div class="flex items-center justify-center w-10 h-10 overflow-hidden transition-transform duration-200 bg-blue-500 shadow-sm rounded-xl group-hover:scale-105">
                         <img src="{{ asset('image/logo4.png') }}" alt="JustTrip Logo" class="object-contain w-8 h-8">
                     </div>
                     <div class="hidden sm:block">
@@ -16,7 +16,7 @@
             </div>
 
             <!-- Desktop Navigation -->
-            <div class="hidden items-center space-x-8 md:flex">
+            <div class="items-center hidden space-x-8 md:flex">
                 <a href="{{ route('home') }}" class="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 {{ request()->routeIs('home') || request()->routeIs('beranda') ? 'text-blue-600' : '' }}">
                     Beranda
                 </a>
@@ -36,7 +36,7 @@
                 <a href="{{ route('special-offers.index') }}" class="relative text-gray-700 hover:text-red-600 font-medium transition-colors duration-200 {{ request()->routeIs('special-offers.*') ? 'text-red-600' : '' }}">
                     <span class="flex items-center">
                         Promo Spesial
-                        <span class="flex justify-center items-center ml-2 w-5 h-5 text-xs text-white bg-gradient-to-r from-red-500 to-pink-500 rounded-full animate-pulse">
+                        <span class="flex items-center justify-center w-5 h-5 ml-2 text-xs text-white rounded-full bg-gradient-to-r from-red-500 to-pink-500 animate-pulse">
                             <i class="text-xs fas fa-fire"></i>
                         </span>
                     </span>
@@ -55,8 +55,8 @@
                 <!-- User Dropdown Menu -->
                 @auth
                 <div class="relative">
-                    <button id="user-menu-button" class="flex items-center p-2 space-x-2 text-gray-600 rounded-lg transition-colors duration-200 hover:text-gray-900 hover:bg-gray-100">
-                        <div class="flex justify-center items-center w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full">
+                    <button id="user-menu-button" class="flex items-center p-2 space-x-2 text-gray-600 transition-colors duration-200 rounded-lg hover:text-gray-900 hover:bg-gray-100">
+                        <div class="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-600">
                             <i class="text-sm text-white fas fa-user-circle"></i>
                         </div>
                         <span class="hidden text-sm font-medium md:block">{{ Auth::user()->name }}</span>
@@ -64,7 +64,7 @@
                     </button>
 
                     <!-- Dropdown Menu -->
-                    <div id="user-dropdown" class="hidden absolute right-0 z-50 mt-2 w-64 bg-white rounded-lg border border-gray-100 shadow-lg">
+                    <div id="user-dropdown" class="absolute right-0 z-50 hidden w-64 mt-2 bg-white border border-gray-100 rounded-lg shadow-lg">
                         <div class="py-2">
                             <!-- User Info -->
                             <div class="px-4 py-3 border-b border-gray-100">
@@ -76,11 +76,11 @@
                             <div class="px-4 py-2">
                                 <h4 class="mb-2 text-xs font-semibold tracking-wider text-gray-400 uppercase">Riwayat Login</h4>
                                 <div class="space-y-1">
-                                    <div class="flex justify-between items-center text-sm">
+                                    <div class="flex items-center justify-between text-sm">
                                         <span class="text-gray-600">Login Terakhir:</span>
                                         <span class="text-gray-900">{{ Auth::user()->updated_at->format('d M Y, H:i') }}</span>
                                     </div>
-                                    <div class="flex justify-between items-center text-sm">
+                                    <div class="flex items-center justify-between text-sm">
                                         <span class="text-gray-600">Status:</span>
                                         <span class="inline-flex items-center px-2 py-1 text-xs font-medium text-green-800 bg-green-100 rounded-full">
                                             <i class="mr-1 text-xs text-green-400 fas fa-circle"></i>
@@ -99,18 +99,18 @@
                                 <a href="{{ route('booking.index') }}" class="flex items-center px-4 py-2 text-sm text-gray-700 transition-colors duration-200 hover:bg-gray-50">
                                     <i class="mr-3 text-gray-400 fas fa-history"></i>
                                     Riwayat Booking
-                                </a> --}}
-                                <a href="{{ route('user.settings') }}" class="flex items-center px-4 py-2 text-sm text-gray-700 transition-colors duration-200 hover:bg-gray-50">
+                                </a>
+                                {{-- <a href="{{ route('user.settings') }}" class="flex items-center px-4 py-2 text-sm text-gray-700 transition-colors duration-200 hover:bg-gray-50">
                                     <i class="mr-3 text-gray-400 fas fa-cog"></i>
                                     Pengaturan
-                                </a>
+                                </a> --}}
                             </div>
 
                             <!-- Logout -->
                             <div class="border-t border-gray-100">
                                 <form method="POST" action="{{ route('logout') }}" class="block">
                                     @csrf
-                                    <button type="submit" class="flex items-center px-4 py-2 w-full text-sm text-red-600 transition-colors duration-200 hover:bg-red-50">
+                                    <button type="submit" class="flex items-center w-full px-4 py-2 text-sm text-red-600 transition-colors duration-200 hover:bg-red-50">
                                         <i class="mr-3 text-red-500 fas fa-sign-out-alt"></i>
                                         Logout
                                     </button>
@@ -121,18 +121,18 @@
                 </div>
                 @else
                 <!-- Login/Register Buttons for Guest -->
-                <div class="hidden items-center space-x-2 md:flex">
+                <div class="items-center hidden space-x-2 md:flex">
                     <a href="{{ route('login') }}" class="px-4 py-2 font-medium text-gray-700 transition-colors duration-200 hover:text-blue-600">
                         Masuk
                     </a>
-                    <a href="{{ route('register') }}" class="px-4 py-2 font-medium text-white bg-blue-600 rounded-lg transition-colors duration-200 hover:bg-blue-700">
+                    <a href="{{ route('register') }}" class="px-4 py-2 font-medium text-white transition-colors duration-200 bg-blue-600 rounded-lg hover:bg-blue-700">
                         Daftar
                     </a>
                 </div>
                 @endauth
 
                 <!-- Mobile Menu Button -->
-                <button id="mobile-menu-button" class="p-2 text-gray-600 rounded-lg transition-colors duration-200 md:hidden hover:text-gray-900 hover:bg-gray-100">
+                <button id="mobile-menu-button" class="p-2 text-gray-600 transition-colors duration-200 rounded-lg md:hidden hover:text-gray-900 hover:bg-gray-100">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
@@ -167,7 +167,7 @@
             <a href="{{ route('special-offers.index') }}" class="block px-3 py-2 text-gray-700 hover:text-red-600 font-medium transition-colors duration-200 rounded-lg {{ request()->routeIs('special-offers.*') ? 'text-red-600 bg-red-50' : '' }}">
                 <i class="mr-2 fas fa-fire"></i>
                 Promo Spesial
-                <span class="inline-flex justify-center items-center ml-2 w-5 h-5 text-xs text-white bg-gradient-to-r from-red-500 to-pink-500 rounded-full animate-pulse">
+                <span class="inline-flex items-center justify-center w-5 h-5 ml-2 text-xs text-white rounded-full bg-gradient-to-r from-red-500 to-pink-500 animate-pulse">
                     <i class="text-xs fas fa-percent"></i>
                 </span>
             </a>
@@ -185,17 +185,17 @@
             @auth
             <!-- Simple User Links for Mobile -->
             <div class="pt-3 mt-3 space-y-2 border-t border-gray-200">
-                <a href="{{ route('user.profile') }}" class="block px-3 py-2 font-medium text-gray-700 rounded-lg transition-colors duration-200 hover:text-blue-600">
+                <a href="{{ route('user.profile') }}" class="block px-3 py-2 font-medium text-gray-700 transition-colors duration-200 rounded-lg hover:text-blue-600">
                     <i class="mr-2 fas fa-user-circle"></i>
                     Profil Saya
                 </a>
-                <a href="{{ route('booking.index') }}" class="block px-3 py-2 font-medium text-gray-700 rounded-lg transition-colors duration-200 hover:text-blue-600">
+                <a href="{{ route('booking.index') }}" class="block px-3 py-2 font-medium text-gray-700 transition-colors duration-200 rounded-lg hover:text-blue-600">
                     <i class="mr-2 fas fa-history"></i>
                     Riwayat Booking
                 </a> --}}
                 <form method="POST" action="{{ route('logout') }}" class="block">
                     @csrf
-                    <button type="submit" class="block px-3 py-2 w-full font-medium text-left text-red-600 rounded-lg transition-colors duration-200 hover:bg-red-50">
+                    <button type="submit" class="block w-full px-3 py-2 font-medium text-left text-red-600 transition-colors duration-200 rounded-lg hover:bg-red-50">
                         <i class="mr-2 fas fa-sign-out-alt"></i>
                         Logout
                     </button>
@@ -204,11 +204,11 @@
             @else
             <!-- Simple Login/Register for Mobile -->
             <div class="pt-3 mt-3 space-y-2 border-t border-gray-200">
-                <a href="{{ route('login') }}" class="block px-3 py-2 font-medium text-gray-700 rounded-lg transition-colors duration-200 hover:text-blue-600">
+                <a href="{{ route('login') }}" class="block px-3 py-2 font-medium text-gray-700 transition-colors duration-200 rounded-lg hover:text-blue-600">
                     <i class="mr-2 fas fa-sign-in-alt"></i>
                     Masuk
                 </a>
-                <a href="{{ route('register') }}" class="block px-3 py-2 font-medium text-white bg-blue-600 rounded-lg transition-colors duration-200 hover:bg-blue-700">
+                <a href="{{ route('register') }}" class="block px-3 py-2 font-medium text-white transition-colors duration-200 bg-blue-600 rounded-lg hover:bg-blue-700">
                     <i class="mr-2 fas fa-user-plus"></i>
                     Daftar
                 </a>

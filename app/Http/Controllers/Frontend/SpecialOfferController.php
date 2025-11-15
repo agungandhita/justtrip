@@ -135,7 +135,7 @@ class SpecialOfferController extends Controller
     public function show(SpecialOffer $specialOffer)
     {
         // Check if offer is active and valid
-        if (!$specialOffer->is_active || $specialOffer->valid_until < now()) {
+        if (!$specialOffer->is_active || $specialOffer->valid_until <= now()) {
             abort(404, 'Special offer not found or expired');
         }
 

@@ -24,11 +24,13 @@
             </h1>
         </div>
 
-        <form action="{{ route('guest-booking.store') }}" method="POST" id="bookingForm" class="space-y-8">
+        <form action="{{ route('guest-booking.store') }}" method="POST" id="bookingForm" class="space-y-8" x-data="guestBookingSearch()" @mount="destinasi = '{{ $destinasi }}'; @if(!$isCustom) searchLayanan(); @endif">
             @csrf
             <input type="hidden" name="destinasi_dicari" value="{{ $destinasi }}">
             @if(!$isCustom && $layanan)
-                <input type="hidden" name="layanan_id" value="{{ $layanan->layanan_id }}">
+                <input type="hidden" name="layanan_id" value="{{ $layanan->layanan_id }}" x-model="selectedLayanan">
+            @else
+                <input type="hidden" name="layanan_id" value="">
             @endif
             <input type="hidden" name="is_custom_request" value="{{ $isCustom ? '1' : '0' }}">
 
@@ -126,6 +128,41 @@
                             <i class="fas fa-suitcase text-green-500 mr-3"></i>
                             Detail Perjalanan
                         </h2>
+                        
+                        <!-- Loading State -->
+                        <div x-show="loading" class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg flex items-center">
+                            <i class="fas fa-spinner fa-spin text-blue-500 mr-3"></i>
+                            <span class="text-blue-700">Mencari paket wisata...</span>
+                        </div>
+                        
+                        <!-- Error State -->
+                        <div x-show="error" class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                            <p class="text-red-700" x-text="error"></p>
+                        </div>
+                        
+                        <!-- Layanan Results (jika custom request atau tidak ada layanan dari form) -->
+                        @if($isCustom)
+                        <div x-show="layananList.length > 0" class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-3">
+                                <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                                Paket yang Mungkin Sesuai (Opsional)
+                            </label>
+                            <div class="grid md:grid-cols-2 gap-3">
+                                <template x-for="layanan in layananList" :key="layanan.layanan_id">
+                                    <button
+                                        type="button"
+                                        @click="selectLayanan(layanan)"
+                                        :class="selectedLayanan?.layanan_id === layanan.layanan_id ? 'bg-blue-100 border-blue-500 shadow-md' : 'bg-gray-50 border-gray-200 hover:border-blue-300'"
+                                        class="text-left p-4 border-2 rounded-lg transition-all duration-200"
+                                    >
+                                        <h4 class="font-bold text-gray-800" x-text="layanan.nama_layanan"></h4>
+                                        <p class="text-xs text-gray-500 mt-1" x-text="`${layanan.durasi_hari} hari • ${layanan.lokasi_tujuan}`"></p>
+                                        <p class="text-sm font-semibold text-blue-600 mt-2" x-text="'Mulai: ' + formatPrice(layanan.harga_mulai)"></p>
+                                    </button>
+                                </template>
+                            </div>
+                        </div>
+                        @endif
                         
                         <div class="grid md:grid-cols-2 gap-6">
                             <div>
@@ -331,52 +368,82 @@ document.addEventListener('DOMContentLoaded', function() {
     
     @if(!$isCustom && $layanan)
     // Real-time price calculation for existing services
-    const participantInput = document.querySelector('input[name="jumlah_peserta"]');
+    const participantSelect = document.querySelector('select[name="jumlah_peserta"]');
     const totalPriceElement = document.getElementById('totalPrice');
     const participantCountElement = document.getElementById('participantCount');
     const basePrice = {{ $layanan->harga_mulai }};
     
     function updatePrice() {
-        const participants = parseInt(participantInput.value) || 1;
+        const participants = parseInt(participantSelect.value) || 1;
         const totalPrice = basePrice * participants;
         
         totalPriceElement.textContent = 'Rp ' + totalPrice.toLocaleString('id-ID');
         participantCountElement.textContent = participants;
     }
     
-    if (participantInput) {
-        participantInput.addEventListener('input', updatePrice);
-        participantInput.addEventListener('change', updatePrice);
+    if (participantSelect) {
+        participantSelect.addEventListener('input', updatePrice);
+        participantSelect.addEventListener('change', updatePrice);
         // Initialize with current value
         updatePrice();
     }
+    @else
+    // Untuk custom request, listening to Alpine events
+    document.addEventListener('layanan-selected', function(e) {
+        const layanan = e.detail;
+        const participantSelect = document.querySelector('select[name="jumlah_peserta"]');
+        const totalPriceElement = document.getElementById('totalPrice');
+        const participantCountElement = document.getElementById('participantCount');
+        
+        if (participantSelect && totalPriceElement && layanan.harga_mulai) {
+            function updatePrice() {
+                const participants = parseInt(participantSelect.value) || 1;
+                const totalPrice = layanan.harga_mulai * participants;
+                totalPriceElement.textContent = 'Rp ' + totalPrice.toLocaleString('id-ID');
+                if (participantCountElement) {
+                    participantCountElement.textContent = participants;
+                }
+            }
+            
+            // Remove old listeners
+            const newSelect = participantSelect.cloneNode(true);
+            participantSelect.parentNode.replaceChild(newSelect, participantSelect);
+            
+            // Add new listeners
+            newSelect.addEventListener('change', updatePrice);
+            newSelect.addEventListener('input', updatePrice);
+            updatePrice();
+        }
+    });
     @endif
     
     // Form validation
     const form = document.getElementById('bookingForm');
-    form.addEventListener('submit', function(e) {
-        const requiredFields = form.querySelectorAll('[required]');
-        let isValid = true;
-        
-        requiredFields.forEach(field => {
-            if (!field.value.trim()) {
-                isValid = false;
-                field.classList.add('border-red-500');
-            } else {
-                field.classList.remove('border-red-500');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            const requiredFields = form.querySelectorAll('[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.classList.add('border-red-500');
+                } else {
+                    field.classList.remove('border-red-500');
+                }
+            });
+            
+            if (!isValid) {
+                e.preventDefault();
+                // Scroll to first error
+                const firstError = form.querySelector('.border-red-500');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    firstError.focus();
+                }
             }
         });
-        
-        if (!isValid) {
-            e.preventDefault();
-            // Scroll to first error
-            const firstError = form.querySelector('.border-red-500');
-            if (firstError) {
-                firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                firstError.focus();
-            }
-        }
-    });
+    }
 });
 </script>
 @endsection

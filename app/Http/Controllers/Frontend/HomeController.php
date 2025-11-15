@@ -7,6 +7,7 @@ use App\Models\Layanan;
 use App\Models\SpecialOffer;
 use App\Models\News;
 use App\Models\Gallery;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -19,11 +20,12 @@ class HomeController extends Controller
     public function index()
     {
         // Get featured special offers
+        // dd(Carbon::now());
         $featuredOffers = SpecialOffer::where('is_active', true)
-                                     ->where('valid_until', '>=', now())
                                      ->where('is_featured', true)
+                                     ->where('valid_until', '>=', Carbon::now())
                                      ->latest()
-                                     ->take(3)
+                                     ->limit(3)
                                      ->get();
 
         // Get popular travel packages (Layanan)
