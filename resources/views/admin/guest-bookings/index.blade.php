@@ -119,12 +119,11 @@
                         <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
                         <select name="status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                             <option value="">Semua Status</option>
-                            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
-                            <option value="contacted" {{ request('status') == 'contacted' ? 'selected' : '' }}>Contacted</option>
-                            <option value="quoted" {{ request('status') == 'quoted' ? 'selected' : '' }}>Quoted</option>
-                            <option value="confirmed" {{ request('status') == 'confirmed' ? 'selected' : '' }}>Confirmed</option>
-                            <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
-                            <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed</option>
+                            <option value="baru" {{ request('status') == 'baru' ? 'selected' : '' }}>Baru</option>
+                            <option value="diproses" {{ request('status') == 'diproses' ? 'selected' : '' }}>Diproses</option>
+                            <option value="dikonfirmasi" {{ request('status') == 'dikonfirmasi' ? 'selected' : '' }}>Dikonfirmasi</option>
+                            <option value="ditolak" {{ request('status') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
+                            <option value="selesai" {{ request('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
                         </select>
                     </div>
 

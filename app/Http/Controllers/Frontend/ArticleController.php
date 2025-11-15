@@ -61,14 +61,14 @@ class ArticleController extends Controller
                                ->get();
 
         // Get filter options
-        $categories = News::where('is_published', true)
-                         ->distinct()
-                         ->pluck('category')
-                         ->filter()
-                         ->sort()
-                         ->values();
+        $categoryStats = News::where('is_published', true)
+                            ->whereNotNull('category')
+                            ->selectRaw('category, COUNT(*) as total')
+                            ->groupBy('category')
+                            ->orderBy('category', 'asc')
+                            ->get();
 
-        return view('Frontend.articles.index', compact('articles', 'featuredArticles', 'categories'));
+        return view('Frontend.articles.index', compact('articles', 'featuredArticles', 'categoryStats'));
     }
 
     /**

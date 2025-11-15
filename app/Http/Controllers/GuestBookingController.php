@@ -325,8 +325,10 @@ class GuestBookingController extends Controller
      */
     public function updateStatus(Request $request, GuestBooking $guestBooking)
     {
+        // Gunakan enum status sesuai definisi kolom di database
         $request->validate([
-            'status' => 'required|in:pending,contacted,quoted,confirmed,cancelled,completed'
+            'status' => 'required|in:baru,diproses,dikonfirmasi,ditolak,selesai',
+            'admin_notes' => 'nullable|string'
         ]);
 
         $guestBooking->update([
@@ -386,11 +388,12 @@ class GuestBookingController extends Controller
      */
     public function getStatistics()
     {
+        // Mengembalikan statistik dengan kunci yang konsisten di frontend,
+        // memetakan ke enum status di database.
         $stats = [
             'total' => GuestBooking::count(),
-            'pending' => GuestBooking::where('status', 'pending')->count(),
-            'contacted' => GuestBooking::where('status', 'contacted')->count(),
-            'confirmed' => GuestBooking::where('status', 'confirmed')->count(),
+            'pending' => GuestBooking::where('status', 'baru')->count(),
+            'confirmed' => GuestBooking::where('status', 'dikonfirmasi')->count(),
             'custom_requests' => GuestBooking::where('is_custom_request', true)->count(),
             'package_bookings' => GuestBooking::where('is_custom_request', false)->count(),
             'this_month' => GuestBooking::whereMonth('created_at', now()->month)->count(),

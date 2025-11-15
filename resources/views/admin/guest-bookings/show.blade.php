@@ -153,12 +153,11 @@
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
                                 <select name="status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                                    <option value="pending" {{ $guestBooking->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                                    <option value="contacted" {{ $guestBooking->status == 'contacted' ? 'selected' : '' }}>Contacted</option>
-                                    <option value="quoted" {{ $guestBooking->status == 'quoted' ? 'selected' : '' }}>Quoted</option>
-                                    <option value="confirmed" {{ $guestBooking->status == 'confirmed' ? 'selected' : '' }}>Confirmed</option>
-                                    <option value="cancelled" {{ $guestBooking->status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
-                                    <option value="completed" {{ $guestBooking->status == 'completed' ? 'selected' : '' }}>Completed</option>
+                                    <option value="baru" {{ $guestBooking->status == 'baru' ? 'selected' : '' }}>Baru</option>
+                                    <option value="diproses" {{ $guestBooking->status == 'diproses' ? 'selected' : '' }}>Diproses</option>
+                                    <option value="dikonfirmasi" {{ $guestBooking->status == 'dikonfirmasi' ? 'selected' : '' }}>Dikonfirmasi</option>
+                                    <option value="ditolak" {{ $guestBooking->status == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
+                                    <option value="selesai" {{ $guestBooking->status == 'selesai' ? 'selected' : '' }}>Selesai</option>
                                 </select>
                             </div>
                             <div>
@@ -187,12 +186,11 @@
                             <span class="text-gray-600">Status:</span>
                             @php
                                 $statusColors = [
-                                    'pending' => 'bg-yellow-100 text-yellow-800',
-                                    'contacted' => 'bg-blue-100 text-blue-800',
-                                    'quoted' => 'bg-indigo-100 text-indigo-800',
-                                    'confirmed' => 'bg-green-100 text-green-800',
-                                    'cancelled' => 'bg-red-100 text-red-800',
-                                    'completed' => 'bg-gray-100 text-gray-800'
+                                    'baru' => 'bg-blue-100 text-blue-800',
+                                    'diproses' => 'bg-yellow-100 text-yellow-800',
+                                    'dikonfirmasi' => 'bg-green-100 text-green-800',
+                                    'ditolak' => 'bg-red-100 text-red-800',
+                                    'selesai' => 'bg-gray-100 text-gray-800'
                                 ];
                             @endphp
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $statusColors[$guestBooking->status] ?? 'bg-gray-100 text-gray-800' }}">

@@ -27,69 +27,49 @@
             <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Artikel Pilihan</h2>
             <p class="text-xl text-gray-600 max-w-3xl mx-auto">Artikel terbaru dan terpopuler untuk menginspirasi perjalanan Anda</p>
         </div>
-        
-        <div class="grid lg:grid-cols-2 gap-12 mb-16">
-            <!-- Featured Article 1 -->
-            <div class="group cursor-pointer" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-12 mb-16">
+            @forelse($featuredArticles as $index => $featured)
+            <a href="{{ route('articles.show', $featured->slug) }}" class="group cursor-pointer" data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
                 <div class="relative overflow-hidden rounded-2xl mb-6">
-                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Bali Hidden Gems" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500">
+                    <img src="{{ $featured->featured_image ? asset('storage/' . $featured->featured_image) : 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' }}" alt="{{ $featured->title }}" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                     <div class="absolute top-4 left-4">
-                        <span class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Destinasi</span>
+                        <span class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-3 py-1 rounded-full text-sm font-semibold">{{ $featured->category ?? 'General' }}</span>
                     </div>
                     <div class="absolute bottom-6 left-6 text-white">
-                        <p class="text-sm opacity-80 mb-2">15 Januari 2024</p>
-                        <h3 class="text-2xl font-bold mb-2">10 Hidden Gems di Bali yang Wajib Dikunjungi</h3>
-                        <p class="text-sm opacity-90">Temukan tempat-tempat tersembunyi di Bali yang belum banyak diketahui wisatawan</p>
+                        <p class="text-sm opacity-80 mb-2">{{ ($featured->published_at ?? $featured->created_at)->format('d M Y') }}</p>
+                        <h3 class="text-2xl font-bold mb-2">{{ $featured->title }}</h3>
+                        @if($featured->excerpt)
+                        <p class="text-sm opacity-90">{{ $featured->excerpt }}</p>
+                        @endif
                     </div>
                 </div>
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
-                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Author" class="w-10 h-10 rounded-full mr-3">
+                        <img src="{{ $featured->author_image ? asset('storage/' . $featured->author_image) : 'https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80' }}" alt="{{ $featured->author_name ?? 'Admin' }}" class="w-10 h-10 rounded-full mr-3">
                         <div>
-                            <p class="font-semibold text-gray-800">Sarah Wijaya</p>
-                            <p class="text-gray-500 text-sm">Travel Writer</p>
+                            <p class="font-semibold text-gray-800">{{ $featured->author_name ?? 'Admin' }}</p>
+                            <p class="text-gray-500 text-sm">{{ $featured->author_bio ?? 'Travel Writer' }}</p>
                         </div>
                     </div>
                     <div class="flex items-center text-gray-500 text-sm">
                         <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
                         </svg>
-                        5 min read
+                        {{ $featured->read_time ?? 5 }} min read
                     </div>
                 </div>
+            </a>
+            @empty
+            <div class="md:col-span-2 lg:col-span-3 text-center py-12">
+                <div class="text-gray-400 mb-4">
+                    <i class="fas fa-star text-6xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-600 mb-2">Belum Ada Artikel Pilihan</h3>
+                <p class="text-gray-500">Artikel pilihan akan segera hadir. Pantau terus!</p>
             </div>
-            
-            <!-- Featured Article 2 -->
-            <div class="group cursor-pointer" data-aos="fade-up" data-aos-delay="200">
-                <div class="relative overflow-hidden rounded-2xl mb-6">
-                    <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Budget Travel Tips" class="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-500">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                    <div class="absolute top-4 left-4">
-                        <span class="bg-gradient-to-r from-teal-500 to-cyan-500 text-white px-3 py-1 rounded-full text-sm font-semibold">Tips</span>
-                    </div>
-                    <div class="absolute bottom-6 left-6 text-white">
-                        <p class="text-sm opacity-80 mb-2">12 Januari 2024</p>
-                        <h3 class="text-2xl font-bold mb-2">Cara Traveling Hemat dengan Budget Minim</h3>
-                        <p class="text-sm opacity-90">Tips dan trik untuk menikmati perjalanan menarik tanpa menguras kantong</p>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Author" class="w-10 h-10 rounded-full mr-3">
-                        <div>
-                            <p class="font-semibold text-gray-800">Andi Pratama</p>
-                            <p class="text-gray-500 text-sm">Travel Expert</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center text-gray-500 text-sm">
-                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
-                        </svg>
-                        8 min read
-                    </div>
-                </div>
-            </div>
+            @endforelse
         </div>
     </div>
 </section>
@@ -101,83 +81,41 @@
             <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Kategori Artikel</h2>
             <p class="text-xl text-gray-600 max-w-3xl mx-auto">Jelajahi artikel berdasarkan kategori yang Anda minati</p>
         </div>
-        
-        <div class="grid md:grid-cols-2 lg:grid-cols-5 gap-8">
-            <!-- Travel Tips -->
-            <div class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer" data-aos="fade-up" data-aos-delay="100">
-                <div class="w-16 h-16 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
-                    </svg>
-                </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">Travel Tips</h3>
-                <p class="text-gray-600 text-center mb-6">Tips praktis untuk perjalanan yang lebih nyaman dan hemat</p>
-                <div class="text-center">
-                    <span class="text-2xl font-bold text-cyan-600">32</span>
-                    <p class="text-gray-500 text-sm">artikel</p>
-                </div>
-            </div>
-            
-            <!-- Destinations -->
-            <div class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer" data-aos="fade-up" data-aos-delay="200">
-                <div class="w-16 h-16 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                    </svg>
-                </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">Destinations</h3>
-                <p class="text-gray-600 text-center mb-6">Panduan lengkap destinasi wisata menarik di seluruh dunia</p>
-                <div class="text-center">
-                    <span class="text-2xl font-bold text-emerald-600">45</span>
-                    <p class="text-gray-500 text-sm">artikel</p>
-                </div>
-            </div>
-            
-            <!-- Company News -->
-            <div class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer" data-aos="fade-up" data-aos-delay="300">
-                <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
-                    </svg>
-                </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">Company News</h3>
-                <p class="text-gray-600 text-center mb-6">Berita terbaru dan update dari perusahaan travel</p>
-                <div class="text-center">
-                    <span class="text-2xl font-bold text-purple-600">18</span>
-                    <p class="text-gray-500 text-sm">artikel</p>
-                </div>
-            </div>
-            
-            <!-- Travel Guides -->
-            <div class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer" data-aos="fade-up" data-aos-delay="400">
-                <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
+
+        @php
+            $colorSets = [
+                ['bg' => 'from-cyan-500 to-blue-500', 'text' => 'text-cyan-600'],
+                ['bg' => 'from-emerald-500 to-teal-500', 'text' => 'text-emerald-600'],
+                ['bg' => 'from-purple-500 to-indigo-500', 'text' => 'text-purple-600'],
+                ['bg' => 'from-green-500 to-emerald-500', 'text' => 'text-green-600'],
+                ['bg' => 'from-orange-500 to-red-500', 'text' => 'text-orange-600'],
+            ];
+        @endphp
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            @forelse($categoryStats as $i => $stat)
+            <a href="{{ route('articles.index', ['category' => $stat->category]) }}" class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer" data-aos="fade-up" data-aos-delay="{{ ($i % 5) * 100 }}">
+                <div class="w-16 h-16 bg-gradient-to-r {{ $colorSets[$i % count($colorSets)]['bg'] }} rounded-full flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
                     <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                     </svg>
                 </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">Travel Guides</h3>
-                <p class="text-gray-600 text-center mb-6">Panduan perjalanan lengkap untuk berbagai destinasi</p>
+                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">{{ $stat->category }}</h3>
+                <p class="text-gray-600 text-center mb-6">Artikel dalam kategori ini</p>
                 <div class="text-center">
-                    <span class="text-2xl font-bold text-green-600">28</span>
+                    <span class="text-2xl font-bold {{ $colorSets[$i % count($colorSets)]['text'] }}">{{ $stat->total }}</span>
                     <p class="text-gray-500 text-sm">artikel</p>
                 </div>
-            </div>
-            
-            <!-- Promotions -->
-            <div class="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer" data-aos="fade-up" data-aos-delay="500">
-                <div class="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
-                    </svg>
+            </a>
+            @empty
+            <div class="md:col-span-2 lg:col-span-4 text-center py-12">
+                <div class="text-gray-400 mb-4">
+                    <i class="fas fa-folder-open text-6xl"></i>
                 </div>
-                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">Promotions</h3>
-                <p class="text-gray-600 text-center mb-6">Promo dan penawaran menarik untuk perjalanan Anda</p>
-                <div class="text-center">
-                    <span class="text-2xl font-bold text-orange-600">15</span>
-                    <p class="text-gray-500 text-sm">artikel</p>
-                </div>
+                <h3 class="text-xl font-semibold text-gray-600 mb-2">Belum Ada Kategori</h3>
+                <p class="text-gray-500">Kategori akan otomatis muncul ketika artikel dipublikasikan.</p>
             </div>
+            @endforelse
         </div>
     </div>
 </section>
