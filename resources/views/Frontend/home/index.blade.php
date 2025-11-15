@@ -224,139 +224,98 @@
             </div>
         </div>
 
+        @php
+            $internationalPackages = $popularPackages->filter(fn($p) => $p->jenis_layanan === 'tour_internasional');
+            $domesticPackages = $popularPackages->filter(fn($p) => $p->jenis_layanan === 'tour_domestik');
+        @endphp
+
         <!-- International Destinations -->
         <div id="international" class="tab-content active">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-                <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100">
+                @forelse($internationalPackages->take(3) as $index => $pkg)
+                <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
                     <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Bali" class="w-full h-48 sm:h-56 md:h-64 object-cover group-hover:scale-110 transition-transform duration-500">
+                        @if($pkg->gambar_utama)
+                            <img src="{{ asset('storage/' . $pkg->gambar_utama) }}" alt="{{ $pkg->nama_layanan }}" class="w-full h-48 sm:h-56 md:h-64 object-cover group-hover:scale-110 transition-transform duration-500">
+                        @else
+                            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="{{ $pkg->nama_layanan }}" class="w-full h-48 sm:h-56 md:h-64 object-cover group-hover:scale-110 transition-transform duration-500">
+                        @endif
                         <div class="absolute top-3 left-3 sm:top-4 sm:left-4">
                             <span class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-semibold">Populer</span>
                         </div>
+                        @if($pkg->hasActiveSpecialOffers())
+                            <div class="absolute top-3 right-3 sm:top-4 sm:right-4">
+                                <span class="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-semibold">Promo</span>
+                            </div>
+                        @endif
                         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
                     <div class="p-4 sm:p-5 md:p-6">
-                        <h3 class="text-base sm:text-lg md:text-xl font-bold text-gray-800 mb-1 sm:mb-2">Bali</h3>
-                        <p class="text-xs sm:text-sm md:text-base text-gray-600 mb-3 sm:mb-4">4D3N • Hotel 4* • Breakfast • Tour Guide</p>
+                        <h3 class="text-base sm:text-lg md:text-xl font-bold text-gray-800 mb-1 sm:mb-2">{{ $pkg->nama_layanan }}</h3>
+                        <p class="text-xs sm:text-sm md:text-base text-gray-600 mb-3 sm:mb-4">{{ $pkg->durasi_format }} • {{ $pkg->lokasi_tujuan }}</p>
                         <div class="flex items-center justify-between">
                             <div>
-                                <span class="text-lg sm:text-xl md:text-2xl font-bold text-blue-600">Rp 2.500.000</span>
-                            <span class="text-gray-500 text-xs sm:text-sm">/person</span>
-                        </div>
-                        <button class="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-3 py-1 sm:px-4 sm:py-2 md:px-6 md:py-2 rounded-full text-xs sm:text-sm md:text-base font-semibold transition-all duration-300 transform hover:scale-105">Book Now</button>
+                                @php $offer = $pkg->getCurrentSpecialOffer(); @endphp
+                                @if($offer)
+                                    <span class="text-gray-400 line-through text-xs sm:text-sm md:text-base">Rp {{ number_format($pkg->harga_mulai, 0, ',', '.') }}</span>
+                                    <span class="text-lg sm:text-xl md:text-2xl font-bold text-blue-600 ml-2">Rp {{ number_format($pkg->getDiscountedPrice(), 0, ',', '.') }}</span>
+                                @else
+                                    <span class="text-lg sm:text-xl md:text-2xl font-bold text-blue-600">Rp {{ number_format($pkg->harga_mulai, 0, ',', '.') }}</span>
+                                @endif
+                                <span class="text-gray-500 text-xs sm:text-sm">/person</span>
+                            </div>
+                            <a href="{{ route('packages.show', $pkg->slug) }}" class="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-3 py-1 sm:px-4 sm:py-2 md:px-6 md:py-2 rounded-full text-xs sm:text-sm md:text-base font-semibold transition-all duration-300 transform hover:scale-105">Detail</a>
                         </div>
                     </div>
                 </div>
-
-                <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200">
-                    <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1555400082-8c5cd5b3c3d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Singapore" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute top-4 left-4">
-                            <span class="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-3 py-1 rounded-full text-sm font-semibold">Promo</span>
-                        </div>
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">Singapore</h3>
-                        <p class="text-gray-600 mb-4">3D2N • Hotel 5* • Universal Studios • City Tour</p>
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <span class="text-2xl font-bold text-blue-600">Rp 4.200.000</span>
-                            <span class="text-gray-500 text-sm">/person</span>
-                        </div>
-                        <button class="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">Book Now</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="300">
-                    <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1528181304800-259b08848526?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Thailand" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute top-4 left-4">
-                            <span class="bg-gradient-to-r from-slate-500 to-slate-600 text-white px-3 py-1 rounded-full text-sm font-semibold">Premium</span>
-                        </div>
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">Thailand</h3>
-                        <p class="text-gray-600 mb-4">5D4N • Hotel 4* • Temple Tour • Shopping</p>
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <span class="text-2xl font-bold text-blue-600">Rp 3.800.000</span>
-                            <span class="text-gray-500 text-sm">/person</span>
-                        </div>
-                        <button class="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">Book Now</button>
-                        </div>
-                    </div>
-                </div>
+                @empty
+                <div class="col-span-full text-center text-gray-600">Belum ada paket internasional populer.</div>
+                @endforelse
             </div>
         </div>
 
-        <!-- Corporate Bus Services -->
+        <!-- Domestic Destinations -->
         <div id="domestic" class="tab-content hidden">
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100">
+                @forelse($domesticPackages->take(3) as $index => $pkg)
+                <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
                     <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Employee Gathering" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
+                        @if($pkg->gambar_utama)
+                            <img src="{{ asset('storage/' . $pkg->gambar_utama) }}" alt="{{ $pkg->nama_layanan }}" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
+                        @else
+                            <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="{{ $pkg->nama_layanan }}" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
+                        @endif
                         <div class="absolute top-4 left-4">
-                            <span class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">Corporate</span>
+                            <span class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">Domestic</span>
                         </div>
+                        @if($pkg->hasActiveSpecialOffers())
+                            <div class="absolute top-4 right-4">
+                                <span class="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-3 py-1 rounded-full text-sm font-semibold">Promo</span>
+                            </div>
+                        @endif
                         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">Employee Gathering</h3>
-                        <p class="text-gray-600 mb-4">Medium Bus 25 Seat • AC • Sound System • WiFi</p>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">{{ $pkg->nama_layanan }}</h3>
+                        <p class="text-gray-600 mb-4">{{ $pkg->durasi_format }} • {{ $pkg->lokasi_tujuan }}</p>
                         <div class="flex items-center justify-between">
                             <div>
-                                <span class="text-2xl font-bold text-blue-600">Rp 2.000.000</span>
-                                <span class="text-gray-500 text-sm">/hari</span>
+                                @php $offer = $pkg->getCurrentSpecialOffer(); @endphp
+                                @if($offer)
+                                    <span class="text-gray-400 line-through text-lg">Rp {{ number_format($pkg->harga_mulai, 0, ',', '.') }}</span>
+                                    <span class="text-2xl font-bold text-blue-600 ml-2">Rp {{ number_format($pkg->getDiscountedPrice(), 0, ',', '.') }}</span>
+                                @else
+                                    <span class="text-2xl font-bold text-blue-600">Rp {{ number_format($pkg->harga_mulai, 0, ',', '.') }}</span>
+                                @endif
+                                <span class="text-gray-500 text-sm">/person</span>
                             </div>
-                            <button class="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">Sewa</button>
+                            <a href="{{ route('packages.show', $pkg->slug) }}" class="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">Detail</a>
                         </div>
                     </div>
                 </div>
-
-                <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200">
-                    <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Meeting Transport" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute top-4 left-4">
-                            <span class="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-3 py-1 rounded-full text-sm font-semibold">Executive</span>
-                        </div>
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">Meeting Transport</h3>
-                        <p class="text-gray-600 mb-4">Hiace Executive • Leather Seat • AC • Mineral Water</p>
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <span class="text-2xl font-bold text-blue-600">Rp 1.500.000</span>
-                                <span class="text-gray-500 text-sm">/hari</span>
-                            </div>
-                            <button class="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">Sewa</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="300">
-                    <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Company Outing" class="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute top-4 left-4">
-                            <span class="bg-gradient-to-r from-slate-500 to-slate-600 text-white px-3 py-1 rounded-full text-sm font-semibold">Premium</span>
-                        </div>
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">Company Outing</h3>
-                        <p class="text-gray-600 mb-4">Big Bus 45 Seat • AC • Toilet • Entertainment System</p>
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <span class="text-2xl font-bold text-blue-600">Rp 2.800.000</span>
-                                <span class="text-gray-500 text-sm">/hari</span>
-                            </div>
-                            <button class="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">Sewa</button>
-                        </div>
-                    </div>
-                </div>
+                @empty
+                <div class="col-span-full text-center text-gray-600">Belum ada paket domestik populer.</div>
+                @endforelse
             </div>
         </div>
 
@@ -406,12 +365,23 @@
                     <p class="text-gray-600 mb-4">{{ Str::limit($offer->description, 50) }}</p>
                     <div class="flex items-center justify-between">
                         @php
-                            $daysLeft = now()->diffInDays($offer->valid_until, false);
+                            $now = \Carbon\Carbon::now();
+                            $validUntil = \Carbon\Carbon::parse($offer->valid_until)->endOfDay();
                         @endphp
-                        @if($daysLeft > 0)
-                            <span class="text-sm text-red-500 font-semibold">⏰ {{ $daysLeft }} hari lagi</span>
+                        @if($validUntil->lt($now))
+                            <span class="text-sm text-gray-500 font-semibold">⏰ Promo berakhir</span>
                         @else
-                            <span class="text-sm text-red-500 font-semibold">⏰ Berakhir hari ini</span>
+                            @php
+                                // Hitung sisa hari sebagai bilangan bulat tanpa pecahan
+                                $daysLeft = (int) $now->startOfDay()->diffInDays($validUntil);
+                            @endphp
+                            @if($daysLeft > 1)
+                                <span class="text-sm text-red-500 font-semibold">⏰ {{ $daysLeft }} hari lagi</span>
+                            @elseif($daysLeft === 1)
+                                <span class="text-sm text-red-500 font-semibold">⏰ Berakhir besok</span>
+                            @else
+                                <span class="text-sm text-red-500 font-semibold">⏰ Berakhir hari ini</span>
+                            @endif
                         @endif
                         <a href="{{ route('special-offers.show', $offer->slug) }}" class="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-2 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
                             Ambil Promo
