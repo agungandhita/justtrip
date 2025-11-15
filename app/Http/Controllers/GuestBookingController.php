@@ -156,8 +156,10 @@ class GuestBookingController extends Controller
 
             // Kirim notifikasi ke admin (bisa via email atau WhatsApp)
             $this->notifyAdmin($guestBooking);
+            // Send guest booking data to the Mailable as an array with key 'guestBooking'
+            // so the admin notification view can access the full model (including booking_number, id, created_at, relations)
             Mail::to($validated['email'])->send(new GuestBookingFeedback(
-                datas: $validated
+                datas: ['guestBooking' => $guestBooking]
             ));
             DB::commit();
 
