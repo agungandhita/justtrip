@@ -3,19 +3,19 @@
 @section('title', 'Detail Booking #' . $booking->booking_id)
 
 @section('container')
-<div class="min-h-screen bg-gray-50 py-8">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="container min-h-screen py-8 mx-auto bg-gray-50">
+    <div class="px-4 mx-auto sm:px-6 lg:px-8">
         <!-- Header -->
-        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+        <div class="p-6 mb-6 bg-white rounded-lg shadow-sm">
             <div class="flex items-center justify-between">
                 <div>
                     <h1 class="text-2xl font-bold text-gray-900">Detail Booking</h1>
-                    <p class="text-gray-600 mt-1">Booking ID: #{{ $booking->booking_id }}</p>
+                    <p class="mt-1 text-gray-600">Booking ID: #{{ $booking->booking_id }}</p>
                 </div>
                 <div class="flex space-x-3">
                     @if($booking->status === 'confirmed')
                         <a href="{{ route('booking.invoice', $booking->booking_id) }}"
-                           class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
+                           class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                             </svg>
@@ -23,7 +23,7 @@
                         </a>
                     @endif
                     <a href="{{ route('booking.index') }}"
-                       class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                       class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                         </svg>
@@ -35,10 +35,10 @@
 
         <!-- Status Alert -->
         @if($booking->status === 'pending')
-            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+            <div class="p-4 mb-6 border border-yellow-200 rounded-lg bg-yellow-50">
                 <div class="flex">
                     <div class="flex-shrink-0">
-                        <svg class="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
                         </svg>
                     </div>
@@ -51,10 +51,10 @@
                 </div>
             </div>
         @elseif($booking->status === 'approved')
-            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+            <div class="p-4 mb-6 border border-blue-200 rounded-lg bg-blue-50">
                 <div class="flex">
                     <div class="flex-shrink-0">
-                        <svg class="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
                         </svg>
                     </div>
@@ -70,10 +70,10 @@
                 </div>
             </div>
         @elseif($booking->status === 'rejected')
-            <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+            <div class="p-4 mb-6 border border-red-200 rounded-lg bg-red-50">
                 <div class="flex">
                     <div class="flex-shrink-0">
-                        <svg class="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
                         </svg>
                     </div>
@@ -89,10 +89,10 @@
                 </div>
             </div>
         @elseif($booking->status === 'confirmed')
-            <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+            <div class="p-4 mb-6 border border-green-200 rounded-lg bg-green-50">
                 <div class="flex">
                     <div class="flex-shrink-0">
-                        <svg class="h-5 w-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
                         </svg>
                     </div>
@@ -105,10 +105,10 @@
                 </div>
             </div>
         @elseif($booking->status === 'cancelled')
-            <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+            <div class="p-4 mb-6 border border-red-200 rounded-lg bg-red-50">
                 <div class="flex">
                     <div class="flex-shrink-0">
-                        <svg class="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
                         </svg>
                     </div>
@@ -122,48 +122,49 @@
             </div>
         @endif
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
             <!-- Booking Details -->
-            <div class="lg:col-span-2 space-y-6">
+            <div class="space-y-6 lg:col-span-2">
                 <!-- Customer Information -->
-                <div class="bg-white rounded-lg shadow-sm p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <div class="p-6 bg-white rounded-lg shadow-sm">
+                    <h3 class="flex items-center mb-4 text-lg font-semibold text-gray-900">
                         <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                         </svg>
                         Informasi Pemesan
                     </h3>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        
                         <div>
                             <label class="block text-sm font-medium text-gray-500">Nama Lengkap</label>
-                            <p class="mt-1 text-sm text-gray-900">{{ $booking->customer_info['name'] }}</p>
+                            <p class="mt-1 text-sm text-gray-900">{{ $booking->user?->name }}</p>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-500">Email</label>
-                            <p class="mt-1 text-sm text-gray-900">{{ $booking->customer_info['email'] }}</p>
+                            <p class="mt-1 text-sm text-gray-900">{{ $booking->user?->email }}</p>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-500">Nomor Telepon</label>
-                            <p class="mt-1 text-sm text-gray-900">{{ $booking->customer_info['phone'] }}</p>
+                            <p class="mt-1 text-sm text-gray-900">{{ $booking->user?->phone }}</p>
                         </div>
                         <div class="md:col-span-2">
                             <label class="block text-sm font-medium text-gray-500">Alamat</label>
-                            <p class="mt-1 text-sm text-gray-900">{{ $booking->customer_info['address'] }}</p>
+                            <p class="mt-1 text-sm text-gray-900">{{ $booking->user?->address }}</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Trip Details -->
-                <div class="bg-white rounded-lg shadow-sm p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <div class="p-6 bg-white rounded-lg shadow-sm">
+                    <h3 class="flex items-center mb-4 text-lg font-semibold text-gray-900">
                         <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                         </svg>
                         Detail Perjalanan
                     </h3>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                         <div>
                             <label class="block text-sm font-medium text-gray-500">Jumlah Peserta</label>
                             <p class="mt-1 text-sm text-gray-900">{{ $booking->jumlah_peserta }} orang</p>
@@ -202,8 +203,8 @@
 
                 <!-- Payment Upload Section -->
                 @if($booking->status === 'approved')
-                    <div class="bg-white rounded-lg shadow-sm p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <div class="p-6 bg-white rounded-lg shadow-sm">
+                        <h3 class="flex items-center mb-4 text-lg font-semibold text-gray-900">
                             <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
                             </svg>
@@ -211,7 +212,7 @@
                         </h3>
 
                         @if($booking->admin_notes)
-                            <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
+                            <div class="p-4 mb-4 border border-green-200 rounded-lg bg-green-50">
                                 <p class="text-green-800">
                                     <strong>Catatan Admin:</strong> {{ $booking->admin_notes }}
                                 </p>
@@ -219,23 +220,23 @@
                         @endif
 
                         @if($booking->invoice && $booking->invoice->status === 'payment_uploaded')
-                            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
+                            <div class="p-4 mb-4 border border-yellow-200 rounded-lg bg-yellow-50">
                                 <p class="text-yellow-800">
-                                    <i class="fas fa-clock mr-2"></i>
+                                    <i class="mr-2 fas fa-clock"></i>
                                     Bukti pembayaran Anda sedang diverifikasi oleh admin.
                                 </p>
                             </div>
                         @elseif($booking->invoice && $booking->invoice->status === 'paid')
-                            <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
+                            <div class="p-4 mb-4 border border-green-200 rounded-lg bg-green-50">
                                 <p class="text-green-800">
-                                    <i class="fas fa-check-circle mr-2"></i>
+                                    <i class="mr-2 fas fa-check-circle"></i>
                                     Pembayaran Anda telah dikonfirmasi. Terima kasih!
                                 </p>
                             </div>
                         @else
-                            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                            <div class="p-4 mb-4 border border-blue-200 rounded-lg bg-blue-50">
                                 <p class="text-blue-800">
-                                    <i class="fas fa-info-circle mr-2"></i>
+                                    <i class="mr-2 fas fa-info-circle"></i>
                                     Silakan upload bukti pembayaran Anda untuk melanjutkan proses booking.
                                 </p>
                             </div>
@@ -246,16 +247,16 @@
                                 
                                 <!-- Payment Method Selection -->
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-3">
+                                    <label class="block mb-3 text-sm font-medium text-gray-700">
                                         Metode Pembayaran
                                     </label>
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                                         <div>
                                             <input type="radio" id="bank_transfer" name="payment_method" value="bank_transfer" 
                                                    class="sr-only peer" checked>
                                             <label for="bank_transfer" 
                                                    class="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 peer-checked:border-blue-500 peer-checked:bg-blue-50">
-                                                <i class="fas fa-university text-blue-600 mr-3"></i>
+                                                <i class="mr-3 text-blue-600 fas fa-university"></i>
                                                 <span class="font-medium">Transfer Bank</span>
                                             </label>
                                         </div>
@@ -264,7 +265,7 @@
                                                    class="sr-only peer">
                                             <label for="e_wallet" 
                                                    class="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 peer-checked:border-blue-500 peer-checked:bg-blue-50">
-                                                <i class="fas fa-mobile-alt text-green-600 mr-3"></i>
+                                                <i class="mr-3 text-green-600 fas fa-mobile-alt"></i>
                                                 <span class="font-medium">E-Wallet</span>
                                             </label>
                                         </div>
@@ -273,7 +274,7 @@
                                                    class="sr-only peer">
                                             <label for="cash" 
                                                    class="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 peer-checked:border-blue-500 peer-checked:bg-blue-50">
-                                                <i class="fas fa-money-bill-wave text-green-600 mr-3"></i>
+                                                <i class="mr-3 text-green-600 fas fa-money-bill-wave"></i>
                                                 <span class="font-medium">Tunai</span>
                                             </label>
                                         </div>
@@ -282,7 +283,7 @@
                                                    class="sr-only peer">
                                             <label for="other" 
                                                    class="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 peer-checked:border-blue-500 peer-checked:bg-blue-50">
-                                                <i class="fas fa-ellipsis-h text-gray-600 mr-3"></i>
+                                                <i class="mr-3 text-gray-600 fas fa-ellipsis-h"></i>
                                                 <span class="font-medium">Lainnya</span>
                                             </label>
                                         </div>
@@ -293,34 +294,34 @@
                                 </div>
 
                                 <!-- Bank Transfer Details -->
-                                <div id="bank_details" class="payment-details space-y-4">
+                                <div id="bank_details" class="space-y-4 payment-details">
                                     <h4 class="font-medium text-gray-900">Detail Transfer Bank</h4>
                                     
                                     <!-- Bank Account Information -->
-                                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-                                        <h5 class="font-semibold text-blue-900 mb-3">Rekening Tujuan Transfer:</h5>
+                                    <div class="p-4 mb-4 border border-blue-200 rounded-lg bg-blue-50">
+                                        <h5 class="mb-3 font-semibold text-blue-900">Rekening Tujuan Transfer:</h5>
                                         <div class="space-y-2">
-                                            <div class="flex justify-between items-center">
-                                                <span class="text-blue-800 font-medium">Bank BCA</span>
-                                                <span class="text-blue-900 font-bold">1234567890</span>
+                                            <div class="flex items-center justify-between">
+                                                <span class="font-medium text-blue-800">Bank BCA</span>
+                                                <span class="font-bold text-blue-900">1234567890</span>
                                             </div>
-                                            <div class="flex justify-between items-center">
-                                                <span class="text-blue-800 font-medium">Bank Mandiri</span>
-                                                <span class="text-blue-900 font-bold">0987654321</span>
+                                            <div class="flex items-center justify-between">
+                                                <span class="font-medium text-blue-800">Bank Mandiri</span>
+                                                <span class="font-bold text-blue-900">0987654321</span>
                                             </div>
-                                            <div class="flex justify-between items-center">
-                                                <span class="text-blue-800 font-medium">Bank BNI</span>
-                                                <span class="text-blue-900 font-bold">1122334455</span>
+                                            <div class="flex items-center justify-between">
+                                                <span class="font-medium text-blue-800">Bank BNI</span>
+                                                <span class="font-bold text-blue-900">1122334455</span>
                                             </div>
-                                            <div class="text-center mt-3 pt-2 border-t border-blue-300">
-                                                <span class="text-blue-900 font-semibold">a.n. JustTrip Travel</span>
+                                            <div class="pt-2 mt-3 text-center border-t border-blue-300">
+                                                <span class="font-semibold text-blue-900">a.n. JustTrip Travel</span>
                                             </div>
                                         </div>
                                     </div>
                                     
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                                         <div>
-                                            <label for="bank_name" class="block text-sm font-medium text-gray-700 mb-2">
+                                            <label for="bank_name" class="block mb-2 text-sm font-medium text-gray-700">
                                                 Nama Bank
                                             </label>
                                             <input type="text" id="bank_name" name="bank_name" 
@@ -332,7 +333,7 @@
                                             @enderror
                                         </div>
                                         <div>
-                                            <label for="account_number" class="block text-sm font-medium text-gray-700 mb-2">
+                                            <label for="account_number" class="block mb-2 text-sm font-medium text-gray-700">
                                                 Nomor Rekening Pengirim
                                             </label>
                                             <input type="text" id="account_number" name="account_number" 
@@ -345,7 +346,7 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <label for="account_holder_name" class="block text-sm font-medium text-gray-700 mb-2">
+                                        <label for="account_holder_name" class="block mb-2 text-sm font-medium text-gray-700">
                                             Nama Pemilik Rekening
                                         </label>
                                         <input type="text" id="account_holder_name" name="account_holder_name" 
@@ -359,38 +360,38 @@
                                 </div>
 
                                 <!-- E-Wallet Details -->
-                                <div id="ewallet_details" class="payment-details space-y-4 hidden">
+                                <div id="ewallet_details" class="hidden space-y-4 payment-details">
                                     <h4 class="font-medium text-gray-900">Detail E-Wallet</h4>
                                     
                                     <!-- E-Wallet Account Information -->
-                                    <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
-                                        <h5 class="font-semibold text-green-900 mb-3">E-Wallet Tujuan Transfer:</h5>
+                                    <div class="p-4 mb-4 border border-green-200 rounded-lg bg-green-50">
+                                        <h5 class="mb-3 font-semibold text-green-900">E-Wallet Tujuan Transfer:</h5>
                                         <div class="space-y-2">
-                                            <div class="flex justify-between items-center">
-                                                <span class="text-green-800 font-medium">OVO</span>
-                                                <span class="text-green-900 font-bold">081234567890</span>
+                                            <div class="flex items-center justify-between">
+                                                <span class="font-medium text-green-800">OVO</span>
+                                                <span class="font-bold text-green-900">081234567890</span>
                                             </div>
-                                            <div class="flex justify-between items-center">
-                                                <span class="text-green-800 font-medium">GoPay</span>
-                                                <span class="text-green-900 font-bold">081234567890</span>
+                                            <div class="flex items-center justify-between">
+                                                <span class="font-medium text-green-800">GoPay</span>
+                                                <span class="font-bold text-green-900">081234567890</span>
                                             </div>
-                                            <div class="flex justify-between items-center">
-                                                <span class="text-green-800 font-medium">DANA</span>
-                                                <span class="text-green-900 font-bold">081234567890</span>
+                                            <div class="flex items-center justify-between">
+                                                <span class="font-medium text-green-800">DANA</span>
+                                                <span class="font-bold text-green-900">081234567890</span>
                                             </div>
-                                            <div class="flex justify-between items-center">
-                                                <span class="text-green-800 font-medium">ShopeePay</span>
-                                                <span class="text-green-900 font-bold">081234567890</span>
+                                            <div class="flex items-center justify-between">
+                                                <span class="font-medium text-green-800">ShopeePay</span>
+                                                <span class="font-bold text-green-900">081234567890</span>
                                             </div>
-                                            <div class="text-center mt-3 pt-2 border-t border-green-300">
-                                                <span class="text-green-900 font-semibold">a.n. JustTrip Travel</span>
+                                            <div class="pt-2 mt-3 text-center border-t border-green-300">
+                                                <span class="font-semibold text-green-900">a.n. JustTrip Travel</span>
                                             </div>
                                         </div>
                                     </div>
                                     
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                                         <div>
-                                            <label for="e_wallet_type" class="block text-sm font-medium text-gray-700 mb-2">
+                                            <label for="e_wallet_type" class="block mb-2 text-sm font-medium text-gray-700">
                                                 Jenis E-Wallet
                                             </label>
                                             <select id="e_wallet_type" name="e_wallet_type" 
@@ -407,7 +408,7 @@
                                             @enderror
                                         </div>
                                         <div>
-                                            <label for="e_wallet_number" class="block text-sm font-medium text-gray-700 mb-2">
+                                            <label for="e_wallet_number" class="block mb-2 text-sm font-medium text-gray-700">
                                                 Nomor E-Wallet
                                             </label>
                                             <input type="text" id="e_wallet_number" name="e_wallet_number" 
@@ -423,11 +424,11 @@
 
                                 <!-- Payment Amount -->
                                 <div>
-                                    <label for="payment_amount" class="block text-sm font-medium text-gray-700 mb-2">
+                                    <label for="payment_amount" class="block mb-2 text-sm font-medium text-gray-700">
                                         Jumlah Pembayaran
                                     </label>
                                     <div class="relative">
-                                        <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">Rp</span>
+                                        <span class="absolute text-gray-500 transform -translate-y-1/2 left-3 top-1/2">Rp</span>
                                         <input type="number" id="payment_amount" name="payment_amount" 
                                                placeholder="{{ number_format($booking->total_amount, 0, ',', '.') }}"
                                                value="{{ old('payment_amount', $booking->total_amount) }}"
@@ -442,7 +443,7 @@
 
                                 <!-- Payment Date -->
                                 <div>
-                                    <label for="payment_date" class="block text-sm font-medium text-gray-700 mb-2">
+                                    <label for="payment_date" class="block mb-2 text-sm font-medium text-gray-700">
                                         Tanggal Pembayaran
                                     </label>
                                     <input type="datetime-local" id="payment_date" name="payment_date" 
@@ -456,7 +457,7 @@
                                 
                                 <!-- Payment Proof Upload -->
                                 <div>
-                                    <label for="payment_proof" class="block text-sm font-medium text-gray-700 mb-2">
+                                    <label for="payment_proof" class="block mb-2 text-sm font-medium text-gray-700">
                                         Upload Bukti Pembayaran *
                                     </label>
                                     <input type="file" 
@@ -473,7 +474,7 @@
                                 
                                 <!-- Payment Notes -->
                                 <div>
-                                    <label for="payment_notes" class="block text-sm font-medium text-gray-700 mb-2">
+                                    <label for="payment_notes" class="block mb-2 text-sm font-medium text-gray-700">
                                         Catatan Pembayaran (Opsional)
                                     </label>
                                     <textarea id="payment_notes" 
@@ -486,8 +487,8 @@
                                     @enderror
                                 </div>
                                 
-                                <button type="submit" class="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 font-medium">
-                                    <i class="fas fa-upload mr-2"></i>Upload Bukti Pembayaran
+                                <button type="submit" class="w-full px-4 py-3 font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                                    <i class="mr-2 fas fa-upload"></i>Upload Bukti Pembayaran
                                 </button>
                             </form>
 
@@ -526,15 +527,15 @@
 
                 <!-- Actions -->
                 @if($booking->status === 'pending')
-                    <div class="bg-white rounded-lg shadow-sm p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Aksi</h3>
+                    <div class="p-6 bg-white rounded-lg shadow-sm">
+                        <h3 class="mb-4 text-lg font-semibold text-gray-900">Aksi</h3>
                         <div class="flex space-x-3">
                             <form action="{{ route('booking.cancel', $booking->booking_id) }}" method="POST"
                                   onsubmit="return confirm('Apakah Anda yakin ingin membatalkan booking ini?')">
                                 @csrf
                                 @method('PATCH')
                                 <button type="submit"
-                                        class="inline-flex items-center px-4 py-2 border border-red-300 rounded-md shadow-sm text-sm font-medium text-red-700 bg-white hover:bg-red-50">
+                                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-red-700 bg-white border border-red-300 rounded-md shadow-sm hover:bg-red-50">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                     </svg>
@@ -548,18 +549,18 @@
 
             <!-- Booking Summary -->
             <div class="lg:col-span-1">
-                <div class="bg-white rounded-lg shadow-sm p-6 sticky top-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Ringkasan Booking</h3>
+                <div class="sticky p-6 bg-white rounded-lg shadow-sm top-6">
+                    <h3 class="mb-4 text-lg font-semibold text-gray-900">Ringkasan Booking</h3>
 
                     <!-- Destination Info -->
                     <div class="mb-6">
                         @if($booking->layanan->gambar_utama)
                             <img src="{{ asset('storage/' . $booking->layanan->gambar_utama) }}"
                                  alt="{{ $booking->layanan->nama_layanan }}"
-                                 class="w-full h-32 object-cover rounded-lg mb-3">
+                                 class="object-cover w-full h-32 mb-3 rounded-lg">
                         @endif
                         <h4 class="font-semibold text-gray-900">{{ $booking->layanan->nama_layanan }}</h4>
-                        <p class="text-sm text-gray-600 mt-1">{{ $booking->layanan->lokasi }}</p>
+                        <p class="mt-1 text-sm text-gray-600">{{ $booking->layanan->lokasi }}</p>
                         @if($booking->layanan->durasi)
                             <p class="text-sm text-gray-600">Durasi: {{ $booking->layanan->durasi }}</p>
                         @endif
@@ -567,20 +568,20 @@
 
                     <!-- Special Offer -->
                     @if($booking->specialOffer)
-                        <div class="mb-6 p-3 bg-green-50 border border-green-200 rounded-lg">
+                        <div class="p-3 mb-6 border border-green-200 rounded-lg bg-green-50">
                             <div class="flex items-center">
-                                <svg class="w-5 h-5 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-5 h-5 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
                                 </svg>
                                 <span class="text-sm font-medium text-green-800">Special Offer</span>
                             </div>
-                            <p class="text-sm text-green-700 mt-1">{{ $booking->specialOffer->title }}</p>
+                            <p class="mt-1 text-sm text-green-700">{{ $booking->specialOffer->title }}</p>
                             <p class="text-sm font-semibold text-green-800">Diskon {{ $booking->specialOffer->discount_percentage }}%</p>
                         </div>
                     @endif
 
                     <!-- Price Breakdown -->
-                    <div class="border-t pt-4">
+                    <div class="pt-4 border-t">
                         <div class="space-y-2">
                             <div class="flex justify-between text-sm">
                                 <span>Harga per orang:</span>
@@ -615,7 +616,7 @@
                                 <span>Pajak (PPN 11%):</span>
                                 <span>Rp {{ number_format($tax, 0, ',', '.') }}</span>
                             </div>
-                            <div class="border-t pt-2 flex justify-between font-semibold text-lg">
+                            <div class="flex justify-between pt-2 text-lg font-semibold border-t">
                                 <span>Total:</span>
                                 <span class="text-blue-600">Rp {{ number_format($booking->total_amount, 0, ',', '.') }}</span>
                             </div>
@@ -624,17 +625,18 @@
 
                     <!-- Invoice Actions -->
                     @if($booking->invoice)
-                        <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                            <h5 class="font-medium text-blue-900 mb-3 flex items-center">
+                        <div class="p-4 mt-6 border border-blue-200 rounded-lg bg-blue-50">
+                            <h5 class="flex items-center mb-3 font-medium text-blue-900">
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                 </svg>
                                 Invoice Actions
                             </h5>
                             <div class="space-y-3">
+                                @if ($booking?->status == 'completed') 
                                 <!-- Download Invoice Button -->
                                 <a href="{{ route('invoice.download', $booking->invoice->invoice_id) }}" 
-                                   class="w-full inline-flex items-center justify-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200">
+                                   class="inline-flex items-center justify-center w-full px-4 py-2 font-medium text-white transition-colors duration-200 bg-blue-600 rounded-lg hover:bg-blue-700">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                     </svg>
@@ -642,19 +644,21 @@
                                 </a>
                                 
                                 <!-- View Invoice Button -->
-                                <a href="{{ route('invoice.view', $booking->invoice->invoice_id) }}" 
-                                   target="_blank"
-                                   class="w-full inline-flex items-center justify-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition-colors duration-200">
-                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                    </svg>
-                                    Lihat Invoice
-                                </a>
+                              
+                                  <a href="{{ route('invoice.view', $booking->invoice->invoice_id) }}" 
+                                     target="_blank"
+                                     class="inline-flex items-center justify-center w-full px-4 py-2 font-medium text-white transition-colors duration-200 bg-gray-600 rounded-lg hover:bg-gray-700">
+                                      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                      </svg>
+                                      Lihat Invoice
+                                  </a>
+                              @endif
                                 
                                 <!-- Send to WhatsApp Admin Button -->
                                 <button onclick="sendInvoiceToWhatsApp({{ $booking->invoice->invoice_id }})" 
-                                        class="w-full inline-flex items-center justify-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors duration-200">
+                                        class="inline-flex items-center justify-center w-full px-4 py-2 font-medium text-white transition-colors duration-200 bg-green-600 rounded-lg hover:bg-green-700">
                                     <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.097"/>
                                     </svg>
@@ -665,9 +669,9 @@
                     @endif
 
                     <!-- Contact Info -->
-                    <div class="mt-6 p-4 bg-gray-50 rounded-lg">
-                        <h5 class="font-medium text-gray-900 mb-2">Butuh Bantuan?</h5>
-                        <p class="text-sm text-gray-600 mb-2">Hubungi customer service kami:</p>
+                    <div class="p-4 mt-6 rounded-lg bg-gray-50">
+                        <h5 class="mb-2 font-medium text-gray-900">Butuh Bantuan?</h5>
+                        <p class="mb-2 text-sm text-gray-600">Hubungi customer service kami:</p>
                         <div class="space-y-1 text-sm">
                             <div class="flex items-center">
                                 <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

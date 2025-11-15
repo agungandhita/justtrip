@@ -394,89 +394,87 @@
         </div>
 
         <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            @forelse($featuredOffers->take(3) as $index => $offer)
-            <div class="relative overflow-hidden transition-all duration-500 transform bg-white shadow-xl rounded-2xl hover:shadow-2xl hover:-translate-y-3" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
-                <div class="absolute top-0 right-0 z-10">
-                    <div class="px-6 py-2 text-lg font-bold text-white bg-gradient-to-r from-orange-500 to-orange-600 rounded-bl-2xl">
-                        <span class="text-2xl">{{ $offer->discount_percentage }}%</span> OFF
-                    </div>
-                </div>
-                <div class="relative overflow-hidden">
-                    @if($offer->image)
-                        <img src="{{ asset('storage/' . $offer->image) }}" alt="{{ $offer->title }}" class="object-cover w-full h-64">
-                    @else
-                        <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="{{ $offer->title }}" class="object-cover w-full h-64">
-                    @endif
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                    <div class="absolute text-white bottom-4 left-4">
-                        <h3 class="mb-2 text-2xl font-bold">{{ $offer->title }}</h3>
-                        <p class="text-lg">{{ $offer->subtitle ?? 'Penawaran Terbatas!' }}</p>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <div>
-                            <span class="text-lg text-gray-400 line-through">Rp {{ number_format($offer->original_price, 0, ',', '.') }}</span>
-                            <span class="ml-2 text-3xl font-bold text-orange-600">Rp {{ number_format($offer->discounted_price, 0, ',', '.') }}</span>
+            @forelse($featuredOffers as $index => $offer)
+                <div class="relative overflow-hidden transition-all duration-500 transform bg-white shadow-xl rounded-2xl hover:shadow-2xl hover:-translate-y-3" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
+                    <div class="absolute top-0 right-0 z-10">
+                        <div class="px-6 py-2 text-lg font-bold text-white bg-gradient-to-r from-orange-500 to-orange-600 rounded-bl-2xl">
+                            <span class="text-2xl">{{ $offer->discount_percentage }}%</span> OFF
                         </div>
                     </div>
-                    <p class="mb-4 text-gray-600">{{ Str::limit($offer->description, 50) }}</p>
-                    <div class="flex items-center justify-between">
-                        @php
-                            $daysLeft = now()->diffInDays($offer->valid_until, false);
-                        @endphp
-                        @if($daysLeft > 0)
-                            <span class="text-sm font-semibold text-red-500">⏰ {{ $daysLeft }} hari lagi</span>
+                    <div class="relative overflow-hidden">
+                        @if($offer->image)
+                            <img src="{{ asset('storage/' . $offer->image) }}" alt="{{ $offer->title }}" class="object-cover w-full h-64">
                         @else
-                            <span class="text-sm font-semibold text-red-500">⏰ Berakhir hari ini</span>
+                            <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="{{ $offer->title }}" class="object-cover w-full h-64">
                         @endif
-                        <a href="{{ route('special-offers.show', $offer->slug) }}" class="px-6 py-2 font-semibold text-white transition-all duration-300 transform rounded-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 hover:scale-105">
-                            Ambil Promo
-                        </a>
-                    </div>
-                </div>
-            </div>
-            @empty
-            <!-- Fallback content if no featured offers -->
-            <div class="relative overflow-hidden transition-all duration-500 transform bg-white shadow-xl rounded-2xl hover:shadow-2xl hover:-translate-y-3" data-aos="fade-up" data-aos-delay="100">
-                <div class="absolute top-0 right-0 z-10">
-                    <div class="px-6 py-2 text-lg font-bold text-white bg-gradient-to-r from-orange-500 to-orange-600 rounded-bl-2xl">
-                        <span class="text-2xl">50%</span> OFF
-                    </div>
-                </div>
-                <div class="relative overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Bali Special" class="object-cover w-full h-64">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                    <div class="absolute text-white bottom-4 left-4">
-                        <h3 class="mb-2 text-2xl font-bold">Bali Paradise</h3>
-                        <p class="text-lg">Flash Sale 24 Jam!</p>
-                    </div>
-                </div>
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <div>
-                            <span class="text-lg text-gray-400 line-through">Rp 5.000.000</span>
-                            <span class="ml-2 text-3xl font-bold text-orange-600">Rp 2.500.000</span>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute text-white bottom-4 left-4">
+                            <h3 class="mb-2 text-2xl font-bold">{{ $offer->title }}</h3>
+                            <p class="text-lg">{{ $offer->subtitle ?? 'Penawaran Terbatas!' }}</p>
                         </div>
                     </div>
-                    <p class="mb-4 text-gray-600">4D3N • Villa Private • All Inclusive</p>
-                    <div class="flex items-center justify-between">
-                        <span class="text-sm font-semibold text-red-500">⏰ Berakhir dalam 12 jam</span>
-                        <a href="{{ route('special-offers.index') }}" class="px-6 py-2 font-semibold text-white transition-all duration-300 transform rounded-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 hover:scale-105">
-                            Lihat Promo
-                        </a>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <span class="text-lg text-gray-400 line-through">Rp {{ number_format($offer->original_price, 0, ',', '.') }}</span>
+                                <span class="ml-2 text-3xl font-bold text-orange-600">Rp {{ number_format($offer->discounted_price, 0, ',', '.') }}</span>
+                            </div>
+                        </div>
+                        <p class="mb-4 text-gray-600">{{ Str::limit($offer->description, 50) }}</p>
+                        <div class="flex items-center justify-between">
+                            @php
+                                // compute seconds left (signed). Use integer-friendly display to avoid float values like 1.3456
+                                $secondsLeft = now()->diffInSeconds($offer->valid_until, false);
+                                if ($secondsLeft > 0) {
+                                    if ($secondsLeft >= 86400) {
+                                        // show days (round up so '1.1 days' becomes '2 hari lagi')
+                                        $daysLeft = (int) ceil($secondsLeft / 86400);
+                                        $timeLabel = $daysLeft . ' hari lagi';
+                                    } elseif ($secondsLeft >= 3600) {
+                                        $hoursLeft = (int) floor($secondsLeft / 3600);
+                                        $timeLabel = $hoursLeft . ' jam lagi';
+                                    } else {
+                                        $minutesLeft = (int) ceil($secondsLeft / 60);
+                                        $timeLabel = $minutesLeft . ' menit lagi';
+                                    }
+                                } else {
+                                    $timeLabel = 'Berakhir hari ini';
+                                }
+                            @endphp
+                            <span class="text-sm font-semibold text-red-500">⏰ {{ $timeLabel }}</span>
+                            <a href="{{ route('special-offers.show', $offer->slug) }}" class="px-6 py-2 font-semibold text-white transition-all duration-300 transform rounded-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 hover:scale-105">
+                                Ambil Promo
+                            </a>
+                        </div>
                     </div>
                 </div>
+            @empty
+            <!-- Friendly fallback when no featured offers exist -->
+            <div class="flex flex-col items-center justify-center p-12 bg-white shadow-lg md:col-span-2 lg:col-span-3 rounded-2xl" data-aos="fade-up" data-aos-delay="100">
+                <div class="flex items-center justify-center mb-6 rounded-full w-36 h-36 bg-orange-50">
+                    <!-- Simple illustrative SVG with gentle bounce -->
+                    <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" class="w-20 h-20 text-orange-500 animate-bounce" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M4 32c0-15.464 12.536-28 28-28s28 12.536 28 28-12.536 28-28 28S4 47.464 4 32z" opacity="0.08" />
+                        <path d="M20 28l8 4 16-8" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M20 36l8-4 16 8" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M10 22l6 20 38-10-22-6" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <h3 class="mb-2 text-2xl font-bold text-gray-800">Ups — belum ada promo tersedia</h3>
+                <p class="max-w-xl mb-6 text-center text-gray-600">Saat ini belum ada penawaran spesial. Kami sedang menyiapkan promo menarik untuk Anda. Kalau mau, tinggalkan email dan kami akan beri tahu saat promo baru tersedia.</p>
+                <p class="mt-4 text-sm text-gray-500">Atau coba lagi nanti — terima kasih sudah mengunjungi JustTrip ❤️</p>
             </div>
             @endforelse
         </div>
 
-        <!-- View All Special Offers Button -->
-        <div class="mt-12 text-center">
-            <a href="{{ route('special-offers.index') }}" class="inline-block px-8 py-4 text-lg font-semibold text-white transition-all duration-300 transform rounded-full shadow-lg bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 hover:scale-105 hover:shadow-xl">
-                Lihat Semua Promo
-            </a>
-        </div>
+        <!-- View All Special Offers Button (only shown when there are offers) -->
+        @if(isset($featuredOffers) && $featuredOffers->isNotEmpty())
+            <div class="mt-12 text-center">
+                <a href="{{ route('special-offers.index') }}" class="inline-block px-8 py-4 text-lg font-semibold text-white transition-all duration-300 transform rounded-full shadow-lg bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 hover:scale-105 hover:shadow-xl">
+                    Lihat Semua Promo
+                </a>
+            </div>
+        @endif
 
         <!-- CTA Banner -->
         <div class="relative p-8 mt-16 overflow-hidden text-center text-white bg-gradient-to-r from-teal-500 via-cyan-500 to-slate-500 rounded-3xl md:p-12" data-aos="fade-up" data-aos-delay="400">

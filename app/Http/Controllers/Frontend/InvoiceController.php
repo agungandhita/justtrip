@@ -84,7 +84,6 @@ class InvoiceController extends Controller
         }
 
         $filename = 'Invoice_' . $invoice->invoice_number . '.pdf';
-
         $filePath = storage_path('app/public/' . $invoice->pdf_path);
         return response()->download($filePath, $filename);
     }
