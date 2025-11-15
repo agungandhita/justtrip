@@ -20,7 +20,50 @@
     <!-- AOS Animation -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
+    <!-- Vite Assets -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
     <title>JustTrip - Explore the World with JustTrip</title>
+    
+    <!-- Fallback: mount a small Alpine guestBookingSearch component when bundled assets are not available (helps dev without running Vite) -->
+    <script>
+        // If Alpine is already present and guestBookingSearch is not registered by bundled JS,
+        // register a lightweight fallback so suggestions work even if Vite/dev server isn't running.
+        document.addEventListener('alpine:init', () => {
+            try {
+                if (!Alpine || typeof Alpine.data !== 'function') return;
+            } catch (e) {
+                return; // Alpine not available yet
+            }
+
+            if (Alpine.__guestBookingFallbackRegistered) return;
+
+            if (!Alpine.data('guestBookingSearch')) {
+                Alpine.data('guestBookingSearch', () => ({
+                    destinasi: '', layananList: [], loading: false, error: null, selectedLayanan: null,
+                    async searchLayanan() {
+                        if (!this.destinasi || this.destinasi.trim().length < 3) { this.layananList = []; this.error = null; return; }
+                        this.loading = true; this.error = null;
+                        try {
+                            const res = await fetch('/api/layanan/search?destinasi=' + encodeURIComponent(this.destinasi));
+                            const data = await res.json();
+                            if (data.success) { this.layananList = data.data || []; if (this.layananList.length) this.selectLayanan(this.layananList[0]); }
+                            else { this.error = data.message || 'Gagal mencari layanan'; this.layananList = []; }
+                        } catch (err) { this.error = err.message || 'Error'; this.layananList = []; }
+                        finally { this.loading = false; }
+                    },
+                    selectLayanan(layanan) {
+                        this.selectedLayanan = layanan;
+                        const layananIdInput = document.querySelector('input[name="layanan_id"]'); if (layananIdInput) layananIdInput.value = layanan.layanan_id;
+                        const durasiInput = document.querySelector('input[name="durasi_hari_diinginkan"]'); if (durasiInput && layanan.durasi_hari) durasiInput.value = layanan.durasi_hari;
+                        document.dispatchEvent(new CustomEvent('layanan-selected', { detail: layanan }));
+                    },
+                    formatPrice(p) { return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(p); }
+                }));
+            }
+            Alpine.__guestBookingFallbackRegistered = true;
+        });
+    </script>
     
     <script>
         tailwind.config = {

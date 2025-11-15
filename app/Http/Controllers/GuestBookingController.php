@@ -253,9 +253,9 @@ class GuestBookingController extends Controller
 
         $layanan = Layanan::where('status', 'aktif')
             ->where(function($query) use ($destinasi) {
-                $query->where('nama_layanan', 'LIKE', "%{$destinasi}%")
-                      ->orWhere('lokasi_tujuan', 'LIKE', "%{$destinasi}%")
-                      ->orWhere('deskripsi', 'LIKE', "%{$destinasi}%");
+                $query->whereLike('nama_layanan',  "%{$destinasi}%")
+                      ->orWhereLike('lokasi_tujuan',  "%{$destinasi}%")
+                      ->orWhereLike('deskripsi',  "%{$destinasi}%");
             })
             ->select('layanan_id', 'nama_layanan', 'lokasi_tujuan', 'harga_mulai', 'durasi_hari')
             ->get();

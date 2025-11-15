@@ -48,6 +48,9 @@ Route::get('/api/gallery/search', [FrontendGalleryController::class, 'search'])-
 Route::get('/layanan', [LayananController::class, 'publicIndex'])->name('layanan.index');
 Route::get('/layanan/{layanan}', [LayananController::class, 'publicShow'])->name('layanan.show');
 
+// API: cari layanan berdasarkan destinasi (dipakai oleh guest-booking frontend JS)
+Route::get('/api/layanan/search', [GuestBookingController::class, 'getLayananByDestination'])->name('api.layanan.search');
+
 // Guest Booking routes (public)
 Route::prefix('guest-booking')->name('guest-booking.')->group(function () {
     Route::get('/', [GuestBookingController::class, 'index'])->name('index');
