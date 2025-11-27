@@ -168,6 +168,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/payment/{paymentConfirmation}/download', [PaymentController::class, 'downloadProof'])->name('payment.download-proof');
 });
 
+// Guest booking success route (public) untuk alur BookingController guest
+Route::get('/booking/guest/success/{booking_number}', [BookingController::class, 'guestSuccess'])
+    ->name('booking.guest.success');
+
 // User routes (user role only)
 Route::middleware(['auth', 'user'])->prefix('user')->name('user.')->group(function () {
     Route::get('/profile', function () {
@@ -190,3 +194,51 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/invoices/{invoice}/send-email', [InvoiceController::class, 'sendEmail'])->name('invoices.send-email');
     Route::get('/invoices/statistics', [InvoiceController::class, 'statistics'])->name('invoices.statistics');
 });
+
+// Dev-only route: preview Guest Booking confirmation email without sending
+if (app()->environment(['local', 'development'])) {
+    Route::get('/dev/preview/email/guest-booking', function () {
+        $guestBooking = (object) [
+            'is_custom_request' => false,
+            'destinasi_dicari' => 'Bali',
+            'layanan' => (object) ['nama_layanan' => 'Paket Liburan Bali 4D3N'],
+            'booking_number' => 'GB20251126001',
+            'nama_lengkap' => 'John Doe',
+            'jumlah_peserta' => 2,
+            'tanggal_keberangkatan_diinginkan' => \Carbon\Carbon::now()->addDays(9)->format('Y-m-d'),
+            'budget_estimasi' => 15000000,
+            'created_at' => \Carbon\Carbon::now(),
+            'catatan_khusus' => 'Prefer kamar ocean view dan jadwal santai.',
+            'nomor_telepon' => '0823-2119-2919',
+            'email' => 'customer@example.com',
+            'alamat' => 'Jl. Pesisir No. 10, Denpasar'
+        ];
+
+        return view('emails.guest-booking-confirmation', compact('guestBooking'));
+    })->name('dev.preview.email.guest-booking');
+
+    // Preview admin notification email (simple layout)
+    Route::get('/dev/preview/email/admin-guest-booking', function () {
+        $guestBooking = (object) [
+            'is_custom_request' => false,
+            'destinasi_dicari' => 'Bali',
+            'layanan' => (object) ['nama_layanan' => 'Paket Liburan Bali 4D3N'],
+            'booking_number' => 'GB20251126001',
+            'nama_lengkap' => 'John Doe',
+            'jumlah_peserta' => 2,
+            'tanggal_keberangkatan_diinginkan' => \Carbon\Carbon::now()->addDays(9)->format('Y-m-d'),
+            'budget_estimasi' => 15000000,
+            'created_at' => \Carbon\Carbon::now(),
+            'catatan_khusus' => 'Prefer kamar ocean view dan jadwal santai.',
+            'nomor_telepon' => '0823-2119-2919',
+            'email' => 'customer@example.com',
+            'alamat' => 'Jl. Pesisir No. 10, Denpasar'
+        ];
+
+        // Pass both keys to support either $guestBooking or $datas['guestBooking'] in the view
+        return view('emails.admin-guest-booking-notification', [
+            'guestBooking' => $guestBooking,
+            'datas' => ['guestBooking' => $guestBooking],
+        ]);
+    })->name('dev.preview.email.admin-guest-booking');
+}

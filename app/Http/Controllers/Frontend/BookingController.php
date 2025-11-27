@@ -175,6 +175,11 @@ class BookingController extends Controller
      */
     public function guestStore(Request $request)
     {
+        // Normalize acceptance checkbox: support both 'terms' and 'agree_terms'
+        if (!$request->has('terms') && $request->has('agree_terms')) {
+            $request->merge(['terms' => $request->input('agree_terms')]);
+        }
+
         // Base validation rules
         $rules = [
             'booking_type' => 'required|in:package,custom',
@@ -247,54 +252,50 @@ class BookingController extends Controller
                 $layanan = Layanan::findOrFail($request->layanan_id);
                 $specialOffer = $request->special_offer_id ? SpecialOffer::findOrFail($request->special_offer_id) : null;
 
-                // Calculate pricing for package booking
+                // Hitung harga untuk paket
                 $originalAmount = $layanan->harga_mulai * $request->jumlah_peserta;
 
                 if ($specialOffer) {
                     $discountAmount = ($originalAmount * $specialOffer->discount_percentage) / 100;
                 }
             } else {
-                // Custom booking - pricing will be determined later
-                $originalAmount = $request->custom_budget ? $request->custom_budget * $request->jumlah_peserta : 0;
+                // Custom booking - estimasi harga berdasarkan budget
+                $originalAmount = $request->custom_budget ? ($request->custom_budget * $request->jumlah_peserta) : 0;
             }
 
             $totalAmount = $originalAmount - $discountAmount;
 
-            // Create guest booking with new model
-            $booking = GuestBooking::create([
+            // Simpan sebagai GuestBooking dengan field yang sesuai model
+            $guestBooking = GuestBooking::create([
                 'booking_number' => GuestBooking::generateBookingNumber(),
+                'destinasi_dicari' => $request->booking_type === 'custom'
+                    ? $request->custom_destination
+                    : ($layanan ? ($layanan->lokasi_tujuan ?? $layanan->nama_layanan) : null),
                 'layanan_id' => $request->booking_type === 'package' ? $request->layanan_id : null,
-                'customer_name' => $request->customer_name,
-                'customer_email' => $request->customer_email,
-                'customer_phone' => $request->customer_phone,
-                'departure_date' => $request->tanggal_keberangkatan,
-                'number_of_people' => $request->jumlah_peserta,
-                'total_price' => $totalAmount,
-                'notes' => $request->catatan_khusus,
-                'status' => $request->booking_type === 'custom' ? 'consultation' : 'pending'
+                'is_custom_request' => $request->booking_type === 'custom',
+                'nama_lengkap' => $request->customer_name,
+                'email' => $request->customer_email,
+                'nomor_telepon' => $request->customer_phone,
+                'alamat' => $request->customer_address,
+                'jumlah_peserta' => $request->jumlah_peserta,
+                'tanggal_keberangkatan_diinginkan' => $request->tanggal_keberangkatan,
+                'budget_estimasi' => $request->booking_type === 'custom' ? ($request->custom_budget ?? null) : $totalAmount,
+                'catatan_tambahan' => $request->catatan_khusus,
+                'status' => 'baru',
             ]);
 
-            // Create invoice
-            $invoice = $this->createInvoiceForGuest($booking);
-
-            // Send confirmation email
-            $this->sendGuestBookingConfirmation($booking);
-
-            // Generate PDF and send to WhatsApp (admin notification)
-            $this->processInvoiceAndNotify($invoice);
-
-            // Clear search session data after successful booking
-            session()->forget(['search_destination', 'search_departure_date', 'search_participants']);
+            // Tidak membuat invoice atau mengirim email di sini untuk menghindari ketidakcocokan struktur
 
             DB::commit();
 
             if ($request->booking_type === 'custom') {
                 Alert::success('Berhasil!', 'Permintaan custom booking Anda telah diterima. Tim kami akan menghubungi Anda dalam 24 jam untuk konsultasi lebih lanjut.');
             } else {
-                Alert::success('Berhasil!', 'Booking Anda telah berhasil dibuat. Email konfirmasi telah dikirim ke alamat email Anda.');
+                Alert::success('Berhasil!', 'Booking Anda telah berhasil dibuat.');
             }
-            
-            return redirect()->route('booking.guest.success', $booking->booking_number);
+
+            // Redirect langsung ke halaman sukses yang sudah ada
+            return redirect()->route('guest-booking.success', $guestBooking->booking_number);
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -575,7 +576,8 @@ class BookingController extends Controller
                               ->where('booking_number', $booking_number)
                               ->firstOrFail();
 
-        return view('Frontend.booking.guest-success', compact('booking'));
+        // Gunakan view yang sudah ada untuk halaman sukses guest booking
+        return view('Frontend.guest-booking.success', ['guestBooking' => $booking]);
     }
 
     /**

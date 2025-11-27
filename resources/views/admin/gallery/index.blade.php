@@ -160,7 +160,7 @@
                                                 <path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"/>
                                             </svg>
                                         </a>
-                                        <form action="{{ route('admin.galleries.destroy', $gallery->id) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this gallery and all its images?');">
+                                        <form action="{{ route('admin.galleries.destroy', $gallery->id) }}" method="POST" class="inline confirm-delete" data-title="Hapus Galeri" data-message="Yakin ingin menghapus galeri ini? Semua gambar akan dihapus.">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="bg-white text-red-600 p-2 rounded-full hover:bg-red-50 transition-colors duration-200" title="Delete Gallery">
@@ -219,6 +219,76 @@
             @endif
         </div>
     </div>
+
+    <!-- Modal Konfirmasi Hapus -->
+    <div id="confirmModal" class="fixed inset-0 z-[120] hidden">
+        <div id="modalBackdrop" class="absolute inset-0 bg-black/50"></div>
+        <div class="relative min-h-full w-full flex items-center justify-center p-4">
+            <div class="bg-white rounded-xl shadow-2xl overflow-hidden w-full max-w-md">
+                <div class="px-6 pt-6">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="flex items-center justify-center w-10 h-10 rounded-full bg-red-100 text-red-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                            </svg>
+                        </div>
+                        <h3 id="confirmTitle" class="text-lg font-semibold text-gray-900">Konfirmasi Hapus</h3>
+                    </div>
+                    <p id="confirmMessage" class="text-sm text-gray-600">Apakah Anda yakin ingin menghapus item ini? Tindakan ini tidak dapat dibatalkan.</p>
+                </div>
+                <div class="px-6 pb-6 pt-4 flex justify-end gap-3">
+                    <button type="button" id="cancelDelete" class="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">Batal</button>
+                    <button type="button" id="confirmDelete" class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700">Hapus</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('confirmModal');
+            const backdrop = document.getElementById('modalBackdrop');
+            const cancelBtn = document.getElementById('cancelDelete');
+            const confirmBtn = document.getElementById('confirmDelete');
+            const titleEl = document.getElementById('confirmTitle');
+            const msgEl = document.getElementById('confirmMessage');
+            let pendingForm = null;
+
+            function openModal(title, message) {
+                if (title) titleEl.textContent = title;
+                if (message) msgEl.textContent = message;
+                modal.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+            }
+
+            function closeModal() {
+                modal.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+                pendingForm = null;
+            }
+
+            document.querySelectorAll('form.confirm-delete').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    pendingForm = form;
+                    const title = form.dataset.title || 'Konfirmasi Hapus';
+                    const message = form.dataset.message || 'Apakah Anda yakin ingin menghapus item ini? Tindakan ini tidak dapat dibatalkan.';
+                    openModal(title, message);
+                });
+            });
+
+            cancelBtn.addEventListener('click', closeModal);
+            backdrop.addEventListener('click', closeModal);
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+            confirmBtn.addEventListener('click', function() {
+                if (pendingForm) {
+                    closeModal();
+                    pendingForm.submit();
+                }
+            });
+        });
+    </script>
 
     <style>
         .line-clamp-2 {

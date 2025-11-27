@@ -293,7 +293,13 @@ class SpecialOfferController extends Controller
             }
         }
 
-        Alert::success('Success', 'Standalone special offer created successfully!');
+        // Kirim email ke semua subscribe user yang belum unsubscribe
+        $subscribers = \App\Models\SubscribeUser::subscribed()->get();
+        foreach ($subscribers as $subscriber) {
+            Mail::to($subscriber->email)->queue(new SpecialOfferNotification($specialOffer));
+        }
+
+        Alert::success('Success', 'Standalone special offer created successfully! Email notifikasi dikirim ke subscriber.');
         return redirect()->route('admin.special-offers.index');
     }
 }

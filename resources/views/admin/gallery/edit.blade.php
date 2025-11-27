@@ -345,7 +345,76 @@
         </div>
     </div>
 
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="fixed inset-0 z-[120] hidden items-center justify-center">
+        <div class="absolute inset-0 bg-black/30"></div>
+        <div class="relative w-full max-w-md mx-4 sm:mx-auto rounded-xl bg-white shadow-lg">
+            <button id="confirmClose" type="button" class="absolute right-3 top-3 text-gray-400 hover:text-gray-600" aria-label="Close">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/></svg>
+            </button>
+            <div class="p-5">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="h-9 w-9 rounded-full bg-red-50 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" viewBox="0 0 24 24" fill="currentColor"><path d="M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/></svg>
+                    </div>
+                    <h3 id="confirmTitle" class="text-lg font-semibold text-gray-900">Konfirmasi</h3>
+                </div>
+                <p id="confirmMessage" class="text-gray-600 mb-4">Apakah Anda yakin?</p>
+                <div class="flex justify-end gap-2">
+                    <button id="confirmCancel" type="button" class="px-4 py-2 rounded-md border border-gray-300 bg-white text-gray-700">Batal</button>
+                    <button id="confirmProceed" type="button" class="px-4 py-2 rounded-md bg-red-600 hover:bg-red-700 text-white">Konfirmasi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Generic confirmation modal controller
+        const confirmModalEl = document.getElementById('confirmModal');
+        const confirmTitleEl = document.getElementById('confirmTitle');
+        const confirmMessageEl = document.getElementById('confirmMessage');
+        const confirmProceedBtn = document.getElementById('confirmProceed');
+        const confirmCancelBtn = document.getElementById('confirmCancel');
+        const confirmCloseBtn = document.getElementById('confirmClose');
+
+        function closeConfirmModal() {
+            confirmModalEl.classList.add('hidden');
+            confirmModalEl.classList.remove('flex');
+            confirmProceedBtn.onclick = null;
+            confirmCancelBtn.onclick = null;
+            confirmCloseBtn.onclick = null;
+            const overlay = confirmModalEl.querySelector('.absolute.inset-0');
+            if (overlay) overlay.onclick = null;
+            if (window.__escHandler) {
+                document.removeEventListener('keydown', window.__escHandler);
+                delete window.__escHandler;
+            }
+        }
+
+        function openConfirmModal({ title, message, confirmText = 'Konfirmasi', confirmColor = 'red', onConfirm }) {
+            confirmTitleEl.textContent = title || 'Konfirmasi';
+            confirmMessageEl.textContent = message || 'Apakah Anda yakin?';
+            confirmProceedBtn.textContent = confirmText || 'Konfirmasi';
+
+            // Reset and apply color styles
+            confirmProceedBtn.classList.remove('bg-red-600','hover:bg-red-700','bg-indigo-600','hover:bg-indigo-700','bg-green-600','hover:bg-green-700');
+            const colorCls = confirmColor === 'green' ? ['bg-green-600','hover:bg-green-700'] :
+                             (confirmColor === 'indigo' ? ['bg-indigo-600','hover:bg-indigo-700'] : ['bg-red-600','hover:bg-red-700']);
+            colorCls.forEach(c => confirmProceedBtn.classList.add(c));
+
+            confirmModalEl.classList.remove('hidden');
+            confirmModalEl.classList.add('flex');
+
+            confirmProceedBtn.onclick = () => { closeConfirmModal(); if (typeof onConfirm === 'function') onConfirm(); };
+            confirmCancelBtn.onclick = closeConfirmModal;
+            confirmCloseBtn.onclick = closeConfirmModal;
+            const overlay = confirmModalEl.querySelector('.absolute.inset-0');
+            if (overlay) overlay.onclick = closeConfirmModal;
+
+            function escHandler(e){ if(e.key === 'Escape'){ closeConfirmModal(); } }
+            window.__escHandler = escHandler;
+            document.addEventListener('keydown', escHandler);
+        }
         function previewImages(input) {
             const preview = document.getElementById('imagesPreview');
             const previewContainer = document.getElementById('previewContainer');
@@ -400,123 +469,110 @@
         }
 
         function setMainImage(imagePath) {
-            if (confirm('Set this image as the main image?')) {
-                // Show loading state
-                const button = event.target;
-                const originalText = button.textContent;
-                button.textContent = 'Setting...';
-                button.disabled = true;
+            const button = event ? event.target : null;
+            const originalText = button ? button.textContent : '';
 
-                // Make AJAX request to set main image
-                fetch(`{{ route('admin.galleries.set-main-image', $gallery->id) }}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify({
-                        image_path: imagePath
+            openConfirmModal({
+                title: 'Set Main Image',
+                message: 'Yakin menjadikan gambar ini sebagai utama?',
+                confirmText: 'Set',
+                confirmColor: 'indigo',
+                onConfirm: () => {
+                    if (button) {
+                        button.textContent = 'Setting...';
+                        button.disabled = true;
+                    }
+
+                    fetch(`{{ route('admin.galleries.set-main-image', $gallery->id) }}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify({ image_path: imagePath })
                     })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Update UI to show which image is main
-                        document.querySelectorAll('.bg-green-500').forEach(el => {
-                            if (el.textContent.includes('Main')) {
-                                el.classList.remove('bg-green-500');
-                                el.classList.add('bg-gray-500');
-                                el.textContent = 'Set Main';
-                            }
-                        });
-                        
-                        // Find and update the clicked image
-                        const images = document.querySelectorAll('[id^="image-"]');
-                        images.forEach(imageDiv => {
-                            const img = imageDiv.querySelector('img');
-                            if (img.src.includes(imagePath.replace('galleries/', ''))) {
-                                const mainButton = imageDiv.querySelector('button[onclick*="setMainImage"]');
-                                if (mainButton) {
-                                    mainButton.classList.remove('bg-gray-500');
-                                    mainButton.classList.add('bg-green-500');
-                                    mainButton.textContent = 'Main Image';
-                                    mainButton.disabled = true;
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.querySelectorAll('.bg-green-500').forEach(el => {
+                                if (el.textContent.includes('Main')) {
+                                    el.classList.remove('bg-green-500');
+                                    el.classList.add('bg-gray-500');
+                                    el.textContent = 'Set Main';
                                 }
+                            });
+
+                            const images = document.querySelectorAll('[id^="image-"]');
+                            images.forEach(imageDiv => {
+                                const img = imageDiv.querySelector('img');
+                                if (img.src.includes(imagePath.replace('galleries/', ''))) {
+                                    const mainButton = imageDiv.querySelector('button[onclick*="setMainImage"]');
+                                    if (mainButton) {
+                                        mainButton.classList.remove('bg-gray-500');
+                                        mainButton.classList.add('bg-green-500');
+                                        mainButton.textContent = 'Main Image';
+                                        mainButton.disabled = true;
+                                    }
+                                }
+                            });
+
+                            if (typeof Swal !== 'undefined') {
+                                Swal.fire({ icon: 'success', title: 'Berhasil!', text: data.message, timer: 2000, showConfirmButton: false });
+                            } else {
+                                alert(data.message);
                             }
-                        });
-                        
-                        // Show success message
-                        if (typeof Swal !== 'undefined') {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil!',
-                                text: data.message,
-                                timer: 2000,
-                                showConfirmButton: false
-                            });
                         } else {
-                            alert(data.message);
+                            if (typeof Swal !== 'undefined') {
+                                Swal.fire({ icon: 'error', title: 'Error!', text: data.message });
+                            } else {
+                                alert('Error: ' + data.message);
+                            }
+                            if (button) { button.textContent = originalText; button.disabled = false; }
                         }
-                    } else {
-                        // Show error message
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
                         if (typeof Swal !== 'undefined') {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error!',
-                                text: data.message
-                            });
+                            Swal.fire({ icon: 'error', title: 'Error!', text: 'Terjadi kesalahan saat mengatur main image' });
                         } else {
-                            alert('Error: ' + data.message);
+                            alert('Terjadi kesalahan saat mengatur main image');
                         }
-                        
-                        // Reset button
-                        button.textContent = originalText;
-                        button.disabled = false;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    if (typeof Swal !== 'undefined') {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error!',
-                            text: 'Terjadi kesalahan saat mengatur main image'
-                        });
-                    } else {
-                        alert('Terjadi kesalahan saat mengatur main image');
-                    }
-                    
-                    // Reset button
-                    button.textContent = originalText;
-                    button.disabled = false;
-                });
-            }
+                        if (button) { button.textContent = originalText; button.disabled = false; }
+                    });
+                }
+            });
         }
 
         function deleteImage(imagePath, index) {
-            if (confirm('Are you sure you want to delete this image?')) {
-                // Create a hidden input to mark image for deletion
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'delete_images[]';
-                input.value = imagePath;
-                document.querySelector('form').appendChild(input);
-                
-                // Hide the image from UI
-                const imageDiv = document.getElementById(`image-${index}`);
-                if (imageDiv) {
-                    imageDiv.style.opacity = '0.5';
-                    imageDiv.style.pointerEvents = 'none';
-                    
-                    // Add deleted overlay
-                    const overlay = document.createElement('div');
-                    overlay.className = 'absolute inset-0 bg-red-500 bg-opacity-75 flex items-center justify-center rounded-lg';
-                    overlay.innerHTML = '<span class="text-white font-bold">DELETED</span>';
-                    imageDiv.appendChild(overlay);
+            openConfirmModal({
+                title: 'Hapus Gambar',
+                message: 'Yakin ingin menghapus gambar ini? Tindakan tidak dapat dibatalkan.',
+                confirmText: 'Hapus',
+                confirmColor: 'red',
+                onConfirm: () => {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'delete_images[]';
+                    input.value = imagePath;
+                    document.querySelector('form').appendChild(input);
+
+                    const imageDiv = document.getElementById(`image-${index}`);
+                    if (imageDiv) {
+                        imageDiv.style.opacity = '0.5';
+                        imageDiv.style.pointerEvents = 'none';
+                        const overlay = document.createElement('div');
+                        overlay.className = 'absolute inset-0 bg-red-500 bg-opacity-75 flex items-center justify-center rounded-lg';
+                        overlay.innerHTML = '<span class="text-white font-bold">DELETED</span>';
+                        imageDiv.appendChild(overlay);
+                    }
+
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire({ icon: 'info', title: 'Ditandai untuk dihapus', text: 'Simpan form untuk menerapkan perubahan.', timer: 2000, showConfirmButton: false });
+                    } else {
+                        alert('Image marked for deletion! Save the form to apply changes.');
+                    }
                 }
-                
-                alert('Image marked for deletion! Save the form to apply changes.');
-            }
+            });
         }
 
         // Auto-generate alt text from title if alt text is empty

@@ -256,7 +256,7 @@
     </div>
 
     <!-- Email Modal -->
-    <div id="emailModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
+    <div id="emailModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-[120]">
         <div class="flex items-center justify-center min-h-screen p-4">
             <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
                 <form action="{{ route('admin.guest-bookings.send-email', $guestBooking) }}" method="POST">
