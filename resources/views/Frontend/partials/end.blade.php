@@ -5,7 +5,9 @@
         duration: 800,
         easing: 'ease-in-out',
         once: true,
-        offset: 100
+        offset: 50, // Muncul lebih awal saat scroll
+        delay: 0,
+        anchorPlacement: 'top-bottom', // Animasi dipicu saat bagian atas elemen masuk ke bawah viewport
     });
 </script>
 

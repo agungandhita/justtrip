@@ -103,12 +103,6 @@
                             </div>
                         @endif
 
-                        <!-- Gallery Caption -->
-                        @if($gallery->caption)
-                            <div class="p-4 bg-gray-50 border-t">
-                                <p class="text-gray-700 italic text-center">{{ $gallery->caption }}</p>
-                            </div>
-                        @endif
                     </div>
 
                     <!-- Gallery Information -->
@@ -138,57 +132,24 @@
                                 </span>
                             </div>
 
-                            <!-- Alt Text -->
-                            @if($gallery->alt_text)
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-500 mb-1">Alt Text</label>
-                                    <p class="text-gray-700">{{ $gallery->alt_text }}</p>
-                                </div>
-                            @endif
                         </div>
                     </div>
 
-                    <!-- Location & Credit Information -->
-                    @if($gallery->location || $gallery->photographer || $gallery->date_taken)
+                    <!-- Photographer Credit -->
+                    @if($gallery->photographer)
                         <div class="bg-white rounded-xl shadow-md p-6">
-                            <h2 class="text-xl font-semibold text-gray-800 mb-6">Location & Credit</h2>
+                            <h2 class="text-xl font-semibold text-gray-800 mb-6">Credit</h2>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                @if($gallery->location)
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-500 mb-1">Location</label>
-                                        <p class="text-gray-900 flex items-center gap-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="currentColor">
-                                                <path d="M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z"/>
-                                            </svg>
-                                            {{ $gallery->location }}
-                                        </p>
-                                    </div>
-                                @endif
-
-                                @if($gallery->photographer)
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-500 mb-1">Photographer</label>
-                                        <p class="text-gray-900 flex items-center gap-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="currentColor">
-                                                <path d="M9,2V7.38L10.5,8.88L12,7.38V2H9M15,7.38V2H18V7.38L16.5,8.88L15,7.38M12,9L10.5,10.5L9,9H3A1,1 0 0,0 2,10V20A1,1 0 0,0 3,21H21A1,1 0 0,0 22,20V10A1,1 0 0,0 21,9H15L13.5,10.5L12,9Z"/>
-                                            </svg>
-                                            {{ $gallery->photographer }}
-                                        </p>
-                                    </div>
-                                @endif
-
-                                @if($gallery->date_taken)
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-500 mb-1">Date Taken</label>
-                                        <p class="text-gray-900 flex items-center gap-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="currentColor">
-                                                <path d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H18V1M17,12H12V17H17V12Z"/>
-                                            </svg>
-                                            {{ $gallery->date_taken->format('M d, Y') }}
-                                        </p>
-                                    </div>
-                                @endif
+                            <div class="grid grid-cols-1 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-500 mb-1">Photographer</label>
+                                    <p class="text-gray-900 flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M9,2V7.38L10.5,8.88L12,7.38V2H9M15,7.38V2H18V7.38L16.5,8.88L15,7.38M12,9L10.5,10.5L9,9H3A1,1 0 0,0 2,10V20A1,1 0 0,0 3,21H21A1,1 0 0,0 22,20V10A1,1 0 0,0 21,9H15L13.5,10.5L12,9Z"/>
+                                        </svg>
+                                        {{ $gallery->photographer }}
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     @endif

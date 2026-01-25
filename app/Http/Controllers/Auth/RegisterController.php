@@ -24,19 +24,19 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
-        // Validasi input
+        // Validasi input - menggunakan 'name' sesuai dengan form field
         $request->validate([
-            'nama' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email',
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:500',
             'password' => 'required|string|min:6|confirmed',
         ], [
-            'nama.required' => 'Nama wajib diisi',
-            'nama.max' => 'Nama maksimal 255 karakter',
+            'name.required' => 'Nama lengkap wajib diisi',
+            'name.max' => 'Nama maksimal 255 karakter',
             'email.required' => 'Email wajib diisi',
             'email.email' => 'Format email tidak valid',
-            'email.unique' => 'Email sudah terdaftar',
+            'email.unique' => 'Email sudah terdaftar, gunakan email lain atau login',
             'phone.max' => 'Nomor telepon maksimal 20 karakter',
             'address.max' => 'Alamat maksimal 500 karakter',
             'password.required' => 'Password wajib diisi',
@@ -47,22 +47,22 @@ class RegisterController extends Controller
         try {
             // Create new user
             $user = User::create([
-                'name' => $request->nama,
+                'name' => $request->name,
                 'email' => $request->email,
                 'phone' => $request->phone,
                 'address' => $request->address,
                 'password' => Hash::make($request->password),
-                'role' => 'user', // Default role is user
+                'role' => 'user',
             ]);
 
             // Auto login after registration
             Auth::login($user);
 
-            Alert::success('Berhasil!', 'Akun berhasil dibuat. Selamat datang ' . $user->name);
+            Alert::success('Selamat Datang!', 'Akun berhasil dibuat. Selamat bergabung di JustTrip, ' . $user->name . '!');
             return redirect()->intended('/');
             
         } catch (\Exception $e) {
-            Alert::error('Gagal!', 'Terjadi kesalahan saat membuat akun');
+            Alert::error('Gagal!', 'Terjadi kesalahan saat membuat akun. Silakan coba lagi.');
             return back()->withInput($request->except('password', 'password_confirmation'));
         }
     }

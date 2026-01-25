@@ -44,11 +44,13 @@
                                 <div class="flex items-center space-x-4 text-sm text-gray-500">
                                     <span>By {{ $news->author_name ?? 'Admin' }}</span>
                                     <span>•</span>
-                                    <span>{{ $news->published_at ? $news->published_at->format('M d, Y \\a\\t g:i A') : 'Not Published' }}</span>
+                                    <span>{{ $news->published_at ? $news->published_at->format('M d, Y \a\t g:i A') : 'Not Published' }}</span>
                                     @if($news->category)
                                         <span>•</span>
                                         <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-xs">{{ ucwords(str_replace('-', ' ', $news->category)) }}</span>
                                     @endif
+                                    <span>•</span>
+                                    <span>{{ $news->read_time }} min read</span>
                                 </div>
                             </div>
                             <div class="flex items-center space-x-2">
@@ -63,12 +65,11 @@
                             </div>
                         </div>
                         
-                        @if($news->excerpt)
-                            <div class="bg-gray-50 rounded-lg p-4">
-                                <h3 class="text-sm font-medium text-gray-700 mb-2">Excerpt</h3>
-                                <p class="text-gray-600 italic">{{ $news->excerpt }}</p>
-                            </div>
-                        @endif
+                        <!-- Auto-generated Excerpt -->
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <h3 class="text-sm font-medium text-gray-700 mb-2">Excerpt (Auto-generated)</h3>
+                            <p class="text-gray-600 italic">{{ $news->excerpt }}</p>
+                        </div>
                     </div>
 
                     <!-- Featured Image -->
@@ -83,30 +84,9 @@
                     <div class="bg-white rounded-xl shadow-md p-6">
                         <h3 class="text-lg font-semibold text-gray-800 mb-4">Content</h3>
                         <div class="prose max-w-none">
-                            <div class="text-gray-700 leading-relaxed whitespace-pre-wrap">{{ $news->content }}</div>
+                            <div class="text-gray-700 leading-relaxed">{!! $news->content !!}</div>
                         </div>
                     </div>
-
-                    <!-- SEO Information -->
-                    @if($news->meta_title || $news->meta_description)
-                        <div class="bg-white rounded-xl shadow-md p-6">
-                            <h3 class="text-lg font-semibold text-gray-800 mb-4">SEO Information</h3>
-                            <div class="space-y-4">
-                                @if($news->meta_title)
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-500 mb-1">Meta Title</label>
-                                        <p class="text-gray-900">{{ $news->meta_title }}</p>
-                                    </div>
-                                @endif
-                                @if($news->meta_description)
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-500 mb-1">Meta Description</label>
-                                        <p class="text-gray-900">{{ $news->meta_description }}</p>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    @endif
                 </div>
 
                 <!-- Sidebar -->
@@ -137,6 +117,14 @@
                                     {{ $news->is_featured ? 'Yes' : 'No' }}
                                 </span>
                             </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-500 mb-1">Views</label>
+                                <p class="text-gray-900">{{ number_format($news->views) }}</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-500 mb-1">Read Time</label>
+                                <p class="text-gray-900">{{ $news->read_time }} min</p>
+                            </div>
                             @if($news->slug)
                                 <div>
                                     <label class="block text-sm font-medium text-gray-500 mb-1">URL Slug</label>
@@ -153,16 +141,16 @@
                             @if($news->published_at)
                                 <div>
                                     <label class="block text-sm font-medium text-gray-500 mb-1">Published At</label>
-                                    <p class="text-gray-900 text-sm">{{ $news->published_at->format('M d, Y \\a\\t g:i A') }}</p>
+                                    <p class="text-gray-900 text-sm">{{ $news->published_at->format('M d, Y \a\t g:i A') }}</p>
                                 </div>
                             @endif
                             <div>
                                 <label class="block text-sm font-medium text-gray-500 mb-1">Created At</label>
-                                <p class="text-gray-900 text-sm">{{ $news->created_at->format('M d, Y \\a\\t g:i A') }}</p>
+                                <p class="text-gray-900 text-sm">{{ $news->created_at->format('M d, Y \a\t g:i A') }}</p>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-500 mb-1">Last Updated</label>
-                                <p class="text-gray-900 text-sm">{{ $news->updated_at->format('M d, Y \\a\\t g:i A') }}</p>
+                                <p class="text-gray-900 text-sm">{{ $news->updated_at->format('M d, Y \a\t g:i A') }}</p>
                             </div>
                         </div>
                     </div>
@@ -177,19 +165,6 @@
                                 </svg>
                                 Edit Article
                             </a>
-                            @if($news->status == 'draft')
-                                <form action="{{ route('admin.news.update', $news->id) }}" method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <input type="hidden" name="status" value="published">
-                                    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center gap-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M11,16.5L18,9.5L16.59,8.09L11,13.67L7.91,10.59L6.5,12L11,16.5Z"/>
-                                        </svg>
-                                        Publish Article
-                                    </button>
-                                </form>
-                            @endif
                             <form action="{{ route('admin.news.destroy', $news->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this article?');">
                                 @csrf
                                 @method('DELETE')
@@ -202,19 +177,6 @@
                             </form>
                         </div>
                     </div>
-
-                    <!-- Preview Link -->
-                    @if($news->status == 'published' && $news->slug)
-                        <div class="bg-white rounded-xl shadow-md p-6">
-                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Public View</h3>
-                            <a href="#" target="_blank" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z"/>
-                                </svg>
-                                View on Website
-                            </a>
-                        </div>
-                    @endif
                 </div>
             </div>
         </div>

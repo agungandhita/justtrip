@@ -45,57 +45,63 @@ class DashboardController extends Controller
         $newUsersToday = User::whereDate('created_at', $today)->count();
         $newUsersThisMonth = User::where('created_at', '>=', $thisMonth)->count();
         $newUsersLastMonth = User::whereBetween('created_at', [$lastMonth, $lastMonthEnd])->count();
-
-        // Calculate user growth percentage
         $userGrowthPercentage = $this->calculateGrowthPercentage($newUsersThisMonth, $newUsersLastMonth);
-
-        // Admin and regular user counts
         $totalAdmins = User::where('role', 'admin')->count();
         $totalRegularUsers = User::where('role', 'user')->count();
 
-        // Layanan/Service statistics (replacing Product/Destination)
-        $totalDestinations = Layanan::count();
-        $activeDestinations = Layanan::where('status', 'aktif')->count();
-        $inactiveDestinations = Layanan::where('status', 'nonaktif')->count();
+        // Layanan statistics
+        $totalLayanan = \App\Models\Layanan::count();
+        $layananAktif = \App\Models\Layanan::where('status', 'aktif')->count();
+        $layananNonaktif = \App\Models\Layanan::where('status', 'nonaktif')->count();
 
-        // Special Offers statistics (as booking placeholder)
-        $totalBookings = SpecialOffer::count();
-        $pendingBookings = SpecialOffer::where('is_active', true)->where('valid_until', '>=', now())->count();
-        $completedBookings = SpecialOffer::where('valid_until', '<', now())->count();
-        $cancelledBookings = SpecialOffer::where('is_active', false)->count();
+        // Booking statistics (Real data from Booking model)
+        $bookingModel = new \App\Models\Booking();
+        $totalBookings = \App\Models\Booking::count();
+        $pendingBookings = \App\Models\Booking::where('status', 'pending')->count();
+        $confirmedBookings = \App\Models\Booking::where('status', 'confirmed')->count();
+        $completedBookings = \App\Models\Booking::where('status', 'completed')->count();
+        $cancelledBookings = \App\Models\Booking::where('status', 'cancelled')->count();
+        $newBookingsToday = \App\Models\Booking::whereDate('created_at', $today)->count();
 
-        // Revenue calculation from layanan and special offers
-        $totalRevenue = Layanan::sum('harga_mulai') + SpecialOffer::sum('discounted_price');
-        $revenueToday = Layanan::whereDate('created_at', $today)->sum('harga_mulai') +
-                       SpecialOffer::whereDate('created_at', $today)->sum('discounted_price');
-        $revenueThisMonth = Layanan::where('created_at', '>=', $thisMonth)->sum('harga_mulai') +
-                           SpecialOffer::where('created_at', '>=', $thisMonth)->sum('discounted_price');
-        $revenueLastMonth = Layanan::whereBetween('created_at', [$lastMonth, $lastMonthEnd])->sum('harga_mulai') +
-                           SpecialOffer::whereBetween('created_at', [$lastMonth, $lastMonthEnd])->sum('discounted_price');
+        // Revenue calculation from approved/completed bookings
+        $revenueQuery = \App\Models\Booking::whereIn('status', ['confirmed', 'approved', 'completed', 'payment_uploaded']);
+        $totalRevenue = (float) $revenueQuery->sum('total_amount');
+        $revenueToday = (float) $revenueQuery->whereDate('created_at', $today)->sum('total_amount');
+        $revenueThisMonth = (float) \App\Models\Booking::whereIn('status', ['confirmed', 'approved', 'completed', 'payment_uploaded'])
+                                    ->where('created_at', '>=', $thisMonth)
+                                    ->sum('total_amount');
+        $revenueLastMonth = (float) \App\Models\Booking::whereIn('status', ['confirmed', 'approved', 'completed', 'payment_uploaded'])
+                                    ->whereBetween('created_at', [$lastMonth, $lastMonthEnd])
+                                    ->sum('total_amount');
         $revenueGrowthPercentage = $this->calculateGrowthPercentage($revenueThisMonth, $revenueLastMonth);
 
-        // Layanan statistics
-        $totalServices = Layanan::count();
-        $activeServices = Layanan::where('status', 'aktif')->count();
-        $inactiveServices = Layanan::where('status', 'nonaktif')->count();
+        // Recent Bookings
+        $recentBookings = \App\Models\Booking::with(['user', 'layanan'])
+                                            ->latest()
+                                            ->take(5)
+                                            ->get();
 
-        // Recent activities
-        $recentUsers = User::latest()->take(5)->get();
+        // Top Services (based on booking count)
+        $topServices = \App\Models\Layanan::withCount('bookings')
+                                        ->orderBy('bookings_count', 'desc')
+                                        ->take(5)
+                                        ->get();
+
+        // Special Offers statistics
+        $totalOffers = SpecialOffer::count();
+        $activeOffers = SpecialOffer::where('is_active', true)->where('valid_until', '>=', now())->count();
 
         // News statistics
         $totalNews = News::count();
-        $publishedNews = News::where('is_published', true)->count();
         $featuredNews = News::where('is_featured', true)->count();
 
         // Gallery statistics
         $totalGallery = Gallery::count();
-        $publicGallery = Gallery::where('is_public', true)->count();
         $featuredGallery = Gallery::where('featured', true)->count();
 
         // Additional metrics
-        $totalViews = News::sum('views') + Gallery::sum('views');
-        $averageLayananPrice = Layanan::avg('harga_mulai') ?? 0;
-        $featuredLayanan = Layanan::where('status', 'aktif')->count();
+        $totalViews = News::sum('views'); // Gallery views removed from optimization
+        $averageLayananPrice = \App\Models\Layanan::avg('harga_mulai') ?? 0;
 
         return [
             // User statistics
@@ -106,18 +112,21 @@ class DashboardController extends Controller
             'totalAdmins' => $totalAdmins,
             'totalRegularUsers' => $totalRegularUsers,
 
-            // Destination statistics (placeholders)
-            'totalDestinations' => $totalDestinations,
-            'activeDestinations' => $activeDestinations,
-            'inactiveDestinations' => $inactiveDestinations,
+            // Layanan statistics
+            'totalLayanan' => $totalLayanan,
+            'layananAktif' => $layananAktif,
+            'layananNonaktif' => $layananNonaktif,
 
-            // Booking statistics (placeholders)
+            // Booking statistics
             'totalBookings' => $totalBookings,
             'pendingBookings' => $pendingBookings,
+            'confirmedBookings' => $confirmedBookings,
             'completedBookings' => $completedBookings,
             'cancelledBookings' => $cancelledBookings,
+            'newBookingsToday' => $newBookingsToday,
+            'recentBookings' => $recentBookings,
 
-            // Revenue statistics (placeholders)
+            // Revenue statistics
             'totalRevenue' => $totalRevenue,
             'pendapatanHariIni' => $revenueToday,
             'pendapatanBulanIni' => $revenueThisMonth,
@@ -125,47 +134,20 @@ class DashboardController extends Controller
             'perubahanPendapatan' => $revenueGrowthPercentage,
             'totalPendapatanKeseluruhan' => $totalRevenue,
 
-            // Service statistics (placeholders)
-            'totalServices' => $totalServices,
-            'activeServices' => $activeServices,
-            'inactiveServices' => $inactiveServices,
-
-            // Recent activities
-            'recentUsers' => $recentUsers,
-
-            // News statistics
+            // Other content statistics
+            'totalOffers' => $totalOffers,
+            'activeOffers' => $activeOffers,
             'totalNews' => $totalNews,
-            'publishedNews' => $publishedNews,
             'featuredNews' => $featuredNews,
-
-            // Gallery statistics
             'totalGallery' => $totalGallery,
-            'publicGallery' => $publicGallery,
             'featuredGallery' => $featuredGallery,
 
-            // Additional metrics
-            'averageProductPrice' => $averageLayananPrice,
+            // Metrics
+            'topServices' => $topServices,
             'totalViews' => $totalViews,
-            'featuredProducts' => $featuredLayanan,
-
-            // Layanan specific data for view
-            'totalLayanan' => $totalServices,
-            'layananAktif' => $activeServices,
-            'layananNonaktif' => $inactiveServices,
-            'totalLayananUkuran' => $totalServices, // Same as total for now
-
-            // Performance metrics
-            'averageOrdersPerDay' => round($totalBookings / 30, 1), // Rough calculation
-            'averageRevenuePerOrder' => $totalBookings > 0 ? round($totalRevenue / $totalBookings, 0) : 0,
-            'conversionRate' => $totalDestinations > 0 ? round(($activeDestinations / $totalDestinations) * 100, 1) : 0,
-            'cancellationRate' => $totalBookings > 0 ? round(($cancelledBookings / $totalBookings) * 100, 1) : 0,
-
-            // Size/Category metrics (placeholder)
-            'totalUkuran' => $totalServices,
-            'ukuranAktif' => $activeServices,
-            'ukuranNonaktif' => $inactiveServices,
-            'ukuranPerKategori' => [],
-
+            'averageLayananPrice' => $averageLayananPrice,
+            'conversionRate' => $totalBookings > 0 ? round(($completedBookings / $totalBookings) * 100, 1) : 0,
+            
             // System info
             'systemStatus' => 'online',
             'lastUpdated' => now()->format('d M Y, H:i'),

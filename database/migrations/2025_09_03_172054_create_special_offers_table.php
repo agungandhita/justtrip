@@ -30,10 +30,6 @@ return new class extends Migration
             $table->integer('current_bookings')->default(0);
             $table->boolean('is_featured')->default(false);
             $table->boolean('is_active')->default(true);
-            $table->string('badge_text')->nullable(); // Flash Sale, Limited Time, etc.
-            $table->string('badge_color')->default('red');
-            $table->string('meta_title')->nullable();
-            $table->text('meta_description')->nullable();
             $table->timestamps();
         });
     }

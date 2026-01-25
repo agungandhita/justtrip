@@ -134,7 +134,7 @@
                                                 </label>
                                                 <p class="pl-1">or drag and drop</p>
                                             </div>
-                                            <p class="text-xs text-gray-500">PNG, JPG, JPEG, WebP up to 5MB each (max 20 total images)</p>
+                                            <p class="text-xs text-gray-500">PNG, JPG, JPEG, WebP maksimal 2MB per gambar (max 20 total images)</p>
                                         </div>
                                     </div>
                                     @error('images')
@@ -208,31 +208,6 @@
                             </div>
                         </div>
 
-                        <!-- SEO Information -->
-                        <div class="bg-white rounded-xl shadow-md p-6">
-                            <h2 class="text-xl font-semibold text-gray-800 mb-6">SEO Information</h2>
-
-                            <div class="space-y-4">
-                                <!-- Alt Text -->
-                                <div>
-                                    <label for="alt_text" class="block text-sm font-medium text-gray-700 mb-2">Alt Text</label>
-                                    <input type="text" id="alt_text" name="alt_text" value="{{ old('alt_text', $gallery->alt_text) }}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('alt_text') border-red-500 @enderror" placeholder="Describe the image for accessibility">
-                                    <p class="mt-1 text-sm text-gray-500">Used for screen readers and when image fails to load</p>
-                                    @error('alt_text')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <!-- Caption -->
-                                <div>
-                                    <label for="caption" class="block text-sm font-medium text-gray-700 mb-2">Caption</label>
-                                    <input type="text" id="caption" name="caption" value="{{ old('caption', $gallery->caption) }}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 @error('caption') border-red-500 @enderror" placeholder="Image caption (optional)">
-                                    @error('caption')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                     <!-- Sidebar -->
@@ -269,27 +244,15 @@
                             </div>
                         </div>
 
-                        <!-- Location Information -->
+                        <!-- Photographer -->
                         <div class="bg-white rounded-xl shadow-md p-6">
-                            <h2 class="text-xl font-semibold text-gray-800 mb-6">Location Information</h2>
+                            <h2 class="text-xl font-semibold text-gray-800 mb-6">Photographer</h2>
 
                             <div class="space-y-4">
-                                <!-- Location -->
-                                <div>
-                                    <label for="location" class="block text-sm font-medium text-gray-700 mb-2">Location</label>
-                                    <input type="text" id="location" name="location" value="{{ old('location', $gallery->location) }}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Where was this photo taken?">
-                                </div>
-
                                 <!-- Photographer -->
                                 <div>
                                     <label for="photographer" class="block text-sm font-medium text-gray-700 mb-2">Photographer</label>
                                     <input type="text" id="photographer" name="photographer" value="{{ old('photographer', $gallery->photographer) }}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Photo credit (optional)">
-                                </div>
-
-                                <!-- Date Taken -->
-                                <div>
-                                    <label for="date_taken" class="block text-sm font-medium text-gray-700 mb-2">Date Taken</label>
-                                    <input type="date" id="date_taken" name="date_taken" value="{{ old('date_taken', $gallery->date_taken ? $gallery->date_taken->format('Y-m-d') : '') }}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                                 </div>
                             </div>
                         </div>
@@ -434,9 +397,9 @@
                 preview.classList.remove('hidden');
                 
                 Array.from(input.files).forEach((file, index) => {
-                    // Check file size (5MB limit)
-                    if (file.size > 5 * 1024 * 1024) {
-                        alert(`File ${file.name} is too large. Maximum size is 5MB.`);
+                    // Check file size (2MB limit)
+                    if (file.size > 2 * 1024 * 1024) {
+                        alert(`File ${file.name} terlalu besar. Maksimal 2MB.`);
                         return;
                     }
                     
@@ -575,12 +538,5 @@
             });
         }
 
-        // Auto-generate alt text from title if alt text is empty
-        document.getElementById('title').addEventListener('input', function() {
-            const altTextInput = document.getElementById('alt_text');
-            if (altTextInput && !altTextInput.value) {
-                altTextInput.value = this.value;
-            }
-        });
     </script>
 @endsection

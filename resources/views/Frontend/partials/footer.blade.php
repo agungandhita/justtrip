@@ -5,16 +5,18 @@
             <!-- Logo & About -->
             <div class="lg:col-span-2">
                 <div class="flex items-center space-x-3 mb-6">
-                    <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center shadow-sm">
-                        <img src="{{ asset('image/logo4.png') }}" alt="JustTrip Logo" class="w-10 h-10 object-contain">
+                    <div class="w-12 h-12 flex items-center justify-center shadow-sm">
+                        <img src="{{ asset('image/LOGO TOSCA.png') }}" alt="JustTrip Logo" class="w-10 h-10 object-contain">
                     </div>
                     <div>
-                        <h3 class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-blue-500 bg-clip-text text-transparent">JustTrip</h3>
-                        <p class="text-gray-300 text-sm">Your Travel Partner</p>
+                        <h3 class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-blue-500 bg-clip-text text-transparent">Justtrip</h3>
+                        <p class="text-gray-300 text-sm">#TripGagalMoveOn</p>
                     </div>
                 </div>
                 <p class="text-gray-300 mb-6 leading-relaxed max-w-md">
-                    Liburan jadi mudah dengan JustTrip. Kami menyediakan paket travel terlengkap dengan harga transparan untuk perjalanan wisata domestik dan internasional Anda.
+                    Lebih dari sekadar perjalanan.
+Kami merancang cerita, bukan hanya destinasi.
+
                 </p>
                 <div class="flex space-x-4">
                     <a href="#" class="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110" title="Instagram">
@@ -83,7 +85,7 @@
         <!-- Footer Bottom -->
         <div class="border-t border-white/10 mt-8 pt-8 text-center">
             <p class="text-gray-400 text-sm">
-                © {{ date('Y') }} JustTrip. All rights reserved. Made with ❤️ for your journey.
+                © {{ date('Y') }} Justtrip. All rights reserved. Made with ❤️ for your journey.
             </p>
         </div>
     </div>

@@ -35,21 +35,17 @@ class HomeController extends Controller
                                  ->get();
 
         // Get latest news/articles
-        $latestNews = News::where('is_published', true)
-                         ->latest()
+        $latestNews = News::latest()
                          ->take(3)
                          ->get();
 
         // Get featured news
-        $featuredNews = News::where('is_published', true)
-                           ->where('is_featured', true)
+        $featuredNews = News::where('is_featured', true)
                            ->latest()
-                           ->take(1)
                            ->first();
 
         // Get featured gallery images
-        $featuredGallery = Gallery::where('is_public', true)
-                                 ->where('status', 'active')
+        $featuredGallery = Gallery::where('status', 'active')
                                  ->where('featured', true)
                                  ->latest()
                                  ->take(6)
@@ -57,8 +53,7 @@ class HomeController extends Controller
 
         // Get statistics for hero section
         $statistics = [
-            'total_destinations' => Gallery::where('is_public', true)
-                                          ->where('status', 'active')
+            'total_destinations' => Gallery::where('status', 'active')
                                           ->distinct('destination')
                                           ->count('destination'),
             'total_packages' => Layanan::where('status', 'aktif')->count(),
@@ -67,11 +62,19 @@ class HomeController extends Controller
         ];
 
         // Get testimonials (using news as testimonials for now)
-        $testimonials = News::where('is_published', true)
-                           ->where('category', 'testimonial')
+        $testimonials = News::where('category', 'testimonial')
                            ->latest()
                            ->take(3)
                            ->get();
+
+        // Check for pending payments (for banner)
+        $pendingBooking = null;
+        if (auth()->check()) {
+            $pendingBooking = \App\Models\Booking::where('user_id', auth()->id())
+                ->whereIn('status', ['approved', 'awaiting_payment'])
+                ->latest()
+                ->first();
+        }
 
         return view('Frontend.home.index', compact(
             'featuredOffers',
@@ -80,7 +83,8 @@ class HomeController extends Controller
             'featuredNews',
             'featuredGallery',
             'statistics',
-            'testimonials'
+            'testimonials',
+            'pendingBooking'
         ));
     }
 }

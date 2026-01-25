@@ -3,689 +3,388 @@
 @section('title', 'Detail Booking #' . $booking->booking_id)
 
 @section('container')
-<div class="container min-h-screen py-8 mx-auto bg-gray-50">
-    <div class="px-4 mx-auto sm:px-6 lg:px-8">
-        <!-- Header -->
-        <div class="p-6 mb-6 bg-white rounded-lg shadow-sm">
-            <div class="flex items-center justify-between">
+<div class="min-h-screen bg-[#f8fafc]">
+    <!-- Hero Section -->
+    <div class="bg-blue-600 pt-12 pb-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div>
-                    <h1 class="text-2xl font-bold text-gray-900">Detail Booking</h1>
-                    <p class="mt-1 text-gray-600">Booking ID: #{{ $booking->booking_id }}</p>
+                    <nav class="flex mb-4 text-sm text-blue-100" aria-label="Breadcrumb">
+                        <ol class="flex items-center space-x-2">
+                            <li><a href="{{ route('home') }}" class="hover:text-white transition-colors">Beranda</a></li>
+                            <li><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-width="2"/></svg></li>
+                            <li><a href="{{ route('booking.index') }}" class="hover:text-white transition-colors">Booking Saya</a></li>
+                            <li><svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-width="2"/></svg></li>
+                            <li class="text-white font-bold">Detail #{{ $booking->booking_id }}</li>
+                        </ol>
+                    </nav>
+                    <h1 class="text-3xl md:text-5xl font-black text-white leading-tight">
+                        Status Pesanan Anda
+                    </h1>
+                    <div class="mt-4 flex flex-wrap items-center gap-4">
+                        <span class="px-4 py-1.5 bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-sm font-bold">
+                            ID: #{{ $booking->booking_id }}
+                        </span>
+                        <span class="px-4 py-1.5 bg-{{ $booking->status_color }}-500 text-white rounded-full text-sm font-bold shadow-lg shadow-black/10">
+                            {{ $booking->status_label }}
+                        </span>
+                    </div>
                 </div>
-                <div class="flex space-x-3">
-                    @if($booking->status === 'confirmed')
-                        <a href="{{ route('booking.invoice', $booking->booking_id) }}"
-                           class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                            </svg>
-                            Download Invoice
+                <div class="flex items-center space-x-3">
+                    @if(in_array($booking->status, ['confirmed', 'completed']))
+                        <a href="{{ route('booking.invoice', $booking->booking_id) }}" 
+                           class="bg-white text-blue-600 px-6 py-3 rounded-2xl font-black shadow-xl hover:bg-blue-50 transition-all flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 10v6m0 0l-3-3m3 3l3-3m7-3V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-3" stroke-width="2"/></svg>
+                            Invoice PDF
                         </a>
                     @endif
-                    <a href="{{ route('booking.index') }}"
-                       class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                        </svg>
-                        Kembali ke Daftar Booking
-                    </a>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Status Alert -->
-        @if($booking->status === 'pending')
-            <div class="p-4 mb-6 border border-yellow-200 rounded-lg bg-yellow-50">
-                <div class="flex">
-                    <div class="flex-shrink-0">
-                        <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
-                        </svg>
-                    </div>
-                    <div class="ml-3">
-                        <h3 class="text-sm font-medium text-yellow-800">Booking Menunggu Konfirmasi</h3>
-                        <div class="mt-2 text-sm text-yellow-700">
-                            <p>Booking Anda sedang dalam proses verifikasi. Tim kami akan menghubungi Anda dalam 1x24 jam untuk konfirmasi.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @elseif($booking->status === 'approved')
-            <div class="p-4 mb-6 border border-blue-200 rounded-lg bg-blue-50">
-                <div class="flex">
-                    <div class="flex-shrink-0">
-                        <svg class="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                        </svg>
-                    </div>
-                    <div class="ml-3">
-                        <h3 class="text-sm font-medium text-blue-800">Booking Disetujui</h3>
-                        <div class="mt-2 text-sm text-blue-700">
-                            <p>Booking Anda telah disetujui! Silakan lakukan pembayaran untuk melanjutkan proses booking.</p>
-                            @if($booking->admin_notes)
-                                <p class="mt-1"><strong>Catatan Admin:</strong> {{ $booking->admin_notes }}</p>
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 pb-20">
+        <!-- Status Tracker Card -->
+        <div class="bg-white rounded-[2rem] shadow-xl border border-gray-100 p-8 mb-8 overflow-x-auto">
+            <div class="min-w-[600px] flex items-start justify-between relative">
+                <!-- Progress Line Background -->
+                <div class="absolute top-6 left-0 right-0 h-1 bg-gray-100 -z-0"></div>
+                
+                @php
+                    $steps = [
+                        ['id' => 'pending', 'label' => 'Pending', 'icon' => 'clock'],
+                        ['id' => 'approved', 'label' => 'Disetujui', 'icon' => 'check-circle'],
+                        ['id' => 'awaiting_payment', 'label' => 'Bayar', 'icon' => 'credit-card'],
+                        ['id' => 'payment_uploaded', 'label' => 'Verifikasi', 'icon' => 'search'],
+                        ['id' => 'confirmed', 'label' => 'Dikonfirmasi', 'icon' => 'shield-check'],
+                        ['id' => 'completed', 'label' => 'Selesai', 'icon' => 'flag']
+                    ];
+                    
+                    $currentIdx = 0;
+                    foreach($steps as $idx => $step) {
+                        if($booking->status === $step['id']) {
+                            $currentIdx = $idx;
+                            break;
+                        }
+                    }
+                    if($booking->status === 'confirmed') $currentIdx = 4;
+                    if($booking->status === 'completed') $currentIdx = 5;
+                    // Handle terminal states
+                    if(in_array($booking->status, ['rejected', 'cancelled'])) $currentIdx = -1;
+                @endphp
+
+                @foreach($steps as $idx => $step)
+                    @php
+                        $isCompleted = $currentIdx > $idx;
+                        $isActive = $currentIdx === $idx;
+                        $isPending = $currentIdx < $idx && $currentIdx !== -1;
+                    @endphp
+                    <div class="flex flex-col items-center relative z-10 flex-1">
+                        <div class="w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-500 {{ $isActive ? 'bg-blue-600 text-white shadow-xl shadow-blue-200 scale-110' : ($isCompleted ? 'bg-green-500 text-white' : 'bg-gray-100 text-gray-400') }}">
+                            @if($isCompleted)
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                            @else
+                                <i class="fas fa-{{ $step['icon'] }} text-lg"></i>
                             @endif
                         </div>
-                    </div>
-                </div>
-            </div>
-        @elseif($booking->status === 'rejected')
-            <div class="p-4 mb-6 border border-red-200 rounded-lg bg-red-50">
-                <div class="flex">
-                    <div class="flex-shrink-0">
-                        <svg class="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
-                        </svg>
-                    </div>
-                    <div class="ml-3">
-                        <h3 class="text-sm font-medium text-red-800">Booking Ditolak</h3>
-                        <div class="mt-2 text-sm text-red-700">
-                            <p>Maaf, booking Anda tidak dapat diproses.</p>
-                            @if($booking->admin_notes)
-                                <p class="mt-1"><strong>Alasan:</strong> {{ $booking->admin_notes }}</p>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @elseif($booking->status === 'confirmed')
-            <div class="p-4 mb-6 border border-green-200 rounded-lg bg-green-50">
-                <div class="flex">
-                    <div class="flex-shrink-0">
-                        <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                        </svg>
-                    </div>
-                    <div class="ml-3">
-                        <h3 class="text-sm font-medium text-green-800">Booking Dikonfirmasi</h3>
-                        <div class="mt-2 text-sm text-green-700">
-                            <p>Selamat! Booking Anda telah dikonfirmasi. Invoice telah dikirim ke email Anda.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @elseif($booking->status === 'cancelled')
-            <div class="p-4 mb-6 border border-red-200 rounded-lg bg-red-50">
-                <div class="flex">
-                    <div class="flex-shrink-0">
-                        <svg class="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
-                        </svg>
-                    </div>
-                    <div class="ml-3">
-                        <h3 class="text-sm font-medium text-red-800">Booking Dibatalkan</h3>
-                        <div class="mt-2 text-sm text-red-700">
-                            <p>Booking ini telah dibatalkan. Jika ada pertanyaan, silakan hubungi customer service kami.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endif
-
-        <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
-            <!-- Booking Details -->
-            <div class="space-y-6 lg:col-span-2">
-                <!-- Customer Information -->
-                <div class="p-6 bg-white rounded-lg shadow-sm">
-                    <h3 class="flex items-center mb-4 text-lg font-semibold text-gray-900">
-                        <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                        </svg>
-                        Informasi Pemesan
-                    </h3>
-
-                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-500">Nama Lengkap</label>
-                            <p class="mt-1 text-sm text-gray-900">{{ $booking->user?->name }}</p>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-500">Email</label>
-                            <p class="mt-1 text-sm text-gray-900">{{ $booking->user?->email }}</p>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-500">Nomor Telepon</label>
-                            <p class="mt-1 text-sm text-gray-900">{{ $booking->user?->phone }}</p>
-                        </div>
-                        <div class="md:col-span-2">
-                            <label class="block text-sm font-medium text-gray-500">Alamat</label>
-                            <p class="mt-1 text-sm text-gray-900">{{ $booking->user?->address }}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Trip Details -->
-                <div class="p-6 bg-white rounded-lg shadow-sm">
-                    <h3 class="flex items-center mb-4 text-lg font-semibold text-gray-900">
-                        <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                        </svg>
-                        Detail Perjalanan
-                    </h3>
-
-                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-500">Jumlah Peserta</label>
-                            <p class="mt-1 text-sm text-gray-900">{{ $booking->jumlah_peserta }} orang</p>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-500">Tanggal Keberangkatan</label>
-                            <p class="mt-1 text-sm text-gray-900">{{ $booking->tanggal_keberangkatan->format('d F Y') }}</p>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-500">Tanggal Booking</label>
-                            <p class="mt-1 text-sm text-gray-900">{{ $booking->created_at->format('d F Y H:i') }}</p>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-500">Status</label>
-                            <span class="mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                                @if($booking->status === 'pending') bg-yellow-100 text-yellow-800
-                                @elseif($booking->status === 'approved') bg-blue-100 text-blue-800
-                                @elseif($booking->status === 'rejected') bg-red-100 text-red-800
-                                @elseif($booking->status === 'confirmed') bg-green-100 text-green-800
-                                @elseif($booking->status === 'cancelled') bg-red-100 text-red-800
-                                @else bg-gray-100 text-gray-800 @endif">
-                                @if($booking->status === 'approved') Disetujui
-                                @elseif($booking->status === 'rejected') Ditolak
-                                @else {{ ucfirst($booking->status) }}
-                                @endif
+                        <span class="mt-3 text-xs font-black uppercase tracking-widest {{ $isActive ? 'text-blue-600' : ($isCompleted ? 'text-green-600' : 'text-gray-400') }}">
+                            {{ $step['label'] }}
+                        </span>
+                        @if ($isActive)
+                            <span class="absolute -bottom-6 flex h-2 w-2">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
                             </span>
+                        @endif
+                    </div>
+                @endforeach
+            </div>
+            
+            @if(in_array($booking->status, ['rejected', 'cancelled']))
+                <div class="mt-12 p-6 bg-red-50 border border-red-100 rounded-3xl flex items-center gap-6 animate-pulse">
+                    <div class="w-16 h-16 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center flex-shrink-0">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-black text-red-900">Pesanan {{ $booking->status_label }}</h3>
+                        <p class="text-red-700 font-medium">
+                            {{ $booking->admin_notes ?? 'Maaf, pesanan Anda tidak dapat dilanjutkan. Silakan hubungi admin untuk informasi lebih lanjut.' }}
+                        </p>
+                    </div>
+                </div>
+            @endif
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <!-- Left Side: Details -->
+            <div class="lg:col-span-8 space-y-8">
+                <!-- Trip Summary Header -->
+                <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="relative h-64">
+                         <img src="{{ asset($booking->layanan->gambar_utama ? 'storage/' . $booking->layanan->gambar_utama : 'img/placeholder-trip.jpg') }}"
+                             alt="{{ $booking->layanan->nama_layanan }}"
+                             class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-8 left-8 right-8 flex justify-between items-end">
+                            <div>
+                                <p class="text-blue-400 font-black uppercase tracking-widest text-sm mb-2">{{ $booking->layanan->lokasi }}</p>
+                                <h2 class="text-white text-3xl font-black leading-tight">{{ $booking->layanan->nama_layanan }}</h2>
+                            </div>
+                            <div class="text-right text-white">
+                                <p class="text-xs font-bold opacity-60 uppercase mb-1">Berangkat</p>
+                                <p class="text-xl font-black">{{ $booking->tanggal_keberangkatan->format('d M Y') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-8 grid grid-cols-2 md:grid-cols-4 gap-8">
+                        <div>
+                            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Durasi</p>
+                            <p class="text-gray-900 font-black">{{ $booking->layanan->durasi ?? 'Sesuai Paket' }}</p>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Peserta</p>
+                            <p class="text-gray-900 font-black">{{ $booking->jumlah_peserta }} Orang</p>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Tipe Paket</p>
+                            <p class="text-gray-900 font-black">Premium Trip</p>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Booking At</p>
+                            <p class="text-gray-900 font-black">{{ $booking->created_at->format('d/m/y') }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section: Traveler Info -->
+                <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8 md:p-10">
+                    <div class="flex items-center space-x-4 mb-8">
+                        <div class="p-3 bg-blue-50 text-blue-600 rounded-2xl">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-black text-gray-900">Informasi Pemesan</h2>
+                            <p class="text-gray-500 font-medium text-sm">Data pribadi yang terdaftar dalam sistem</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-1">
+                            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Nama Lengkap</p>
+                            <p class="text-lg font-bold text-gray-900">{{ $booking->user?->name }}</p>
+                        </div>
+                        <div class="space-y-1">
+                            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Email Aktif</p>
+                            <p class="text-lg font-bold text-gray-900">{{ $booking->user?->email }}</p>
+                        </div>
+                        <div class="space-y-1">
+                            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">WhatsApp</p>
+                            <p class="text-lg font-bold text-gray-900">{{ $booking->user?->phone }}</p>
+                        </div>
+                        <div class="space-y-1">
+                            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Alamat</p>
+                            <p class="text-lg font-bold text-gray-900 line-clamp-2">{{ $booking->user?->address }}</p>
                         </div>
                         @if($booking->catatan_khusus)
-                            <div class="md:col-span-2">
-                                <label class="block text-sm font-medium text-gray-500">Catatan Khusus</label>
-                                <p class="mt-1 text-sm text-gray-900">{{ $booking->catatan_khusus }}</p>
+                            <div class="md:col-span-2 p-6 bg-gray-50 rounded-3xl border border-dashed border-gray-300">
+                                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Catatan Khusus</p>
+                                <p class="text-sm font-medium text-gray-700 italic">"{{ $booking->catatan_khusus }}"</p>
                             </div>
                         @endif
                     </div>
                 </div>
 
-                <!-- Payment Upload Section -->
-                @if($booking->status === 'approved')
-                    <div class="p-6 bg-white rounded-lg shadow-sm">
-                        <h3 class="flex items-center mb-4 text-lg font-semibold text-gray-900">
-                            <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                            </svg>
-                            Upload Bukti Pembayaran
-                        </h3>
-
-                        @if($booking->admin_notes)
-                            <div class="p-4 mb-4 border border-green-200 rounded-lg bg-green-50">
-                                <p class="text-green-800">
-                                    <strong>Catatan Admin:</strong> {{ $booking->admin_notes }}
-                                </p>
+                <!-- Section: Payment Section -->
+                @if(in_array($booking->status, ['approved', 'awaiting_payment', 'payment_uploaded']))
+                    <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8 md:p-10">
+                        <div class="flex items-center space-x-4 mb-8">
+                            <div class="p-3 bg-green-50 text-green-600 rounded-2xl">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                             </div>
-                        @endif
-
-                        @if($booking->invoice && $booking->invoice->status === 'payment_uploaded')
-                            <div class="p-4 mb-4 border border-yellow-200 rounded-lg bg-yellow-50">
-                                <p class="text-yellow-800">
-                                    <i class="mr-2 fas fa-clock"></i>
-                                    Bukti pembayaran Anda sedang diverifikasi oleh admin.
-                                </p>
+                            <div>
+                                <h2 class="text-2xl font-black text-gray-900">Pembayaran</h2>
+                                <p class="text-gray-500 font-medium text-sm">Metode transfer bank & konfirmasi</p>
                             </div>
-                        @elseif($booking->invoice && $booking->invoice->status === 'paid')
-                            <div class="p-4 mb-4 border border-green-200 rounded-lg bg-green-50">
-                                <p class="text-green-800">
-                                    <i class="mr-2 fas fa-check-circle"></i>
-                                    Pembayaran Anda telah dikonfirmasi. Terima kasih!
+                        </div>
+
+                        @if($booking->status === 'payment_uploaded')
+                            <div class="bg-yellow-50 border border-yellow-100 rounded-3xl p-8 text-center">
+                                <div class="w-16 h-16 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="fas fa-hourglass-half text-2xl animate-pulse"></i>
+                                </div>
+                                <h3 class="text-xl font-black text-yellow-900 mb-2">Sedang Diverifikasi</h3>
+                                <p class="text-yellow-700 font-medium max-w-md mx-auto">
+                                    Bukti pembayaran Anda telah kami terima dan sedang dalam proses verifikasi oleh tim keuangan kami.
                                 </p>
                             </div>
                         @else
-                            <div class="p-4 mb-4 border border-blue-200 rounded-lg bg-blue-50">
-                                <p class="text-blue-800">
-                                    <i class="mr-2 fas fa-info-circle"></i>
-                                    Silakan upload bukti pembayaran Anda untuk melanjutkan proses booking.
-                                </p>
+                            <div class="space-y-8">
+                                <!-- Step info -->
+                                <div class="p-6 bg-blue-600 rounded-3xl text-white relative overflow-hidden group">
+                                    <div class="relative z-10">
+                                        <p class="text-blue-100 text-xs font-bold uppercase tracking-widest mb-1">Total Bayar</p>
+                                        <h3 class="text-4xl font-black mb-4">Rp {{ number_format($booking->total_amount, 0, ',', '.') }}</h3>
+                                        <p class="text-blue-100 text-sm font-medium leading-relaxed">
+                                            Silakan transfer tepat sesuai nominal di atas ke salah satu rekening resmi kami di bawah ini.
+                                        </p>
+                                    </div>
+                                    <svg class="absolute -right-8 -bottom-8 w-48 h-48 text-white/10 group-hover:scale-110 transition-transform duration-700" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                                </div>
+
+                                <!-- Bank List -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    @php
+                                        $banks = [
+                                            ['name' => 'BCA', 'account' => '124 098 7766', 'owner' => 'PT Just Trip Indonesia'],
+                                            ['name' => 'Mandiri', 'account' => '131 000 9988 77', 'owner' => 'PT Just Trip Indonesia']
+                                        ];
+                                    @endphp
+                                    @foreach($banks as $bank)
+                                        <div class="p-6 border border-gray-100 rounded-3xl bg-gray-50/50 hover:bg-white hover:shadow-xl hover:border-blue-100 transition-all duration-300">
+                                            <div class="flex justify-between items-start mb-4">
+                                                <span class="px-3 py-1 bg-blue-100 text-blue-600 rounded-lg text-[10px] font-black uppercase">{{ $bank['name'] }}</span>
+                                                <i class="fas fa-university text-gray-300"></i>
+                                            </div>
+                                            <p class="text-xl font-black text-gray-900 mb-1 copy-target">{{ $bank['account'] }}</p>
+                                            <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">{{ $bank['owner'] }}</p>
+                                        </div>
+                                    @endforeach
+                                </div>
+
+                                <!-- Upload Form -->
+                                <form action="{{ route('payment.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6 pt-6 border-t border-gray-100">
+                                    @csrf
+                                    <input type="hidden" name="booking_id" value="{{ $booking->booking_id }}">
+                                    <input type="hidden" name="payment_method" value="bank_transfer">
+                                    <input type="hidden" name="payment_amount" value="{{ $booking->total_amount }}">
+                                    <input type="hidden" name="payment_date" value="{{ now()->format('Y-m-d H:i:s') }}">
+
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                        <div class="space-y-2">
+                                            <label class="text-sm font-black text-gray-700 uppercase tracking-widest">Bank Pengirim</label>
+                                            <input type="text" name="bank_name" placeholder="Misal: BCA, BNI, BRI" required
+                                                   class="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all outline-none font-bold">
+                                        </div>
+                                        <div class="space-y-2">
+                                            <label class="text-sm font-black text-gray-700 uppercase tracking-widest">Nomor Rekening</label>
+                                            <input type="text" name="account_number" placeholder="Contoh: 1234567890" required
+                                                   class="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all outline-none font-bold">
+                                        </div>
+                                        <div class="space-y-2">
+                                            <label class="text-sm font-black text-gray-700 uppercase tracking-widest">Atas Nama Rekening</label>
+                                            <input type="text" name="account_holder_name" placeholder="Nama sesuai buku tabungan" required
+                                                   class="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all outline-none font-bold">
+                                        </div>
+                                    </div>
+
+                                    <div class="space-y-2">
+                                        <label class="text-sm font-black text-gray-700 uppercase tracking-widest">Unggah Bukti Transfer</label>
+                                        <div class="relative group">
+                                            <input type="file" name="payment_proof" id="payment_proof" class="hidden" accept="image/*" required>
+                                            <label for="payment_proof" class="flex flex-col items-center justify-center border-2 border-dashed border-gray-200 rounded-[2rem] p-10 hover:bg-blue-50/50 hover:border-blue-400 cursor-pointer transition-all duration-300">
+                                                <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                                                </div>
+                                                <p class="text-lg font-black text-gray-900 mb-1">Klik untuk pilih file</p>
+                                                <p class="text-sm text-gray-500 font-medium">PNG, JPG atau JPEG (Maks. 2MB)</p>
+                                                <div id="file-name" class="mt-4 px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-xs font-bold hidden"></div>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="w-full bg-blue-600 text-white font-black py-5 rounded-[2rem] shadow-xl shadow-blue-200 hover:bg-blue-700 hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-3">
+                                        <i class="fas fa-paper-plane"></i>
+                                        Konfirmasi Pembayaran Sekarang
+                                    </button>
+                                </form>
                             </div>
-
-                            <form action="{{ route('payment.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
-                                @csrf
-                                <input type="hidden" name="booking_id" value="{{ $booking->booking_id }}">
-                                
-                                <!-- Payment Method Selection -->
-                                <div>
-                                    <label class="block mb-3 text-sm font-medium text-gray-700">
-                                        Metode Pembayaran
-                                    </label>
-                                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                                        <div>
-                                            <input type="radio" id="bank_transfer" name="payment_method" value="bank_transfer" 
-                                                   class="sr-only peer" checked>
-                                            <label for="bank_transfer" 
-                                                   class="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 peer-checked:border-blue-500 peer-checked:bg-blue-50">
-                                                <i class="mr-3 text-blue-600 fas fa-university"></i>
-                                                <span class="font-medium">Transfer Bank</span>
-                                            </label>
-                                        </div>
-                                        <div>
-                                            <input type="radio" id="e_wallet" name="payment_method" value="e_wallet" 
-                                                   class="sr-only peer">
-                                            <label for="e_wallet" 
-                                                   class="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 peer-checked:border-blue-500 peer-checked:bg-blue-50">
-                                                <i class="mr-3 text-green-600 fas fa-mobile-alt"></i>
-                                                <span class="font-medium">E-Wallet</span>
-                                            </label>
-                                        </div>
-                                        <div>
-                                            <input type="radio" id="cash" name="payment_method" value="cash" 
-                                                   class="sr-only peer">
-                                            <label for="cash" 
-                                                   class="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 peer-checked:border-blue-500 peer-checked:bg-blue-50">
-                                                <i class="mr-3 text-green-600 fas fa-money-bill-wave"></i>
-                                                <span class="font-medium">Tunai</span>
-                                            </label>
-                                        </div>
-                                        <div>
-                                            <input type="radio" id="other" name="payment_method" value="other" 
-                                                   class="sr-only peer">
-                                            <label for="other" 
-                                                   class="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 peer-checked:border-blue-500 peer-checked:bg-blue-50">
-                                                <i class="mr-3 text-gray-600 fas fa-ellipsis-h"></i>
-                                                <span class="font-medium">Lainnya</span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    @error('payment_method')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <!-- Bank Transfer Details -->
-                                <div id="bank_details" class="space-y-4 payment-details">
-                                    <h4 class="font-medium text-gray-900">Detail Transfer Bank</h4>
-                                    
-                                    <!-- Bank Account Information -->
-                                    <div class="p-4 mb-4 border border-blue-200 rounded-lg bg-blue-50">
-                                        <h5 class="mb-3 font-semibold text-blue-900">Rekening Tujuan Transfer:</h5>
-                                        <div class="space-y-2">
-                                            <div class="flex items-center justify-between">
-                                                <span class="font-medium text-blue-800">Bank BCA</span>
-                                                <span class="font-bold text-blue-900">1234567890</span>
-                                            </div>
-                                            <div class="flex items-center justify-between">
-                                                <span class="font-medium text-blue-800">Bank Mandiri</span>
-                                                <span class="font-bold text-blue-900">0987654321</span>
-                                            </div>
-                                            <div class="flex items-center justify-between">
-                                                <span class="font-medium text-blue-800">Bank BNI</span>
-                                                <span class="font-bold text-blue-900">1122334455</span>
-                                            </div>
-                                            <div class="pt-2 mt-3 text-center border-t border-blue-300">
-                                                <span class="font-semibold text-blue-900">a.n. JustTrip Travel</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                                        <div>
-                                            <label for="bank_name" class="block mb-2 text-sm font-medium text-gray-700">
-                                                Nama Bank
-                                            </label>
-                                            <input type="text" id="bank_name" name="bank_name" 
-                                                   placeholder="Contoh: BCA, Mandiri, BNI"
-                                                   class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('bank_name') border-red-500 @enderror"
-                                                   value="{{ old('bank_name') }}">
-                                            @error('bank_name')
-                                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                            @enderror
-                                        </div>
-                                        <div>
-                                            <label for="account_number" class="block mb-2 text-sm font-medium text-gray-700">
-                                                Nomor Rekening Pengirim
-                                            </label>
-                                            <input type="text" id="account_number" name="account_number" 
-                                                   placeholder="Nomor rekening Anda"
-                                                   class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('account_number') border-red-500 @enderror"
-                                                   value="{{ old('account_number') }}">
-                                            @error('account_number')
-                                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label for="account_holder_name" class="block mb-2 text-sm font-medium text-gray-700">
-                                            Nama Pemilik Rekening
-                                        </label>
-                                        <input type="text" id="account_holder_name" name="account_holder_name" 
-                                               placeholder="Nama sesuai rekening bank"
-                                               class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('account_holder_name') border-red-500 @enderror"
-                                               value="{{ old('account_holder_name') }}">
-                                        @error('account_holder_name')
-                                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <!-- E-Wallet Details -->
-                                <div id="ewallet_details" class="hidden space-y-4 payment-details">
-                                    <h4 class="font-medium text-gray-900">Detail E-Wallet</h4>
-                                    
-                                    <!-- E-Wallet Account Information -->
-                                    <div class="p-4 mb-4 border border-green-200 rounded-lg bg-green-50">
-                                        <h5 class="mb-3 font-semibold text-green-900">E-Wallet Tujuan Transfer:</h5>
-                                        <div class="space-y-2">
-                                            <div class="flex items-center justify-between">
-                                                <span class="font-medium text-green-800">OVO</span>
-                                                <span class="font-bold text-green-900">081234567890</span>
-                                            </div>
-                                            <div class="flex items-center justify-between">
-                                                <span class="font-medium text-green-800">GoPay</span>
-                                                <span class="font-bold text-green-900">081234567890</span>
-                                            </div>
-                                            <div class="flex items-center justify-between">
-                                                <span class="font-medium text-green-800">DANA</span>
-                                                <span class="font-bold text-green-900">081234567890</span>
-                                            </div>
-                                            <div class="flex items-center justify-between">
-                                                <span class="font-medium text-green-800">ShopeePay</span>
-                                                <span class="font-bold text-green-900">081234567890</span>
-                                            </div>
-                                            <div class="pt-2 mt-3 text-center border-t border-green-300">
-                                                <span class="font-semibold text-green-900">a.n. JustTrip Travel</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                                        <div>
-                                            <label for="e_wallet_type" class="block mb-2 text-sm font-medium text-gray-700">
-                                                Jenis E-Wallet
-                                            </label>
-                                            <select id="e_wallet_type" name="e_wallet_type" 
-                                                    class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('e_wallet_type') border-red-500 @enderror">
-                                                <option value="">Pilih E-Wallet</option>
-                                                <option value="OVO" {{ old('e_wallet_type') == 'OVO' ? 'selected' : '' }}>OVO</option>
-                                                <option value="GoPay" {{ old('e_wallet_type') == 'GoPay' ? 'selected' : '' }}>GoPay</option>
-                                                <option value="DANA" {{ old('e_wallet_type') == 'DANA' ? 'selected' : '' }}>DANA</option>
-                                                <option value="ShopeePay" {{ old('e_wallet_type') == 'ShopeePay' ? 'selected' : '' }}>ShopeePay</option>
-                                                <option value="LinkAja" {{ old('e_wallet_type') == 'LinkAja' ? 'selected' : '' }}>LinkAja</option>
-                                            </select>
-                                            @error('e_wallet_type')
-                                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                            @enderror
-                                        </div>
-                                        <div>
-                                            <label for="e_wallet_number" class="block mb-2 text-sm font-medium text-gray-700">
-                                                Nomor E-Wallet
-                                            </label>
-                                            <input type="text" id="e_wallet_number" name="e_wallet_number" 
-                                                   placeholder="Nomor HP/ID E-Wallet"
-                                                   class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('e_wallet_number') border-red-500 @enderror"
-                                                   value="{{ old('e_wallet_number') }}">
-                                            @error('e_wallet_number')
-                                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Payment Amount -->
-                                <div>
-                                    <label for="payment_amount" class="block mb-2 text-sm font-medium text-gray-700">
-                                        Jumlah Pembayaran
-                                    </label>
-                                    <div class="relative">
-                                        <span class="absolute text-gray-500 transform -translate-y-1/2 left-3 top-1/2">Rp</span>
-                                        <input type="number" id="payment_amount" name="payment_amount" 
-                                               placeholder="{{ number_format($booking->total_amount, 0, ',', '.') }}"
-                                               value="{{ old('payment_amount', $booking->total_amount) }}"
-                                               min="0" step="0.01" required
-                                               class="block w-full pl-10 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('payment_amount') border-red-500 @enderror">
-                                    </div>
-                                    <p class="mt-1 text-sm text-gray-500">Total yang harus dibayar: Rp {{ number_format($booking->total_amount, 0, ',', '.') }}</p>
-                                    @error('payment_amount')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <!-- Payment Date -->
-                                <div>
-                                    <label for="payment_date" class="block mb-2 text-sm font-medium text-gray-700">
-                                        Tanggal Pembayaran
-                                    </label>
-                                    <input type="datetime-local" id="payment_date" name="payment_date" 
-                                           value="{{ old('payment_date', now()->format('Y-m-d\TH:i')) }}"
-                                           max="{{ now()->format('Y-m-d\TH:i') }}" required
-                                           class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('payment_date') border-red-500 @enderror">
-                                    @error('payment_date')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                                
-                                <!-- Payment Proof Upload -->
-                                <div>
-                                    <label for="payment_proof" class="block mb-2 text-sm font-medium text-gray-700">
-                                        Upload Bukti Pembayaran *
-                                    </label>
-                                    <input type="file" 
-                                           id="payment_proof" 
-                                           name="payment_proof" 
-                                           accept="image/*,.pdf" 
-                                           required
-                                           class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 @error('payment_proof') border-red-500 @enderror">
-                                    <p class="mt-1 text-sm text-gray-500">Format yang didukung: JPG, PNG, PDF (Maksimal 2MB)</p>
-                                    @error('payment_proof')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                                
-                                <!-- Payment Notes -->
-                                <div>
-                                    <label for="payment_notes" class="block mb-2 text-sm font-medium text-gray-700">
-                                        Catatan Pembayaran (Opsional)
-                                    </label>
-                                    <textarea id="payment_notes" 
-                                              name="payment_notes" 
-                                              rows="3" 
-                                              placeholder="Tambahkan catatan tentang pembayaran Anda..."
-                                              class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('payment_notes') border-red-500 @enderror">{{ old('payment_notes') }}</textarea>
-                                    @error('payment_notes')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                                
-                                <button type="submit" class="w-full px-4 py-3 font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                                    <i class="mr-2 fas fa-upload"></i>Upload Bukti Pembayaran
-                                </button>
-                            </form>
-
-                            <script>
-                                document.addEventListener('DOMContentLoaded', function() {
-                                    const paymentMethods = document.querySelectorAll('input[name="payment_method"]');
-                                    const bankDetails = document.getElementById('bank_details');
-                                    const ewalletDetails = document.getElementById('ewallet_details');
-                                    
-                                    function togglePaymentDetails() {
-                                        const selectedMethod = document.querySelector('input[name="payment_method"]:checked').value;
-                                        
-                                        // Hide all details
-                                        bankDetails.classList.add('hidden');
-                                        ewalletDetails.classList.add('hidden');
-                                        
-                                        // Show relevant details
-                                        if (selectedMethod === 'bank_transfer') {
-                                            bankDetails.classList.remove('hidden');
-                                        } else if (selectedMethod === 'e_wallet') {
-                                            ewalletDetails.classList.remove('hidden');
-                                        }
-                                    }
-                                    
-                                    paymentMethods.forEach(method => {
-                                        method.addEventListener('change', togglePaymentDetails);
-                                    });
-                                    
-                                    // Initialize on page load
-                                    togglePaymentDetails();
-                                });
-                            </script>
                         @endif
                     </div>
                 @endif
 
-                <!-- Actions -->
                 @if($booking->status === 'pending')
-                    <div class="p-6 bg-white rounded-lg shadow-sm">
-                        <h3 class="mb-4 text-lg font-semibold text-gray-900">Aksi</h3>
-                        <div class="flex space-x-3">
-                            <form action="{{ route('booking.cancel', $booking->booking_id) }}" method="POST"
-                                  onsubmit="return confirm('Apakah Anda yakin ingin membatalkan booking ini?')">
-                                @csrf
-                                @method('PATCH')
-                                <button type="submit"
-                                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-red-700 bg-white border border-red-300 rounded-md shadow-sm hover:bg-red-50">
-                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                    </svg>
-                                    Batalkan Booking
-                                </button>
-                            </form>
+                    <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+                        <div>
+                            <h3 class="text-xl font-black text-gray-900 mb-1">Ingin Merubah Rencana?</h3>
+                            <p class="text-gray-500 font-medium">Anda masih bisa membatalkan pesanan ini karena belum dikonfirmasi.</p>
                         </div>
+                        <form action="{{ route('booking.cancel', $booking->booking_id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan pesanan ini?')">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" class="px-8 py-4 border-2 border-red-100 text-red-600 font-black rounded-2xl hover:bg-red-50 transition-colors flex items-center gap-3">
+                                <i class="fas fa-times"></i>
+                                Batalkan Pesanan
+                            </button>
+                        </form>
                     </div>
                 @endif
             </div>
 
-            <!-- Booking Summary -->
-            <div class="lg:col-span-1">
-                <div class="sticky p-6 bg-white rounded-lg shadow-sm top-6">
-                    <h3 class="mb-4 text-lg font-semibold text-gray-900">Ringkasan Booking</h3>
-
-                    <!-- Destination Info -->
-                    <div class="mb-6">
-                        @if($booking->layanan->gambar_utama)
-                            <img src="{{ asset('storage/' . $booking->layanan->gambar_utama) }}"
-                                 alt="{{ $booking->layanan->nama_layanan }}"
-                                 class="object-cover w-full h-32 mb-3 rounded-lg">
-                        @endif
-                        <h4 class="font-semibold text-gray-900">{{ $booking->layanan->nama_layanan }}</h4>
-                        <p class="mt-1 text-sm text-gray-600">{{ $booking->layanan->lokasi }}</p>
-                        @if($booking->layanan->durasi)
-                            <p class="text-sm text-gray-600">Durasi: {{ $booking->layanan->durasi }}</p>
-                        @endif
+            <!-- Right Side: Sidebar -->
+            <div class="lg:col-span-4 space-y-8">
+                <!-- Summary Card -->
+                <div class="bg-white rounded-[2rem] shadow-xl border border-gray-100 overflow-hidden sticky top-8">
+                    <div class="p-8 border-b border-gray-50">
+                        <h3 class="text-xl font-black text-gray-900">Rincian Biaya</h3>
                     </div>
-
-                    <!-- Special Offer -->
-                    @if($booking->specialOffer)
-                        <div class="p-3 mb-6 border border-green-200 rounded-lg bg-green-50">
-                            <div class="flex items-center">
-                                <svg class="w-5 h-5 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
-                                </svg>
-                                <span class="text-sm font-medium text-green-800">Special Offer</span>
-                            </div>
-                            <p class="mt-1 text-sm text-green-700">{{ $booking->specialOffer->title }}</p>
-                            <p class="text-sm font-semibold text-green-800">Diskon {{ $booking->specialOffer->discount_percentage }}%</p>
+                    <div class="p-8 space-y-6">
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Harga Paket x {{ $booking->jumlah_peserta }}</span>
+                            <span class="text-gray-900 font-black">Rp {{ number_format($booking->layanan->harga_mulai * $booking->jumlah_peserta, 0, ',', '.') }}</span>
                         </div>
-                    @endif
+                        
+                        @if($booking->specialOffer)
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-green-600 font-bold uppercase tracking-widest text-[10px]">Diskon Promo ({{ $booking->specialOffer->discount_percentage }}%)</span>
+                                <span class="text-green-600 font-black">-Rp {{ number_format(($booking->layanan->harga_mulai * $booking->jumlah_peserta) * ($booking->specialOffer->discount_percentage / 100), 0, ',', '.') }}</span>
+                            </div>
+                        @endif
 
-                    <!-- Price Breakdown -->
-                    <div class="pt-4 border-t">
-                        <div class="space-y-2">
-                            <div class="flex justify-between text-sm">
-                                <span>Harga per orang:</span>
-                                <span>Rp {{ number_format($booking->layanan->harga_mulai, 0, ',', '.') }}</span>
-                            </div>
-                            <div class="flex justify-between text-sm">
-                                <span>Jumlah peserta:</span>
-                                <span>{{ $booking->jumlah_peserta }} orang</span>
-                            </div>
-                            <div class="flex justify-between text-sm">
-                                <span>Subtotal:</span>
-                                <span>Rp {{ number_format($booking->layanan->harga_mulai * $booking->jumlah_peserta, 0, ',', '.') }}</span>
-                            </div>
-                            @if($booking->specialOffer)
-                                @php
-                                    $subtotal = $booking->layanan->harga_mulai * $booking->jumlah_peserta;
-                                    $discount = $subtotal * ($booking->specialOffer->discount_percentage / 100);
-                                @endphp
-                                <div class="flex justify-between text-sm text-green-600">
-                                    <span>Diskon ({{ $booking->specialOffer->discount_percentage }}%):</span>
-                                    <span>- Rp {{ number_format($discount, 0, ',', '.') }}</span>
+                        <div class="flex justify-between items-center text-sm border-t border-dashed border-gray-100 pt-4">
+                            <span class="text-gray-900 font-bold uppercase tracking-widest text-[10px]">Subtotal (Setelah Diskon)</span>
+                            <span class="text-gray-900 font-black">{{ $booking->formatted_subtotal }}</span>
+                        </div>
+
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Pajak (PPN 11%)</span>
+                            <span class="text-gray-900 font-black">{{ $booking->formatted_tax_amount }}</span>
+                        </div>
+
+                        <div class="pt-6 border-t border-gray-100">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Total Pembayaran</p>
+                                    <p class="text-3xl font-black text-blue-600">{{ $booking->formatted_total_amount }}</p>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3 pt-4">
+                            @if($booking->invoice && in_array($booking->status, ['confirmed', 'completed']))
+                                <a href="{{ route('invoice.view', $booking->invoice->invoice_id) }}" target="_blank" class="w-full py-4 bg-gray-900 text-white rounded-2xl flex items-center justify-center gap-3 font-black text-sm hover:bg-black transition-colors">
+                                    <i class="fas fa-eye"></i>
+                                    Lihat Invoice Online
+                                </a>
                             @endif
-                            @php
-                                $finalSubtotal = $booking->layanan->harga_mulai * $booking->jumlah_peserta;
-                                if($booking->specialOffer) {
-                                    $finalSubtotal -= $finalSubtotal * ($booking->specialOffer->discount_percentage / 100);
-                                }
-                                $tax = $finalSubtotal * 0.11;
-                            @endphp
-                            <div class="flex justify-between text-sm">
-                                <span>Pajak (PPN 11%):</span>
-                                <span>Rp {{ number_format($tax, 0, ',', '.') }}</span>
-                            </div>
-                            <div class="flex justify-between pt-2 text-lg font-semibold border-t">
-                                <span>Total:</span>
-                                <span class="text-blue-600">Rp {{ number_format($booking->total_amount, 0, ',', '.') }}</span>
-                            </div>
+                            <button onclick="sendInvoiceToWhatsApp({{ $booking->invoice?->invoice_id ?? '0' }})" class="w-full py-4 border-2 border-[#25D366]/20 text-[#25D366] rounded-2xl flex items-center justify-center gap-3 font-black text-sm hover:bg-[#25D366]/5 transition-colors">
+                                <i class="fab fa-whatsapp text-lg"></i>
+                                Tanya CS Kami
+                            </button>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Invoice Actions -->
-                    @if($booking->invoice)
-                        <div class="p-4 mt-6 border border-blue-200 rounded-lg bg-blue-50">
-                            <h5 class="flex items-center mb-3 font-medium text-blue-900">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                </svg>
-                                Invoice Actions
-                            </h5>
-                            <div class="space-y-3">
-                                @if ($booking?->status == 'completed') 
-                                <!-- Download Invoice Button -->
-                                <a href="{{ route('invoice.download', $booking->invoice->invoice_id) }}" 
-                                   class="inline-flex items-center justify-center w-full px-4 py-2 font-medium text-white transition-colors duration-200 bg-blue-600 rounded-lg hover:bg-blue-700">
-                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                    </svg>
-                                    Download Invoice PDF
-                                </a>
-                                
-                                <!-- View Invoice Button -->
-                              
-                                  <a href="{{ route('invoice.view', $booking->invoice->invoice_id) }}" 
-                                     target="_blank"
-                                     class="inline-flex items-center justify-center w-full px-4 py-2 font-medium text-white transition-colors duration-200 bg-gray-600 rounded-lg hover:bg-gray-700">
-                                      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                      </svg>
-                                      Lihat Invoice
-                                  </a>
-                              @endif
-                                
-                                <!-- Send to WhatsApp Admin Button -->
-                                <button onclick="sendInvoiceToWhatsApp({{ $booking->invoice->invoice_id }})" 
-                                        class="inline-flex items-center justify-center w-full px-4 py-2 font-medium text-white transition-colors duration-200 bg-green-600 rounded-lg hover:bg-green-700">
-                                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.097"/>
-                                    </svg>
-                                    Kirim ke WhatsApp Admin
-                                </button>
-                            </div>
-                        </div>
-                    @endif
-
-                    <!-- Contact Info -->
-                    <div class="p-4 mt-6 rounded-lg bg-gray-50">
-                        <h5 class="mb-2 font-medium text-gray-900">Butuh Bantuan?</h5>
-                        <p class="mb-2 text-sm text-gray-600">Hubungi customer service kami:</p>
-                        <div class="space-y-1 text-sm">
-                            <div class="flex items-center">
-                                <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                                </svg>
-                                <span class="text-gray-600">+62 21 1234 5678</span>
-                            </div>
-                            <div class="flex items-center">
-                                <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                                </svg>
-                                <span class="text-gray-600">info@justtrip.com</span>
-                            </div>
-                        </div>
+                <!-- Trust Badges -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-gray-50 rounded-2xl p-4 text-center border border-gray-100">
+                        <i class="fas fa-shield-alt text-blue-600 mb-2"></i>
+                        <p class="text-[10px] font-black text-gray-900 uppercase">Aman & Terpercaya</p>
+                    </div>
+                    <div class="bg-gray-50 rounded-2xl p-4 text-center border border-gray-100">
+                        <i class="fas fa-bolt text-yellow-500 mb-2"></i>
+                        <p class="text-[10px] font-black text-gray-900 uppercase">Konfirmasi Cepat</p>
                     </div>
                 </div>
             </div>
@@ -696,16 +395,37 @@
 
 @push('scripts')
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // File upload preview
+        const fileInput = document.getElementById('payment_proof');
+        const fileNameDisplay = document.getElementById('file-name');
+        
+        if (fileInput) {
+            fileInput.addEventListener('change', function() {
+                if (this.files && this.files.length > 0) {
+                    fileNameDisplay.textContent = 'Terpilih: ' + this.files[0].name;
+                    fileNameDisplay.classList.remove('hidden');
+                } else {
+                    fileNameDisplay.classList.add('hidden');
+                }
+            });
+        }
+    });
+
     // Function to send invoice to WhatsApp admin
     function sendInvoiceToWhatsApp(invoiceId) {
+        if (!invoiceId || invoiceId === '0') {
+             // Fallback to general CS if no invoice
+             window.open('https://wa.me/6281234567890?text=Halo JustTrip, saya ingin bertanya tentang booking #' + '{{ $booking->booking_id }}', '_blank');
+             return;
+        }
+
         if (confirm('Apakah Anda yakin ingin mengirim invoice ini ke WhatsApp admin?')) {
-            // Show loading state
-            const button = event.target;
+            const button = event.currentTarget;
             const originalText = button.innerHTML;
             button.disabled = true;
-            button.innerHTML = '<svg class="w-4 h-4 mr-2 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>Mengirim...';
+            button.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Mengirim...';
             
-            // Send AJAX request
             fetch(`/invoice/${invoiceId}/send-whatsapp`, {
                 method: 'POST',
                 headers: {
@@ -741,33 +461,12 @@
                 });
             })
             .finally(() => {
-                // Restore button state
-                button.disabled = false;
-                button.innerHTML = originalText;
+                if(button) {
+                    button.disabled = false;
+                    button.innerHTML = originalText;
+                }
             });
         }
     }
-
-    // Payment method toggle functionality
-    document.addEventListener('DOMContentLoaded', function() {
-        const paymentMethods = document.querySelectorAll('input[name="payment_method"]');
-        const paymentDetails = document.querySelectorAll('.payment-details');
-        
-        paymentMethods.forEach(method => {
-            method.addEventListener('change', function() {
-                // Hide all payment details
-                paymentDetails.forEach(detail => {
-                    detail.classList.add('hidden');
-                });
-                
-                // Show selected payment method details
-                if (this.value === 'bank_transfer') {
-                    document.getElementById('bank_details').classList.remove('hidden');
-                } else if (this.value === 'e_wallet') {
-                    document.getElementById('ewallet_details').classList.remove('hidden');
-                }
-            });
-        });
-    });
 </script>
 @endpush

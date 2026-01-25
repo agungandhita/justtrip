@@ -1,195 +1,252 @@
 @extends('Frontend.layouts.main')
 
 @section('container')
-<!-- Hero Section -->
-<section class="relative min-h-[60vh] flex items-center justify-center overflow-hidden">
-    <!-- Background Images with Parallax Effect -->
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+    
+    :root {
+        --primary: #4f46e5;
+        --secondary: #10b981;
+        --accent: #f59e0b;
+    }
+
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .hero-glass {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .package-card {
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @media (min-width: 768px) {
+        .package-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 40px 70px -15px rgba(0, 0, 0, 0.1);
+        }
+    }
+
+    .cta-gradient {
+        background: linear-gradient(135deg, var(--primary) 0%, #6366f1 100%);
+    }
+
+    .badge-premium {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(4px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+</style>
+
+<!-- Refined Responsive Hero Section -->
+<section class="relative min-h-[85vh] md:h-[80vh] flex items-center justify-center overflow-hidden bg-gray-900 pt-20">
     <div class="absolute inset-0 z-0">
-        <div class="absolute inset-0 z-10 bg-gradient-to-r from-emerald-600/70 via-teal-600/70 to-cyan-600/70"></div>
-        <div class="h-full bg-center bg-cover" style="background-image: url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80')"></div>
+        <img src="{{ asset('img/paket.png') }}" alt="Explorer" class="w-full h-full object-cover scale-105">
+        <div class="absolute inset-0 bg-gradient-to-b from-indigo-900/60 via-indigo-950/85 to-indigo-950"></div>
     </div>
 
-    <!-- Hero Content -->
-    <div class="relative z-20 max-w-4xl px-4 mx-auto text-center text-white" data-aos="fade-up" data-aos-duration="1000">
-        <h1 class="mb-4 text-2xl font-bold text-transparent sm:text-3xl md:text-4xl lg:text-5xl sm:mb-6 bg-gradient-to-r from-white to-emerald-100 bg-clip-text">
-            Paket Tour Terbaik
+    <div class="relative z-10 container mx-auto px-4 md:px-6 text-center" data-aos="fade-up">
+        <span class="inline-flex px-4 py-1.5 mb-6 rounded-full badge-premium text-indigo-300 text-[10px] md:text-xs font-black uppercase tracking-widest leading-none">
+            Jelajahi Dunia Bersama JustTrip
+        </span>
+        <h1 class="text-3xl sm:text-5xl md:text-7xl font-black text-white mb-6 tracking-tight leading-[1.1]">
+            Temukan <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">Petualangan</span><br class="hidden sm:block"> Terbaik Anda
         </h1>
-        <p class="mb-6 text-sm font-medium sm:text-base md:text-lg sm:mb-8 text-emerald-100" data-aos="fade-up" data-aos-delay="200">
-            Nikmati liburan impian dengan paket tour all-inclusive yang dirancang khusus untuk Anda
+        <p class="max-w-2xl mx-auto text-indigo-100/70 text-base md:text-lg font-medium mb-10 px-4">
+            Pilih dari koleksi paket wisata eksklusif kami yang dirancang khusus untuk kenyamanan dan pengalaman tak terlupakan.
         </p>
-    </div>
-</section>
-
-
-
-<!-- Package Categories -->
-<section class="py-24 bg-white">
-    <div class="container px-4 mx-auto">
-        <div class="mb-12 text-center sm:mb-16" data-aos="fade-up">
-            <h2 class="mb-3 text-2xl font-bold text-gray-800 sm:text-3xl md:text-4xl sm:mb-4">Kategori Paket Tour</h2>
-            <p class="max-w-3xl px-4 mx-auto text-base text-gray-600 sm:text-lg md:text-xl">Pilih paket tour sesuai dengan preferensi dan budget Anda</p>
-        </div>
-
-        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-            <!-- Honeymoon Package -->
-            <div class="p-8 transition-all duration-500 transform shadow-lg group bg-gradient-to-br from-pink-50 to-rose-50 rounded-2xl hover:shadow-2xl hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100">
-                <div class="flex items-center justify-center w-16 h-16 mx-auto mb-6 transition-transform duration-300 rounded-full bg-gradient-to-r from-pink-500 to-rose-500 group-hover:scale-110">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                    </svg>
-                </div>
-                <h3 class="mb-3 text-lg font-bold text-center text-gray-800 sm:text-xl sm:mb-4">Honeymoon Package</h3>
-                <p class="mb-4 text-sm text-center text-gray-600 sm:text-base sm:mb-6">Paket romantis untuk pasangan yang baru menikah dengan destinasi eksotis</p>
-                <div class="text-center">
-                    <span class="text-lg font-bold text-pink-600 sm:text-xl md:text-2xl">Mulai Rp 8.500.000</span>
-                    <p class="text-xs text-gray-500 sm:text-sm">/couple</p>
-                </div>
+        
+        <!-- Search Bar: Optimized for Mobile -->
+        <div class="max-w-4xl mx-auto hero-glass p-2 rounded-2xl md:rounded-[2rem] flex flex-col md:flex-row gap-2 shadow-2xl">
+            <div class="flex-1 px-4 py-3 flex items-center gap-3 border-b md:border-b-0 md:border-r border-white/10 text-left">
+                <i class="fas fa-map-marker-alt text-amber-500"></i>
+                <input type="text" placeholder="Mau kemana hari ini?" class="bg-transparent border-none focus:ring-0 text-white placeholder-indigo-100/40 w-full font-bold text-sm">
             </div>
-
-            <!-- Family Package -->
-            <div class="p-8 transition-all duration-500 transform shadow-lg group bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl hover:shadow-2xl hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200">
-                <div class="flex items-center justify-center w-16 h-16 mx-auto mb-6 transition-transform duration-300 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 group-hover:scale-110">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                    </svg>
-                </div>
-                <h3 class="mb-3 text-lg font-bold text-center text-gray-800 sm:text-xl sm:mb-4">Family Package</h3>
-                <p class="mb-4 text-sm text-center text-gray-600 sm:text-base sm:mb-6">Paket liburan keluarga dengan aktivitas menyenangkan untuk semua usia</p>
-                <div class="text-center">
-                    <span class="text-lg font-bold text-blue-600 sm:text-xl md:text-2xl">Mulai Rp 3.200.000</span>
-                    <p class="text-xs text-gray-500 sm:text-sm">/orang</p>
-                </div>
+            <div class="flex-1 px-4 py-3 flex items-center gap-3 border-b md:border-b-0 md:border-r border-white/10 text-left">
+                <i class="fas fa-calendar-alt text-amber-500"></i>
+                <select class="bg-transparent border-none focus:ring-0 text-white w-full font-bold text-sm cursor-pointer">
+                    <option class="text-gray-900">Kapan Saja</option>
+                    <option class="text-gray-900">High Season</option>
+                    <option class="text-gray-900">Low Season</option>
+                </select>
             </div>
-
-            <!-- Adventure Package -->
-            <div class="p-8 transition-all duration-500 transform shadow-lg group bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl hover:shadow-2xl hover:-translate-y-2" data-aos="fade-up" data-aos-delay="300">
-                <div class="flex items-center justify-center w-16 h-16 mx-auto mb-6 transition-transform duration-300 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 group-hover:scale-110">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
-                    </svg>
-                </div>
-                <h3 class="mb-3 text-lg font-bold text-center text-gray-800 sm:text-xl sm:mb-4">Adventure Package</h3>
-                <p class="mb-4 text-sm text-center text-gray-600 sm:text-base sm:mb-6">Paket petualangan untuk pencinta adrenalin dan aktivitas outdoor</p>
-                <div class="text-center">
-                    <span class="text-lg font-bold sm:text-xl md:text-2xl text-emerald-600">Mulai Rp 2.800.000</span>
-                    <p class="text-xs text-gray-500 sm:text-sm">/orang</p>
-                </div>
-            </div>
-
-            <!-- Luxury Package -->
-            <div class="p-8 transition-all duration-500 transform shadow-lg group bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl hover:shadow-2xl hover:-translate-y-2" data-aos="fade-up" data-aos-delay="400">
-                <div class="flex items-center justify-center w-16 h-16 mx-auto mb-6 transition-transform duration-300 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 group-hover:scale-110">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
-                    </svg>
-                </div>
-                <h3 class="mb-3 text-lg font-bold text-center text-gray-800 sm:text-xl sm:mb-4">Luxury Package</h3>
-                <p class="mb-4 text-sm text-center text-gray-600 sm:text-base sm:mb-6">Paket mewah dengan akomodasi dan layanan premium terbaik</p>
-                <div class="text-center">
-                    <span class="text-lg font-bold text-orange-600 sm:text-xl md:text-2xl">Mulai Rp 15.000.000</span>
-                    <p class="text-xs text-gray-500 sm:text-sm">/orang</p>
-                </div>
-            </div>
+            <button class="bg-amber-500 hover:bg-amber-600 active:scale-95 text-indigo-950 font-black px-8 py-4 rounded-xl md:rounded-2xl transition-all uppercase tracking-widest text-[10px] md:text-xs">
+                Cari Paket
+            </button>
         </div>
     </div>
 </section>
 
-<!-- Popular Packages -->
-<section class="py-20 bg-gradient-to-br from-gray-50 to-slate-100">
-    <div class="container px-4 mx-auto">
-        <div class="mb-12 text-center sm:mb-16" data-aos="fade-up">
-            <h2 class="mb-3 text-2xl font-bold text-gray-800 sm:text-3xl md:text-4xl sm:mb-4">Paket Tour Populer</h2>
-            <p class="max-w-3xl px-4 mx-auto text-base text-gray-600 sm:text-lg md:text-xl">Paket tour terlaris yang dipilih oleh ribuan pelanggan JustTrip</p>
+<!-- Package Categories: Refined Spacing -->
+<section class="py-16 md:py-24 bg-white">
+    <div class="container px-4 md:px-6 mx-auto">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-6" data-aos="fade-up">
+            <div class="max-w-xl">
+                <h4 class="text-indigo-600 font-black uppercase tracking-[0.2em] text-[10px] mb-3">Kategori Wisata</h4>
+                <h2 class="text-3xl md:text-5xl font-black text-indigo-950 leading-tight">Pilih Gaya <span class="text-indigo-500">Perjalanan</span></h2>
+            </div>
+            <p class="text-gray-500 font-medium max-w-sm text-sm md:text-base">Dapatkan pengalaman yang disesuaikan dengan kebutuhan Anda, dari rombongan besar hingga wisata edukasi.</p>
         </div>
 
-        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div class="grid gap-6 md:gap-8 grid-cols-1 md:grid-cols-3">
+            <!-- Open Trip -->
+            <div class="group p-8 md:p-10 rounded-3xl md:rounded-[2.5rem] bg-indigo-50 border border-indigo-100 hover:bg-indigo-600 transition-all duration-500" data-aos="fade-up">
+                <div class="w-14 h-14 md:w-16 md:h-16 bg-white rounded-2xl flex items-center justify-center text-indigo-600 mb-6 md:mb-8 shadow-sm group-hover:scale-110 transition-transform">
+                    <i class="fas fa-users text-xl md:text-2xl"></i>
+                </div>
+                <h3 class="text-xl md:text-2xl font-black text-indigo-950 mb-4 group-hover:text-white transition-colors">Open Trip</h3>
+                <p class="text-sm md:text-base text-indigo-900/60 mb-6 md:mb-8 group-hover:text-indigo-100 transition-colors">Bergabunglah dengan sesama penjelajah dan temukan teman baru di destinasi impian.</p>
+                <div class="flex items-center justify-between pt-6 border-t border-indigo-200/50 group-hover:border-white/20">
+                    <span class="text-[10px] font-black text-indigo-400 uppercase tracking-widest group-hover:text-indigo-200">Mulai Dari</span>
+                    <span class="text-lg md:text-xl font-black text-indigo-600 group-hover:text-white">Rp 1.5jt</span>
+                </div>
+            </div>
+
+            <!-- Corporate Trip -->
+            <div class="group p-8 md:p-10 rounded-3xl md:rounded-[2.5rem] bg-emerald-50 border border-emerald-100 hover:bg-emerald-600 transition-all duration-500" data-aos="fade-up" data-aos-delay="100">
+                <div class="w-14 h-14 md:w-16 md:h-16 bg-white rounded-2xl flex items-center justify-center text-emerald-600 mb-6 md:mb-8 shadow-sm group-hover:scale-110 transition-transform">
+                    <i class="fas fa-building text-xl md:text-2xl"></i>
+                </div>
+                <h3 class="text-xl md:text-2xl font-black text-emerald-950 mb-4 group-hover:text-white transition-colors">Corporate</h3>
+                <p class="text-sm md:text-base text-emerald-900/60 mb-6 md:mb-8 group-hover:text-emerald-100 transition-colors">Solusi gathering dan outbound profesional untuk meningkatkan produktivitas tim Anda.</p>
+                <div class="flex items-center justify-between pt-6 border-t border-emerald-200/50 group-hover:border-white/20">
+                    <span class="text-[10px] font-black text-emerald-400 uppercase tracking-widest group-hover:text-emerald-200">Mulai Dari</span>
+                    <span class="text-lg md:text-xl font-black text-emerald-600 group-hover:text-white">Rp 2.5jt</span>
+                </div>
+            </div>
+
+            <!-- Edu Trip -->
+            <div class="group p-8 md:p-10 rounded-3xl md:rounded-[2.5rem] bg-amber-50 border border-amber-100 hover:bg-amber-600 transition-all duration-500" data-aos="fade-up" data-aos-delay="200">
+                <div class="w-14 h-14 md:w-16 md:h-16 bg-white rounded-2xl flex items-center justify-center text-amber-600 mb-6 md:mb-8 shadow-sm group-hover:scale-110 transition-transform">
+                    <i class="fas fa-graduation-cap text-xl md:text-2xl"></i>
+                </div>
+                <h3 class="text-xl md:text-2xl font-black text-amber-950 mb-4 group-hover:text-white transition-colors">Edu Trip</h3>
+                <p class="text-sm md:text-base text-amber-900/60 mb-6 md:mb-8 group-hover:text-amber-100 transition-colors">Pembelajaran di luar kelas yang edukatif dan menyenangkan untuk siswa & mahasiswa.</p>
+                <div class="flex items-center justify-between pt-6 border-t border-amber-200/50 group-hover:border-white/20">
+                    <span class="text-[10px] font-black text-amber-400 uppercase tracking-widest group-hover:text-amber-200">Mulai Dari</span>
+                    <span class="text-lg md:text-xl font-black text-amber-600 group-hover:text-white">Rp 800rb</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Popular Packages: Optimized Grid -->
+<section class="py-16 md:py-24 bg-gray-50 overflow-hidden">
+    <div class="container px-4 md:px-6 mx-auto">
+        <div class="text-center mb-12 md:mb-20" data-aos="fade-up">
+            <h4 class="text-indigo-600 font-bold uppercase tracking-[0.3em] text-[10px] mb-4">Must-Visit Destinations</h4>
+            <h2 class="text-3xl md:text-6xl font-black text-indigo-950 mb-6">Paket Tour <span class="italic text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-600">Terlaris</span></h2>
+            <div class="w-16 md:w-24 h-1.5 bg-amber-400 mx-auto rounded-full"></div>
+        </div>
+
+        <div class="grid gap-6 md:gap-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             @forelse($regularPackages as $index => $package)
-             <div class="overflow-hidden transition-all duration-500 transform bg-white shadow-lg group rounded-2xl hover:shadow-2xl hover:-translate-y-2" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
-                 <div class="relative overflow-hidden">
-                     @if($package->gambar_destinasi && count($package->gambar_destinasi) > 0)
-                         <img src="{{ asset('storage/' . $package->gambar_destinasi[0]) }}" alt="{{ $package->nama_layanan }}" class="object-cover w-full h-64 transition-transform duration-500 group-hover:scale-110">
-                     @else
-                         <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="{{ $package->nama_layanan }}" class="object-cover w-full h-64 transition-transform duration-500 group-hover:scale-110">
-                     @endif
-                     <div class="absolute top-4 left-4">
-                         <span class="px-3 py-1 text-sm font-semibold text-white rounded-full bg-gradient-to-r from-blue-500 to-purple-500">{{ ucfirst($package->jenis_layanan) }}</span>
-                     </div>
-                     <div class="absolute inset-0 transition-opacity duration-300 opacity-0 bg-gradient-to-t from-black/50 to-transparent group-hover:opacity-100"></div>
+             <div class="package-card bg-white rounded-3xl md:rounded-[2.5rem] overflow-hidden shadow-sm border border-gray-100 group" data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
+                 <!-- Image Wrapper -->
+                 <div class="relative h-60 md:h-72 overflow-hidden">
+                    @if($package->gambar_destinasi && count($package->gambar_destinasi) > 0)
+                        <img src="{{ asset('storage/' . $package->gambar_destinasi[0]) }}" alt="{{ $package->nama_layanan }}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
+                    @else
+                        <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Destination" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
+                    @endif
+                    
+                    <!-- Badges on Image -->
+                    <div class="absolute top-4 left-4 md:top-6 md:left-6 flex flex-col gap-2">
+                        <span class="px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-white text-[9px] md:text-[10px] font-black uppercase tracking-widest border border-white/20">
+                            {{ $package->jenis_layanan_label }}
+                        </span>
+                    </div>
+                    
+                    <div class="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6 flex justify-between items-end">
+                        <div class="bg-indigo-950/40 backdrop-blur-md px-3 py-1.5 md:px-4 md:py-2 rounded-xl md:rounded-2xl border border-white/10 text-white flex items-center gap-2">
+                            <i class="far fa-clock text-amber-400 text-[10px] md:text-xs"></i>
+                            <span class="text-[10px] md:text-xs font-bold leading-none">{{ $package->durasi_format }}</span>
+                        </div>
+                    </div>
                  </div>
-                 <div class="p-4 sm:p-6">
-                     <h3 class="mb-2 text-lg font-bold text-gray-800 sm:text-xl">{{ $package->nama_layanan }}</h3>
-                     <p class="mb-3 text-sm text-gray-600 sm:text-base sm:mb-4">
-                         {{ $package->durasi_hari }} Hari • {{ $package->lokasi_tujuan }}
-                         • Maks {{ $package->maks_orang }} orang
-                         <br>{{ Str::limit($package->deskripsi, 50) }}
-                     </p>
-                     <div class="flex items-center justify-between mb-3 sm:mb-4">
-                         <div>
-                             <span class="text-lg font-bold sm:text-xl md:text-2xl text-emerald-600">Rp {{ number_format($package->harga_mulai, 0, ',', '.') }}</span>
-                             <span class="text-xs text-gray-500 sm:text-sm">/orang</span>
-                         </div>
-                         <div class="flex items-center">
-                             <span class="mr-1 text-sm text-yellow-400">★★★★★</span>
-                             <span class="text-xs text-gray-600 sm:text-sm">(4.8)</span>
-                         </div>
-                     </div>
-                     <ul class="mb-3 space-y-1 text-xs text-gray-600 sm:text-sm sm:mb-4">
-                         @if($package->fasilitas && is_array($package->fasilitas))
-                             @foreach(array_slice($package->fasilitas, 0, 4) as $fasilitas)
-                                 <li>✓ {{ trim($fasilitas) }}</li>
-                             @endforeach
-                         @elseif($package->fasilitas && is_string($package->fasilitas))
-                             @foreach(array_slice(explode(',', $package->fasilitas), 0, 4) as $fasilitas)
-                                 <li>✓ {{ trim($fasilitas) }}</li>
-                             @endforeach
-                         @else
-                             <li>✓ Paket lengkap</li>
-                             <li>✓ Tour guide berpengalaman</li>
-                             <li>✓ Transportasi nyaman</li>
-                             <li>✓ Akomodasi terbaik</li>
-                         @endif
-                     </ul>
-                     <a href="{{ route('packages.show', $package->slug) }}" class="block w-full py-3 font-semibold text-center text-white transition-all duration-300 transform rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 hover:scale-105">
-                         Lihat Detail
-                     </a>
+
+                 <!-- Content -->
+                 <div class="p-6 md:p-8">
+                    <h3 class="text-xl md:text-2xl font-black text-indigo-950 leading-snug group-hover:text-indigo-600 transition-colors mb-4 line-clamp-1">{{ $package->nama_layanan }}</h3>
+                    
+                    <div class="flex flex-wrap items-center gap-x-4 gap-y-2 mb-6 text-gray-400 text-[10px] font-black uppercase tracking-widest">
+                        <span class="flex items-center gap-2">
+                            <i class="fas fa-map-marker-alt text-amber-500"></i> {{ $package->lokasi_tujuan }}
+                        </span>
+                        <span class="flex items-center gap-2">
+                            <i class="fas fa-user-friends text-emerald-500"></i> Max {{ $package->maks_orang }} Pax
+                        </span>
+                    </div>
+
+                    <div class="mb-6 md:mb-8 flex flex-wrap gap-2">
+                        @if($package->fasilitas && is_array($package->fasilitas))
+                            @foreach(array_slice($package->fasilitas, 0, 2) as $fasilitas)
+                                <span class="px-3 py-1 bg-gray-50 text-gray-500 text-[9px] md:text-[10px] font-black uppercase rounded-lg border border-gray-100 italic">
+                                    {{ trim($fasilitas) }}
+                                </span>
+                            @endforeach
+                        @endif
+                    </div>
+
+                    <div class="flex items-end justify-between pt-6 border-t border-gray-50">
+                        <div>
+                            <p class="text-[9px] text-gray-400 font-black uppercase tracking-widest mb-1 leading-none">Mulai Dari</p>
+                            <p class="text-2xl md:text-3xl font-black text-indigo-950 font-mono tracking-tighter">
+                                <span class="text-xs font-bold text-gray-300">Rp</span> {{ number_format($package->harga_mulai / 1000, 0) }}<span class="text-indigo-400">k</span>
+                             </p>
+                        </div>
+                        <a href="{{ route('packages.show', $package->slug) }}" class="w-12 h-12 md:w-14 md:h-14 cta-gradient rounded-xl md:rounded-2xl flex items-center justify-center text-white shadow-lg shadow-indigo-200 hover:scale-110 active:scale-95 transition-all">
+                            <i class="fas fa-arrow-right text-sm md:text-base"></i>
+                        </a>
+                    </div>
                  </div>
              </div>
             @empty
-            <div class="col-span-3 py-12 text-center">
-                <p class="text-lg text-gray-500">Belum ada paket tour tersedia</p>
+            <div class="col-span-full py-24 text-center">
+                <div class="w-20 h-20 md:w-24 md:h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-300">
+                    <i class="fas fa-umbrella-beach text-3xl md:text-4xl"></i>
+                </div>
+                <h3 class="text-xl md:text-2xl font-black text-gray-900 mb-2">Belum Ada Paket</h3>
+                <p class="text-sm md:text-base text-gray-500">Kami sedang menyiapkan petualangan baru untuk Anda.</p>
             </div>
             @endforelse
         </div>
 
-        <div class="mt-8 text-center sm:mt-12" data-aos="fade-up" data-aos-delay="400">
-            <a href="{{ route('packages.index') }}" class="inline-block px-6 py-3 text-base font-bold text-white transition-all duration-300 transform bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 sm:py-4 sm:px-8 rounded-xl sm:text-lg hover:scale-105 hover:shadow-xl">
-                Lihat Semua Paket Tour
+        <div class="mt-12 md:mt-20 text-center" data-aos="fade-up">
+            <a href="{{ route('packages.index') }}" class="inline-flex items-center gap-4 px-8 py-4 md:px-10 md:py-5 bg-white border border-gray-200 text-indigo-950 font-black rounded-2xl hover:bg-gray-50 hover:border-indigo-200 transition-all shadow-sm hover:shadow-xl group text-xs md:text-sm">
+                JELAJAHI SEMUA PAKET
+                <i class="fas fa-compass text-amber-500 group-hover:rotate-45 transition-transform"></i>
             </a>
         </div>
     </div>
 </section>
 
-<!-- CTA Newsletter -->
-<section class="py-16 sm:py-20 bg-gradient-to-r from-fuchsia-500 via-purple-500 to-indigo-500">
-    <div class="container px-4 mx-auto">
-        <div class="relative p-6 overflow-hidden text-center text-white bg-white/10 backdrop-blur-sm rounded-3xl sm:p-8 md:p-12" data-aos="fade-up">
-            <div class="absolute inset-0 bg-black/10"></div>
-            <div class="relative z-10">
-                <h3 class="mb-3 text-xl font-bold sm:text-2xl md:text-3xl lg:text-4xl sm:mb-4">Dapatkan Notifikasi Promo Terbaru!</h3>
-                <p class="mb-6 text-sm sm:text-base md:text-lg lg:text-xl sm:mb-8 opacity-90">Subscribe newsletter kami dan jadi yang pertama tahu promo eksklusif</p>
-                @if(session('success'))
-                    <div class="px-4 py-2 mb-4 font-semibold text-green-200 rounded-lg bg-green-700/80">{{ session('success') }}</div>
-                @elseif($errors->any())
-                    <div class="px-4 py-2 mb-4 font-semibold text-red-200 rounded-lg bg-red-700/80">{{ $errors->first() }}</div>
-                @endif
-                <form method="POST" action="{{ route('subscribe-users.store-frontend') }}" class="flex flex-col justify-center max-w-md gap-3 mx-auto sm:flex-row sm:gap-4">
-                    @csrf
-                    <input type="email" name="email" placeholder="Masukkan email Anda" required class="flex-1 px-4 py-2 sm:px-6 sm:py-3 rounded-full text-gray-800 text-sm sm:text-base focus:outline-none focus:ring-4 focus:ring-white/30 @error('email') border-red-500 @enderror" value="{{ old('email') }}">
-                    <button type="submit" class="px-6 py-2 text-sm font-bold text-purple-600 transition-all duration-300 transform bg-white rounded-full sm:px-8 sm:py-3 sm:text-base hover:bg-gray-100 hover:scale-105">
-                        Subscribe
-                    </button>
-                </form>
-            </div>
+<!-- Call to Action Section: Refined for Mobile -->
+<section class="py-16 md:py-24 bg-indigo-950 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-1/4 right-0 w-64 h-64 md:w-96 md:h-96 bg-indigo-500 rounded-full blur-[80px] md:blur-[120px]"></div>
+        <div class="absolute bottom-1/4 left-0 w-64 h-64 md:w-96 md:h-96 bg-amber-500 rounded-full blur-[80px] md:blur-[120px]"></div>
+    </div>
+    
+    <div class="container px-4 md:px-6 mx-auto relative z-10 text-center">
+        <h2 class="text-3xl md:text-6xl font-black text-white mb-6 md:mb-8 tracking-tight">Siap Untuk <span class="text-amber-400">Berangkat?</span></h2>
+        <p class="max-w-xl mx-auto text-indigo-200 mb-8 md:mb-12 text-base md:text-lg">Hubungi konsultan perjalanan kami dan dapatkan penawaran khusus untuk grup atau solo traveler.</p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a href="#" class="w-full sm:w-auto px-10 py-5 bg-amber-500 text-indigo-950 font-black rounded-2xl hover:bg-amber-600 transition-all uppercase tracking-widest text-xs">WhatsApp Admin</a>
+            <a href="#" class="w-full sm:w-auto px-10 py-5 bg-white/10 text-white font-black rounded-2xl border border-white/20 hover:bg-white/20 transition-all uppercase tracking-widest text-xs">Pelajari Lebih Lanjut</a>
         </div>
     </div>
 </section>

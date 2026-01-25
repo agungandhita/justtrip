@@ -15,11 +15,7 @@ class NewsSeeder extends Seeder
         $faker = Faker::create('id_ID');
         
         $categories = ['destinasi', 'tips', 'guide', 'kuliner', 'budaya', 'adventure'];
-        $authors = [
-            ['name' => 'Andi Pratama', 'image' => 'authors/andi.jpg', 'bio' => 'Travel writer berpengalaman'],
-            ['name' => 'Sari Dewi', 'image' => 'authors/sari.jpg', 'bio' => 'Food blogger dan travel enthusiast'],
-            ['name' => 'Budi Santoso', 'image' => 'authors/budi.jpg', 'bio' => 'Fotografer travel']
-        ];
+        $authors = ['Andi Pratama', 'Sari Dewi', 'Budi Santoso'];
         
         // Create 25 published articles
         for ($i = 0; $i < 25; $i++) {
@@ -31,26 +27,14 @@ class NewsSeeder extends Seeder
             News::create([
                 'title' => $title,
                 'slug' => Str::slug($title) . '-' . $faker->unique()->numberBetween(1000, 9999),
-                'excerpt' => $faker->paragraph(2),
                 'content' => $faker->paragraphs(5, true),
                 'featured_image' => 'news/featured_' . ($i + 1) . '.jpg',
-                'gallery_images' => [
-                    'news/gallery_' . ($i + 1) . '_1.jpg',
-                    'news/gallery_' . ($i + 1) . '_2.jpg'
-                ],
                 'category' => $category,
-                'tags' => $this->generateTags($faker, $category),
-                'author_name' => $author['name'],
-                'author_image' => $author['image'],
-                'author_bio' => $author['bio'],
-                'read_time' => $faker->numberBetween(3, 15),
+                'author_name' => $author,
                 'views' => $faker->numberBetween(50, 5000),
                 'is_featured' => $faker->boolean(20),
-                'is_published' => true,
                 'status' => 'published',
                 'published_at' => $publishedAt,
-                'meta_title' => $title . ' | JustTrip Blog',
-                'meta_description' => $faker->sentence(15)
             ]);
         }
         
@@ -63,23 +47,14 @@ class NewsSeeder extends Seeder
             News::create([
                 'title' => $title,
                 'slug' => Str::slug($title) . '-draft-' . $faker->unique()->numberBetween(1000, 9999),
-                'excerpt' => $faker->paragraph(1),
                 'content' => $faker->paragraphs(3, true),
                 'featured_image' => 'news/draft_' . ($i + 1) . '.jpg',
-                'gallery_images' => null,
                 'category' => $category,
-                'tags' => $this->generateTags($faker, $category),
-                'author_name' => $author['name'],
-                'author_image' => $author['image'],
-                'author_bio' => $author['bio'],
-                'read_time' => $faker->numberBetween(2, 8),
+                'author_name' => $author,
                 'views' => 0,
                 'is_featured' => false,
-                'is_published' => false,
                 'status' => 'draft',
                 'published_at' => null,
-                'meta_title' => null,
-                'meta_description' => null
             ]);
         }
     }
@@ -99,20 +74,5 @@ class NewsSeeder extends Seeder
         ];
         
         return $titles[$category] ?? 'Wisata ' . $destination;
-    }
-    
-    private function generateTags($faker, $category)
-    {
-        $tagsByCategory = [
-            'destinasi' => ['wisata', 'destinasi', 'traveling', 'indonesia'],
-            'tips' => ['tips', 'panduan', 'travel', 'hemat'],
-            'guide' => ['guide', 'panduan', 'itinerary', 'transportasi'],
-            'kuliner' => ['kuliner', 'makanan', 'food', 'restoran'],
-            'budaya' => ['budaya', 'tradisi', 'sejarah', 'lokal'],
-            'adventure' => ['adventure', 'petualangan', 'hiking', 'diving']
-        ];
-        
-        $baseTags = $tagsByCategory[$category] ?? ['travel', 'indonesia'];
-        return $faker->randomElements($baseTags, $faker->numberBetween(2, 4));
     }
 }

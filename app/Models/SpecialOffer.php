@@ -23,10 +23,6 @@ class SpecialOffer extends Model
         'current_bookings',
         'is_featured',
         'is_active',
-        'badge_text',
-        'badge_color',
-        'meta_title',
-        'meta_description'
     ];
 
     protected $casts = [

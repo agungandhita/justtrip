@@ -80,8 +80,6 @@ class SpecialOfferSeeder extends Seeder
                 'current_bookings' => $faker->numberBetween(0, 15),
                 'is_featured' => $faker->boolean(30), // 30% chance to be featured
                 'is_active' => true,
-                'badge_text' => $this->getBadgeText($faker->randomElement($offerTypes)),
-                'badge_color' => $faker->randomElement($badgeColors)
             ]);
         }
 
@@ -119,8 +117,6 @@ class SpecialOfferSeeder extends Seeder
                 'current_bookings' => $currentBookings,
                 'is_featured' => true,
                 'is_active' => true,
-                'badge_text' => 'HAMPIR HABIS',
-                'badge_color' => 'red'
             ]);
         }
     }
@@ -160,8 +156,6 @@ class SpecialOfferSeeder extends Seeder
                 'current_bookings' => $faker->numberBetween(20, 80),
                 'is_featured' => false,
                 'is_active' => false,
-                'badge_text' => 'BERAKHIR',
-                'badge_color' => 'gray'
             ]);
         }
     }
@@ -204,8 +198,6 @@ class SpecialOfferSeeder extends Seeder
                 'current_bookings' => 0,
                 'is_featured' => $faker->boolean(50),
                 'is_active' => true,
-                'badge_text' => 'SEGERA HADIR',
-                'badge_color' => 'blue'
             ]);
         }
     }
@@ -234,8 +226,6 @@ class SpecialOfferSeeder extends Seeder
             'current_bookings' => 8,
             'is_featured' => true,
             'is_active' => true,
-            'badge_text' => 'DISKON 80%',
-            'badge_color' => 'red'
         ]);
 
         // Offer with no discount (regular price)
@@ -257,8 +247,6 @@ class SpecialOfferSeeder extends Seeder
             'current_bookings' => 5,
             'is_featured' => false,
             'is_active' => true,
-            'badge_text' => 'PREMIUM',
-            'badge_color' => 'gold'
         ]);
 
         // Offer ending today
@@ -280,8 +268,6 @@ class SpecialOfferSeeder extends Seeder
             'current_bookings' => 25,
             'is_featured' => true,
             'is_active' => true,
-            'badge_text' => 'HARI TERAKHIR',
-            'badge_color' => 'red'
         ]);
     }
 

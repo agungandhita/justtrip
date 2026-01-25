@@ -4,45 +4,33 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 
 class News extends Model
 {
     protected $fillable = [
         'title',
         'slug',
-        'excerpt',
         'content',
         'featured_image',
-        'gallery_images',
         'category',
-        'tags',
         'author_name',
-        'author_image',
-        'author_bio',
-        'read_time',
         'views',
         'is_featured',
-        'is_published',
         'status',
-        'published_at',
-        'meta_title',
-        'meta_description'
+        'published_at'
     ];
 
     protected $casts = [
-        'gallery_images' => 'array',
-        'tags' => 'array',
         'is_featured' => 'boolean',
-        'is_published' => 'boolean',
         'published_at' => 'datetime',
-        'views' => 'integer',
-        'read_time' => 'integer'
+        'views' => 'integer'
     ];
 
     // Scopes
     public function scopePublished(Builder $query): Builder
     {
-        return $query->where('is_published', true)
+        return $query->where('status', 'published')
                     ->whereNotNull('published_at')
                     ->where('published_at', '<=', now());
     }
@@ -57,9 +45,16 @@ class News extends Model
         return $query->where('category', $category);
     }
 
-    // Accessors
-    public function getFeaturedAttribute(): bool
+    // Auto-generated excerpt from content (first 150 characters)
+    public function getExcerptAttribute(): string
     {
-        return $this->is_featured;
+        return Str::limit(strip_tags($this->content), 150);
+    }
+
+    // Auto-calculated read time based on content length (avg 200 words/min)
+    public function getReadTimeAttribute(): int
+    {
+        $wordCount = str_word_count(strip_tags($this->content));
+        return max(1, (int) ceil($wordCount / 200));
     }
 }

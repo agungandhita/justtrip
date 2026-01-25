@@ -16,11 +16,9 @@ return new class extends Migration
             $table->string('nama_layanan');
             $table->string('slug')->unique();
             $table->enum('jenis_layanan', [
-                'paket_wisata',
-                'tour_internasional',
-                'private_trip',
-                'honeymoon',
-                'family_trip',
+                'open_trip',
+                'corporate_trip',
+                'edu_trip',
             ]);
             $table->text('deskripsi')->nullable();
             $table->decimal('harga_mulai', 15, 2);

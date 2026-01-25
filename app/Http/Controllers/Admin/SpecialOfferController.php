@@ -71,8 +71,6 @@ class SpecialOfferController extends Controller
             'status' => 'required|in:active,inactive',
             'featured' => 'nullable|boolean',
             'terms_conditions' => 'nullable|string',
-            'meta_title' => 'nullable|string|max:60',
-            'meta_description' => 'nullable|string|max:160'
         ]);
 
         // Get layanan data
@@ -142,52 +140,81 @@ class SpecialOfferController extends Controller
      */
     public function update(Request $request, SpecialOffer $specialOffer)
     {
-        $request->validate([
-            'layanan_id' => 'required|exists:layanan,layanan_id',
+        $rules = [
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'discount_percentage' => 'required|numeric|min:0|max:100',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after:start_date',
             'status' => 'required|in:active,inactive',
             'featured' => 'nullable|boolean',
             'terms_conditions' => 'nullable|string',
-            'meta_title' => 'nullable|string|max:60',
-            'meta_description' => 'nullable|string|max:160'
-        ]);
+        ];
 
-        // Get layanan data
-        $layanan = Layanan::findOrFail($request->layanan_id);
-        
-        // Prepare data for update
+        if ($specialOffer->layanan_id) {
+            $rules['layanan_id'] = 'required|exists:layanan,layanan_id';
+            $rules['discount_percentage'] = 'required|numeric|min:0|max:100';
+            $rules['image'] = 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240';
+        } else {
+            $rules['original_price'] = 'required|numeric|min:0';
+            $rules['discounted_price'] = 'required|numeric|min:0|lt:original_price';
+            $rules['gallery_images.*'] = 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120';
+        }
+
+        $request->validate($rules);
+
         $data = [
-            'layanan_id' => $request->layanan_id,
             'title' => $request->title,
             'slug' => Str::slug($request->title),
             'description' => $request->description,
-            'discount_percentage' => $request->discount_percentage,
             'valid_from' => $request->start_date,
             'valid_until' => $request->end_date,
             'is_active' => $request->status === 'active',
             'is_featured' => $request->has('featured'),
             'terms_conditions' => $request->terms_conditions,
-            'meta_title' => $request->meta_title,
-            'meta_description' => $request->meta_description
         ];
 
-        // Calculate prices based on layanan and discount percentage
-        $data['original_price'] = $layanan->harga_mulai;
-        $discountAmount = ($layanan->harga_mulai * $request->discount_percentage) / 100;
-        $data['discounted_price'] = $layanan->harga_mulai - $discountAmount;
+        if ($specialOffer->layanan_id) {
+            $layanan = Layanan::findOrFail($request->layanan_id);
+            $data['layanan_id'] = $request->layanan_id;
+            $data['discount_percentage'] = $request->discount_percentage;
+            $data['original_price'] = $layanan->harga_mulai;
+            $discountAmount = ($layanan->harga_mulai * $request->discount_percentage) / 100;
+            $data['discounted_price'] = $layanan->harga_mulai - $discountAmount;
 
-        // Handle image upload
-        if ($request->hasFile('image')) {
-            // Delete old image
-            if ($specialOffer->main_image) {
-                Storage::disk('public')->delete($specialOffer->main_image);
+            if ($request->hasFile('image')) {
+                if ($specialOffer->main_image) {
+                    Storage::disk('public')->delete($specialOffer->main_image);
+                }
+                $data['main_image'] = $request->file('image')->store('special-offers', 'public');
             }
-            $data['main_image'] = $request->file('image')->store('special-offers', 'public');
+        } else {
+            $data['original_price'] = $request->original_price;
+            $data['discounted_price'] = $request->discounted_price;
+            $data['discount_percentage'] = (($request->original_price - $request->discounted_price) / $request->original_price) * 100;
+
+            if ($request->hasFile('gallery_images')) {
+                // Delete old galleries
+                foreach ($specialOffer->galleries as $gallery) {
+                    Storage::disk('public')->delete($gallery->image_path);
+                    $gallery->delete();
+                }
+
+                $galleryImages = $request->file('gallery_images');
+                foreach ($galleryImages as $index => $image) {
+                    $imagePath = $image->store('special-offers/gallery', 'public');
+                    $specialOffer->galleries()->create([
+                        'image_path' => $imagePath,
+                        'title' => $request->title . ' - Gambar ' . ($index + 1),
+                        'is_main' => $index === 0,
+                        'sort_order' => $index + 1
+                    ]);
+                }
+
+                $firstGalleryImage = $specialOffer->galleries()->where('is_main', true)->first();
+                if ($firstGalleryImage) {
+                    $data['main_image'] = $firstGalleryImage->image_path;
+                }
+            }
         }
 
         $specialOffer->update($data);
@@ -241,11 +268,8 @@ class SpecialOfferController extends Controller
             'end_date' => 'required|date|after:start_date',
             'status' => 'required|in:active,inactive',
             'featured' => 'nullable|boolean',
-            'terms_conditions' => 'nullable|string',
-            'meta_title' => 'nullable|string|max:60',
-            'meta_description' => 'nullable|string|max:160'
+            'terms_conditions' => 'nullable|string'
         ]);
-
         $data = $request->all();
         $data['slug'] = Str::slug($request->title);
         

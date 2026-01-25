@@ -12,7 +12,7 @@
                         </svg>
                         <h1 class="text-3xl font-bold text-gray-800 mb-0">Add New Article</h1>
                     </div>
-                    <p class="text-gray-600 pl-11">Create a new news article or blog post</p>
+                    <p class="text-gray-600 pl-11">Create a new news article</p>
                 </div>
                 <a href="{{ route('admin.news.index') }}" class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -41,25 +41,6 @@
                                 @enderror
                             </div>
 
-                            <!-- Slug -->
-                            <div>
-                                <label for="slug" class="block text-sm font-medium text-gray-700 mb-2">URL Slug *</label>
-                                <input type="text" id="slug" name="slug" value="{{ old('slug') }}" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('slug') border-red-500 @enderror" placeholder="article-url-slug">
-                                <p class="text-sm text-gray-500 mt-1">URL-friendly version of the title (auto-generated from title)</p>
-                                @error('slug')
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <!-- Excerpt -->
-                            <div>
-                                <label for="excerpt" class="block text-sm font-medium text-gray-700 mb-2">Excerpt *</label>
-                                <textarea id="excerpt" name="excerpt" rows="3" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('excerpt') border-red-500 @enderror" placeholder="Brief summary of the article">{{ old('excerpt') }}</textarea>
-                                @error('excerpt')
-                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-
                             <!-- Content -->
                             <div>
                                 <label for="content" class="block text-sm font-medium text-gray-700 mb-2">Content *</label>
@@ -67,30 +48,6 @@
                                 @error('content')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
-                            </div>
-
-                            <!-- SEO Section -->
-                            <div class="border-t pt-6">
-                                <h3 class="text-lg font-semibold text-gray-800 mb-4">SEO Settings</h3>
-                                <div class="space-y-4">
-                                    <!-- Meta Title -->
-                                    <div>
-                                        <label for="meta_title" class="block text-sm font-medium text-gray-700 mb-2">Meta Title</label>
-                                        <input type="text" id="meta_title" name="meta_title" value="{{ old('meta_title') }}" maxlength="60" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('meta_title') border-red-500 @enderror" placeholder="SEO meta title (max 60 characters)">
-                                        @error('meta_title')
-                                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Meta Description -->
-                                    <div>
-                                        <label for="meta_description" class="block text-sm font-medium text-gray-700 mb-2">Meta Description</label>
-                                        <textarea id="meta_description" name="meta_description" rows="3" maxlength="160" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('meta_description') border-red-500 @enderror" placeholder="SEO meta description (max 160 characters)">{{ old('meta_description') }}</textarea>
-                                        @error('meta_description')
-                                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                </div>
                             </div>
                         </div>
 
@@ -122,15 +79,6 @@
                                     @enderror
                                 </div>
 
-                                <!-- Author -->
-                                <div class="mb-4">
-                                    <label for="author_name" class="block text-sm font-medium text-gray-700 mb-2">Author</label>
-                                    <input type="text" id="author_name" name="author_name" value="{{ old('author_name', 'Admin') }}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('author_name') border-red-500 @enderror" placeholder="Article author">
-                                    @error('author_name')
-                                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
                                 <!-- Featured -->
                                 <div>
                                     <label class="flex items-center">
@@ -145,28 +93,25 @@
 
                             <!-- Featured Image -->
                             <div class="bg-gray-50 rounded-lg p-6">
-                                <h3 class="text-lg font-semibold text-gray-800 mb-4">Featured Image</h3>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-4">Featured Image *</h3>
                                 <div>
-                                    <input type="file" id="featured_image" name="featured_image" accept="image/png,image/jpg,image/jpeg,image/gif" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('featured_image') border-red-500 @enderror">
-                                    <p class="text-sm text-gray-500 mt-1">Supported formats: PNG, JPG, GIF. Max size: 10MB</p>
+                                    <input type="file" id="featured_image" name="featured_image" accept="image/png,image/jpg,image/jpeg,image/gif" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('featured_image') border-red-500 @enderror">
+                                    <p class="text-sm text-gray-500 mt-1">Supported formats: PNG, JPG, GIF. Max size: 2MB</p>
                                     @error('featured_image')
                                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                     @enderror
                                 </div>
                             </div>
 
-                            <!-- Categories/Tags -->
+                            <!-- Category -->
                             <div class="bg-gray-50 rounded-lg p-6">
-                                <h3 class="text-lg font-semibold text-gray-800 mb-4">Categories</h3>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-4">Category *</h3>
                                 <div>
-                                    <label for="category" class="block text-sm font-medium text-gray-700 mb-2">Category</label>
-                                    <select id="category" name="category" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('category') border-red-500 @enderror">
+                                    <select id="category" name="category" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent @error('category') border-red-500 @enderror">
                                         <option value="">Select Category</option>
-                                        <option value="travel-tips" {{ old('category') == 'travel-tips' ? 'selected' : '' }}>Travel Tips</option>
-                                        <option value="destinations" {{ old('category') == 'destinations' ? 'selected' : '' }}>Destinations</option>
-                                        <option value="company-news" {{ old('category') == 'company-news' ? 'selected' : '' }}>Company News</option>
-                                        <option value="travel-guides" {{ old('category') == 'travel-guides' ? 'selected' : '' }}>Travel Guides</option>
-                                        <option value="promotions" {{ old('category') == 'promotions' ? 'selected' : '' }}>Promotions</option>
+                                        <option value="corporatetrip" {{ old('category') == 'corporatetrip' ? 'selected' : '' }}>Corporate Trip</option>
+                                        <option value="opentrip" {{ old('category') == 'opentrip' ? 'selected' : '' }}>Open Trip</option>
+                                        <option value="edutrip" {{ old('category') == 'edutrip' ? 'selected' : '' }}>Education Trip</option>
                                     </select>
                                     @error('category')
                                         <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -181,11 +126,8 @@
                         <a href="{{ route('admin.news.index') }}" class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-6 py-3 rounded-lg font-medium transition-colors duration-200">
                             Cancel
                         </a>
-                        <button type="submit" name="action" value="save_draft" class="bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200">
-                            Save as Draft
-                        </button>
-                        <button type="submit" name="action" value="publish" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200">
-                            Publish Article
+                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200">
+                            Save Article
                         </button>
                     </div>
                 </form>
@@ -201,66 +143,31 @@
     <script>
         // Initialize Froala Editor
         new FroalaEditor('#content', {
-            // Set the editor height
             height: 400,
-            
-            // Toolbar buttons
             toolbarButtons: {
                 'moreText': {
-                    'buttons': ['bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', 'textColor', 'backgroundColor', 'inlineClass', 'inlineStyle', 'clearFormatting']
+                    'buttons': ['bold', 'italic', 'underline', 'strikeThrough', 'fontSize', 'textColor', 'clearFormatting']
                 },
                 'moreParagraph': {
-                    'buttons': ['alignLeft', 'alignCenter', 'alignRight', 'alignJustify', 'formatOLSimple', 'formatOL', 'formatUL', 'paragraphFormat', 'paragraphStyle', 'lineHeight', 'outdent', 'indent', 'quote']
+                    'buttons': ['alignLeft', 'alignCenter', 'alignRight', 'formatOL', 'formatUL', 'paragraphFormat', 'quote']
                 },
                 'moreRich': {
-                    'buttons': ['insertLink', 'insertImage', 'insertVideo', 'insertTable', 'emoticons', 'fontAwesome', 'specialCharacters', 'embedly', 'insertFile', 'insertHR']
+                    'buttons': ['insertLink', 'insertImage', 'insertVideo', 'insertTable', 'insertHR']
                 },
                 'moreMisc': {
-                    'buttons': ['undo', 'redo', 'fullscreen', 'print', 'getPDF', 'spellChecker', 'selectAll', 'html', 'help'],
+                    'buttons': ['undo', 'redo', 'fullscreen', 'html'],
                     'align': 'right',
                     'buttonsVisible': 2
                 }
             },
-            
-            // Plugin options
-            pluginsEnabled: ['align', 'charCounter', 'codeBeautifier', 'codeView', 'colors', 'draggable', 'emoticons', 'entities', 'file', 'fontFamily', 'fontSize', 'fullscreen', 'image', 'imageManager', 'inlineStyle', 'lineBreaker', 'link', 'lists', 'paragraphFormat', 'paragraphStyle', 'quickInsert', 'quote', 'save', 'table', 'url', 'video', 'wordPaste'],
-            
-            // Image upload settings
+            pluginsEnabled: ['align', 'colors', 'fullscreen', 'image', 'link', 'lists', 'paragraphFormat', 'quote', 'table', 'video'],
             imageUploadURL: '/upload_image',
             imageUploadParams: {
                 _token: '{{ csrf_token() }}'
             },
-            
-            // Theme
-            theme: 'royal',
-            
-            // Language
-            language: 'en',
-            
-            // Placeholder
             placeholderText: 'Tulis konten artikel di sini...',
-            
-            // Character counter
             charCounterCount: true,
-            
-            // Quick insert
-            quickInsertEnabled: true,
-            
-            // Paste settings
-            pastePlain: false,
-            
-            // Enter behavior
             enter: FroalaEditor.ENTER_BR
-        });
-
-        // Auto-generate slug from title
-        document.getElementById('title').addEventListener('input', function() {
-            const title = this.value;
-            const slug = title.toLowerCase()
-                .replace(/[^\w\s-]/g, '') // Remove special characters
-                .replace(/[\s_-]+/g, '-') // Replace spaces and underscores with hyphens
-                .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
-            document.getElementById('slug').value = slug;
         });
     </script>
 @endsection

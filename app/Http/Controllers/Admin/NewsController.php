@@ -23,8 +23,7 @@ class NewsController extends Controller
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where('title', 'like', "%{$search}%")
-                  ->orWhere('content', 'like', "%{$search}%")
-                  ->orWhere('excerpt', 'like', "%{$search}%");
+                  ->orWhere('content', 'like', "%{$search}%");
         }
         
         // Filter by category
@@ -37,7 +36,7 @@ class NewsController extends Controller
             if ($request->status === 'published') {
                 $query->published();
             } elseif ($request->status === 'draft') {
-                $query->where('is_published', false);
+                $query->where('status', 'draft');
             }
         }
         
@@ -65,77 +64,50 @@ class NewsController extends Controller
     public function store(Request $request)
     {
         try {
-            $request->validate([
+            $validated = $request->validate([
                 'title' => 'required|string|max:255',
-                'excerpt' => 'required|string|max:500',
                 'content' => 'required|string',
                 'category' => 'required|string|max:100',
                 'featured_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-                'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-                'tags' => 'nullable|string',
-                'meta_title' => 'nullable|string|max:255',
-                'meta_description' => 'nullable|string|max:500',
-                'read_time' => 'nullable|integer|min:1',
-                'published_at' => 'nullable|date',
                 'status' => 'required|in:draft,published',
                 'is_featured' => 'boolean',
-                'is_published' => 'boolean'
+                'published_at' => 'nullable|date'
             ]);
             
-            $data = $request->all();
-            $data['slug'] = Str::slug($request->title);
-            $data['author_name'] = Auth::user()->name ?? 'Admin';
-            
-            // Process tags
-            if ($request->filled('tags')) {
-                $data['tags'] = array_map('trim', explode(',', $request->tags));
-            }
+            $data = [
+                'title' => $validated['title'],
+                'slug' => Str::slug($validated['title']),
+                'content' => $validated['content'],
+                'category' => $validated['category'],
+                'author_name' => Auth::user()->name ?? 'Admin',
+                'status' => $validated['status'],
+                'is_featured' => $request->boolean('is_featured'),
+                'published_at' => $validated['status'] === 'published' 
+                    ? ($validated['published_at'] ?? now()) 
+                    : $validated['published_at']
+            ];
             
             // Handle featured image upload
             if ($request->hasFile('featured_image')) {
                 $data['featured_image'] = $request->file('featured_image')->store('news', 'public');
             }
             
-            // Handle gallery images upload
-            if ($request->hasFile('gallery_images')) {
-                $galleryImages = [];
-                foreach ($request->file('gallery_images') as $image) {
-                    $galleryImages[] = $image->store('news/gallery', 'public');
-                }
-                $data['gallery_images'] = $galleryImages;
-            }
-            
-            // Set is_published based on status
-            $data['is_published'] = ($request->status === 'published');
-            
-            // Set published_at if publishing
-            if ($request->status === 'published' && !$request->published_at) {
-                $data['published_at'] = now();
-            }
-            
             $news = News::create($data);
             
-            // Enhanced SweetAlert with more details
-            $statusText = $request->status === 'published' ? 'published' : 'saved as draft';
-            Alert::success(
-                'Berhasil!', 
-                "Artikel berita '{$news->title}' berhasil dibuat dan {$statusText}!"
-            )->persistent(true)->autoClose(5000);
+            $statusText = $validated['status'] === 'published' ? 'published' : 'saved as draft';
+            Alert::success('Berhasil!', "Artikel '{$news->title}' berhasil {$statusText}!")
+                ->persistent(true)->autoClose(5000);
             
             return redirect()->route('admin.news.index');
             
         } catch (\Illuminate\Validation\ValidationException $e) {
-            Alert::error(
-                'Validasi Gagal!', 
-                'Mohon periksa kembali data yang Anda masukkan.'
-            )->persistent(true);
+            Alert::error('Validasi Gagal!', 'Mohon periksa kembali data yang Anda masukkan.')
+                ->persistent(true);
             return back()->withErrors($e->errors())->withInput();
             
         } catch (\Exception $e) {
-            Alert::error(
-                'Terjadi Kesalahan!', 
-                'Gagal membuat artikel berita. Silakan coba lagi.'
-            )->persistent(true);
+            Alert::error('Terjadi Kesalahan!', 'Gagal membuat artikel. Silakan coba lagi.')
+                ->persistent(true);
             return back()->withInput();
         }
     }
@@ -146,24 +118,12 @@ class NewsController extends Controller
     public function show(News $news)
     {
         try {
-            // Increment views count
             $news->increment('views');
-            
-            // Optional: Show info about view increment (can be disabled if too intrusive)
-            if (request()->has('show_view_info')) {
-                Alert::info(
-                    'Artikel Dibaca!', 
-                    "Jumlah pembaca artikel '{$news->title}' bertambah menjadi {$news->views} kali."
-                )->autoClose(3000);
-            }
-            
             return view('admin.news.show', compact('news'));
             
         } catch (\Exception $e) {
-            Alert::error(
-                'Terjadi Kesalahan!', 
-                'Gagal memuat artikel berita. Silakan coba lagi.'
-            )->persistent(true);
+            Alert::error('Terjadi Kesalahan!', 'Gagal memuat artikel.')
+                ->persistent(true);
             return redirect()->route('admin.news.index');
         }
     }
@@ -182,30 +142,30 @@ class NewsController extends Controller
     public function update(Request $request, News $news)
     {
         try {
-            $request->validate([
+            $validated = $request->validate([
                 'title' => 'required|string|max:255',
-                'excerpt' => 'required|string|max:500',
                 'content' => 'required|string',
                 'category' => 'required|string|max:100',
                 'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-                'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-                'tags' => 'nullable|string',
-                'meta_title' => 'nullable|string|max:255',
-                'meta_description' => 'nullable|string|max:500',
-                'read_time' => 'nullable|integer|min:1',
-                'published_at' => 'nullable|date',
                 'status' => 'required|in:draft,published',
                 'is_featured' => 'boolean',
-                'is_published' => 'boolean'
+                'published_at' => 'nullable|date'
             ]);
             
-            $oldTitle = $news->title;
-            $data = $request->all();
-            $data['slug'] = Str::slug($request->title);
+            $data = [
+                'title' => $validated['title'],
+                'slug' => Str::slug($validated['title']),
+                'content' => $validated['content'],
+                'category' => $validated['category'],
+                'status' => $validated['status'],
+                'is_featured' => $request->boolean('is_featured')
+            ];
             
-            // Process tags
-            if ($request->filled('tags')) {
-                $data['tags'] = array_map('trim', explode(',', $request->tags));
+            // Set published_at if publishing for the first time
+            if ($validated['status'] === 'published' && !$news->published_at) {
+                $data['published_at'] = $validated['published_at'] ?? now();
+            } elseif (isset($validated['published_at'])) {
+                $data['published_at'] = $validated['published_at'];
             }
             
             // Handle featured image upload
@@ -217,53 +177,22 @@ class NewsController extends Controller
                 $data['featured_image'] = $request->file('featured_image')->store('news', 'public');
             }
             
-            // Handle gallery images upload
-            if ($request->hasFile('gallery_images')) {
-                // Delete old gallery images
-                if ($news->gallery_images) {
-                    foreach ($news->gallery_images as $oldImage) {
-                        Storage::disk('public')->delete($oldImage);
-                    }
-                }
-                
-                $galleryImages = [];
-                foreach ($request->file('gallery_images') as $image) {
-                    $galleryImages[] = $image->store('news/gallery', 'public');
-                }
-                $data['gallery_images'] = $galleryImages;
-            }
-            
-            // Set is_published based on status
-            $data['is_published'] = ($request->status === 'published');
-            
-            // Set published_at if publishing for the first time
-            if ($request->status === 'published' && !$news->published_at && !$request->published_at) {
-                $data['published_at'] = now();
-            }
-            
             $news->update($data);
             
-            // Enhanced SweetAlert with more details
-            $statusText = $request->status === 'published' ? 'dipublikasikan' : 'disimpan sebagai draft';
-            Alert::success(
-                'Berhasil Diperbarui!', 
-                "Artikel berita '{$news->title}' berhasil diperbarui dan {$statusText}!"
-            )->persistent(true)->autoClose(5000);
+            $statusText = $validated['status'] === 'published' ? 'dipublikasikan' : 'disimpan sebagai draft';
+            Alert::success('Berhasil Diperbarui!', "Artikel '{$news->title}' berhasil {$statusText}!")
+                ->persistent(true)->autoClose(5000);
             
             return redirect()->route('admin.news.index');
             
         } catch (\Illuminate\Validation\ValidationException $e) {
-            Alert::error(
-                'Validasi Gagal!', 
-                'Mohon periksa kembali data yang Anda masukkan.'
-            )->persistent(true);
+            Alert::error('Validasi Gagal!', 'Mohon periksa kembali data yang Anda masukkan.')
+                ->persistent(true);
             return back()->withErrors($e->errors())->withInput();
             
         } catch (\Exception $e) {
-            Alert::error(
-                'Terjadi Kesalahan!', 
-                'Gagal memperbarui artikel berita. Silakan coba lagi.'
-            )->persistent(true);
+            Alert::error('Terjadi Kesalahan!', 'Gagal memperbarui artikel.')
+                ->persistent(true);
             return back()->withInput();
         }
     }
@@ -276,50 +205,23 @@ class NewsController extends Controller
         try {
             $newsTitle = $news->title;
             
-            // Delete associated images
+            // Delete associated image
             if ($news->featured_image) {
                 Storage::disk('public')->delete($news->featured_image);
             }
             
-            if ($news->gallery_images) {
-                foreach ($news->gallery_images as $image) {
-                    Storage::disk('public')->delete($image);
-                }
-            }
-            
             $news->delete();
             
-            // Enhanced SweetAlert with more details
-            Alert::success(
-                'Berhasil Dihapus!', 
-                "Artikel berita '{$newsTitle}' berhasil dihapus dari sistem!"
-            )->persistent(true)->autoClose(5000);
+            Alert::success('Berhasil Dihapus!', "Artikel '{$newsTitle}' berhasil dihapus!")
+                ->persistent(true)->autoClose(5000);
             
             return redirect()->route('admin.news.index');
             
         } catch (\Exception $e) {
-            Alert::error(
-                'Terjadi Kesalahan!', 
-                'Gagal menghapus artikel berita. Silakan coba lagi.'
-            )->persistent(true);
+            Alert::error('Terjadi Kesalahan!', 'Gagal menghapus artikel.')
+                ->persistent(true);
             return back();
         }
-    }
-    
-    /**
-     * Show confirmation before deleting news article
-     */
-    public function confirmDelete(News $news)
-    {
-        Alert::warning(
-            'Konfirmasi Hapus!',
-            "Apakah Anda yakin ingin menghapus artikel '{$news->title}'? Tindakan ini tidak dapat dibatalkan!"
-        )->showConfirmButton('Ya, Hapus!')
-         ->showCancelButton('Batal')
-         ->confirmButtonColor('#d33')
-         ->cancelButtonColor('#3085d6');
-         
-        return back();
     }
     
     /**
@@ -328,27 +230,23 @@ class NewsController extends Controller
     public function togglePublish(News $news)
     {
         try {
-            $news->is_published = !$news->is_published;
+            $news->status = $news->status === 'published' ? 'draft' : 'published';
             
-            if ($news->is_published && !$news->published_at) {
+            if ($news->status === 'published' && !$news->published_at) {
                 $news->published_at = now();
             }
             
             $news->save();
             
-            $status = $news->is_published ? 'dipublikasikan' : 'dijadikan draft';
-            Alert::success(
-                'Status Berubah!', 
-                "Artikel '{$news->title}' berhasil {$status}!"
-            )->autoClose(4000);
+            $status = $news->status === 'published' ? 'dipublikasikan' : 'dijadikan draft';
+            Alert::success('Status Berubah!', "Artikel '{$news->title}' berhasil {$status}!")
+                ->autoClose(4000);
             
             return back();
             
         } catch (\Exception $e) {
-            Alert::error(
-                'Terjadi Kesalahan!', 
-                'Gagal mengubah status publikasi artikel.'
-            )->persistent(true);
+            Alert::error('Terjadi Kesalahan!', 'Gagal mengubah status publikasi.')
+                ->persistent(true);
             return back();
         }
     }
@@ -363,18 +261,14 @@ class NewsController extends Controller
             $news->save();
             
             $status = $news->is_featured ? 'ditandai sebagai unggulan' : 'dihapus dari unggulan';
-            Alert::success(
-                'Status Unggulan Berubah!', 
-                "Artikel '{$news->title}' berhasil {$status}!"
-            )->autoClose(4000);
+            Alert::success('Status Unggulan Berubah!', "Artikel '{$news->title}' berhasil {$status}!")
+                ->autoClose(4000);
             
             return back();
             
         } catch (\Exception $e) {
-            Alert::error(
-                'Terjadi Kesalahan!', 
-                'Gagal mengubah status unggulan artikel.'
-            )->persistent(true);
+            Alert::error('Terjadi Kesalahan!', 'Gagal mengubah status unggulan.')
+                ->persistent(true);
             return back();
         }
     }
@@ -390,46 +284,33 @@ class NewsController extends Controller
                 'selected_news.*' => 'exists:news,id'
             ]);
             
-            $newsIds = $request->selected_news;
-            $newsArticles = News::whereIn('id', $newsIds)->get();
+            $newsArticles = News::whereIn('id', $request->selected_news)->get();
             $count = $newsArticles->count();
             
-            // Delete associated images for each article
+            // Delete associated images
             foreach ($newsArticles as $news) {
                 if ($news->featured_image) {
                     Storage::disk('public')->delete($news->featured_image);
                 }
-                
-                if ($news->gallery_images) {
-                    foreach ($news->gallery_images as $image) {
-                        Storage::disk('public')->delete($image);
-                    }
-                }
             }
             
-            // Delete the articles
-            News::whereIn('id', $newsIds)->delete();
+            News::whereIn('id', $request->selected_news)->delete();
             
-            Alert::success(
-                'Berhasil Dihapus!', 
-                "{$count} artikel berita berhasil dihapus dari sistem!"
-            )->persistent(true)->autoClose(5000);
+            Alert::success('Berhasil Dihapus!', "{$count} artikel berhasil dihapus!")
+                ->persistent(true)->autoClose(5000);
             
             return redirect()->route('admin.news.index');
             
         } catch (\Illuminate\Validation\ValidationException $e) {
-            Alert::error(
-                'Validasi Gagal!', 
-                'Mohon pilih minimal satu artikel untuk dihapus.'
-            )->persistent(true);
+            Alert::error('Validasi Gagal!', 'Mohon pilih minimal satu artikel.')
+                ->persistent(true);
             return back();
             
         } catch (\Exception $e) {
-            Alert::error(
-                'Terjadi Kesalahan!', 
-                'Gagal menghapus artikel berita yang dipilih.'
-            )->persistent(true);
+            Alert::error('Terjadi Kesalahan!', 'Gagal menghapus artikel yang dipilih.')
+                ->persistent(true);
             return back();
         }
     }
 }
+

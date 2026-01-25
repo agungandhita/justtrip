@@ -137,6 +137,9 @@ class Invoice extends Model
         $labels = [
             'draft' => 'Draft',
             'sent' => 'Terkirim',
+            'awaiting_payment' => 'Menunggu Pembayaran',
+            'payment_uploaded' => 'Bukti Diunggah',
+            'payment_confirmed' => 'Pembayaran Dikonfirmasi',
             'paid' => 'Lunas',
             'overdue' => 'Terlambat',
             'cancelled' => 'Dibatalkan'
@@ -150,6 +153,9 @@ class Invoice extends Model
         $colors = [
             'draft' => 'secondary',
             'sent' => 'info',
+            'awaiting_payment' => 'warning',
+            'payment_uploaded' => 'purple',
+            'payment_confirmed' => 'success',
             'paid' => 'success',
             'overdue' => 'danger',
             'cancelled' => 'dark'

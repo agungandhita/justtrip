@@ -9,12 +9,11 @@ use Illuminate\Http\Request;
 class GalleryController extends Controller
 {
     /**
-     * Display a listing of public galleries.
+     * Display a listing of active galleries.
      */
     public function index(Request $request)
     {
-        $query = Gallery::where('is_public', true)
-                       ->where('status', 'active');
+        $query = Gallery::where('status', 'active');
 
         // Search functionality
         if ($request->filled('search')) {
@@ -22,8 +21,7 @@ class GalleryController extends Controller
             $query->where(function($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
                   ->orWhere('description', 'like', "%{$search}%")
-                  ->orWhere('destination', 'like', "%{$search}%")
-                  ->orWhere('location', 'like', "%{$search}%");
+                  ->orWhere('destination', 'like', "%{$search}%");
             });
         }
 
@@ -48,12 +46,6 @@ class GalleryController extends Controller
             case 'oldest':
                 $query->oldest();
                 break;
-            case 'popular':
-                $query->orderBy('views', 'desc');
-                break;
-            case 'liked':
-                $query->orderBy('likes', 'desc');
-                break;
             case 'title':
                 $query->orderBy('title', 'asc');
                 break;
@@ -65,16 +57,14 @@ class GalleryController extends Controller
         $galleries = $query->paginate(12);
 
         // Get filter options
-        $destinations = Gallery::where('is_public', true)
-                              ->where('status', 'active')
+        $destinations = Gallery::where('status', 'active')
                               ->distinct()
                               ->pluck('destination')
                               ->filter()
                               ->sort()
                               ->values();
 
-        $categories = Gallery::where('is_public', true)
-                            ->where('status', 'active')
+        $categories = Gallery::where('status', 'active')
                             ->distinct()
                             ->pluck('category')
                             ->filter()
@@ -90,16 +80,11 @@ class GalleryController extends Controller
     public function show($slug)
     {
         $gallery = Gallery::where('slug', $slug)
-                         ->where('is_public', true)
                          ->where('status', 'active')
                          ->firstOrFail();
 
-        // Increment views count
-        $gallery->increment('views');
-
         // Get related galleries (same destination or category)
-        $relatedGalleries = Gallery::where('is_public', true)
-                                  ->where('status', 'active')
+        $relatedGalleries = Gallery::where('status', 'active')
                                   ->where('id', '!=', $gallery->id)
                                   ->where(function($query) use ($gallery) {
                                       $query->where('destination', $gallery->destination)
@@ -109,14 +94,12 @@ class GalleryController extends Controller
                                   ->get();
 
         // Get previous and next galleries for navigation
-        $previousGallery = Gallery::where('is_public', true)
-                                 ->where('status', 'active')
+        $previousGallery = Gallery::where('status', 'active')
                                  ->where('id', '<', $gallery->id)
                                  ->orderBy('id', 'desc')
                                  ->first();
 
-        $nextGallery = Gallery::where('is_public', true)
-                             ->where('status', 'active')
+        $nextGallery = Gallery::where('status', 'active')
                              ->where('id', '>', $gallery->id)
                              ->orderBy('id', 'asc')
                              ->first();
@@ -125,54 +108,17 @@ class GalleryController extends Controller
     }
 
     /**
-     * Toggle like for a gallery item (AJAX)
-     */
-    public function toggleLike(Gallery $gallery)
-    {
-        // Check if gallery is public and active
-        if (!$gallery->is_public || $gallery->status !== 'active') {
-            return response()->json([
-                'success' => false,
-                'message' => 'Gallery tidak tersedia'
-            ], 404);
-        }
-
-        $gallery->increment('likes');
-
-        return response()->json([
-            'success' => true,
-            'likes' => $gallery->likes,
-            'message' => 'Terima kasih atas like Anda!'
-        ]);
-    }
-
-    /**
      * Get featured galleries for homepage or other sections
      */
     public function getFeatured($limit = 6)
     {
-        $featuredGalleries = Gallery::where('is_public', true)
-                                   ->where('status', 'active')
+        $featuredGalleries = Gallery::where('status', 'active')
                                    ->featured()
                                    ->latest()
                                    ->limit($limit)
                                    ->get();
 
         return $featuredGalleries;
-    }
-
-    /**
-     * Get popular galleries based on views
-     */
-    public function getPopular($limit = 6)
-    {
-        $popularGalleries = Gallery::where('is_public', true)
-                                  ->where('status', 'active')
-                                  ->orderBy('views', 'desc')
-                                  ->limit($limit)
-                                  ->get();
-
-        return $popularGalleries;
     }
 
     /**
@@ -189,13 +135,11 @@ class GalleryController extends Controller
             ]);
         }
 
-        $galleries = Gallery::where('is_public', true)
-                           ->where('status', 'active')
+        $galleries = Gallery::where('status', 'active')
                            ->where(function($q) use ($query) {
                                $q->where('title', 'like', "%{$query}%")
                                  ->orWhere('description', 'like', "%{$query}%")
-                                 ->orWhere('destination', 'like', "%{$query}%")
-                                 ->orWhere('location', 'like', "%{$query}%");
+                                 ->orWhere('destination', 'like', "%{$query}%");
                            })
                            ->limit(10)
                            ->get(['id', 'title', 'slug', 'destination', 'main_image']);

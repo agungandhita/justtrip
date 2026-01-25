@@ -38,15 +38,6 @@ class GalleryController extends Controller
             $query->byCategory($request->category);
         }
 
-        // Filter by visibility
-        if ($request->filled('visibility')) {
-            if ($request->visibility === 'public') {
-                $query->public();
-            } elseif ($request->visibility === 'private') {
-                $query->where('is_public', false);
-            }
-        }
-
         // Filter by featured
         if ($request->filled('featured')) {
             $query->featured();
@@ -75,30 +66,24 @@ class GalleryController extends Controller
             'description' => 'nullable|string',
             'destination' => 'required|string|max:255',
             'category' => 'required|string|max:100',
-            'images' => 'nullable|array|max:20', // Batasi maksimal 20 foto, nullable untuk update
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120', // Maksimal 5MB per foto
+            'images' => 'nullable|array|max:20',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // Maksimal 2MB per foto
             'trip_date' => 'required|date',
             'participants_count' => 'nullable|integer|min:1',
             'trip_highlights' => 'nullable|string',
             'tags' => 'nullable|string',
-            'alt_text' => 'nullable|string|max:255',
-            'caption' => 'nullable|string|max:255',
             'status' => 'nullable|string|in:active,inactive',
             'featured' => 'nullable|boolean',
             'sort_order' => 'nullable|integer|min:0',
-            'location' => 'nullable|string|max:255',
-            'photographer' => 'nullable|string|max:255',
-            'date_taken' => 'nullable|date',
-            'is_public' => 'nullable|boolean'
+            'photographer' => 'nullable|string|max:255'
         ]);
 
         $data = $request->all();
         $data['slug'] = Str::slug($request->title);
         $data['photographer'] = $request->photographer ?: (Auth::user()->name ?? 'Admin');
 
-        // Set default values for boolean fields
-        $data['featured'] = $request->boolean('is_featured') || $request->boolean('featured');
-        $data['is_public'] = $request->has('is_public') ? $request->boolean('is_public') : true;
+        // Set default values
+        $data['featured'] = $request->boolean('featured');
         $data['status'] = $request->status ?: 'active';
         $data['sort_order'] = $request->sort_order ?: 0;
 
@@ -149,9 +134,6 @@ class GalleryController extends Controller
      */
     public function show(Gallery $gallery)
     {
-        // Increment views count
-        $gallery->increment('views');
-
         // Get previous and next galleries for navigation
         $previousImage = Gallery::where('id', '<', $gallery->id)
             ->orderBy('id', 'desc')
@@ -205,21 +187,16 @@ class GalleryController extends Controller
                 'description' => 'nullable|string',
                 'destination' => 'required|string|max:255',
                 'category' => 'required|string|max:100',
-                'images' => 'nullable|array|max:20', // Made nullable for updates
-                'images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+                'images' => 'nullable|array|max:20',
+                'images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // Maksimal 2MB per foto
                 'trip_date' => 'required|date',
                 'participants_count' => 'nullable|integer|min:1',
                 'trip_highlights' => 'nullable|string',
                 'tags' => 'nullable|string',
-                'alt_text' => 'nullable|string|max:255',
-                'caption' => 'nullable|string|max:255',
                 'status' => 'nullable|string|in:active,inactive',
                 'featured' => 'nullable|boolean',
                 'sort_order' => 'nullable|integer|min:0',
-                'location' => 'nullable|string|max:255',
                 'photographer' => 'nullable|string|max:255',
-                'date_taken' => 'nullable|date',
-                'is_public' => 'nullable|boolean',
                 'keep_existing_images' => 'boolean'
             ]);
             
@@ -241,9 +218,8 @@ class GalleryController extends Controller
         $data['slug'] = Str::slug($request->title);
         $data['photographer'] = $request->photographer ?: $gallery->photographer;
 
-        // Set default values for boolean fields
-        $data['featured'] = $request->boolean('is_featured') || $request->boolean('featured');
-        $data['is_public'] = $request->has('is_public') ? $request->boolean('is_public') : $gallery->is_public;
+        // Set default values
+        $data['featured'] = $request->boolean('featured');
         $data['status'] = $request->status ?: $gallery->status ?: 'active';
         $data['sort_order'] = $request->sort_order ?: $gallery->sort_order ?: 0;
 
@@ -327,18 +303,7 @@ class GalleryController extends Controller
         return redirect()->route('admin.galleries.index');
     }
 
-    /**
-     * Toggle like for a gallery item
-     */
-    public function toggleLike(Gallery $gallery)
-    {
-        $gallery->increment('likes');
 
-        return response()->json([
-            'success' => true,
-            'likes' => $gallery->likes
-        ]);
-    }
 
     /**
      * Delete individual image from gallery
@@ -396,7 +361,7 @@ class GalleryController extends Controller
     {
         $request->validate([
             'images' => 'required|array|min:1|max:10',
-            'images.*' => 'image|mimes:jpeg,png,jpg,webp|max:5120'
+            'images.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048' // Maksimal 2MB per foto
         ]);
 
         $existingImages = $gallery->images ?? [];

@@ -128,7 +128,9 @@ class BookingController extends Controller
                 $discountAmount = ($originalAmount * $specialOffer->discount_percentage) / 100;
             }
 
-            $totalAmount = $originalAmount - $discountAmount;
+            $amountAfterDiscount = $originalAmount - $discountAmount;
+            $taxAmount = round($amountAfterDiscount * 0.11);
+            $totalAmount = $amountAfterDiscount + $taxAmount;
 
             // Create booking
             $booking = Booking::create([
@@ -139,6 +141,8 @@ class BookingController extends Controller
                 'booking_date' => now(),
                 'original_amount' => $originalAmount,
                 'discount_amount' => $discountAmount,
+                'tax_amount' => $taxAmount,
+                'tax_percentage' => 11,
                 'total_amount' => $totalAmount,
                 'status' => 'pending',
                 'customer_info' => [
@@ -263,7 +267,8 @@ class BookingController extends Controller
                 $originalAmount = $request->custom_budget ? ($request->custom_budget * $request->jumlah_peserta) : 0;
             }
 
-            $totalAmount = $originalAmount - $discountAmount;
+            $amountAfterDiscount = $originalAmount - $discountAmount;
+            $totalAmount = round($amountAfterDiscount * 1.11);
 
             // Simpan sebagai GuestBooking dengan field yang sesuai model
             $guestBooking = GuestBooking::create([
@@ -370,18 +375,15 @@ class BookingController extends Controller
      */
     private function createInvoice(Booking $booking)
     {
-        $taxAmount = $booking->total_amount * 0.11; // PPN 11%
-        $finalTotal = $booking->total_amount + $taxAmount;
-
         return Invoice::create([
             'booking_id' => $booking->booking_id,
             'invoice_number' => Invoice::generateInvoiceNumber(),
             'invoice_date' => now(),
             'due_date' => now()->addDays(7), // 7 days payment term
-            'subtotal' => $booking->original_amount,
+            'subtotal' => $booking->original_amount - $booking->discount_amount,
             'discount_amount' => $booking->discount_amount,
-            'tax_amount' => $taxAmount,
-            'total_amount' => $finalTotal,
+            'tax_amount' => $booking->tax_amount,
+            'total_amount' => $booking->total_amount,
             'status' => 'draft'
         ]);
     }
@@ -415,7 +417,7 @@ class BookingController extends Controller
     {
         try {
             // Generate PDF (will be implemented in InvoiceController)
-            $pdfPath = app('App\Http\Controllers\InvoiceController')->generatePDF($invoice);
+            $pdfPath = app('App\Http\Controllers\Frontend\InvoiceController')->generatePDF($invoice);
 
             // Update invoice with PDF path
             $invoice->update([
@@ -452,14 +454,18 @@ class BookingController extends Controller
             $discountAmount = ($originalAmount * $specialOffer->discount_percentage) / 100;
         }
 
-        $totalAmount = $originalAmount - $discountAmount;
+        $amountAfterDiscount = $originalAmount - $discountAmount;
+        $taxAmount = round($amountAfterDiscount * 0.11);
+        $totalAmount = $amountAfterDiscount + $taxAmount;
 
         return response()->json([
             'original_amount' => $originalAmount,
             'discount_amount' => $discountAmount,
+            'tax_amount' => $taxAmount,
             'total_amount' => $totalAmount,
             'formatted_original_amount' => 'Rp ' . number_format($originalAmount, 0, ',', '.'),
             'formatted_discount_amount' => 'Rp ' . number_format($discountAmount, 0, ',', '.'),
+            'formatted_tax_amount' => 'Rp ' . number_format($taxAmount, 0, ',', '.'),
             'formatted_total_amount' => 'Rp ' . number_format($totalAmount, 0, ',', '.'),
             'discount_percentage' => $specialOffer ? $specialOffer->discount_percentage : 0
         ]);
@@ -521,7 +527,9 @@ class BookingController extends Controller
                 $discountAmount = ($originalAmount * $specialOffer->discount_percentage) / 100;
             }
 
-            $totalAmount = $originalAmount - $discountAmount;
+            $amountAfterDiscount = $originalAmount - $discountAmount;
+            $taxAmount = round($amountAfterDiscount * 0.11);
+            $totalAmount = $amountAfterDiscount + $taxAmount;
 
             // Create booking for guest (user_id = null)
             $booking = Booking::create([
@@ -532,6 +540,8 @@ class BookingController extends Controller
                 'booking_date' => now(),
                 'original_amount' => $originalAmount,
                 'discount_amount' => $discountAmount,
+                'tax_amount' => $taxAmount,
+                'tax_percentage' => 11,
                 'total_amount' => $totalAmount,
                 'status' => 'pending',
                 'customer_info' => [

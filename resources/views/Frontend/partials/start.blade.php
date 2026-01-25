@@ -19,11 +19,14 @@
     
     <!-- AOS Animation -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" href="{{ asset('image/logo6.png') }}" type="image/png">
     
     <!-- Vite Assets -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     
-    <title>JustTrip - Explore the World with JustTrip</title>
+    <title>Justtrip - #TripGagalMoveOn</title>
     
     <!-- Fallback: mount a small Alpine guestBookingSearch component when bundled assets are not available (helps dev without running Vite) -->
     <script>

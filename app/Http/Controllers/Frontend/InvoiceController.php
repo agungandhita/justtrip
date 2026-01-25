@@ -25,6 +25,11 @@ class InvoiceController extends Controller
             // Load invoice with relationships
             $invoice->load(['booking.layanan', 'booking.specialOffer', 'booking.user']);
 
+            // Check if booking exists
+            if (!$invoice->booking) {
+                throw new \Exception('Booking tidak ditemukan untuk invoice ini.');
+            }
+
             // Prepare data for PDF
             $data = [
                 'invoice' => $invoice,
@@ -62,6 +67,45 @@ class InvoiceController extends Controller
         } catch (\Exception $e) {
             Log::error('Failed to generate PDF: ' . $e->getMessage());
             throw $e;
+        }
+    }
+
+    /**
+     * Generate and download PDF for booking (route handler)
+     */
+    public function generateFromBooking(Booking $booking)
+    {
+        // Check if user has permission to access
+        if (!Auth::check()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $user = Auth::user();
+        if ($user->role !== 'admin' && $booking->user_id !== $user->id) {
+            abort(403, 'Unauthorized access to booking');
+        }
+
+        // Get or create invoice for this booking
+        $invoice = $booking->invoice;
+        
+        if (!$invoice) {
+            abort(404, 'Invoice tidak ditemukan untuk booking ini.');
+        }
+
+        try {
+            // Generate PDF if not exists
+            if (!$invoice->pdf_path || !Storage::disk('public')->exists($invoice->pdf_path)) {
+                $pdfPath = $this->generatePDF($invoice);
+                $invoice->update(['pdf_path' => $pdfPath]);
+            }
+
+            $filename = 'Invoice_' . $invoice->invoice_number . '.pdf';
+            $filePath = storage_path('app/public/' . $invoice->pdf_path);
+            
+            return response()->download($filePath, $filename);
+        } catch (\Exception $e) {
+            Log::error('Failed to generate invoice PDF: ' . $e->getMessage());
+            return back()->with('error', 'Gagal membuat invoice: ' . $e->getMessage());
         }
     }
 

@@ -18,34 +18,29 @@ class AboutController extends Controller
     public function index()
     {
         // Get company history/milestones (using news with specific category)
-        $companyHistory = News::where('is_published', true)
-                             ->where('category', 'company-history')
+        $companyHistory = News::where('category', 'company-history')
                              ->orderBy('created_at', 'asc')
                              ->get();
 
         // Get team members (using news with team category)
-        $teamMembers = News::where('is_published', true)
-                          ->where('category', 'team')
+        $teamMembers = News::where('category', 'team')
                           ->latest()
                           ->get();
 
         // Get company achievements/awards (using news)
-        $achievements = News::where('is_published', true)
-                           ->where('category', 'achievement')
+        $achievements = News::where('category', 'achievement')
                            ->latest()
                            ->take(6)
                            ->get();
 
         // Get testimonials
-        $testimonials = News::where('is_published', true)
-                           ->where('category', 'testimonial')
+        $testimonials = News::where('category', 'testimonial')
                            ->latest()
                            ->take(5)
                            ->get();
 
         // Get gallery images for about page
-        $aboutGallery = Gallery::where('is_public', true)
-                              ->where('status', 'active')
+        $aboutGallery = Gallery::where('status', 'active')
                               ->where('category', 'about')
                               ->latest()
                               ->take(8)
@@ -54,8 +49,7 @@ class AboutController extends Controller
         // Get company statistics
         $statistics = [
             'years_experience' => now()->year - 2015, // Since 2015
-            'total_destinations' => Gallery::where('is_public', true)
-                                          ->where('status', 'active')
+            'total_destinations' => Gallery::where('status', 'active')
                                           ->distinct('destination')
                                           ->count('destination'),
             'total_packages' => Layanan::where('status', 'aktif')->count(),
@@ -72,8 +66,7 @@ class AboutController extends Controller
                           ->get();
 
         // Get company values/mission (using news)
-        $companyValues = News::where('is_published', true)
-                            ->where('category', 'company-values')
+        $companyValues = News::where('category', 'company-values')
                             ->latest()
                             ->get();
 

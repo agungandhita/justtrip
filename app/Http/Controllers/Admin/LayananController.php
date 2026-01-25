@@ -63,8 +63,22 @@ class LayananController extends Controller
             'lokasi_tujuan' => 'required|string|max:255',
             'fasilitas' => 'nullable|array',
             'gambar_destinasi.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'information_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'status' => 'required|in:aktif,nonaktif',
-            'catatan' => 'nullable|string'
+            'catatan' => 'nullable|string',
+            // New fields
+            'start_time' => 'nullable|string|max:50',
+            'finish_time' => 'nullable|string|max:50',
+            'itinerary_note' => 'nullable|string',
+            'itinerary' => 'nullable|array',
+            'include_services' => 'nullable|array',
+            'exclude_services' => 'nullable|array',
+            'destinations' => 'nullable|array',
+            'pricing_types' => 'nullable|array',
+            'pricing_prices' => 'nullable|array',
+            'terms_registration' => 'nullable|array',
+            'terms_cancelation' => 'nullable|array',
+            'terms_not_responsible' => 'nullable|array',
         ]);
 
         if ($validator->fails()) {
@@ -73,9 +87,15 @@ class LayananController extends Controller
                 ->withInput();
         }
 
-        $data = $request->all();
+        $data = $request->only([
+            'nama_layanan', 'jenis_layanan', 'deskripsi', 'harga_mulai',
+            'durasi_hari', 'maks_orang', 'lokasi_tujuan', 'status', 'catatan',
+            'start_time', 'finish_time', 'itinerary_note'
+        ]);
+
+        // Handle fasilitas (legacy)
         if ($request->has('fasilitas')) {
-            $data['fasilitas'] = array_filter($request->fasilitas);
+            $data['fasilitas'] = array_values(array_filter($request->fasilitas));
         }
 
         // Handle gambar destinasi upload
@@ -83,7 +103,6 @@ class LayananController extends Controller
             $gambarPaths = [];
             $files = $request->file('gambar_destinasi');
 
-            // Validasi maksimal 5 gambar
             if (count($files) > 5) {
                 Alert::error('Error', 'Maksimal 5 gambar destinasi yang diizinkan!');
                 return redirect()->back()->withInput();
@@ -94,6 +113,72 @@ class LayananController extends Controller
                 $gambarPaths[] = $path;
             }
             $data['gambar_destinasi'] = $gambarPaths;
+        }
+
+        // Handle information image upload
+        if ($request->hasFile('information_image')) {
+            $data['information_image'] = $request->file('information_image')->store('layanan/info', 'public');
+        }
+
+        // Handle itinerary
+        if ($request->has('itinerary')) {
+            $itinerary = [];
+            foreach ($request->itinerary as $dayData) {
+                if (isset($dayData['day']) && isset($dayData['activities'])) {
+                    $activities = array_values(array_filter($dayData['activities']));
+                    if (!empty($activities)) {
+                        $itinerary[] = [
+                            'day' => (int) $dayData['day'],
+                            'activities' => $activities
+                        ];
+                    }
+                }
+            }
+            $data['itinerary'] = $itinerary;
+        }
+
+        // Handle include services
+        if ($request->has('include_services')) {
+            $data['include_services'] = array_values(array_filter($request->include_services));
+        }
+
+        // Handle exclude services
+        if ($request->has('exclude_services')) {
+            $data['exclude_services'] = array_values(array_filter($request->exclude_services));
+        }
+
+        // Handle destinations
+        if ($request->has('destinations')) {
+            $data['destinations'] = array_values(array_filter($request->destinations));
+        }
+
+        // Handle pricing options
+        if ($request->has('pricing_types') && $request->has('pricing_prices')) {
+            $pricingOptions = [];
+            foreach ($request->pricing_types as $index => $type) {
+                if (!empty($type) && isset($request->pricing_prices[$index])) {
+                    $pricingOptions[] = [
+                        'type' => $type,
+                        'price' => (float) $request->pricing_prices[$index]
+                    ];
+                }
+            }
+            $data['pricing_options'] = $pricingOptions;
+        }
+
+        // Handle terms & conditions
+        $termsConditions = [];
+        if ($request->has('terms_registration')) {
+            $termsConditions['registration_payment'] = array_values(array_filter($request->terms_registration));
+        }
+        if ($request->has('terms_cancelation')) {
+            $termsConditions['cancelation'] = array_values(array_filter($request->terms_cancelation));
+        }
+        if ($request->has('terms_not_responsible')) {
+            $termsConditions['not_responsible_for'] = array_values(array_filter($request->terms_not_responsible));
+        }
+        if (!empty($termsConditions)) {
+            $data['terms_conditions'] = $termsConditions;
         }
 
         Layanan::create($data);
@@ -140,9 +225,21 @@ class LayananController extends Controller
             'fasilitas' => 'nullable|array',
             'gambar_destinasi.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'existing_images' => 'nullable|array',
-            'existing_images.*' => 'nullable|string',
+            'information_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'status' => 'required|in:aktif,nonaktif',
-            'catatan' => 'nullable|string'
+            'catatan' => 'nullable|string',
+            'start_time' => 'nullable|string|max:50',
+            'finish_time' => 'nullable|string|max:50',
+            'itinerary_note' => 'nullable|string',
+            'itinerary' => 'nullable|array',
+            'include_services' => 'nullable|array',
+            'exclude_services' => 'nullable|array',
+            'destinations' => 'nullable|array',
+            'pricing_types' => 'nullable|array',
+            'pricing_prices' => 'nullable|array',
+            'terms_registration' => 'nullable|array',
+            'terms_cancelation' => 'nullable|array',
+            'terms_not_responsible' => 'nullable|array',
         ]);
 
         if ($validator->fails()) {
@@ -151,24 +248,24 @@ class LayananController extends Controller
                 ->withInput();
         }
 
-        $data = $request->all();
+        $data = $request->only([
+            'nama_layanan', 'jenis_layanan', 'deskripsi', 'harga_mulai',
+            'durasi_hari', 'maks_orang', 'lokasi_tujuan', 'status', 'catatan',
+            'start_time', 'finish_time', 'itinerary_note'
+        ]);
+
         if ($request->has('fasilitas')) {
-            $data['fasilitas'] = array_filter($request->fasilitas);
+            $data['fasilitas'] = array_values(array_filter($request->fasilitas));
         }
 
         // Handle gambar destinasi
         $finalGambarPaths = [];
-
-        // Get existing images that are kept (not removed)
         if ($request->has('existing_images') && is_array($request->existing_images)) {
             $finalGambarPaths = array_filter($request->existing_images);
         }
 
-        // Handle new uploaded images
         if ($request->hasFile('gambar_destinasi')) {
             $files = $request->file('gambar_destinasi');
-
-            // Validasi maksimal 5 gambar total (existing + new)
             $totalImages = count($finalGambarPaths) + count($files);
             if ($totalImages > 5) {
                 Alert::error('Error', 'Maksimal 5 gambar destinasi yang diizinkan!');
@@ -181,7 +278,6 @@ class LayananController extends Controller
             }
         }
 
-        // Delete images that are no longer used
         if ($layanan->gambar_destinasi) {
             foreach ($layanan->gambar_destinasi as $oldImage) {
                 if (!in_array($oldImage, $finalGambarPaths)) {
@@ -189,8 +285,64 @@ class LayananController extends Controller
                 }
             }
         }
-
         $data['gambar_destinasi'] = $finalGambarPaths;
+
+        // Handle information image
+        if ($request->hasFile('information_image')) {
+            if ($layanan->information_image) {
+                Storage::disk('public')->delete($layanan->information_image);
+            }
+            $data['information_image'] = $request->file('information_image')->store('layanan/info', 'public');
+        }
+
+        // Handle itinerary
+        if ($request->has('itinerary')) {
+            $itinerary = [];
+            foreach ($request->itinerary as $dayData) {
+                if (isset($dayData['day']) && isset($dayData['activities'])) {
+                    $activities = array_values(array_filter($dayData['activities']));
+                    if (!empty($activities)) {
+                        $itinerary[] = [
+                            'day' => (int) $dayData['day'],
+                            'activities' => $activities
+                        ];
+                    }
+                }
+            }
+            $data['itinerary'] = $itinerary;
+        }
+
+        // Handle services
+        $data['include_services'] = $request->has('include_services') ? array_values(array_filter($request->include_services)) : [];
+        $data['exclude_services'] = $request->has('exclude_services') ? array_values(array_filter($request->exclude_services)) : [];
+        $data['destinations'] = $request->has('destinations') ? array_values(array_filter($request->destinations)) : [];
+
+        // Handle pricing options
+        if ($request->has('pricing_types') && $request->has('pricing_prices')) {
+            $pricingOptions = [];
+            foreach ($request->pricing_types as $index => $type) {
+                if (!empty($type) && isset($request->pricing_prices[$index])) {
+                    $pricingOptions[] = [
+                        'type' => $type,
+                        'price' => (float) $request->pricing_prices[$index]
+                    ];
+                }
+            }
+            $data['pricing_options'] = $pricingOptions;
+        }
+
+        // Handle terms & conditions
+        $termsConditions = [];
+        if ($request->has('terms_registration')) {
+            $termsConditions['registration_payment'] = array_values(array_filter($request->terms_registration));
+        }
+        if ($request->has('terms_cancelation')) {
+            $termsConditions['cancelation'] = array_values(array_filter($request->terms_cancelation));
+        }
+        if ($request->has('terms_not_responsible')) {
+            $termsConditions['not_responsible_for'] = array_values(array_filter($request->terms_not_responsible));
+        }
+        $data['terms_conditions'] = !empty($termsConditions) ? $termsConditions : null;
 
         $layanan->update($data);
 

@@ -43,7 +43,6 @@ Route::get('/special-offers/{specialOffer}', [FrontendSpecialOfferController::cl
 // Gallery routes (public)
 Route::get('/gallery', [FrontendGalleryController::class, 'index'])->name('gallery');
 Route::get('/gallery/{slug}', [FrontendGalleryController::class, 'show'])->name('gallery.show');
-Route::post('/gallery/{gallery}/like', [FrontendGalleryController::class, 'toggleLike'])->name('gallery.like');
 Route::get('/api/gallery/search', [FrontendGalleryController::class, 'search'])->name('gallery.search');
 
 // Layanan routes (public)
@@ -100,7 +99,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // Gallery CRUD routes
     Route::resource('galleries', GalleryController::class);
-    Route::post('galleries/{gallery}/like', [GalleryController::class, 'toggleLike'])->name('galleries.like');
 
     // Additional gallery routes for image management
     Route::delete('galleries/{gallery}/images/{imageIndex}', [GalleryController::class, 'deleteImage'])->name('galleries.delete-image');
@@ -156,7 +154,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/booking/{booking}/cancel', [BookingController::class, 'cancel'])->name('booking.cancel');
 
     // Invoice routes
-    Route::get('/booking/{booking}/invoice', [InvoiceController::class, 'generatePDF'])->name('booking.invoice');
+    Route::get('/booking/{booking}/invoice', [InvoiceController::class, 'generateFromBooking'])->name('booking.invoice');
     Route::get('/invoice/{invoice}/download', [InvoiceController::class, 'download'])->name('invoice.download');
     Route::get('/invoice/{invoice}/view', [InvoiceController::class, 'view'])->name('invoice.view');
     Route::get('/invoice/{invoice}/preview', [InvoiceController::class, 'preview'])->name('invoice.preview');

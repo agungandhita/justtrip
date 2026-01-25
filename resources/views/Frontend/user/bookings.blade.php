@@ -17,12 +17,14 @@
                                 <p class="text-gray-600">Booking ID: #{{ $booking->booking_id }}</p>
                             </div>
                             <span class="px-3 py-1 rounded-full text-sm font-medium
-                                @if($booking->status == 'confirmed') bg-green-100 text-green-800
+                                @if($booking->status == 'confirmed' || $booking->status == 'completed') bg-green-100 text-green-800
                                 @elseif($booking->status == 'pending') bg-yellow-100 text-yellow-800
-                                @elseif($booking->status == 'cancelled') bg-red-100 text-red-800
+                                @elseif($booking->status == 'approved' || $booking->status == 'awaiting_payment') bg-blue-100 text-blue-800
+                                @elseif($booking->status == 'payment_uploaded') bg-purple-100 text-purple-800
+                                @elseif($booking->status == 'cancelled' || $booking->status == 'rejected') bg-red-100 text-red-800
                                 @else bg-gray-100 text-gray-800
                                 @endif">
-                                {{ ucfirst($booking->status) }}
+                                {{ $booking->status_label }}
                             </span>
                         </div>
 
@@ -52,17 +54,30 @@
                             </div>
                         @endif
 
-                        <div class="flex gap-3">
+                        <div class="flex flex-wrap gap-3">
                             <a href="{{ route('booking.show', $booking->booking_id) }}"
                                class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-200">
                                 View Details
                             </a>
 
-                            @if($booking->status == 'confirmed' && $booking->invoice)
+                            @if(in_array($booking->status, ['confirmed', 'completed']) && $booking->invoice)
                                 <a href="{{ route('invoice.download', $booking->invoice->invoice_id) }}"
                                    class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-200">
                                     Download Invoice
                                 </a>
+                            @endif
+
+                            @if($booking->status == 'approved')
+                                <a href="{{ route('booking.show', $booking->booking_id) }}"
+                                   class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition duration-200">
+                                    Upload Pembayaran
+                                </a>
+                            @endif
+
+                            @if($booking->status == 'payment_uploaded')
+                                <span class="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-lg text-sm">
+                                    Menunggu Verifikasi
+                                </span>
                             @endif
 
                             @if($booking->status == 'pending')

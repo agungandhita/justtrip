@@ -14,11 +14,9 @@ class LayananSeeder extends Seeder
         $faker = Faker::create('id_ID');
 
         $jenisLayanan = [
-            'paket_wisata',
-            'tour_internasional',
-            'private_trip',
-            'honeymoon',
-            'family_trip'
+            'open_trip',
+            'corporate_trip',
+            'edu_trip',
         ];
 
         $destinations = [
@@ -78,11 +76,9 @@ class LayananSeeder extends Seeder
     private function generateLayananName($jenis, $destination, $durasi)
     {
         $names = [
-            'paket_wisata' => 'Paket Wisata ' . $destination . ' ' . $durasi . ' Hari',
-            'tour_internasional' => 'Tour International ' . $destination,
-            'private_trip' => 'Private Trip ' . $destination,
-            'honeymoon' => 'Honeymoon Package ' . $destination,
-            'family_trip' => 'Family Trip ' . $destination
+            'open_trip' => 'Open Trip ' . $destination . ' ' . $durasi . ' Hari',
+            'corporate_trip' => 'Corporate Trip ' . $destination,
+            'edu_trip' => 'Edu Trip ' . $destination,
         ];
 
         return $names[$jenis] ?? 'Paket Wisata ' . $destination;

@@ -15,15 +15,14 @@ class ArticleController extends Controller
      */
     public function index(Request $request)
     {
-        $query = News::where('is_published', true);
+        $query = News::query();
 
         // Search functionality
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('content', 'like', "%{$search}%")
-                  ->orWhere('excerpt', 'like', "%{$search}%");
+                  ->orWhere('content', 'like', "%{$search}%");
             });
         }
 
@@ -54,15 +53,13 @@ class ArticleController extends Controller
         $articles = $query->paginate(12);
 
         // Get featured articles for hero section
-        $featuredArticles = News::where('is_published', true)
-                               ->where('is_featured', true)
+        $featuredArticles = News::where('is_featured', true)
                                ->latest()
                                ->take(3)
                                ->get();
 
         // Get filter options
-        $categoryStats = News::where('is_published', true)
-                            ->whereNotNull('category')
+        $categoryStats = News::whereNotNull('category')
                             ->selectRaw('category, COUNT(*) as total')
                             ->groupBy('category')
                             ->orderBy('category', 'asc')
@@ -77,15 +74,13 @@ class ArticleController extends Controller
     public function show($slug)
     {
         $article = News::where('slug', $slug)
-                      ->where('is_published', true)
                       ->firstOrFail();
 
         // Increment views
         $article->increment('views');
 
         // Get related articles
-        $relatedArticles = News::where('is_published', true)
-                              ->where('id', '!=', $article->id)
+        $relatedArticles = News::where('id', '!=', $article->id)
                               ->where('category', $article->category)
                               ->latest()
                               ->take(3)

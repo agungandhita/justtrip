@@ -15,6 +15,16 @@ class Layanan extends Model
         'slug',
         'jenis_layanan',
         'deskripsi',
+        'information_image',
+        'itinerary',
+        'start_time',
+        'finish_time',
+        'itinerary_note',
+        'include_services',
+        'exclude_services',
+        'destinations',
+        'pricing_options',
+        'terms_conditions',
         'harga_mulai',
         'durasi_hari',
         'maks_orang',
@@ -30,6 +40,12 @@ class Layanan extends Model
         'durasi_hari' => 'integer',
         'fasilitas' => 'array',
         'gambar_destinasi' => 'array',
+        'itinerary' => 'array',
+        'include_services' => 'array',
+        'exclude_services' => 'array',
+        'destinations' => 'array',
+        'pricing_options' => 'array',
+        'terms_conditions' => 'array',
         'created_at' => 'datetime',
         'updated_at' => 'datetime'
     ];
@@ -37,7 +53,7 @@ class Layanan extends Model
     // Accessor untuk format harga
     public function getHargaFormatAttribute()
     {
-        return 'Rp ' . number_format($this->harga_mulai, 0, ',', '.');
+        return 'Rp ' . number_format((float) $this->harga_mulai, 0, ',', '.');
     }
 
     // Accessor untuk format durasi
@@ -83,18 +99,9 @@ class Layanan extends Model
     public function getJenisLayananLabelAttribute()
     {
         $labels = [
-            'paket_wisata' => 'Paket Wisata',
-            'tour_domestik' => 'Tour Domestik',
-            'tour_internasional' => 'Tour Internasional',
-            'honeymoon' => 'Honeymoon',
-            'family_trip' => 'Family Trip',
-            'adventure' => 'Adventure',
-            'cultural_tour' => 'Cultural Tour',
-            'business_trip' => 'Business Trip',
-            'pilgrimage' => 'Pilgrimage',
-            'cruise' => 'Cruise',
-            'backpacker' => 'Backpacker',
-            'luxury_tour' => 'Luxury Tour'
+            'open_trip' => 'Open Trip',
+            'corporate_trip' => 'Corporate Trip',
+            'edu_trip' => 'Edu Trip',
         ];
 
         return $labels[$this->jenis_layanan] ?? $this->jenis_layanan;
@@ -128,18 +135,9 @@ class Layanan extends Model
     public static function getJenisLayananOptions()
     {
         return [
-            'paket_wisata' => 'Paket Wisata',
-            'tour_domestik' => 'Tour Domestik',
-            'tour_internasional' => 'Tour Internasional',
-            'honeymoon' => 'Honeymoon',
-            'family_trip' => 'Family Trip',
-            'adventure' => 'Adventure',
-            'cultural_tour' => 'Cultural Tour',
-            'business_trip' => 'Business Trip',
-            'pilgrimage' => 'Pilgrimage',
-            'cruise' => 'Cruise',
-            'backpacker' => 'Backpacker',
-            'luxury_tour' => 'Luxury Tour'
+            'open_trip' => 'Open Trip',
+            'corporate_trip' => 'Corporate Trip',
+            'edu_trip' => 'Edu Trip',
         ];
     }
 
@@ -147,6 +145,11 @@ class Layanan extends Model
     public function specialOffers()
     {
         return $this->hasMany(SpecialOffer::class, 'layanan_id', 'layanan_id');
+    }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class, 'layanan_id', 'layanan_id');
     }
 
     // Method to check if layanan has active special offers

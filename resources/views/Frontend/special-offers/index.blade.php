@@ -2,65 +2,9 @@
 
 @section('container')
 <!-- Hero Section -->
-<section class="relative min-h-[60vh] flex items-center justify-center overflow-hidden">
-    <!-- Background Images with Parallax Effect -->
-    <div class="absolute inset-0 z-0">
-        <div class="absolute inset-0 bg-gradient-to-r from-red-500/70 via-pink-500/70 to-red-600/70 z-10"></div>
-        <div class="bg-cover bg-center h-full" style="background-image: url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80')"></div>
-    </div>
-
-    <!-- Hero Content -->
-    <div class="relative z-20 text-center text-white px-4 max-w-4xl mx-auto" data-aos="fade-up" data-aos-duration="1000">
-        <!-- Badge -->
-        <div class="inline-block bg-white/20 rounded-full px-3 py-1 sm:px-4 sm:py-2 mb-4 sm:mb-6" data-aos="fade-down">
-            <span class="text-xs sm:text-sm font-medium">Penawaran Terbatas</span>
-        </div>
-
-        <!-- Main Title -->
-        <h1 class="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white to-red-100 bg-clip-text text-transparent" data-aos="fade-up" data-aos-delay="200">
-            Promo Spesial JustTrip
-        </h1>
-
-        <!-- Subtitle -->
-        <p class="text-lg md:text-xl mb-8 text-red-100 font-medium" data-aos="fade-up" data-aos-delay="400">
-            Dapatkan diskon hingga 50% untuk paket tour pilihan terbaik. Jangan sampai terlewat!
-        </p>
-
-        <!-- Countdown Timer -->
-        <div class="bg-white/10 rounded-lg p-3 sm:p-4 mb-6 sm:mb-8 max-w-sm sm:max-w-md mx-auto" data-aos="fade-up" data-aos-delay="600">
-            <p class="text-xs sm:text-sm mb-2 sm:mb-3">Berakhir dalam:</p>
-            <div id="countdown" class="flex justify-center space-x-1 sm:space-x-2 text-center">
-                <div class="bg-white/20 rounded p-1 sm:p-2 min-w-[40px] sm:min-w-[50px]">
-                    <div class="text-base sm:text-lg md:text-xl font-bold" id="days">0</div>
-                    <div class="text-xs">Hari</div>
-                </div>
-                <div class="bg-white/20 rounded p-1 sm:p-2 min-w-[40px] sm:min-w-[50px]">
-                    <div class="text-base sm:text-lg md:text-xl font-bold" id="hours">0</div>
-                    <div class="text-xs">Jam</div>
-                </div>
-                <div class="bg-white/20 rounded p-1 sm:p-2 min-w-[40px] sm:min-w-[50px]">
-                    <div class="text-base sm:text-lg md:text-xl font-bold" id="minutes">0</div>
-                    <div class="text-xs">Menit</div>
-                </div>
-                <div class="bg-white/20 rounded p-1 sm:p-2 min-w-[40px] sm:min-w-[50px]">
-                    <div class="text-base sm:text-lg md:text-xl font-bold" id="seconds">0</div>
-                    <div class="text-xs">Detik</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- CTA Buttons -->
-        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8" data-aos="fade-up" data-aos-delay="800">
-            <a href="#featured-offers" class="bg-white text-red-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-                Lihat Promo
-            </a>
-            <a href="#all-offers" class="border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-red-600 transition-colors">
-                Jelajahi Semua
-            </a>
-        </div>
-    </div>
+<section class="relative w-full">
+    <img src="{{ asset('image/PROMO.png') }}" alt="Paket Tour Background" class="w-full h-auto">
 </section>
-
 <!-- Filter Section -->
 <section class="py-12 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
     <div class="container mx-auto px-4">
@@ -85,11 +29,9 @@
 
                 <select id="filterCategory" class="px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-200 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
                     <option value="all">Semua Kategori</option>
-                    <option value="domestic">Domestik</option>
-                    <option value="international">Internasional</option>
-                    <option value="adventure">Adventure</option>
-                    <option value="family">Family</option>
-                    <option value="honeymoon">Honeymoon</option>
+                    <option value="open_trip">Open Trip</option>
+                    <option value="corporate_trip">Corporate Trip</option>
+                    <option value="edu_trip">Edu Trip</option>
                 </select>
             </div>
         </div>
@@ -130,11 +72,6 @@
                             @if($offer->discount_percentage)
                                 <span class="bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs sm:text-sm font-bold px-2 py-1 sm:px-3 rounded-full animate-pulse">
                                     -{{ $offer->discount_percentage }}%
-                                </span>
-                            @endif
-                            @if($offer->badge_text)
-                                <span class="bg-{{ $offer->badge_color }}-500 text-white text-xs font-bold px-2 py-1 sm:px-3 rounded-full">
-                                    {{ $offer->badge_text }}
                                 </span>
                             @endif
                         </div>
@@ -339,22 +276,6 @@
     </div>
 </section>
 
-<!-- Newsletter Section -->
-<section class="py-16 bg-gradient-to-r from-red-500 to-pink-500">
-    <div class="container mx-auto px-4 text-center">
-        <div class="max-w-2xl mx-auto" data-aos="fade-up">
-            <h2 class="text-2xl sm:text-3xl font-bold text-white mb-4">Jangan Lewatkan Promo Terbaru!</h2>
-            <p class="text-red-100 mb-8">Daftarkan email Anda untuk mendapatkan notifikasi promo spesial dan penawaran eksklusif</p>
-
-            <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                <input type="email" placeholder="Masukkan email Anda" class="flex-1 px-4 py-3 rounded-lg border-0 focus:ring-2 focus:ring-white focus:outline-none">
-                <button type="submit" class="bg-white text-red-500 font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors duration-300">
-                    <i class="fas fa-bell mr-2"></i>Berlangganan
-                </button>
-            </form>
-        </div>
-    </div>
-</section>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

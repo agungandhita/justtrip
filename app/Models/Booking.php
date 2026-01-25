@@ -28,6 +28,8 @@ class Booking extends Model
         'tanggal_keberangkatan',
         'catatan_khusus',
         'admin_notes',
+        'tax_amount',
+        'tax_percentage',
         'confirmed_at',
         'cancelled_at',
         'approved_at',
@@ -42,6 +44,8 @@ class Booking extends Model
         'tanggal_keberangkatan' => 'date',
         'original_amount' => 'decimal:2',
         'discount_amount' => 'decimal:2',
+        'tax_amount' => 'decimal:2',
+        'tax_percentage' => 'decimal:2',
         'total_amount' => 'decimal:2',
         'customer_info' => 'array',
         'custom_booking_info' => 'array',
@@ -133,24 +137,51 @@ class Booking extends Model
     // Accessors
     public function getFormattedTotalAmountAttribute()
     {
-        return 'Rp ' . number_format($this->total_amount, 0, ',', '.');
+        return 'Rp ' . number_format((float)$this->total_amount, 0, ',', '.');
     }
 
     public function getFormattedBookingDateAttribute()
     {
-        return $this->booking_date->format('d M Y H:i');
+        return $this->booking_date ? $this->booking_date->format('d M Y H:i') : '-';
     }
 
     public function getFormattedTanggalKeberangkatanAttribute()
     {
-        return $this->tanggal_keberangkatan->format('d M Y');
+        if (!$this->tanggal_keberangkatan) return '-';
+        if ($this->tanggal_keberangkatan instanceof \Carbon\Carbon) {
+            return $this->tanggal_keberangkatan->format('d M Y');
+        }
+        try {
+            return \Carbon\Carbon::parse($this->tanggal_keberangkatan)->format('d M Y');
+        } catch (\Exception $e) {
+            return $this->tanggal_keberangkatan;
+        }
+    }
+
+    public function getSubtotalAttribute()
+    {
+        return (float)$this->total_amount - (float)$this->tax_amount;
+    }
+
+    public function getFormattedSubtotalAttribute()
+    {
+        return 'Rp ' . number_format($this->subtotal, 0, ',', '.');
+    }
+
+    public function getFormattedTaxAmountAttribute()
+    {
+        return 'Rp ' . number_format((float)$this->tax_amount, 0, ',', '.');
     }
 
     public function getStatusLabelAttribute()
     {
         $labels = [
             'pending' => 'Menunggu Konfirmasi',
-            'confirmed' => 'Dikonfirmasi',
+            'approved' => 'Disetujui',
+            'rejected' => 'Ditolak',
+            'awaiting_payment' => 'Menunggu Pembayaran',
+            'payment_uploaded' => 'Bukti Pembayaran Diunggah',
+            'confirmed' => 'Pembayaran Dikonfirmasi',
             'cancelled' => 'Dibatalkan',
             'completed' => 'Selesai'
         ];
@@ -162,12 +193,40 @@ class Booking extends Model
     {
         $colors = [
             'pending' => 'warning',
+            'approved' => 'info',
+            'rejected' => 'danger',
+            'awaiting_payment' => 'amber',
+            'payment_uploaded' => 'purple',
             'confirmed' => 'success',
             'cancelled' => 'danger',
-            'completed' => 'info'
+            'completed' => 'success'
         ];
 
         return $colors[$this->status] ?? 'secondary';
+    }
+
+    public function getPaymentStatusLabelAttribute()
+    {
+        return match($this->status) {
+            'pending', 'rejected' => 'Belum Ada Pembayaran',
+            'approved', 'awaiting_payment' => 'Menunggu Pembayaran',
+            'payment_uploaded' => 'Pembayaran Diperiksa',
+            'confirmed', 'completed' => 'Lunas',
+            'cancelled' => 'Dibatalkan',
+            default => $this->status
+        };
+    }
+
+    public function getPaymentStatusColorAttribute()
+    {
+        return match($this->status) {
+            'pending', 'rejected' => 'gray',
+            'approved', 'awaiting_payment' => 'amber',
+            'payment_uploaded' => 'purple',
+            'confirmed', 'completed' => 'emerald',
+            'cancelled' => 'rose',
+            default => 'gray'
+        };
     }
 
     // Methods

@@ -5,12 +5,12 @@
             <!-- Logo -->
             <div class="flex items-center">
                 <a href="{{ route('home') }}" class="flex items-center space-x-3 group">
-                    <div class="flex items-center justify-center w-10 h-10 overflow-hidden transition-transform duration-200 bg-blue-500 shadow-sm rounded-xl group-hover:scale-105">
-                        <img src="{{ asset('image/logo4.png') }}" alt="JustTrip Logo" class="object-contain w-8 h-8">
+                    <div class="flex items-center justify-center w-10 h-10 overflow-hidden">
+                        <img src="{{ asset('image/LOGO TOSCA.png') }}" alt="JustTrip Logo" class="object-contain w-10 h-10">
                     </div>
                     <div class="hidden sm:block">
-                        <h1 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-700">JustTrip</h1>
-                        <p class="-mt-1 text-xs text-gray-500">Your Travel Partner</p>
+                        <h1 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-900 to-blue-900">Justtrip</h1>
+                        <p class="-mt-1 text-xs text-gray-500">#TripGagalMoveOn</p>
                     </div>
                 </a>
             </div>
@@ -100,10 +100,6 @@
                                     <i class="mr-3 text-gray-400 fas fa-history"></i>
                                     Riwayat Booking
                                 </a>
-                                {{-- <a href="{{ route('user.settings') }}" class="flex items-center px-4 py-2 text-sm text-gray-700 transition-colors duration-200 hover:bg-gray-50">
-                                    <i class="mr-3 text-gray-400 fas fa-cog"></i>
-                                    Pengaturan
-                                </a> --}}
                             </div>
 
                             <!-- Logout -->

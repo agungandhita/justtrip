@@ -74,9 +74,9 @@ class PaymentController extends Controller
             abort(403, 'Unauthorized access to booking');
         }
 
-        // Check if booking is approved
-        if ($booking->status !== 'approved') {
-            Alert::error('Error', 'Booking belum disetujui.');
+        // Check if booking is in a valid status for payment upload
+        if (!in_array($booking->status, ['approved', 'awaiting_payment'])) {
+            Alert::error('Error', 'Booking tidak dalam status yang memungkinkan upload pembayaran.');
             return redirect()->back();
         }
 
