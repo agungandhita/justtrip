@@ -48,22 +48,15 @@ class PaymentController extends Controller
         // Validate request
         $validationRules = [
             'booking_id' => 'required|exists:bookings,booking_id',
-            'payment_method' => 'required|in:bank_transfer,e_wallet,cash,other',
+            'destination_bank' => 'required|in:mandiri,bca',
+            'sender_bank_name' => 'required|string|max:255',
+            'sender_account_number' => 'required|string|max:255',
+            'sender_account_holder' => 'required|string|max:255',
             'payment_amount' => 'required|numeric|min:0',
             'payment_date' => 'required|date|before_or_equal:now',
             'payment_proof' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'payment_notes' => 'nullable|string|max:1000',
         ];
-
-        // Add conditional validation based on payment method
-        if ($request->payment_method === 'bank_transfer') {
-            $validationRules['bank_name'] = 'required|string|max:255';
-            $validationRules['account_number'] = 'required|string|max:255';
-            $validationRules['account_holder_name'] = 'required|string|max:255';
-        } elseif ($request->payment_method === 'e_wallet') {
-            $validationRules['e_wallet_type'] = 'required|string|max:255';
-            $validationRules['e_wallet_number'] = 'required|string|max:255';
-        }
 
         $request->validate($validationRules);
 
@@ -98,23 +91,16 @@ class PaymentController extends Controller
             $paymentData = [
                 'booking_id' => $booking->booking_id,
                 'invoice_id' => $invoice->invoice_id,
-                'payment_method' => $request->payment_method,
+                'destination_bank' => $request->destination_bank,
+                'sender_bank_name' => $request->sender_bank_name,
+                'sender_account_number' => $request->sender_account_number,
+                'sender_account_holder' => $request->sender_account_holder,
                 'payment_amount' => $request->payment_amount,
                 'payment_date' => $request->payment_date,
                 'payment_proof_path' => $paymentProofPath,
                 'payment_notes' => $request->payment_notes,
                 'status' => 'pending'
             ];
-
-            // Add method-specific data
-            if ($request->payment_method === 'bank_transfer') {
-                $paymentData['bank_name'] = $request->bank_name;
-                $paymentData['account_number'] = $request->account_number;
-                $paymentData['account_holder_name'] = $request->account_holder_name;
-            } elseif ($request->payment_method === 'e_wallet') {
-                $paymentData['e_wallet_type'] = $request->e_wallet_type;
-                $paymentData['e_wallet_number'] = $request->e_wallet_number;
-            }
 
             // Create payment confirmation
             $paymentConfirmation = PaymentConfirmation::create($paymentData);
@@ -126,8 +112,10 @@ class PaymentController extends Controller
 
             DB::commit();
 
-            Alert::success('Berhasil!', 'Bukti pembayaran berhasil diupload. Menunggu konfirmasi admin.');
-            return redirect()->route('booking.show', $booking->booking_id);
+            // Redirect to booking index with flash message to show validation modal
+            return redirect()->route('booking.index')
+                ->with('payment_validation_pending', true)
+                ->with('validated_booking_id', $booking->booking_id);
 
         } catch (\Exception $e) {
             DB::rollback();

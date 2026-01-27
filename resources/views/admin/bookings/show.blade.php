@@ -254,10 +254,6 @@
                         <span>-Rp {{ number_format($booking->discount_amount, 0, ',', '.') }}</span>
                     </div>
                     @endif
-                    <div class="flex justify-between items-center text-sm font-medium pt-2 border-t border-white/5">
-                        <span class="opacity-60 font-bold uppercase text-[10px]">Pajak (PPN 11%)</span>
-                        <span>{{ $booking->formatted_tax_amount }}</span>
-                    </div>
                     <div class="pt-4 mt-4 border-t border-white/10">
                         <div class="flex justify-between items-end">
                             <div>

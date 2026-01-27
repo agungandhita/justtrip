@@ -266,18 +266,14 @@
                                     </div>
                                 @endif
 
-                                <div class="flex justify-between text-gray-500 font-medium">
-                                    <span>Biaya Layanan & PPN (11%)</span>
-                                    <span class="text-gray-900 font-bold" id="summary-tax">Rp {{ number_format($layanan->harga_mulai * 0.11, 0, ',', '.') }}</span>
-                                </div>
+
                             </div>
                         </div>
 
-                        <!-- Final Total -->
                         <div class="pt-6 border-t-4 border-double border-gray-100">
                             <div class="flex justify-between items-center bg-gray-50 p-4 rounded-2xl">
                                 <span class="text-sm font-black text-gray-400 uppercase tracking-widest">Total Bayar</span>
-                                <span class="text-2xl font-black text-blue-600" id="summary-total">Rp {{ number_format($layanan->harga_mulai * 1.11, 0, ',', '.') }}</span>
+                                <span class="text-2xl font-black text-blue-600" id="summary-total">Rp {{ number_format($layanan->harga_mulai, 0, ',', '.') }}</span>
                             </div>
                         </div>
 
@@ -320,9 +316,7 @@ function calculateTotal() {
 
     const subtotal = basePrice * participants;
     const discountAmount = subtotal * (discountPercentage / 100);
-    const afterDiscount = subtotal - discountAmount;
-    const taxAmount = afterDiscount * 0.11;
-    const total = afterDiscount + taxAmount;
+    const total = subtotal - discountAmount; // No PPN
 
     // Format utility
     const fmt = (num) => 'Rp ' + num.toLocaleString('id-ID');
@@ -335,7 +329,6 @@ function calculateTotal() {
         document.getElementById('summary-discount').textContent = '- ' + fmt(discountAmount);
     }
 
-    document.getElementById('summary-tax').textContent = fmt(Math.round(taxAmount));
     document.getElementById('summary-total').textContent = fmt(Math.round(total));
     
     // Animate total update

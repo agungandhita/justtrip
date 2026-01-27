@@ -129,8 +129,7 @@ class BookingController extends Controller
             }
 
             $amountAfterDiscount = $originalAmount - $discountAmount;
-            $taxAmount = round($amountAfterDiscount * 0.11);
-            $totalAmount = $amountAfterDiscount + $taxAmount;
+            $totalAmount = $amountAfterDiscount; // No PPN
 
             // Create booking
             $booking = Booking::create([
@@ -141,15 +140,13 @@ class BookingController extends Controller
                 'booking_date' => now(),
                 'original_amount' => $originalAmount,
                 'discount_amount' => $discountAmount,
-                'tax_amount' => $taxAmount,
-                'tax_percentage' => 11,
                 'total_amount' => $totalAmount,
                 'status' => 'pending',
                 'customer_info' => [
-                    'name' => $user->customer_name,
-                    'email' => $user->customer_email,
-                    'phone' => $user->customer_phone,
-                    'address' => $user->customer_address
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'phone' => $user->phone,
+                    'address' => $user->address
                 ],
                 'jumlah_peserta' => $request->jumlah_peserta,
                 'tanggal_keberangkatan' => $request->tanggal_keberangkatan,
@@ -164,8 +161,9 @@ class BookingController extends Controller
 
             DB::commit();
 
-            Alert::success('Berhasil!', 'Booking Anda telah berhasil dibuat. Invoice telah dikirim ke admin.');
-            return redirect()->route('booking.show', $booking->booking_id);
+            return redirect()->route('booking.index')
+                ->with('show_booking_success_modal', true)
+                ->with('new_booking_number', $booking->booking_number);
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -268,7 +266,7 @@ class BookingController extends Controller
             }
 
             $amountAfterDiscount = $originalAmount - $discountAmount;
-            $totalAmount = round($amountAfterDiscount * 1.11);
+            $totalAmount = $amountAfterDiscount; // No PPN
 
             // Simpan sebagai GuestBooking dengan field yang sesuai model
             $guestBooking = GuestBooking::create([
@@ -382,7 +380,6 @@ class BookingController extends Controller
             'due_date' => now()->addDays(7), // 7 days payment term
             'subtotal' => $booking->original_amount - $booking->discount_amount,
             'discount_amount' => $booking->discount_amount,
-            'tax_amount' => $booking->tax_amount,
             'total_amount' => $booking->total_amount,
             'status' => 'draft'
         ]);
@@ -393,8 +390,7 @@ class BookingController extends Controller
      */
     private function createInvoiceForGuest(GuestBooking $guestBooking)
     {
-        $taxAmount = $guestBooking->total_price * 0.11; // PPN 11%
-        $finalTotal = $guestBooking->total_price + $taxAmount;
+        $totalAmount = $guestBooking->total_price; // No PPN
 
         return Invoice::create([
             'booking_id' => null, // No booking_id for guest bookings
@@ -403,8 +399,7 @@ class BookingController extends Controller
             'due_date' => now()->addDays(7), // 7 days payment term
             'subtotal' => $guestBooking->total_price,
             'discount_amount' => 0, // Guest bookings don't have separate discount tracking
-            'tax_amount' => $taxAmount,
-            'total_amount' => $finalTotal,
+            'total_amount' => $totalAmount,
             'status' => 'draft',
             'notes' => 'Guest Booking: ' . $guestBooking->booking_number
         ]);
@@ -455,17 +450,14 @@ class BookingController extends Controller
         }
 
         $amountAfterDiscount = $originalAmount - $discountAmount;
-        $taxAmount = round($amountAfterDiscount * 0.11);
-        $totalAmount = $amountAfterDiscount + $taxAmount;
+        $totalAmount = $amountAfterDiscount; // No PPN
 
         return response()->json([
             'original_amount' => $originalAmount,
             'discount_amount' => $discountAmount,
-            'tax_amount' => $taxAmount,
             'total_amount' => $totalAmount,
             'formatted_original_amount' => 'Rp ' . number_format($originalAmount, 0, ',', '.'),
             'formatted_discount_amount' => 'Rp ' . number_format($discountAmount, 0, ',', '.'),
-            'formatted_tax_amount' => 'Rp ' . number_format($taxAmount, 0, ',', '.'),
             'formatted_total_amount' => 'Rp ' . number_format($totalAmount, 0, ',', '.'),
             'discount_percentage' => $specialOffer ? $specialOffer->discount_percentage : 0
         ]);
@@ -528,8 +520,7 @@ class BookingController extends Controller
             }
 
             $amountAfterDiscount = $originalAmount - $discountAmount;
-            $taxAmount = round($amountAfterDiscount * 0.11);
-            $totalAmount = $amountAfterDiscount + $taxAmount;
+            $totalAmount = $amountAfterDiscount; // No PPN
 
             // Create booking for guest (user_id = null)
             $booking = Booking::create([
@@ -540,8 +531,6 @@ class BookingController extends Controller
                 'booking_date' => now(),
                 'original_amount' => $originalAmount,
                 'discount_amount' => $discountAmount,
-                'tax_amount' => $taxAmount,
-                'tax_percentage' => 11,
                 'total_amount' => $totalAmount,
                 'status' => 'pending',
                 'customer_info' => [

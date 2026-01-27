@@ -15,12 +15,10 @@ return new class extends Migration
             $table->id('payment_confirmation_id');
             $table->unsignedBigInteger('booking_id');
             $table->unsignedBigInteger('invoice_id');
-            $table->enum('payment_method', ['bank_transfer', 'e_wallet', 'cash', 'other']);
-            $table->string('bank_name')->nullable(); // Nama bank untuk transfer
-            $table->string('account_number')->nullable(); // Nomor rekening pengirim
-            $table->string('account_holder_name')->nullable(); // Nama pemilik rekening pengirim
-            $table->string('e_wallet_type')->nullable(); // Jenis e-wallet (OVO, GoPay, DANA, dll)
-            $table->string('e_wallet_number')->nullable(); // Nomor e-wallet
+            $table->enum('destination_bank', ['mandiri', 'bca']); // Bank tujuan transfer PT TRISULA PANDU NUSANTARA
+            $table->string('sender_bank_name'); // Nama bank pengirim
+            $table->string('sender_account_number'); // Nomor rekening pengirim
+            $table->string('sender_account_holder'); // Nama pemilik rekening pengirim
             $table->decimal('payment_amount', 15, 2); // Jumlah yang dibayar
             $table->datetime('payment_date'); // Tanggal pembayaran
             $table->string('payment_proof_path'); // Path file bukti pembayaran

@@ -30,7 +30,7 @@
                 <img src="{{ asset('image/logo6.png') }}" alt="JustTrip" class="w-16 h-16 mx-auto mb-4 drop-shadow-2xl">
             </a>
             <h1 class="text-3xl font-black text-white tracking-tight mb-2">Buat Akun Baru</h1>
-            <p class="text-blue-200/80 text-sm">Daftar dan mulai petualanganmu bersama JustTrip</p>
+            <p class="text-blue-200/80 text-sm">Daftar dan mulai petualanganmu bersama Justtrip</p>
         </div>
 
         <!-- Form Card -->

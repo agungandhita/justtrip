@@ -18,7 +18,6 @@ class Invoice extends Model
         'due_date',
         'subtotal',
         'discount_amount',
-        'tax_amount',
         'total_amount',
         'status',
         'pdf_path',
@@ -37,7 +36,6 @@ class Invoice extends Model
         'due_date' => 'date',
         'subtotal' => 'decimal:2',
         'discount_amount' => 'decimal:2',
-        'tax_amount' => 'decimal:2',
         'total_amount' => 'decimal:2',
         'sent_at' => 'datetime',
         'paid_at' => 'datetime',
@@ -117,10 +115,7 @@ class Invoice extends Model
         return 'Rp ' . number_format($this->discount_amount, 0, ',', '.');
     }
 
-    public function getFormattedTaxAmountAttribute()
-    {
-        return 'Rp ' . number_format($this->tax_amount, 0, ',', '.');
-    }
+
 
     public function getFormattedInvoiceDateAttribute()
     {
@@ -207,13 +202,8 @@ class Invoice extends Model
         ]);
     }
 
-    public function calculateTax($taxRate = 0.11) // PPN 11%
-    {
-        return ($this->subtotal - $this->discount_amount) * $taxRate;
-    }
-
     public function calculateTotal()
     {
-        return $this->subtotal - $this->discount_amount + $this->tax_amount;
+        return $this->subtotal - $this->discount_amount;
     }
 }

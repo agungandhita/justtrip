@@ -197,6 +197,21 @@
                                             </div>
                                         </div>
 
+                                        <!-- Payment Validation Pending Badge -->
+                                        @if($booking->paymentConfirmations()->where('status', 'pending')->exists())
+                                            <div class="mt-4 flex items-center gap-2 p-3 bg-amber-50 border border-amber-200 rounded-2xl">
+                                                <div class="flex-shrink-0">
+                                                    <svg class="w-5 h-5 text-amber-500 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                    </svg>
+                                                </div>
+                                                <p class="text-xs font-bold text-amber-700">
+                                                    <span class="uppercase tracking-wider">Sedang Validasi Pembayaran</span>
+                                                    <span class="font-normal text-amber-600">- Silahkan menunggu konfirmasi dari admin</span>
+                                                </p>
+                                            </div>
+                                        @endif
+
                                         <!-- Actions -->
                                         <div class="flex items-center justify-between mt-8 pt-6 border-t border-gray-100">
                                             <div class="flex flex-wrap gap-2">
@@ -296,4 +311,174 @@
         @endif
     </div>
 </div>
+
+<!-- Success Booking Modal -->
+@if(session('show_booking_success_modal'))
+<div id="bookingSuccessModal" class="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm" onclick="closeBookingModal()"></div>
+    
+    <!-- Modal Content -->
+    <div class="relative bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 transform transition-all animate-modal-in">
+        <!-- Success Icon -->
+        <div class="w-20 h-20 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-green-200">
+            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+            </svg>
+        </div>
+        
+        <!-- Title -->
+        <h2 class="text-2xl font-black text-gray-900 text-center mb-3">
+            Booking Berhasil Terdata!
+        </h2>
+        
+        <!-- Booking Number Badge -->
+        <div class="flex justify-center mb-4">
+            <span class="inline-flex items-center px-4 py-2 bg-blue-50 text-blue-700 rounded-xl text-sm font-bold">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path>
+                </svg>
+                {{ session('new_booking_number') }}
+            </span>
+        </div>
+        
+        <!-- Message -->
+        <p class="text-gray-600 text-center mb-8 leading-relaxed">
+            Booking Anda telah berhasil dicatat. <strong class="text-gray-800">Silahkan menunggu konfirmasi dari admin.</strong> Kami akan segera menghubungi Anda.
+        </p>
+        
+        <!-- Action Button -->
+        <button type="button" onclick="closeBookingModal()" 
+                class="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold rounded-2xl hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg shadow-blue-200 transform hover:scale-[1.02] active:scale-[0.98]">
+            Mengerti, Tutup
+        </button>
+        
+        <!-- Decorative Elements -->
+        <div class="absolute -top-4 -right-4 w-24 h-24 bg-blue-50 rounded-full blur-2xl opacity-60 -z-10"></div>
+        <div class="absolute -bottom-4 -left-4 w-32 h-32 bg-green-50 rounded-full blur-2xl opacity-60 -z-10"></div>
+    </div>
+</div>
+
+<style>
+@keyframes modal-in {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+.animate-modal-in {
+    animation: modal-in 0.3s ease-out forwards;
+}
+</style>
+
+<script>
+function closeBookingModal() {
+    const modal = document.getElementById('bookingSuccessModal');
+    if (modal) {
+        modal.classList.add('opacity-0');
+        modal.style.transition = 'opacity 0.2s ease-out';
+        setTimeout(() => {
+            modal.remove();
+        }, 200);
+    }
+}
+
+// Close on Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeBookingModal();
+    }
+});
+</script>
+@endif
+
+<!-- Payment Validation Pending Modal -->
+@if(session('payment_validation_pending'))
+<div id="paymentValidationModal" class="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm" onclick="closePaymentValidationModal()"></div>
+    
+    <!-- Modal Content -->
+    <div class="relative bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 transform transition-all animate-modal-in">
+        <!-- Pending Icon -->
+        <div class="w-20 h-20 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-amber-200">
+            <svg class="w-10 h-10 text-white animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+        </div>
+        
+        <!-- Title -->
+        <h2 class="text-2xl font-black text-gray-900 text-center mb-3">
+            Bukti Pembayaran Terkirim!
+        </h2>
+        
+        <!-- Message -->
+        <p class="text-gray-600 text-center mb-6 leading-relaxed">
+            Bukti pembayaran Anda telah berhasil dikirim. <strong class="text-gray-800">Pembayaran sedang dalam proses validasi oleh admin.</strong>
+        </p>
+        
+        <!-- Info Box -->
+        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 mb-6">
+            <div class="flex items-start gap-3">
+                <svg class="w-5 h-5 text-amber-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <p class="text-sm text-amber-800">
+                    Silahkan menunggu konfirmasi dari admin. Kami akan segera memproses pembayaran Anda dalam waktu <strong>1x24 jam</strong>.
+                </p>
+            </div>
+        </div>
+        
+        <!-- Action Button -->
+        <button type="button" onclick="closePaymentValidationModal()" 
+                class="w-full py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold rounded-2xl hover:from-amber-600 hover:to-orange-600 transition-all shadow-lg shadow-amber-200 transform hover:scale-[1.02] active:scale-[0.98]">
+            Mengerti, Tutup
+        </button>
+        
+        <!-- Decorative Elements -->
+        <div class="absolute -top-4 -right-4 w-24 h-24 bg-amber-50 rounded-full blur-2xl opacity-60 -z-10"></div>
+        <div class="absolute -bottom-4 -left-4 w-32 h-32 bg-orange-50 rounded-full blur-2xl opacity-60 -z-10"></div>
+    </div>
+</div>
+
+<style>
+@keyframes modal-in {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+.animate-modal-in {
+    animation: modal-in 0.3s ease-out forwards;
+}
+</style>
+
+<script>
+function closePaymentValidationModal() {
+    const modal = document.getElementById('paymentValidationModal');
+    if (modal) {
+        modal.classList.add('opacity-0');
+        modal.style.transition = 'opacity 0.2s ease-out';
+        setTimeout(() => {
+            modal.remove();
+        }, 200);
+    }
+}
+
+// Close on Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closePaymentValidationModal();
+    }
+});
+</script>
+@endif
 @endsection

@@ -11,15 +11,22 @@ class PaymentConfirmation extends Model
     protected $table = 'payment_confirmations';
     protected $primaryKey = 'payment_confirmation_id';
 
+    /**
+     * Get the route key for the model.
+     * This ensures route model binding uses the correct primary key.
+     */
+    public function getRouteKeyName()
+    {
+        return 'payment_confirmation_id';
+    }
+
     protected $fillable = [
         'booking_id',
         'invoice_id',
-        'payment_method',
-        'bank_name',
-        'account_number',
-        'account_holder_name',
-        'e_wallet_type',
-        'e_wallet_number',
+        'destination_bank',
+        'sender_bank_name',
+        'sender_account_number',
+        'sender_account_holder',
         'payment_amount',
         'payment_date',
         'payment_proof_path',
@@ -39,6 +46,20 @@ class PaymentConfirmation extends Model
         'processed_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime'
+    ];
+
+    // Bank destination info for PT TRISULA PANDU NUSANTARA
+    public const BANK_ACCOUNTS = [
+        'mandiri' => [
+            'name' => 'Bank Mandiri',
+            'account_number' => '1780006783464',
+            'account_holder' => 'PT TRISULA PANDU NUSANTARA'
+        ],
+        'bca' => [
+            'name' => 'Bank BCA',
+            'account_number' => '3305279999',
+            'account_holder' => 'PT TRISULA PANDU NUSANTARA'
+        ]
     ];
 
     // Relationships
@@ -73,26 +94,20 @@ class PaymentConfirmation extends Model
         return $query->where('status', 'rejected');
     }
 
-    public function scopeBankTransfer($query)
-    {
-        return $query->where('payment_method', 'bank_transfer');
-    }
-
-    public function scopeEWallet($query)
-    {
-        return $query->where('payment_method', 'e_wallet');
-    }
-
     // Accessors
-    public function getPaymentMethodNameAttribute()
+    public function getDestinationBankInfoAttribute()
     {
-        return match($this->payment_method) {
-            'bank_transfer' => 'Transfer Bank',
-            'e_wallet' => 'E-Wallet',
-            'cash' => 'Tunai',
-            'other' => 'Lainnya',
-            default => 'Tidak Diketahui'
-        };
+        return self::BANK_ACCOUNTS[$this->destination_bank] ?? null;
+    }
+
+    public function getDestinationBankNameAttribute()
+    {
+        return self::BANK_ACCOUNTS[$this->destination_bank]['name'] ?? 'Unknown';
+    }
+
+    public function getDestinationAccountNumberAttribute()
+    {
+        return self::BANK_ACCOUNTS[$this->destination_bank]['account_number'] ?? '';
     }
 
     public function getStatusNameAttribute()
@@ -131,6 +146,12 @@ class PaymentConfirmation extends Model
             'paid_at' => now()
         ]);
 
+        // Delete old PDF so it will be regenerated with 'PAID' status
+        if ($this->invoice->pdf_path) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($this->invoice->pdf_path);
+            $this->invoice->update(['pdf_path' => null]);
+        }
+
         // Update booking status to completed
         $this->booking->update([
             'status' => 'completed'
@@ -150,6 +171,12 @@ class PaymentConfirmation extends Model
         $this->invoice->update([
             'status' => 'awaiting_payment'
         ]);
+
+        // Delete old PDF so it will be regenerated with correct status
+        if ($this->invoice->pdf_path) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($this->invoice->pdf_path);
+            $this->invoice->update(['pdf_path' => null]);
+        }
 
         // Update booking status back to approved (so user can upload again)
         $this->booking->update([

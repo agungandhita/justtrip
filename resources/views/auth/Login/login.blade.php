@@ -29,9 +29,6 @@
         <div class="max-w-md w-full">
             <div class="text-center mb-8">
                 <img src="{{ asset('image/logo6.png') }}" alt="JustTrip Logo" class='w-20 mx-auto mb-4' />
-                <h1 class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 via-blue-600 to-teal-600 text-3xl font-bold">
-                    JustTrip
-                </h1>
                 <p class="text-gray-600 mt-2">Selamat Datang Kembali, Traveler!</p>
                 <p class="text-gray-500 text-sm mt-1">Masuk dan lanjutkan petualangan Anda</p>
             </div>

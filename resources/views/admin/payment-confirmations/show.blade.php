@@ -105,8 +105,12 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                         <div class="space-y-3">
                             <div class="flex justify-between">
-                                <span class="text-sm text-gray-600">Metode Pembayaran:</span>
-                                <span class="text-sm font-medium text-gray-900">{{ ucfirst(str_replace('_', ' ', $paymentConfirmation->payment_method)) }}</span>
+                                <span class="text-sm text-gray-600">Bank Tujuan:</span>
+                                <span class="text-sm font-medium text-gray-900">{{ $paymentConfirmation->destination_bank_name }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-600">No. Rek Tujuan:</span>
+                                <span class="text-sm font-medium text-gray-900">{{ $paymentConfirmation->destination_account_number }}</span>
                             </div>
                             <div class="flex justify-between">
                                 <span class="text-sm text-gray-600">Jumlah Pembayaran:</span>
@@ -118,43 +122,21 @@
                             </div>
                         </div>
                         
-                        @if($paymentConfirmation->payment_method === 'bank_transfer')
-                            <div class="space-y-3">
-                                @if($paymentConfirmation->bank_name)
-                                    <div class="flex justify-between">
-                                        <span class="text-sm text-gray-600">Nama Bank:</span>
-                                        <span class="text-sm font-medium text-gray-900">{{ $paymentConfirmation->bank_name }}</span>
-                                    </div>
-                                @endif
-                                @if($paymentConfirmation->account_number)
-                                    <div class="flex justify-between">
-                                        <span class="text-sm text-gray-600">No. Rekening:</span>
-                                        <span class="text-sm font-medium text-gray-900">{{ $paymentConfirmation->account_number }}</span>
-                                    </div>
-                                @endif
-                                @if($paymentConfirmation->account_holder_name)
-                                    <div class="flex justify-between">
-                                        <span class="text-sm text-gray-600">Nama Pemilik:</span>
-                                        <span class="text-sm font-medium text-gray-900">{{ $paymentConfirmation->account_holder_name }}</span>
-                                    </div>
-                                @endif
+                        <div class="space-y-3">
+                            <h4 class="text-sm font-semibold text-gray-700">Info Pengirim:</h4>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-600">Bank Pengirim:</span>
+                                <span class="text-sm font-medium text-gray-900">{{ $paymentConfirmation->sender_bank_name }}</span>
                             </div>
-                        @elseif($paymentConfirmation->payment_method === 'e_wallet')
-                            <div class="space-y-3">
-                                @if($paymentConfirmation->e_wallet_type)
-                                    <div class="flex justify-between">
-                                        <span class="text-sm text-gray-600">Jenis E-Wallet:</span>
-                                        <span class="text-sm font-medium text-gray-900">{{ $paymentConfirmation->e_wallet_type }}</span>
-                                    </div>
-                                @endif
-                                @if($paymentConfirmation->e_wallet_number)
-                                    <div class="flex justify-between">
-                                        <span class="text-sm text-gray-600">No. E-Wallet:</span>
-                                        <span class="text-sm font-medium text-gray-900">{{ $paymentConfirmation->e_wallet_number }}</span>
-                                    </div>
-                                @endif
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-600">No. Rekening:</span>
+                                <span class="text-sm font-medium text-gray-900">{{ $paymentConfirmation->sender_account_number }}</span>
                             </div>
-                        @endif
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-600">Nama Pemilik:</span>
+                                <span class="text-sm font-medium text-gray-900">{{ $paymentConfirmation->sender_account_holder }}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

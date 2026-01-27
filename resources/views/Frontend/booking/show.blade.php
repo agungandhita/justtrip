@@ -220,7 +220,12 @@
                                 </p>
                             </div>
                         @else
-                            <div class="space-y-8">
+                            <form action="{{ route('payment.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
+                                @csrf
+                                <input type="hidden" name="booking_id" value="{{ $booking->booking_id }}">
+                                <input type="hidden" name="payment_amount" value="{{ $booking->total_amount }}">
+                                <input type="hidden" name="payment_date" value="{{ now()->format('Y-m-d H:i:s') }}">
+                                
                                 <!-- Step info -->
                                 <div class="p-6 bg-blue-600 rounded-3xl text-white relative overflow-hidden group">
                                     <div class="relative z-10">
@@ -233,48 +238,50 @@
                                     <svg class="absolute -right-8 -bottom-8 w-48 h-48 text-white/10 group-hover:scale-110 transition-transform duration-700" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
                                 </div>
 
-                                <!-- Bank List -->
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    @php
-                                        $banks = [
-                                            ['name' => 'BCA', 'account' => '124 098 7766', 'owner' => 'PT Just Trip Indonesia'],
-                                            ['name' => 'Mandiri', 'account' => '131 000 9988 77', 'owner' => 'PT Just Trip Indonesia']
-                                        ];
-                                    @endphp
-                                    @foreach($banks as $bank)
-                                        <div class="p-6 border border-gray-100 rounded-3xl bg-gray-50/50 hover:bg-white hover:shadow-xl hover:border-blue-100 transition-all duration-300">
-                                            <div class="flex justify-between items-start mb-4">
-                                                <span class="px-3 py-1 bg-blue-100 text-blue-600 rounded-lg text-[10px] font-black uppercase">{{ $bank['name'] }}</span>
-                                                <i class="fas fa-university text-gray-300"></i>
-                                            </div>
-                                            <p class="text-xl font-black text-gray-900 mb-1 copy-target">{{ $bank['account'] }}</p>
-                                            <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">{{ $bank['owner'] }}</p>
-                                        </div>
-                                    @endforeach
+                                <!-- Bank List (Now inside form) -->
+                                <div class="space-y-3">
+                                    <label class="text-sm font-black text-gray-700 uppercase tracking-widest">Pilih Bank Tujuan Transfer</label>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        @php
+                                            $banks = \App\Models\PaymentConfirmation::BANK_ACCOUNTS;
+                                        @endphp
+                                        @foreach($banks as $bankKey => $bank)
+                                            <label class="bank-option p-6 border-2 rounded-3xl cursor-pointer transition-all duration-300 block
+                                                {{ $loop->first ? 'border-blue-500 bg-blue-50/50' : 'border-gray-100 bg-gray-50/50 hover:bg-white hover:shadow-xl hover:border-blue-100' }}"
+                                                for="destination_bank_{{ $bankKey }}">
+                                                <input type="radio" name="destination_bank" id="destination_bank_{{ $bankKey }}" value="{{ $bankKey }}" {{ $loop->first ? 'checked' : '' }} class="hidden bank-radio" required>
+                                                <div class="flex justify-between items-start mb-4">
+                                                    <div class="flex items-center gap-3">
+                                                        <span class="w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center bank-radio-indicator">
+                                                            <span class="w-3 h-3 rounded-full bank-radio-dot {{ $loop->first ? 'bg-blue-500' : '' }}"></span>
+                                                        </span>
+                                                        <span class="px-3 py-1 bg-blue-100 text-blue-600 rounded-lg text-[10px] font-black uppercase">{{ $bank['name'] }}</span>
+                                                    </div>
+                                                    <i class="fas fa-university text-gray-300"></i>
+                                                </div>
+                                                <p class="text-xl font-black text-gray-900 mb-1 copy-target">{{ $bank['account_number'] }}</p>
+                                                <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">{{ $bank['account_holder'] }}</p>
+                                            </label>
+                                        @endforeach
+                                    </div>
                                 </div>
 
-                                <!-- Upload Form -->
-                                <form action="{{ route('payment.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6 pt-6 border-t border-gray-100">
-                                    @csrf
-                                    <input type="hidden" name="booking_id" value="{{ $booking->booking_id }}">
-                                    <input type="hidden" name="payment_method" value="bank_transfer">
-                                    <input type="hidden" name="payment_amount" value="{{ $booking->total_amount }}">
-                                    <input type="hidden" name="payment_date" value="{{ now()->format('Y-m-d H:i:s') }}">
-
+                                <!-- Sender Info Section -->
+                                <div class="space-y-6 pt-6 border-t border-gray-100">
                                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                                         <div class="space-y-2">
                                             <label class="text-sm font-black text-gray-700 uppercase tracking-widest">Bank Pengirim</label>
-                                            <input type="text" name="bank_name" placeholder="Misal: BCA, BNI, BRI" required
+                                            <input type="text" name="sender_bank_name" placeholder="Misal: BCA, BNI, BRI" required
                                                    class="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all outline-none font-bold">
                                         </div>
                                         <div class="space-y-2">
                                             <label class="text-sm font-black text-gray-700 uppercase tracking-widest">Nomor Rekening</label>
-                                            <input type="text" name="account_number" placeholder="Contoh: 1234567890" required
+                                            <input type="text" name="sender_account_number" placeholder="Contoh: 1234567890" required
                                                    class="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all outline-none font-bold">
                                         </div>
                                         <div class="space-y-2">
                                             <label class="text-sm font-black text-gray-700 uppercase tracking-widest">Atas Nama Rekening</label>
-                                            <input type="text" name="account_holder_name" placeholder="Nama sesuai buku tabungan" required
+                                            <input type="text" name="sender_account_holder" placeholder="Nama sesuai buku tabungan" required
                                                    class="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all outline-none font-bold">
                                         </div>
                                     </div>
@@ -282,24 +289,24 @@
                                     <div class="space-y-2">
                                         <label class="text-sm font-black text-gray-700 uppercase tracking-widest">Unggah Bukti Transfer</label>
                                         <div class="relative group">
-                                            <input type="file" name="payment_proof" id="payment_proof" class="hidden" accept="image/*" required>
+                                            <input type="file" name="payment_proof" id="payment_proof" class="hidden" accept="image/*,.pdf" required>
                                             <label for="payment_proof" class="flex flex-col items-center justify-center border-2 border-dashed border-gray-200 rounded-[2rem] p-10 hover:bg-blue-50/50 hover:border-blue-400 cursor-pointer transition-all duration-300">
                                                 <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                                                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
                                                 </div>
                                                 <p class="text-lg font-black text-gray-900 mb-1">Klik untuk pilih file</p>
-                                                <p class="text-sm text-gray-500 font-medium">PNG, JPG atau JPEG (Maks. 2MB)</p>
+                                                <p class="text-sm text-gray-500 font-medium">PNG, JPG, JPEG atau PDF (Maks. 2MB)</p>
                                                 <div id="file-name" class="mt-4 px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-xs font-bold hidden"></div>
                                             </label>
                                         </div>
                                     </div>
+                                </div>
 
-                                    <button type="submit" class="w-full bg-blue-600 text-white font-black py-5 rounded-[2rem] shadow-xl shadow-blue-200 hover:bg-blue-700 hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-3">
-                                        <i class="fas fa-paper-plane"></i>
-                                        Konfirmasi Pembayaran Sekarang
-                                    </button>
-                                </form>
-                            </div>
+                                <button type="submit" class="w-full bg-blue-600 text-white font-black py-5 rounded-[2rem] shadow-xl shadow-blue-200 hover:bg-blue-700 hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-3">
+                                    <i class="fas fa-paper-plane"></i>
+                                    Konfirmasi Pembayaran Sekarang
+                                </button>
+                            </form>
                         @endif
                     </div>
                 @endif
@@ -347,10 +354,7 @@
                             <span class="text-gray-900 font-black">{{ $booking->formatted_subtotal }}</span>
                         </div>
 
-                        <div class="flex justify-between items-center text-sm">
-                            <span class="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Pajak (PPN 11%)</span>
-                            <span class="text-gray-900 font-black">{{ $booking->formatted_tax_amount }}</span>
-                        </div>
+
 
                         <div class="pt-6 border-t border-gray-100">
                             <div class="flex justify-between items-center">
@@ -410,6 +414,34 @@
                 }
             });
         }
+
+        // Initialize bank selection on page load
+        updateBankSelection();
+    });
+
+    // Function to update bank selection visual state
+    function updateBankSelection() {
+        const bankCards = document.querySelectorAll('.bank-option');
+        
+        bankCards.forEach(card => {
+            const radio = card.querySelector('.bank-radio');
+            const dot = card.querySelector('.bank-radio-dot');
+            
+            if (radio && radio.checked) {
+                card.classList.remove('border-gray-100', 'bg-gray-50/50');
+                card.classList.add('border-blue-500', 'bg-blue-50/50');
+                if (dot) dot.classList.add('bg-blue-500');
+            } else {
+                card.classList.remove('border-blue-500', 'bg-blue-50/50');
+                card.classList.add('border-gray-100', 'bg-gray-50/50');
+                if (dot) dot.classList.remove('bg-blue-500');
+            }
+        });
+    }
+
+    // Add event listeners for bank radio buttons
+    document.querySelectorAll('.bank-radio').forEach(radio => {
+        radio.addEventListener('change', updateBankSelection);
     });
 
     // Function to send invoice to WhatsApp admin

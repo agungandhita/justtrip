@@ -28,8 +28,6 @@ class Booking extends Model
         'tanggal_keberangkatan',
         'catatan_khusus',
         'admin_notes',
-        'tax_amount',
-        'tax_percentage',
         'confirmed_at',
         'cancelled_at',
         'approved_at',
@@ -44,8 +42,6 @@ class Booking extends Model
         'tanggal_keberangkatan' => 'date',
         'original_amount' => 'decimal:2',
         'discount_amount' => 'decimal:2',
-        'tax_amount' => 'decimal:2',
-        'tax_percentage' => 'decimal:2',
         'total_amount' => 'decimal:2',
         'customer_info' => 'array',
         'custom_booking_info' => 'array',
@@ -160,17 +156,12 @@ class Booking extends Model
 
     public function getSubtotalAttribute()
     {
-        return (float)$this->total_amount - (float)$this->tax_amount;
+        return (float)$this->original_amount - (float)$this->discount_amount;
     }
 
     public function getFormattedSubtotalAttribute()
     {
         return 'Rp ' . number_format($this->subtotal, 0, ',', '.');
-    }
-
-    public function getFormattedTaxAmountAttribute()
-    {
-        return 'Rp ' . number_format((float)$this->tax_amount, 0, ',', '.');
     }
 
     public function getStatusLabelAttribute()

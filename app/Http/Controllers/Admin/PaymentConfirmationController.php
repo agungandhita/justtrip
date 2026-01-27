@@ -79,26 +79,7 @@ class PaymentConfirmationController extends Controller
         }
 
         try {
-            // Update payment confirmation
-            $paymentConfirmation->update([
-                'status' => 'approved',
-                'admin_notes' => $request->admin_notes,
-                'processed_at' => now(),
-                'processed_by' => Auth::id()
-            ]);
-
-            // Update invoice status
-            if ($paymentConfirmation->invoice) {
-                $paymentConfirmation->invoice->update([
-                    'status' => 'paid',
-                    'paid_at' => now()
-                ]);
-            }
-
-            // Update booking status to completed
-            $paymentConfirmation->booking->update([
-                'status' => 'completed'
-            ]);
+            $paymentConfirmation->approve(Auth::id(), $request->admin_notes);
 
             Alert::success('Berhasil', 'Pembayaran telah dikonfirmasi dan booking diselesaikan.');
             return redirect()->route('admin.payment-confirmations.index');
@@ -125,20 +106,7 @@ class PaymentConfirmationController extends Controller
         }
 
         try {
-            // Update payment confirmation
-            $paymentConfirmation->update([
-                'status' => 'rejected',
-                'admin_notes' => $request->admin_notes,
-                'processed_at' => now(),
-                'processed_by' => Auth::id()
-            ]);
-
-            // Update invoice status back to awaiting payment
-            if ($paymentConfirmation->invoice) {
-                $paymentConfirmation->invoice->update([
-                    'status' => 'awaiting_payment'
-                ]);
-            }
+            $paymentConfirmation->reject(Auth::id(), $request->admin_notes);
 
             Alert::success('Berhasil', 'Pembayaran telah ditolak. Customer dapat mengupload ulang bukti pembayaran.');
             return redirect()->route('admin.payment-confirmations.index');

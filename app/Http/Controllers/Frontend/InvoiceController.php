@@ -23,7 +23,7 @@ class InvoiceController extends Controller
     {
         try {
             // Load invoice with relationships
-            $invoice->load(['booking.layanan', 'booking.specialOffer', 'booking.user']);
+            $invoice->load(['booking.layanan', 'booking.specialOffer', 'booking.user', 'booking.paymentConfirmations']);
 
             // Check if booking exists
             if (!$invoice->booking) {
@@ -37,11 +37,12 @@ class InvoiceController extends Controller
                 'layanan' => $invoice->booking->layanan,
                 'customer' => $invoice->booking->customer_info,
                 'company' => [
-                    'name' => 'JustTrip Travel',
-                    'address' => 'Jl. Raya Pariwisata No. 123, Jakarta',
-                    'phone' => '+62 21 1234 5678',
-                    'email' => 'info@justtrip.com',
-                    'website' => 'www.justtrip.com'
+                    'name' => 'Justtrip Tour Organizer',
+                    'address' => 'Lamongan - Malang - Jogja - Bali',
+                    'phone' => '0821-3217-9440',
+                    'email' => 'justtrip.tour@gmail.com',
+                    'website' => 'www.justtrip.id',
+                    'service_areas' => 'Lamongan – Malang – Jogja – Bali – Semarang – Pemalang'
                 ],
                 'generated_at' => now()->format('d F Y H:i:s')
             ];
@@ -242,11 +243,12 @@ class InvoiceController extends Controller
             'layanan' => $invoice->booking->layanan,
             'customer' => $invoice->booking->customer_info,
             'company' => [
-                'name' => 'JustTrip Travel',
-                'address' => 'Jl. Raya Pariwisata No. 123, Jakarta',
-                'phone' => '+62 21 1234 5678',
-                'email' => 'info@justtrip.com',
-                'website' => 'www.justtrip.com'
+                'name' => 'Justtrip Tour Organizer',
+                'address' => 'Lamongan - Malang - Jogja - Bali',
+                'phone' => '0821-3217-9440',
+                'email' => 'justtrip.tour@gmail.com',
+                'website' => 'www.justtrip.id',
+                'service_areas' => 'Lamongan – Malang – Jogja – Bali – Semarang – Pemalang'
             ]
         ];
 

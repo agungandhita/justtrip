@@ -19,7 +19,6 @@ return new class extends Migration
             $table->json('destinations')->nullable()->after('exclude_services');
             $table->json('pricing_options')->nullable()->after('destinations');
             $table->json('terms_conditions')->nullable()->after('pricing_options');
-            $table->json('terms_conditions')->nullable()->after('pricing_options');
         });
     }
 

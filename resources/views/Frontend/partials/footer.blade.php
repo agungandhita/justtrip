@@ -68,15 +68,23 @@ Kami merancang cerita, bukan hanya destinasi.
                 <ul class="space-y-3">
                     <li class="text-gray-300 flex items-start">
                         <i class="fas fa-envelope w-4 mr-3 mt-1"></i>
-                        <span>info@justtrip.com</span>
+                        <span>justtrip20@gmail.com</span>
                     </li>
                     <li class="text-gray-300 flex items-start">
                         <i class="fas fa-phone w-4 mr-3 mt-1"></i>
-                        <span>+62 812-3456-7890</span>
+                        <span>+62 822-6647-8147</span>
                     </li>
-                    <li class="text-gray-300 flex items-start">
-                        <i class="fas fa-map-marker-alt w-4 mr-3 mt-1"></i>
-                        <span>Jakarta, Indonesia</span>
+                    <li class="text-gray-300 flex items-start group">
+                        <i class="fas fa-map-marker-alt w-4 mr-3 mt-1 group-hover:text-blue-400 transition-colors"></i>
+                        <a href="https://maps.app.goo.gl/NYHiTTiTQRf59TL49?g_st=ic" target="_blank" class="hover:text-white transition-colors">Jl. Raya Jeru, Pakis, Malang</a>
+                    </li>
+                    <li class="text-gray-300 flex items-start group">
+                        <i class="fas fa-map-marker-alt w-4 mr-3 mt-1 group-hover:text-blue-400 transition-colors"></i>
+                        <a href="https://maps.app.goo.gl/sQMDa2Ak4epRdHNYA?g_st=ic" target="_blank" class="hover:text-white transition-colors">Jl. Kemiri, Tempel, Sleman</a>
+                    </li>
+                    <li class="text-gray-300 flex items-start group">
+                        <i class="fas fa-map-marker-alt w-4 mr-3 mt-1 group-hover:text-blue-400 transition-colors"></i>
+                        <a href="https://maps.app.goo.gl/8LpBhvaUkYhQc4k58?g_st=ic" target="_blank" class="hover:text-white transition-colors">Jl. Bukit Hijau VI, Kuta, Bali</a>
                     </li>
                 </ul>
             </div>
