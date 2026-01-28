@@ -339,13 +339,13 @@
                     <div class="p-8 space-y-6">
                         <div class="flex justify-between items-center text-sm">
                             <span class="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Harga Paket x {{ $booking->jumlah_peserta }}</span>
-                            <span class="text-gray-900 font-black">Rp {{ number_format($booking->layanan->harga_mulai * $booking->jumlah_peserta, 0, ',', '.') }}</span>
+                            <span class="text-gray-900 font-black">Rp {{ number_format($booking->original_amount, 0, ',', '.') }}</span>
                         </div>
                         
-                        @if($booking->specialOffer)
+                        @if($booking->discount_amount > 0)
                             <div class="flex justify-between items-center text-sm">
-                                <span class="text-green-600 font-bold uppercase tracking-widest text-[10px]">Diskon Promo ({{ $booking->specialOffer->discount_percentage }}%)</span>
-                                <span class="text-green-600 font-black">-Rp {{ number_format(($booking->layanan->harga_mulai * $booking->jumlah_peserta) * ($booking->specialOffer->discount_percentage / 100), 0, ',', '.') }}</span>
+                                <span class="text-green-600 font-bold uppercase tracking-widest text-[10px]">Diskon Promo{{ $booking->specialOffer ? ' (' . $booking->specialOffer->discount_percentage . '%)' : '' }}</span>
+                                <span class="text-green-600 font-black">-Rp {{ number_format($booking->discount_amount, 0, ',', '.') }}</span>
                             </div>
                         @endif
 

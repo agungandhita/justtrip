@@ -153,6 +153,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/booking/{booking}', [BookingController::class, 'show'])->name('booking.show');
     Route::patch('/booking/{booking}/cancel', [BookingController::class, 'cancel'])->name('booking.cancel');
 
+    // Special Offer Promo Booking routes
+    Route::get('/booking/promo/{slug}', [BookingController::class, 'promoCreate'])->name('booking.promo');
+    Route::post('/booking/promo', [BookingController::class, 'promoStore'])->name('booking.promo.store');
+
     // Invoice routes
     Route::get('/booking/{booking}/invoice', [InvoiceController::class, 'generateFromBooking'])->name('booking.invoice');
     Route::get('/invoice/{invoice}/download', [InvoiceController::class, 'download'])->name('invoice.download');

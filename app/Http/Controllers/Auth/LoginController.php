@@ -14,8 +14,13 @@ class LoginController extends Controller
     /**
      * Show the login form
      */
-    public function showLoginForm()
+    public function showLoginForm(Request $request)
     {
+        // Store redirect URL if provided (for special offers booking)
+        if ($request->has('redirect')) {
+            $request->session()->put('url.intended', $request->redirect);
+        }
+        
         return view('auth.Login.login');
     }
 

@@ -481,4 +481,135 @@ document.addEventListener('keydown', function(e) {
 });
 </script>
 @endif
+
+<!-- Promo Booking Confirmation Modal -->
+@if(session('show_promo_confirmation_modal'))
+@php
+    $promoBooking = \App\Models\Booking::with(['specialOffer', 'layanan'])->find(session('promo_booking_id'));
+@endphp
+@if($promoBooking)
+<div id="promoConfirmationModal" class="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-gray-900/70 backdrop-blur-sm" onclick="closePromoModal()"></div>
+    
+    <!-- Modal Content -->
+    <div class="relative bg-white rounded-[2rem] shadow-2xl max-w-lg w-full overflow-hidden transform transition-all animate-modal-in">
+        <!-- Header with Gradient -->
+        <div class="bg-gradient-to-r from-red-600 via-pink-600 to-purple-600 p-6 text-center relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-full opacity-20">
+                <div class="absolute top-2 right-10 w-20 h-20 bg-white/30 rounded-full blur-xl"></div>
+                <div class="absolute bottom-2 left-10 w-16 h-16 bg-white/30 rounded-full blur-xl"></div>
+            </div>
+            <div class="relative z-10">
+                <div class="w-16 h-16 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-black text-white mb-1">Booking Promo Berhasil!</h2>
+                <p class="text-white/80 text-sm">Pemesanan Anda telah diterima</p>
+            </div>
+        </div>
+
+        <div class="p-6 space-y-5">
+            <!-- Booking Details Card -->
+            <div class="bg-slate-50 rounded-2xl p-5 space-y-4">
+                <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest">Detail Pemesanan</h3>
+                
+                <div class="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                        <p class="text-slate-400 text-xs">Nomor Booking</p>
+                        <p class="font-bold text-slate-800">{{ $promoBooking->booking_number }}</p>
+                    </div>
+                    <div>
+                        <p class="text-slate-400 text-xs">Status</p>
+                        <span class="inline-flex items-center px-2 py-1 bg-amber-100 text-amber-700 rounded-lg text-xs font-bold">
+                            <svg class="w-3 h-3 mr-1 animate-pulse" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                            </svg>
+                            Menunggu Konfirmasi
+                        </span>
+                    </div>
+                </div>
+
+                @if($promoBooking->specialOffer)
+                <div class="pt-3 border-t border-slate-200">
+                    <div class="flex items-center gap-3">
+                        <div class="flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden bg-gradient-to-br from-red-500 to-pink-600">
+                            @if($promoBooking->specialOffer->main_image)
+                                <img src="{{ Storage::url($promoBooking->specialOffer->main_image) }}" alt="" class="w-full h-full object-cover">
+                            @else
+                                <div class="w-full h-full flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/>
+                                    </svg>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <span class="inline-block px-2 py-0.5 bg-red-100 text-red-600 text-[10px] font-black uppercase tracking-wider rounded mb-1">Paket Promo</span>
+                            <p class="font-bold text-slate-800 truncate">{{ $promoBooking->specialOffer->title }}</p>
+                            <p class="text-xs text-slate-500">{{ $promoBooking->jumlah_peserta }} Peserta • {{ \Carbon\Carbon::parse($promoBooking->tanggal_keberangkatan)->format('d M Y') }}</p>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+                <div class="pt-3 border-t border-slate-200 flex justify-between items-center">
+                    <span class="text-sm text-slate-500">Total Pembayaran</span>
+                    <span class="text-xl font-black text-red-600">Rp {{ number_format((float)$promoBooking->total_amount, 0, ',', '.') }}</span>
+                </div>
+            </div>
+
+            <!-- Info Alert -->
+            <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3">
+                <svg class="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <div>
+                    <p class="text-sm font-bold text-amber-800 mb-1">Langkah Selanjutnya:</p>
+                    <ul class="text-xs text-amber-700 space-y-1 list-disc list-inside">
+                        <li>Admin akan memverifikasi pemesanan Anda</li>
+                        <li>Anda akan menerima notifikasi setelah disetujui</li>
+                        <li>Lakukan pembayaran setelah booking dikonfirmasi</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex gap-3">
+                <a href="{{ route('booking.show', $promoBooking->booking_id) }}" 
+                   class="flex-1 py-4 bg-slate-100 text-slate-700 text-center font-bold rounded-2xl hover:bg-slate-200 transition-all">
+                    Lihat Detail
+                </a>
+                <button type="button" onclick="closePromoModal()" 
+                        class="flex-1 py-4 bg-gradient-to-r from-red-600 to-pink-600 text-white font-bold rounded-2xl hover:from-red-700 hover:to-pink-700 transition-all shadow-lg shadow-red-200">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function closePromoModal() {
+    const modal = document.getElementById('promoConfirmationModal');
+    if (modal) {
+        modal.classList.add('opacity-0');
+        modal.style.transition = 'opacity 0.2s ease-out';
+        setTimeout(() => {
+            modal.remove();
+        }, 200);
+    }
+}
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closePromoModal();
+    }
+});
+</script>
+@endif
+@endif
 @endsection
+

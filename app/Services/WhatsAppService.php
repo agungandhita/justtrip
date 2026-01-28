@@ -127,6 +127,33 @@ class WhatsAppService
     }
 
     /**
+     * Send promo booking notification to admin
+     */
+    public function sendPromoBookingNotification($booking, $specialOffer)
+    {
+        try {
+            $message = $this->preparePromoBookingMessage($booking, $specialOffer);
+
+            $response = $this->sendMessage($this->adminPhoneNumber, $message);
+
+            if ($response['success']) {
+                Log::info('Promo booking notification sent to admin', [
+                    'booking_id' => $booking->booking_id,
+                    'special_offer' => $specialOffer->title
+                ]);
+
+                return true;
+            }
+
+            return false;
+
+        } catch (Exception $e) {
+            Log::error('Failed to send promo booking notification: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
      * Send message with document attachment
      */
     private function sendMessageWithDocument($phoneNumber, $message, $documentPath)
@@ -287,6 +314,43 @@ class WhatsAppService
         $message .= "💳 Silakan lakukan pembayaran sebelum tanggal jatuh tempo.\n\n";
         $message .= "Jika sudah melakukan pembayaran, mohon konfirmasi ke kami.\n\n";
         $message .= "Terima kasih! 🙏";
+
+        return $message;
+    }
+
+    /**
+     * Prepare promo booking notification message for admin
+     */
+    private function preparePromoBookingMessage($booking, $specialOffer)
+    {
+        $customer = $booking->customer_info;
+
+        $message = "🎉 *BOOKING PROMO BARU - JUSTTRIP*\n\n";
+        $message .= "⚡ *Promo:* {$specialOffer->title}\n\n";
+
+        $message .= "👤 *Data Customer:*\n";
+        $message .= "• Nama: {$customer['name']}\n";
+        $message .= "• Email: {$customer['email']}\n";
+        $message .= "• Telepon: {$customer['phone']}\n";
+        if (!empty($customer['address'])) {
+            $message .= "• Alamat: {$customer['address']}\n";
+        }
+        $message .= "\n";
+
+        $message .= "📋 *Detail Booking:*\n";
+        $message .= "• Booking ID: {$booking->booking_number}\n";
+        $message .= "• Jumlah Peserta: {$booking->jumlah_peserta} orang\n";
+        $message .= "• Tanggal Berangkat: " . $booking->tanggal_keberangkatan->format('d/m/Y') . "\n";
+        $message .= "• Status: PENDING\n\n";
+
+        $message .= "💰 *Total Pembayaran:*\n";
+        $message .= "• Rp " . number_format($booking->total_amount, 0, ',', '.') . "\n\n";
+
+        if ($booking->catatan_khusus) {
+            $message .= "📝 *Catatan:* {$booking->catatan_khusus}\n\n";
+        }
+
+        $message .= "Segera proses booking ini! 🚀";
 
         return $message;
     }

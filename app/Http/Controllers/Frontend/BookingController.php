@@ -79,6 +79,173 @@ class BookingController extends Controller
     }
 
     /**
+     * Display promo booking form for special offer
+     */
+    public function promoCreate(Request $request, $slug)
+    {
+        $specialOffer = SpecialOffer::where('slug', $slug)
+            ->where('is_active', true)
+            ->where('valid_until', '>=', now())
+            ->with('layanan')
+            ->firstOrFail();
+
+        $user = Auth::user();
+
+        return view('Frontend.booking.promo', compact('specialOffer', 'user'));
+    }
+
+    /**
+     * Store special offer promo booking
+     */
+    public function promoStore(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'special_offer_id' => 'required|exists:special_offers,id',
+            'layanan_id' => 'nullable|exists:layanan,layanan_id',
+            'tanggal_keberangkatan' => 'required|date|after_or_equal:today',
+            'jumlah_peserta' => 'required|integer|min:1|max:50',
+            'nama_lengkap' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'nomor_telepon' => 'required|string|max:20',
+            'alamat' => 'nullable|string|max:500',
+            'catatan' => 'nullable|string|max:1000'
+        ], [
+            'special_offer_id.required' => 'Promo tidak valid.',
+            'tanggal_keberangkatan.required' => 'Tanggal keberangkatan wajib diisi.',
+            'tanggal_keberangkatan.after_or_equal' => 'Tanggal keberangkatan minimal hari ini.',
+            'jumlah_peserta.required' => 'Jumlah peserta wajib diisi.',
+            'jumlah_peserta.min' => 'Jumlah peserta minimal 1 orang.',
+            'nama_lengkap.required' => 'Nama lengkap wajib diisi.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'nomor_telepon.required' => 'Nomor telepon wajib diisi.',
+        ]);
+
+        if ($validator->fails()) {
+            Alert::error('Validasi Gagal', 'Mohon periksa kembali data yang dimasukkan.');
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $specialOffer = SpecialOffer::with('layanan')->findOrFail($request->special_offer_id);
+            
+            // Validate promo is still active
+            if (!$specialOffer->is_active || $specialOffer->valid_until < now()) {
+                Alert::error('Promo Tidak Valid', 'Maaf, promo ini sudah tidak berlaku.');
+                return redirect()->route('special-offers.index');
+            }
+
+            // Check if max bookings reached
+            if ($specialOffer->max_bookings && $specialOffer->current_bookings >= $specialOffer->max_bookings) {
+                Alert::error('Kuota Habis', 'Maaf, kuota untuk promo ini sudah habis.');
+                return redirect()->route('special-offers.show', $specialOffer->slug);
+            }
+
+            // Calculate pricing (no PPN)
+            $pricePerPerson = $specialOffer->discounted_price;
+            $subtotal = $pricePerPerson * $request->jumlah_peserta;
+            
+            // Calculate discount (difference from original to discounted)
+            $originalPriceTotal = $specialOffer->original_price * $request->jumlah_peserta;
+            $discountAmount = $originalPriceTotal - $subtotal;
+            
+            // Total without PPN
+            $totalAmount = $subtotal;
+
+            // Create booking with pending status (waiting for admin confirmation)
+            $booking = Booking::create([
+                'user_id' => Auth::id(),
+                'layanan_id' => $specialOffer->layanan_id ?? $request->layanan_id,
+                'special_offer_id' => $specialOffer->id,
+                'booking_number' => Booking::generateBookingNumber(),
+                'booking_date' => now(),
+                'original_amount' => $originalPriceTotal,
+                'discount_amount' => $discountAmount,
+                'total_amount' => $totalAmount,
+                'status' => 'pending', // Waiting for admin confirmation
+                'customer_info' => [
+                    'name' => $request->nama_lengkap,
+                    'email' => $request->email,
+                    'phone' => $request->nomor_telepon,
+                    'address' => $request->alamat ?? ''
+                ],
+                'jumlah_peserta' => $request->jumlah_peserta,
+                'tanggal_keberangkatan' => $request->tanggal_keberangkatan,
+                'catatan_khusus' => $request->catatan
+            ]);
+
+            // Update special offer current bookings
+            $specialOffer->increment('current_bookings');
+
+            // Create invoice (draft status)
+            $invoice = $this->createInvoice($booking);
+
+            // Send email notifications
+            $this->sendPromoBookingEmails($booking, $specialOffer);
+
+            // Notify admin via WhatsApp
+            $this->whatsAppService->sendPromoBookingNotification($booking, $specialOffer);
+
+            // Also send invoice notification
+            $this->processInvoiceAndNotify($invoice);
+
+            DB::commit();
+
+            // Redirect to booking index with modal flag
+            return redirect()->route('booking.index')
+                ->with('show_promo_confirmation_modal', true)
+                ->with('promo_booking_id', $booking->booking_id);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            Log::error('Promo booking error: ' . $e->getMessage());
+            Alert::error('Error', 'Terjadi kesalahan saat memproses booking. Silakan coba lagi.');
+            return redirect()->back()->withInput();
+        }
+    }
+
+    /**
+     * Send email notifications for promo booking
+     */
+    protected function sendPromoBookingEmails($booking, $specialOffer)
+    {
+        try {
+            $customerEmail = $booking->customer_info['email'];
+            $customerName = $booking->customer_info['name'];
+            
+            // Send email to customer
+            Mail::send('emails.promo-booking-customer', [
+                'booking' => $booking,
+                'specialOffer' => $specialOffer,
+                'customerName' => $customerName
+            ], function($message) use ($customerEmail, $customerName) {
+                $message->to($customerEmail, $customerName)
+                        ->subject('Konfirmasi Booking Promo - JustTrip');
+            });
+
+            // Send email to admin
+            Mail::send('emails.promo-booking-admin', [
+                'booking' => $booking,
+                'specialOffer' => $specialOffer
+            ], function($message) {
+                $message->to('justtrip20@gmail.com', 'JustTrip Admin')
+                        ->subject('Booking Promo Baru - ' . now()->format('d/m/Y H:i'));
+            });
+
+            Log::info('Promo booking emails sent', [
+                'booking_id' => $booking->booking_id,
+                'customer_email' => $customerEmail
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Failed to send promo booking emails: ' . $e->getMessage());
+            // Don't throw exception, let booking continue
+        }
+    }
+
+    /**
      * Store a new booking
      */
     public function store(Request $request)
@@ -86,10 +253,6 @@ class BookingController extends Controller
         $validator = Validator::make($request->all(), [
             'layanan_id' => 'required|exists:layanan,layanan_id',
             'special_offer_id' => 'nullable|exists:special_offers,id',
-            // 'customer_name' => 'required|string|max:255',
-            // 'customer_email' => 'required|email|max:255',
-            // 'customer_phone' => 'required|string|max:20',
-            // 'customer_address' => 'required|string',
             'jumlah_peserta' => 'required|integer|min:1|max:50',
             'tanggal_keberangkatan' => 'required|date|after:today',
             'catatan_khusus' => 'nullable|string|max:1000'

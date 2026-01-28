@@ -77,9 +77,15 @@ class PackageController extends Controller
         });
 
         // Get regular travel packages (Layanan)
-        $regularPackages = Layanan::where('status', 'aktif')
-                                 ->latest()
-                                 ->take(6)
+        $regularPackagesQuery = Layanan::where('status', 'aktif');
+
+        // Filter by category
+        $currentCategory = $request->get('category');
+        if ($request->filled('category')) {
+            $regularPackagesQuery->where('jenis_layanan', $request->category);
+        }
+
+        $regularPackages = $regularPackagesQuery->latest()
                                  ->get();
 
         // Process images for regular packages
@@ -100,7 +106,8 @@ class PackageController extends Controller
             'specialOffers', 
             'featuredOffers', 
             'regularPackages', 
-            'priceRanges'
+            'priceRanges',
+            'currentCategory'
         ));
     }
 

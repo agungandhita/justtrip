@@ -512,9 +512,17 @@
                         @if($layanan->deskripsi_singkat ?? false)
                         <br><small style="color: #6b7280;">{{ $layanan->deskripsi_singkat }}</small>
                         @endif
+                        @if($booking->specialOffer)
+                        <br><small style="color: #059669; font-weight: bold;">Promo: {{ $booking->specialOffer->title }}</small>
+                        @endif
                     </td>
                     <td class="text-center">{{ $booking->jumlah_peserta ?? 1 }}</td>
-                    <td class="text-right">Rp {{ number_format($layanan->harga_mulai ?? 0, 0, ',', '.') }}</td>
+                    @php
+                        $pricePerPax = ($booking->jumlah_peserta > 0 && $booking->original_amount > 0) 
+                            ? ($booking->original_amount / $booking->jumlah_peserta) 
+                            : ($layanan->harga_mulai ?? 0);
+                    @endphp
+                    <td class="text-right">Rp {{ number_format($pricePerPax, 0, ',', '.') }}</td>
                     <td class="text-right">Rp {{ number_format($booking->original_amount ?? $invoice->subtotal, 0, ',', '.') }}</td>
                 </tr>
             </tbody>
@@ -524,10 +532,6 @@
         <div class="summary-section">
             <div class="summary-table-wrapper">
                 <table class="summary-table">
-                    <tr>
-                        <td class="summary-label">Subtotal</td>
-                        <td class="summary-value">Rp {{ number_format($invoice->subtotal, 0, ',', '.') }}</td>
-                    </tr>
                     @if(isset($invoice->discount_amount) && $invoice->discount_amount > 0)
                     <tr>
                         <td class="summary-label">Diskon</td>

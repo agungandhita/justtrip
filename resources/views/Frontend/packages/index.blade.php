@@ -102,49 +102,49 @@
 
         <div class="grid gap-6 md:gap-8 grid-cols-1 md:grid-cols-3">
             <!-- Open Trip -->
-            <div class="group p-8 md:p-10 rounded-3xl md:rounded-[2.5rem] bg-indigo-50 border border-indigo-100 hover:bg-indigo-600 transition-all duration-500" data-aos="fade-up">
+            <a href="{{ route('packages.index', ['category' => 'open_trip']) }}#paket-wisata" class="group p-8 md:p-10 rounded-3xl md:rounded-[2.5rem] {{ $currentCategory == 'open_trip' ? 'bg-indigo-600 ring-4 ring-indigo-200' : 'bg-indigo-50 border border-indigo-100 hover:bg-indigo-600' }} transition-all duration-500 block" data-aos="fade-up">
                 <div class="w-14 h-14 md:w-16 md:h-16 bg-white rounded-2xl flex items-center justify-center text-indigo-600 mb-6 md:mb-8 shadow-sm group-hover:scale-110 transition-transform">
                     <i class="fas fa-users text-xl md:text-2xl"></i>
                 </div>
-                <h3 class="text-xl md:text-2xl font-black text-indigo-950 mb-4 group-hover:text-white transition-colors">Open Trip</h3>
-                <p class="text-sm md:text-base text-indigo-900/60 mb-6 md:mb-8 group-hover:text-indigo-100 transition-colors">Bergabunglah dengan sesama penjelajah dan temukan teman baru di destinasi impian.</p>
-                <div class="flex items-center justify-between pt-6 border-t border-indigo-200/50 group-hover:border-white/20">
-                    <span class="text-[10px] font-black text-indigo-400 uppercase tracking-widest group-hover:text-indigo-200">Mulai Dari</span>
-                    <span class="text-lg md:text-xl font-black text-indigo-600 group-hover:text-white">Rp 1.5jt</span>
+                <h3 class="text-xl md:text-2xl font-black {{ $currentCategory == 'open_trip' ? 'text-white' : 'text-indigo-950' }} mb-4 group-hover:text-white transition-colors">Open Trip</h3>
+                <p class="text-sm md:text-base {{ $currentCategory == 'open_trip' ? 'text-indigo-100' : 'text-indigo-900/60' }} mb-6 md:mb-8 group-hover:text-indigo-100 transition-colors">Bergabunglah dengan sesama penjelajah dan temukan teman baru di destinasi impian.</p>
+                <div class="flex items-center justify-between pt-6 border-t {{ $currentCategory == 'open_trip' ? 'border-white/20' : 'border-indigo-200/50' }} group-hover:border-white/20">
+                    <span class="text-[10px] font-black {{ $currentCategory == 'open_trip' ? 'text-indigo-200' : 'text-indigo-400' }} uppercase tracking-widest group-hover:text-indigo-200">Mulai Dari</span>
+                    <span class="text-lg md:text-xl font-black {{ $currentCategory == 'open_trip' ? 'text-white' : 'text-indigo-600' }} group-hover:text-white">Rp 1.5jt</span>
                 </div>
-            </div>
+            </a>
 
             <!-- Corporate Trip -->
-            <div class="group p-8 md:p-10 rounded-3xl md:rounded-[2.5rem] bg-emerald-50 border border-emerald-100 hover:bg-emerald-600 transition-all duration-500" data-aos="fade-up" data-aos-delay="100">
+            <a href="{{ route('packages.index', ['category' => 'corporate_trip']) }}#paket-wisata" class="group p-8 md:p-10 rounded-3xl md:rounded-[2.5rem] {{ $currentCategory == 'corporate_trip' ? 'bg-emerald-600 ring-4 ring-emerald-200' : 'bg-emerald-50 border border-emerald-100 hover:bg-emerald-600' }} transition-all duration-500 block" data-aos="fade-up" data-aos-delay="100">
                 <div class="w-14 h-14 md:w-16 md:h-16 bg-white rounded-2xl flex items-center justify-center text-emerald-600 mb-6 md:mb-8 shadow-sm group-hover:scale-110 transition-transform">
                     <i class="fas fa-building text-xl md:text-2xl"></i>
                 </div>
-                <h3 class="text-xl md:text-2xl font-black text-emerald-950 mb-4 group-hover:text-white transition-colors">Corporate</h3>
-                <p class="text-sm md:text-base text-emerald-900/60 mb-6 md:mb-8 group-hover:text-emerald-100 transition-colors">Solusi gathering dan outbound profesional untuk meningkatkan produktivitas tim Anda.</p>
-                <div class="flex items-center justify-between pt-6 border-t border-emerald-200/50 group-hover:border-white/20">
-                    <span class="text-[10px] font-black text-emerald-400 uppercase tracking-widest group-hover:text-emerald-200">Mulai Dari</span>
-                    <span class="text-lg md:text-xl font-black text-emerald-600 group-hover:text-white">Rp 2.5jt</span>
+                <h3 class="text-xl md:text-2xl font-black {{ $currentCategory == 'corporate_trip' ? 'text-white' : 'text-emerald-950' }} mb-4 group-hover:text-white transition-colors">Corporate</h3>
+                <p class="text-sm md:text-base {{ $currentCategory == 'corporate_trip' ? 'text-emerald-100' : 'text-emerald-900/60' }} mb-6 md:mb-8 group-hover:text-emerald-100 transition-colors">Solusi gathering dan outbound profesional untuk meningkatkan produktivitas tim Anda.</p>
+                <div class="flex items-center justify-between pt-6 border-t {{ $currentCategory == 'corporate_trip' ? 'border-white/20' : 'border-emerald-200/50' }} group-hover:border-white/20">
+                    <span class="text-[10px] font-black {{ $currentCategory == 'corporate_trip' ? 'text-emerald-200' : 'text-emerald-400' }} uppercase tracking-widest group-hover:text-emerald-200">Mulai Dari</span>
+                    <span class="text-lg md:text-xl font-black {{ $currentCategory == 'corporate_trip' ? 'text-white' : 'text-emerald-600' }} group-hover:text-white">Rp 2.5jt</span>
                 </div>
-            </div>
+            </a>
 
             <!-- Edu Trip -->
-            <div class="group p-8 md:p-10 rounded-3xl md:rounded-[2.5rem] bg-amber-50 border border-amber-100 hover:bg-amber-600 transition-all duration-500" data-aos="fade-up" data-aos-delay="200">
+            <a href="{{ route('packages.index', ['category' => 'edu_trip']) }}#paket-wisata" class="group p-8 md:p-10 rounded-3xl md:rounded-[2.5rem] {{ $currentCategory == 'edu_trip' ? 'bg-amber-600 ring-4 ring-amber-200' : 'bg-amber-50 border border-amber-100 hover:bg-amber-600' }} transition-all duration-500 block" data-aos="fade-up" data-aos-delay="200">
                 <div class="w-14 h-14 md:w-16 md:h-16 bg-white rounded-2xl flex items-center justify-center text-amber-600 mb-6 md:mb-8 shadow-sm group-hover:scale-110 transition-transform">
                     <i class="fas fa-graduation-cap text-xl md:text-2xl"></i>
                 </div>
-                <h3 class="text-xl md:text-2xl font-black text-amber-950 mb-4 group-hover:text-white transition-colors">Edu Trip</h3>
-                <p class="text-sm md:text-base text-amber-900/60 mb-6 md:mb-8 group-hover:text-amber-100 transition-colors">Pembelajaran di luar kelas yang edukatif dan menyenangkan untuk siswa & mahasiswa.</p>
-                <div class="flex items-center justify-between pt-6 border-t border-amber-200/50 group-hover:border-white/20">
-                    <span class="text-[10px] font-black text-amber-400 uppercase tracking-widest group-hover:text-amber-200">Mulai Dari</span>
-                    <span class="text-lg md:text-xl font-black text-amber-600 group-hover:text-white">Rp 800rb</span>
+                <h3 class="text-xl md:text-2xl font-black {{ $currentCategory == 'edu_trip' ? 'text-white' : 'text-amber-950' }} mb-4 group-hover:text-white transition-colors">Edu Trip</h3>
+                <p class="text-sm md:text-base {{ $currentCategory == 'edu_trip' ? 'text-amber-100' : 'text-amber-900/60' }} mb-6 md:mb-8 group-hover:text-amber-100 transition-colors">Pembelajaran di luar kelas yang edukatif dan menyenangkan untuk siswa & mahasiswa.</p>
+                <div class="flex items-center justify-between pt-6 border-t {{ $currentCategory == 'edu_trip' ? 'border-white/20' : 'border-amber-200/50' }} group-hover:border-white/20">
+                    <span class="text-[10px] font-black {{ $currentCategory == 'edu_trip' ? 'text-amber-200' : 'text-amber-400' }} uppercase tracking-widest group-hover:text-amber-200">Mulai Dari</span>
+                    <span class="text-lg md:text-xl font-black {{ $currentCategory == 'edu_trip' ? 'text-white' : 'text-amber-600' }} group-hover:text-white">Rp 800rb</span>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
 </section>
 
 <!-- Popular Packages: Optimized Grid -->
-<section class="py-16 md:py-24 bg-gray-50 overflow-hidden">
+<section id="paket-wisata" class="py-16 md:py-24 bg-gray-50 overflow-hidden">
     <div class="container px-4 md:px-6 mx-auto">
         <div class="text-center mb-12 md:mb-20" data-aos="fade-up">
             <h4 class="text-indigo-600 font-bold uppercase tracking-[0.3em] text-[10px] mb-4">Must-Visit Destinations</h4>

@@ -164,6 +164,19 @@ class Booking extends Model
         return 'Rp ' . number_format($this->subtotal, 0, ',', '.');
     }
 
+    public function getPricePerPersonAttribute()
+    {
+        if ($this->jumlah_peserta > 0 && $this->original_amount > 0) {
+            return $this->original_amount / $this->jumlah_peserta;
+        }
+        return $this->layanan?->harga_mulai ?? 0;
+    }
+
+    public function getFormattedPricePerPersonAttribute()
+    {
+        return 'Rp ' . number_format($this->price_per_person, 0, ',', '.');
+    }
+
     public function getStatusLabelAttribute()
     {
         $labels = [
