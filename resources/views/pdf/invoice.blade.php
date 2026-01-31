@@ -382,15 +382,15 @@
                     @if($logoData)
                         <img src="data:image/png;base64,{{ $logoData }}" alt="Logo" class="company-logo">
                     @else
-                        <img src="{{ public_path('image/IMG_2327.PNG') }}" alt="Logo" class="company-logo">
+                        <img src="{{ public_path('image/LOGO TOSCA.png') }}" alt="Logo" class="company-logo">
                     @endif
                 </div>
                 <div class="company-details">
-                    {{ $company['phone'] ?? '0821-3217-9440' }} | {{ $company['email'] ?? 'justtrip.tour@gmail.com' }}<br>
+                    {{ $company['phone'] ?? '+62 822-6647-8147' }} | {{ $company['email'] ?? 'justtrip.tour@gmail.com' }}<br>
                     {{ $company['address'] ?? 'Jl. Raya Pariwisata No. 123' }}
                 </div>
                 <div class="service-areas">
-                    Based On: Lamongan – Malang – Jogja – Bali – Semarang – Pemalang
+                    Based On:  Malang – Sleman – Bali
                 </div>
             </div>
             <div class="invoice-info">

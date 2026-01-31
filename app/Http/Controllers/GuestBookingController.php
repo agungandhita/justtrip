@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\GuestBookingFeedback;
+use App\Mail\GuestBookingConfirmation;
+use App\Mail\GuestBookingAdminNotification;
 use App\Models\GuestBooking;
 use App\Models\Layanan;
 use Illuminate\Http\Request;
@@ -156,11 +157,6 @@ class GuestBookingController extends Controller
 
             // Kirim notifikasi ke admin (bisa via email atau WhatsApp)
             $this->notifyAdmin($guestBooking);
-            // Send guest booking data to the Mailable as an array with key 'guestBooking'
-            // so the admin notification view can access the full model (including booking_number, id, created_at, relations)
-            Mail::to($validated['email'])->send(new GuestBookingFeedback(
-                datas: ['guestBooking' => $guestBooking]
-            ));
             DB::commit();
 
             Alert::success('Berhasil!', 'Booking Anda telah berhasil dikirim. Kami akan menghubungi Anda segera.');
@@ -196,15 +192,18 @@ class GuestBookingController extends Controller
     private function sendConfirmationEmail(GuestBooking $guestBooking)
     {
         try {
-            Mail::send('emails.guest-booking-confirmation', [
-                'guestBooking' => $guestBooking
-            ], function ($message) use ($guestBooking) {
-                $message->to($guestBooking->email, $guestBooking->nama_lengkap)
-                        ->subject('Konfirmasi Booking #' . $guestBooking->booking_number . ' - JustTrip')
-                        ->from(config('mail.from.address', 'noreply@justtrip.com'), config('mail.from.name', 'JustTrip'));
-            });
+            Mail::to($guestBooking->email, $guestBooking->nama_lengkap)
+                ->send(new GuestBookingConfirmation($guestBooking));
+                
+            Log::info('Confirmation email sent to: ' . $guestBooking->email, [
+                'booking_number' => $guestBooking->booking_number
+            ]);
         } catch (\Exception $e) {
-            Log::error('Failed to send confirmation email: ' . $e->getMessage());
+            Log::error('Failed to send confirmation email: ' . $e->getMessage(), [
+                'booking_number' => $guestBooking->booking_number,
+                'email' => $guestBooking->email
+            ]);
+            // Tidak throw error agar proses booking tetap jalan
         }
     }
 
@@ -215,25 +214,23 @@ class GuestBookingController extends Controller
     {
         try {
             // Send email to admin
-            $adminEmail = config('mail.admin_email', 'admin@justtrip.com');
-
-            Mail::send('emails.admin-guest-booking-notification', [
-                'guestBooking' => $guestBooking
-            ], function ($message) use ($guestBooking, $adminEmail) {
-                $subject = $guestBooking->is_custom_request
-                    ? 'PERMINTAAN KHUSUS BARU #' . $guestBooking->booking_number
-                    : 'BOOKING BARU #' . $guestBooking->booking_number;
-
-                $message->to($adminEmail)
-                        ->subject($subject . ' - JustTrip Admin')
-                        ->from(config('mail.from.address', 'system@justtrip.com'), 'JustTrip System')
-                        ->priority(1); // High priority
-            });
+            $adminEmail = config('mail.admin_email', 'justtrip20@gmail.com');
+            
+            Mail::to($adminEmail)
+                ->send(new GuestBookingAdminNotification($guestBooking));
+                
+            Log::info('Admin notification sent to: ' . $adminEmail, [
+                'booking_number' => $guestBooking->booking_number,
+                'booking_type' => $guestBooking->is_custom_request ? 'custom' : 'package'
+            ]);
 
             // TODO: Add WhatsApp notification when WhatsAppService method is available
 
         } catch (\Exception $e) {
-            Log::error('Failed to notify admin: ' . $e->getMessage());
+            Log::error('Failed to notify admin: ' . $e->getMessage(), [
+                'booking_number' => $guestBooking->booking_number
+            ]);
+            // Tidak throw error agar proses booking tetap jalan
         }
     }
 
@@ -346,7 +343,7 @@ class GuestBookingController extends Controller
      */
     public function contactViaWhatsApp(GuestBooking $guestBooking)
     {
-        $message = "Halo {$guestBooking->nama_lengkap}, terima kasih telah menghubungi JustTrip untuk booking #{$guestBooking->booking_number}. Tim kami akan segera membantu Anda.";
+        $message = "Halo {$guestBooking->nama_lengkap}, terima kasih telah menghubungi Justtrip untuk booking #{$guestBooking->booking_number}. Tim kami akan segera membantu Anda.";
 
         $whatsappUrl = "https://wa.me/{$guestBooking->no_telepon}?text=" . urlencode($message);
 
@@ -367,7 +364,7 @@ class GuestBookingController extends Controller
             Mail::raw($request->message, function ($mail) use ($request, $guestBooking) {
                 $mail->to($guestBooking->email, $guestBooking->nama_lengkap)
                      ->subject($request->subject)
-                     ->from(config('mail.from.address', 'admin@justtrip.com'), 'JustTrip Admin');
+                     ->from(config('mail.from.address', 'admin@justtrip.com'), 'Justtrip Admin');
             });
 
             return redirect()->back()->with('success', 'Email berhasil dikirim');

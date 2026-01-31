@@ -7,6 +7,7 @@ use App\Models\Layanan;
 use App\Models\SpecialOffer;
 use App\Models\News;
 use App\Models\Gallery;
+use App\Models\Review;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -67,6 +68,12 @@ class HomeController extends Controller
                            ->take(3)
                            ->get();
 
+        // Get customer reviews (admin-managed)
+        $reviews = Review::active()
+                        ->ordered()
+                        ->take(3)
+                        ->get();
+
         // Check for pending payments (for banner)
         $pendingBooking = null;
         if (auth()->check()) {
@@ -84,6 +91,7 @@ class HomeController extends Controller
             'featuredGallery',
             'statistics',
             'testimonials',
+            'reviews',
             'pendingBooking'
         ));
     }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Konfirmasi Booking Promo - Jussttrip</title>
+    <title>Konfirmasi Booking - Jussttrip</title>
     <style>
         /* Base layout */
         body {
@@ -47,7 +47,7 @@
         /* Next steps */
         .next-steps { background: #f8fafc; border-radius: 10px; padding: 16px; margin: 20px 0; }
         .next-steps h3 { color: #374151; margin: 0 0 8px 0; }
-        .next-steps ol { margin: 0; padding-left: 18px; color: #64748b; }
+        .next-steps ul { margin: 0; padding-left: 18px; color: #64748b; }
         .next-steps li { margin: 8px 0; }
 
         /* Contact */
@@ -68,9 +68,6 @@
         .price-total-label { display: table-cell; color: #ffffff; font-size: 16px; font-weight: 700; padding-top: 12px; border-top: 1px solid #475569; }
         .price-total-value { display: table-cell; text-align: right; color: #f87171; font-size: 20px; font-weight: 800; padding-top: 12px; border-top: 1px solid #475569; }
 
-        /* Promo Badge */
-        .promo-badge { background-color: #dc2626; color: white; font-size: 10px; font-weight: 800; padding: 4px 12px; border-radius: 20px; text-transform: uppercase; letter-spacing: 1px; display: inline-block; margin-bottom: 10px; }
-
         /* Mobile tweaks */
         @media (max-width: 600px) {
             body { padding: 12px; }
@@ -84,8 +81,8 @@
         <!-- Header -->
         <div class="header">
             <img src="{{ isset($message) ? $message->embed(public_path('image/logo6.png')) : asset('image/logo6.png') }}" alt="Jussttrip" style="height:48px; display:block; margin:0 auto;">
-            <h1>Booking Promo Berhasil!</h1>
-            <p>Terima kasih telah memesan paket promo kami</p>
+            <h1>Konfirmasi Booking</h1>
+            <p>Terima kasih telah mempercayai Jussttrip untuk perjalanan Anda</p>
         </div>
 
         <!-- Content -->
@@ -93,7 +90,7 @@
             <p>Halo <strong>{{ $customerName }}</strong>,</p>
 
             <p>
-                Booking promo Anda telah berhasil dicatat. Tim kami akan segera memproses dan menghubungi Anda untuk konfirmasi lebih lanjut.
+                Booking Anda untuk paket <strong>{{ $booking->layanan->nama_layanan ?? 'Paket Wisata' }}</strong> telah berhasil kami terima. Tim kami akan segera memproses dan menghubungi Anda untuk konfirmasi lebih lanjut.
             </p>
 
             <!-- Booking Number -->
@@ -104,28 +101,27 @@
             </div>
 
             <!-- Booking Details -->
-            <h3>Detail Pemesanan Promo</h3>
-            <div style="background-color: #fffbeb; border: 1px solid #fde68a; border-radius: 12px; padding: 15px; margin-bottom: 18px; text-align: center;">
-                <span class="promo-badge">⚡ Paket Promo Spesial</span>
-                <h2 style="color: #92400e; margin: 0; font-size: 20px;">{{ $specialOffer->title }}</h2>
-            </div>
-
+            <h3>Detail Booking</h3>
             <table class="details-table">
                 <tr>
-                    <th>Nomor Booking</th>
-                    <td>{{ $booking->booking_number }}</td>
-                </tr>
-                <tr>
-                    <th>Tanggal Berangkat</th>
-                    <td>{{ \Carbon\Carbon::parse($booking->tanggal_keberangkatan)->format('d F Y') }}</td>
+                    <th>Paket Wisata</th>
+                    <td>{{ $booking->layanan->nama_layanan ?? 'Paket Wisata' }}</td>
                 </tr>
                 <tr>
                     <th>Jumlah Peserta</th>
                     <td>{{ $booking->jumlah_peserta }} orang</td>
                 </tr>
                 <tr>
+                    <th>Tanggal Keberangkatan</th>
+                    <td>{{ \Carbon\Carbon::parse($booking->tanggal_keberangkatan)->format('d F Y') }}</td>
+                </tr>
+                <tr>
                     <th>Status</th>
                     <td><span class="status-badge">Menunggu Konfirmasi</span></td>
+                </tr>
+                <tr>
+                    <th>Tanggal Booking</th>
+                    <td>{{ $booking->created_at->format('d F Y, H:i') }} WIB</td>
                 </tr>
             </table>
 
@@ -133,12 +129,12 @@
             <div class="price-card">
                 <h3 style="margin-top: 0; color: #94a3b8; font-size: 14px; text-transform: uppercase;">Rincian Biaya</h3>
                 <div class="price-row">
-                    <span class="price-label">Harga Normal x {{ $booking->jumlah_peserta }} Orang</span>
-                    <span class="price-value" style="text-decoration: line-through;">Rp {{ number_format($booking->original_amount, 0, ',', '.') }}</span>
+                    <span class="price-label">Harga Paket x {{ $booking->jumlah_peserta }} Orang</span>
+                    <span class="price-value">Rp {{ number_format($booking->original_amount, 0, ',', '.') }}</span>
                 </div>
                 @if($booking->discount_amount > 0)
                 <div class="price-row">
-                    <span class="price-label">Diskon Promo</span>
+                    <span class="price-label">Diskon</span>
                     <span class="price-value" style="color: #4ade80;">- Rp {{ number_format($booking->discount_amount, 0, ',', '.') }}</span>
                 </div>
                 @endif
@@ -150,13 +146,13 @@
 
             <!-- Next Steps -->
             <div class="next-steps">
-                <h3 style="color: #92400e;">📌 Langkah Selanjutnya:</h3>
-                <ol style="color: #92400e; font-size: 14px;">
-                    <li>Tim kami akan memverifikasi pemesanan Anda.</li>
-                    <li>Anda akan menerima email konfirmasi persetujuan.</li>
-                    <li>Lakukan pembayaran sesuai instruksi setelah disetujui.</li>
-                    <li>Tunggu invoice dan tiket dari tim kami.</li>
-                </ol>
+                <h3>Langkah Selanjutnya</h3>
+                <ul>
+                    <li>Tim kami akan memverifikasi pemesanan Anda dalam 1x24 jam.</li>
+                    <li>Anda akan dihubungi melalui WhatsApp atau Email untuk konfirmasi detail.</li>
+                    <li>Lakukan pembayaran sesuai instruksi yang diberikan setelah konfirmasi.</li>
+                    <li>Tiket dan itinerary final akan dikirimkan setelah pembayaran lunas.</li>
+                </ul>
             </div>
 
             <!-- Contact Info -->

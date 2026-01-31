@@ -38,11 +38,11 @@ class InvoiceController extends Controller
                 'customer' => $invoice->booking->customer_info,
                 'company' => [
                     'name' => 'Justtrip Tour Organizer',
-                    'address' => 'Lamongan - Malang - Jogja - Bali',
-                    'phone' => '0821-3217-9440',
-                    'email' => 'justtrip.tour@gmail.com',
+                    'address' => 'Malang – Sleman – Bali',
+                    'phone' => '+62 822-6647-8147',
+                    'email' => 'justtrip20@gmail.com',
                     'website' => 'www.justtrip.id',
-                    'service_areas' => 'Lamongan – Malang – Jogja – Bali – Semarang – Pemalang'
+                    'service_areas' => 'Malang – Sleman – Bali'
                 ],
                 'generated_at' => now()->format('d F Y H:i:s')
             ];
@@ -322,7 +322,7 @@ class InvoiceController extends Controller
             }
 
             // Get admin WhatsApp number from config or database
-            $adminWhatsApp = config('app.admin_whatsapp', '6281234567890'); // Default admin WhatsApp
+            $adminWhatsApp = config('app.admin_whatsapp', '6282266478147'); // Default admin WhatsApp
             
             // Prepare WhatsApp message
             $message = "*INVOICE JUSTTRIP TRAVEL*\n\n";

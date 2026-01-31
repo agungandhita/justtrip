@@ -26,7 +26,7 @@ class SpecialOfferNotification extends Mailable
      */
     public function build()
     {
-        return $this->subject('Special Offer Baru dari JustTrip!')
+        return $this->subject('Special Offer Baru dari Jussttrip!')
             ->markdown('emails.special-offer-notification', [
                 'specialOffer' => $this->specialOffer
             ]);

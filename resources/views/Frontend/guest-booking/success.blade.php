@@ -149,7 +149,7 @@
                         <i class="fab fa-whatsapp text-green-500 text-2xl mr-3"></i>
                         <div>
                             <p class="font-medium text-gray-800">WhatsApp</p>
-                            <p class="text-sm text-gray-600">+62 812-3456-7890</p>
+                            <p class="text-sm text-gray-600">+62 822-6647-8147</p>
                         </div>
                     </div>
                     
@@ -157,7 +157,7 @@
                         <i class="fas fa-envelope text-blue-500 text-2xl mr-3"></i>
                         <div>
                             <p class="font-medium text-gray-800">Email</p>
-                            <p class="text-sm text-gray-600">info@justtrip.com</p>
+                            <p class="text-sm text-gray-600">justtrip20@gmail.com</p>
                         </div>
                     </div>
                 </div>

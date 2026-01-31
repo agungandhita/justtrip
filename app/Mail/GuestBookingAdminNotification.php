@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\GuestBooking;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -9,17 +10,18 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class GuestBookingFeedback extends Mailable
+class GuestBookingAdminNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public array $datas;
+    public GuestBooking $guestBooking;
+
     /**
      * Create a new message instance.
      */
-    public function __construct($datas)
+    public function __construct(GuestBooking $guestBooking)
     {
-        $this->datas = $datas;
+        $this->guestBooking = $guestBooking;
     }
 
     /**
@@ -27,8 +29,13 @@ class GuestBookingFeedback extends Mailable
      */
     public function envelope(): Envelope
     {
+        $subject = $this->guestBooking->is_custom_request
+            ? 'PERMINTAAN KHUSUS BARU #' . $this->guestBooking->booking_number
+            : 'BOOKING BARU #' . $this->guestBooking->booking_number;
+
         return new Envelope(
-            subject: 'Guest Booking Feedback',
+            subject: $subject . ' - Jussttrip Admin',
+            from: config('mail.from.address', 'system@justtrip.com'),
         );
     }
 
@@ -49,7 +56,6 @@ class GuestBookingFeedback extends Mailable
      */
     public function attachments(): array
     {
-        return [
-        ];
+        return [];
     }
 }

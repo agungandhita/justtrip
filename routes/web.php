@@ -140,6 +140,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::patch('payment-confirmations/{paymentConfirmation}/approve', [\App\Http\Controllers\Admin\PaymentConfirmationController::class, 'approve'])->name('payment-confirmations.approve');
     Route::patch('payment-confirmations/{paymentConfirmation}/reject', [\App\Http\Controllers\Admin\PaymentConfirmationController::class, 'reject'])->name('payment-confirmations.reject');
     Route::get('payment-confirmations/{paymentConfirmation}/download-proof', [\App\Http\Controllers\Admin\PaymentConfirmationController::class, 'downloadProof'])->name('payment-confirmations.download-proof');
+
+    // Reviews Management (Admin Only)
+    Route::resource('reviews', \App\Http\Controllers\Admin\ReviewController::class);
+    Route::post('reviews/{review}/toggle-active', [\App\Http\Controllers\Admin\ReviewController::class, 'toggleActive'])->name('reviews.toggle-active');
 });
 
 // Booking routes (authenticated users)

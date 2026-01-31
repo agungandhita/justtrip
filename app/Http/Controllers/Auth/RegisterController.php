@@ -28,8 +28,8 @@ class RegisterController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email',
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string|max:500',
+            'phone' => 'required|string|max:20',
+            'address' => 'required|string|max:500',
             'password' => 'required|string|min:6|confirmed',
         ], [
             'name.required' => 'Nama lengkap wajib diisi',
@@ -37,7 +37,9 @@ class RegisterController extends Controller
             'email.required' => 'Email wajib diisi',
             'email.email' => 'Format email tidak valid',
             'email.unique' => 'Email sudah terdaftar, gunakan email lain atau login',
+            'phone.required' => 'Nomor WhatsApp/Telepon wajib diisi',
             'phone.max' => 'Nomor telepon maksimal 20 karakter',
+            'address.required' => 'Alamat lengkap wajib diisi',
             'address.max' => 'Alamat maksimal 500 karakter',
             'password.required' => 'Password wajib diisi',
             'password.min' => 'Password minimal 6 karakter',

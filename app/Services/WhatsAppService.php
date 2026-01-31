@@ -18,7 +18,7 @@ class WhatsAppService
     {
         $this->apiUrl = config('whatsapp.api_url', 'https://api.whatsapp.com/send');
         $this->token = config('whatsapp.token');
-        $this->adminPhoneNumber = config('whatsapp.admin_phone', '+6281234567890');
+        $this->adminPhoneNumber = config('whatsapp.admin_phone', '+6282266478147');
     }
 
     /**

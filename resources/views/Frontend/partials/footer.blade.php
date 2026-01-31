@@ -25,7 +25,7 @@ Kami merancang cerita, bukan hanya destinasi.
                     <a href="#" class="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110" title="TikTok">
                         <i class="fab fa-tiktok text-lg"></i>
                     </a>
-                    <a href="#" class="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110" title="WhatsApp">
+                    <a href="https://wa.me/6282266478147" target="_blank" class="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110" title="WhatsApp">
                         <i class="fab fa-whatsapp text-lg"></i>
                     </a>
                 </div>
@@ -72,7 +72,7 @@ Kami merancang cerita, bukan hanya destinasi.
                     </li>
                     <li class="text-gray-300 flex items-start">
                         <i class="fas fa-phone w-4 mr-3 mt-1"></i>
-                        <span>+62 822-6647-8147</span>
+                        <a href="tel:+6282266478147" class="hover:text-white transition-colors">+62 822-6647-8147</a>
                     </li>
                     <li class="text-gray-300 flex items-start group">
                         <i class="fas fa-map-marker-alt w-4 mr-3 mt-1 group-hover:text-blue-400 transition-colors"></i>

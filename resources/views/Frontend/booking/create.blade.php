@@ -26,7 +26,7 @@
                 <div class="flex items-center space-x-4">
                     <div class="hidden md:flex flex-col items-end">
                         <span class="text-blue-100 text-sm">Butuh bantuan?</span>
-                        <a href="https://wa.me/6281234567890" class="text-white font-bold hover:underline">Hubungi Kami</a>
+                        <a href="https://wa.me/6282266478147?text={{ urlencode('Halo Admin JustTrip, saya membutuhkan bantuan untuk melakukan booking. Bisakah Anda membantu saya?') }}" target="_blank" class="text-white font-bold hover:underline">Hubungi Kami</a>
                     </div>
                 </div>
             </div>
@@ -344,19 +344,290 @@ function calculateTotal() {
 document.addEventListener('DOMContentLoaded', function() {
     calculateTotal();
     
-    // Form submission processing
+    // Form submission with improved protection
     const form = document.getElementById('bookingForm');
     const submitBtn = document.getElementById('submitBtn');
 
-    form.addEventListener('submit', function(e) {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = `
-            <svg class="animate-spin h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            <span class="ml-3">Sedang Memproses...</span>`;
-    });
+    if (form && submitBtn) {
+        let isSubmitting = false;
+        let submissionTimeout = null;
+
+        form.addEventListener('submit', function(e) {
+            // Prevent double submission
+            if (isSubmitting) {
+                e.preventDefault();
+                console.warn('Form submission blocked - already submitting');
+                return false;
+            }
+
+            // Basic validation check
+            const requiredFields = form.querySelectorAll('[required]');
+            let allValid = true;
+            requiredFields.forEach(field => {
+                if (!field.value || field.value.trim() === '') {
+                    allValid = false;
+                    field.classList.add('border-red-500', 'ring-2', 'ring-red-500');
+                } else {
+                    field.classList.remove('border-red-500', 'ring-2', 'ring-red-500');
+                }
+            });
+
+            if (!allValid) {
+                e.preventDefault();
+                alert('Mohon lengkapi semua field yang wajib diisi.');
+                // Scroll to first invalid field
+                const firstInvalid = form.querySelector('.border-red-500');
+                if (firstInvalid) {
+                    firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    firstInvalid.focus();
+                }
+                return false;
+            }
+
+            // Set submitting state
+            isSubmitting = true;
+            submitBtn.disabled = true;
+            
+            const originalBtnContent = submitBtn.innerHTML;
+            submitBtn.setAttribute('data-original-content', originalBtnContent);
+            submitBtn.innerHTML = `
+                <svg class="animate-spin h-6 w-6 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span class="ml-3">Sedang Memproses...</span>
+            `;
+
+            // Add visual feedback to form
+            form.style.opacity = '0.7';
+            form.style.pointerEvents = 'none';
+
+            // Show loading overlay
+            const loadingOverlay = document.createElement('div');
+            loadingOverlay.id = 'booking-loading-overlay';
+            loadingOverlay.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            loadingOverlay.innerHTML = `
+                <div class="bg-white rounded-2xl p-8 max-w-sm mx-4 text-center shadow-2xl">
+                    <svg class="animate-spin h-12 w-12 mx-auto mb-4 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Memproses Pemesanan</h3>
+                    <p class="text-sm text-gray-600">Mohon tunggu sebentar...</p>
+                </div>
+            `;
+            document.body.appendChild(loadingOverlay);
+
+            // Safety timeout - re-enable after 45 seconds if no response
+            submissionTimeout = setTimeout(() => {
+                if (isSubmitting) {
+                    console.error('Form submission timeout - re-enabling form');
+                    resetForm();
+                    alert('Permintaan memakan waktu terlalu lama. Silakan periksa koneksi Anda dan coba lagi.');
+                }
+            }, 45000);
+        });
+
+        // Function to reset form state (in case of errors)
+        function resetForm() {
+            isSubmitting = false;
+            
+            if (submissionTimeout) {
+                clearTimeout(submissionTimeout);
+                submissionTimeout = null;
+            }
+
+            submitBtn.disabled = false;
+            const originalContent = submitBtn.getAttribute('data-original-content');
+            if (originalContent) {
+                submitBtn.innerHTML = originalContent;
+            }
+
+            form.style.opacity = '1';
+            form.style.pointerEvents = 'auto';
+
+            const overlay = document.getElementById('booking-loading-overlay');
+            if (overlay) {
+                overlay.remove();
+            }
+        }
+
+        // Reset on page unload (if user navigates back)
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                resetForm();
+            }
+        });
+    }
 });
 </script>
+
+{{-- Success Booking Modal --}}
+@if(session('booking_success'))
+<div id="bookingSuccessModal" class="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm" onclick="closeBookingModal()"></div>
+    
+    <!-- Modal Content -->
+    <div class="relative bg-white rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden transform transition-all animate-modal-in">
+        <!-- Header with Gradient -->
+        <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 p-8 text-center relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-full opacity-20">
+                <div class="absolute top-2 right-10 w-20 h-20 bg-white/30 rounded-full blur-xl"></div>
+                <div class="absolute bottom-2 left-10 w-16 h-16 bg-white/30 rounded-full blur-xl"></div>
+            </div>
+            <div class="relative z-10">
+                <div class="w-20 h-20 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h2 class="text-3xl font-black text-white mb-2">Booking Berhasil Tercatat!</h2>
+                <p class="text-white/90 text-sm">Pemesanan Anda telah berhasil dibuat</p>
+            </div>
+        </div>
+
+        <div class="p-8 space-y-6">
+            <!-- Booking Details Card -->
+            <div class="bg-slate-50 rounded-2xl p-6 space-y-4">
+                <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest">Detail Pemesanan</h3>
+                
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-500 text-sm">Nomor Booking</span>
+                        <span class="font-black text-slate-800">{{ session('booking_number') }}</span>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-500 text-sm">Paket Wisata</span>
+                        <span class="font-bold text-slate-800 text-right">{{ session('booking_data')['layanan_name'] ?? 'Paket Wisata' }}</span>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-500 text-sm">Jumlah Peserta</span>
+                        <span class="font-bold text-slate-800">{{ session('booking_data')['jumlah_peserta'] ?? '-' }} Orang</span>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-500 text-sm">Tanggal Berangkat</span>
+                        <span class="font-bold text-slate-800">{{ \Carbon\Carbon::parse(session('booking_data')['tanggal_keberangkatan'] ?? now())->format('d M Y') }}</span>
+                    </div>
+
+                    <div class="pt-3 border-t-2 border-slate-200 flex justify-between items-center">
+                        <span class="text-sm font-bold text-slate-700">Total Pembayaran</span>
+                        <span class="text-2xl font-black text-blue-600">Rp {{ number_format(session('booking_data')['total_amount'] ?? 0, 0, ',', '.') }}</span>
+                    </div>
+                </div>
+
+                <div class="pt-3 border-t border-dashed border-slate-200">
+                    <div class="flex items-center justify-center gap-2 text-center">
+                        <svg class="w-4 h-4 text-amber-500 animate-pulse" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="text-xs font-bold text-amber-700">Status: Menunggu Konfirmasi Admin</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info Alert -->
+            <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-start gap-3">
+                <svg class="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <div class="text-sm text-blue-800">
+                    <p class="font-bold mb-2">Langkah Selanjutnya:</p>
+                    <ul class="space-y-1 text-xs">
+                        <li class="flex items-start gap-2">
+                            <svg class="w-3 h-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            <span>Admin akan memverifikasi pemesanan Anda</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <svg class="w-3 h-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            <span>Anda akan menerima email konfirmasi</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <svg class="w-3 h-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            <span>Lakukan pembayaran setelah booking dikonfirmasi</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex gap-3">
+                <a href="{{ route('booking.show', session('booking_id')) }}" 
+                   class="flex-1 py-4 bg-slate-100 text-slate-700 text-center font-bold rounded-2xl hover:bg-slate-200 transition-all">
+                    Lihat Detail Booking
+                </a>
+                <button type="button" onclick="closeBookingModal()" 
+                        class="flex-1 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold rounded-2xl hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg shadow-blue-200">
+                    Tutup
+                </button>
+            </div>
+        </div>
+
+        <!-- Decorative Elements -->
+        <div class="absolute -top-4 -right-4 w-32 h-32 bg-blue-50 rounded-full blur-3xl opacity-60 -z-10"></div>
+        <div class="absolute -bottom-4 -left-4 w-40 h-40 bg-indigo-50 rounded-full blur-3xl opacity-60 -z-10"></div>
+    </div>
+</div>
+
+<style>
+@keyframes modal-in {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+.animate-modal-in {
+    animation: modal-in 0.3s ease-out forwards;
+}
+</style>
+
+<script>
+function closeBookingModal() {
+    const modal = document.getElementById('bookingSuccessModal');
+    if (modal) {
+        modal.classList.add('opacity-0');
+        modal.style.transition = 'opacity 0.2s ease-out';
+        setTimeout(() => {
+            modal.remove();
+            // Reset form after closing modal
+            const form = document.getElementById('bookingForm');
+            if (form) {
+                form.reset();
+                // Reset participants to default
+                const participantsInput = document.getElementById('jumlah_peserta');
+                if (participantsInput) {
+                    participantsInput.value = 1;
+                }
+                // Recalculate totals
+                if (typeof calculateTotal === 'function') {
+                    calculateTotal();
+                }
+            }
+        }, 200);
+    }
+}
+
+// Close on Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeBookingModal();
+    }
+});
+
+// Auto-scroll to top when modal appears
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('bookingSuccessModal');
+    if (modal) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+});
+</script>
+@endif
 @endsection

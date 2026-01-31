@@ -1,7 +1,7 @@
 @component('mail::message')
 # Penawaran Spesial Baru!
 
-Hai, ada penawaran spesial baru dari JustTrip!
+Hai, ada penawaran spesial baru dari Jussttrip!
 
 **Judul:** {{ $specialOffer->title }}
 
@@ -26,5 +26,5 @@ Lihat Penawaran
 Terima kasih telah berlangganan!
 
 Salam,
-JustTrip Team
+Jussttrip Team
 @endcomponent

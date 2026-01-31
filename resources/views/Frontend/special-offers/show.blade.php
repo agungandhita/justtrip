@@ -269,10 +269,10 @@
 
                                 <div class="pt-8 border-t border-slate-100 flex items-center justify-between">
                                     <div class="flex gap-4">
-                                        <a href="https://wa.me/6281234567890" class="w-10 h-10 bg-green-50 text-green-600 flex items-center justify-center rounded-xl hover:bg-green-600 hover:text-white transition-all shadow-sm">
+                                        <a href="https://wa.me/6282266478147?text={{ urlencode('Halo Admin Jussttrip, saya tertarik dengan promo ' . $specialOffer->title . '. Bisakah saya mendapatkan informasi lebih lanjut?') }}" target="_blank" class="w-10 h-10 bg-green-50 text-green-600 flex items-center justify-center rounded-xl hover:bg-green-600 hover:text-white transition-all shadow-sm">
                                             <i class="fab fa-whatsapp"></i>
                                         </a>
-                                        <a href="tel:+6281234567890" class="w-10 h-10 bg-blue-50 text-blue-600 flex items-center justify-center rounded-xl hover:bg-blue-600 hover:text-white transition-all shadow-sm">
+                                        <a href="tel:+6282266478147" class="w-10 h-10 bg-blue-50 text-blue-600 flex items-center justify-center rounded-xl hover:bg-blue-600 hover:text-white transition-all shadow-sm">
                                             <i class="fas fa-phone-alt text-sm"></i>
                                         </a>
                                     </div>

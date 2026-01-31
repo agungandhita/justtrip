@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Konfirmasi Booking - JustTrip</title>
+    <title>Konfirmasi Booking - Jussttrip</title>
     <style>
         /* Base layout */
         body {
@@ -75,9 +75,9 @@
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <img src="{{ isset($message) ? $message->embed(public_path('image/logo6.png')) : asset('image/logo4.png') }}" alt="JustTrip" style="height:48px; display:block; margin:0 auto;">
+            <img src="{{ isset($message) ? $message->embed(public_path('image/logo6.png')) : asset('image/logo6.png') }}" alt="Jussttrip" style="height:48px; display:block; margin:0 auto;">
             <h1>Konfirmasi Booking</h1>
-            <p>Terima kasih telah mempercayai JustTrip untuk perjalanan Anda</p>
+            <p>Terima kasih telah mempercayai Jussttrip untuk perjalanan Anda</p>
         </div>
 
         <!-- Content -->
@@ -173,8 +173,7 @@
 
                 <div class="contact-row">
                     <strong>WhatsApp:</strong>
-                    @php($wa = preg_replace('/[^0-9]/', '', $guestBooking->nomor_telepon ?? ''))
-                    <a href="https://wa.me/{{ $wa }}" target="_blank" rel="noopener" style="color:#2563eb; text-decoration:none;">{{ $guestBooking->nomor_telepon }}</a>
+                    <a href="https://wa.me/6282266478147" target="_blank" rel="noopener" style="color:#2563eb; text-decoration:none;">+62 822-6647-8147</a>
                     <br><small style="color:#6b7280;">Respon cepat & mudah</small>
                 </div>
 
@@ -194,7 +193,7 @@
 
         <!-- Footer -->
         <div class="footer">
-            <p><strong>JustTrip</strong> - Your Trusted Travel Partner</p>
+            <p><strong>Jussttrip</strong> - Your Trusted Travel Partner</p>
             <p>
                 <a href="https://justtrip.com" target="_blank" rel="noopener">Website</a> |
                 <a href="https://instagram.com/justtrip" target="_blank" rel="noopener">Instagram</a> |

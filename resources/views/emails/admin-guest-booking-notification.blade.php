@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking Baru - JustTrip Admin</title>
+    <title>Booking Baru - Jussttrip Admin</title>
     <style>
         body {
             margin: 0 auto;
@@ -40,8 +40,8 @@
 </head>
 <body>
     @php
-        // Mendukung dua cara passing data: melalui $datas['guestBooking'] atau langsung $guestBooking
-        $guestBooking = $guestBooking ?? ($datas['guestBooking'] ?? (object)[]);
+        // Access guestBooking from Mailable public property
+        $guestBooking = $guestBooking ?? null;
     @endphp
     <div class="container">
         <div class="header">
@@ -118,7 +118,7 @@
                 <h3>Aksi Cepat</h3>
                 @php($wa = preg_replace('/[^0-9]/', '', $guestBooking->nomor_telepon ?? ''))
                 <p>
-                    <a href="https://wa.me/{{ $wa }}?text=Halo%20{{ urlencode($guestBooking->nama_lengkap) }},%20terima%20kasih%20sudah%20booking%20di%20JustTrip.%20Booking%20number%20Anda:%20{{ $guestBooking->booking_number }}" target="_blank" rel="noopener">WhatsApp Customer</a>
+                    <a href="https://wa.me/{{ $wa }}?text=Halo%20{{ urlencode($guestBooking->nama_lengkap) }},%20terima%20kasih%20sudah%20booking%20di%20Jussttrip.%20Booking%20number%20Anda:%20{{ $guestBooking->booking_number }}" target="_blank" rel="noopener">WhatsApp Customer</a>
                     ·
                     <a href="mailto:{{ $guestBooking->email }}?subject=Konfirmasi%20Booking%20{{ $guestBooking->booking_number }}" target="_blank" rel="noopener">Email Customer</a>
                 </p>
@@ -126,7 +126,7 @@
         </div>
 
         <div class="footer">
-            JustTrip Admin Panel — Email otomatis sistem booking
+            Jussttrip Admin Panel — Email otomatis sistem booking
         </div>
     </div>
 </body>

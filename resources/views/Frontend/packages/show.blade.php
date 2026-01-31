@@ -378,7 +378,7 @@
                                     <a href="{{ route('login') }}" class="block w-full py-5 md:py-6 rounded-2xl md:rounded-3xl bg-indigo-950 text-white font-black text-center transition-all uppercase tracking-widest text-xs">Login Untuk Pesan</a>
                                 @endauth
                                 
-                                <a href="https://wa.me/6281234567890?text=Halo%20JustTrip%2C%20saya%20tertarik%20dengan%20paket%20{{ urlencode($package->nama_layanan ?? $package->title) }}" target="_blank" class="block w-full py-4 rounded-2xl md:rounded-3xl border-2 border-emerald-500 text-emerald-600 font-black text-center text-[10px] md:text-xs uppercase tracking-widest">
+                                <a href="https://wa.me/6282266478147?text={{ urlencode('Halo Admin Jussttrip, saya ingin bertanya tentang paket ' . ($package->nama_layanan ?? $package->title) . '. Bisakah Anda memberikan detail lengkapnya?') }}" target="_blank" class="block w-full py-4 rounded-2xl md:rounded-3xl border-2 border-emerald-500 text-emerald-600 font-black text-center text-[10px] md:text-xs uppercase tracking-widest">
                                    WA Konsultasi
                                 </a>
                             </div>

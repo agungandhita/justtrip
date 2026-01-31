@@ -59,7 +59,7 @@
 
     <div class="relative z-10 container mx-auto px-4 md:px-6 text-center" data-aos="fade-up">
         <span class="inline-flex px-4 py-1.5 mb-6 rounded-full badge-premium text-indigo-300 text-[10px] md:text-xs font-black uppercase tracking-widest leading-none">
-            Jelajahi Dunia Bersama JustTrip
+            Jelajahi Dunia Bersama Jussttrip
         </span>
         <h1 class="text-3xl sm:text-5xl md:text-7xl font-black text-white mb-6 tracking-tight leading-[1.1]">
             Temukan <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">Petualangan</span><br class="hidden sm:block"> Terbaik Anda
@@ -245,7 +245,7 @@
         <h2 class="text-3xl md:text-6xl font-black text-white mb-6 md:mb-8 tracking-tight">Siap Untuk <span class="text-amber-400">Berangkat?</span></h2>
         <p class="max-w-xl mx-auto text-indigo-200 mb-8 md:mb-12 text-base md:text-lg">Hubungi konsultan perjalanan kami dan dapatkan penawaran khusus untuk grup atau solo traveler.</p>
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="#" class="w-full sm:w-auto px-10 py-5 bg-amber-500 text-indigo-950 font-black rounded-2xl hover:bg-amber-600 transition-all uppercase tracking-widest text-xs">WhatsApp Admin</a>
+            <a href="https://wa.me/6282266478147?text={{ urlencode('Halo Admin Jussttrip, saya ingin bertanya tentang paket tour yang tersedia. Bisakah Anda membantu saya?') }}" target="_blank" class="w-full sm:w-auto px-10 py-5 bg-amber-500 text-indigo-950 font-black rounded-2xl hover:bg-amber-600 transition-all uppercase tracking-widest text-xs">WhatsApp Admin</a>
             <a href="#" class="w-full sm:w-auto px-10 py-5 bg-white/10 text-white font-black rounded-2xl border border-white/20 hover:bg-white/20 transition-all uppercase tracking-widest text-xs">Pelajari Lebih Lanjut</a>
         </div>
     </div>

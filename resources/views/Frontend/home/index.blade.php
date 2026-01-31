@@ -213,127 +213,186 @@
 </section>
 
 <!-- Why Choose JustTrip Section -->
-<section id="why-choose" class="py-20 bg-slate-50 overflow-hidden">
-    <div class="container mx-auto px-4">
-        <div class="text-center mb-16" data-aos="fade-up" data-aos-offset="200">
-            <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Mengapa Pilih Justtrip?</h2>
-            <div class="w-24 h-1 bg-teal-500 mx-auto rounded-full"></div>
+<section id="why-choose" class="bg-white overflow-hidden scroll-mt-20">
+    <div class="flex flex-col lg:flex-row">
+        <!-- Left Side: Copywriting (10 Points) -->
+        <div class="w-full lg:w-3/5 bg-[#1a56db] p-8 md:p-12 lg:p-16 text-white relative flex flex-col justify-center">
+            <!-- Decorative Grid Pattern -->
+            <div class="absolute inset-0 opacity-[0.08]" style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 40px 40px;"></div>
+            
+            <div class="relative z-10" data-aos="fade-right">
+                <h2 class="text-2xl md:text-3xl font-black mb-10 tracking-tight uppercase">Kenapa Memilih <span class="text-orange-400">JustTrip?</span></h2>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-8">
+                    @php
+                        $points = [
+                            ['title' => 'Sudah Berlegalitas PT', 'desc' => 'Keamanan transaksi terjamin dengan payung hukum resmi PT Justtrip Indonesia.', 'icon' => 'fa-shield-alt'],
+                            ['title' => 'Tim Bersertifikat LSP & BNSP', 'desc' => 'Dikawal oleh tenaga ahli yang kompeten dan diakui secara nasional.', 'icon' => 'fa-user-check'],
+                            ['title' => 'Trip Penuh Kesan & Makna', 'desc' => 'Fokus membangun hubungan dan kebersamaan, bukan sekadar jalan-jalan.', 'icon' => 'fa-heart'],
+                            ['title' => 'Jaminan & Keuntungan di MOU', 'desc' => 'Kepastian layanan tertulis jelas dalam kontrak kerja sama yang transparan.', 'icon' => 'fa-file-signature'],
+                            ['title' => 'Tenaga Ahli Berkompeten', 'desc' => 'Tim fasilitator berpengalaman yang ahli di bidang manajemen acara dan SDM.', 'icon' => 'fa-users'],
+                            ['title' => 'Fleksibel & Customizable', 'desc' => 'Program dapat disesuaikan sepenuhnya dengan budget dan kebutuhan Anda.', 'icon' => 'fa-adjust'],
+                            ['title' => 'Trip Kekinian & Up to Date', 'desc' => 'Destinasi dan konten acara yang selalu mengikuti tren terbaru (Instagrammable).', 'icon' => 'fa-camera-retro'],
+                            ['title' => 'Perencanaan Sistematis', 'desc' => 'Alur kerja yang rapi dan laporan berkala yang transparan kepada klien.', 'icon' => 'fa-tasks'],
+                            ['title' => 'Mitra Terpercaya', 'desc' => 'Bekerja sama dengan vendor hotel, transport, dan katering pilihan terbaik.', 'icon' => 'fa-handshake'],
+                            ['title' => 'Harga Dapat Dinegosiasi', 'desc' => 'Penawaran harga yang kompetitif dan fleksibel sesuai kebutuhan paket Anda.', 'icon' => 'fa-tags'],
+                        ];
+                    @endphp
+
+                    @foreach($points as $point)
+                    <div class="flex gap-4 group">
+                        <div class="flex-shrink-0 w-10 h-10 border border-white/20 rounded-lg flex items-center justify-center bg-white/5 group-hover:bg-orange-500 group-hover:border-orange-500 transition-all duration-300">
+                            <i class="fas {{ $point['icon'] }} text-sm text-orange-400 group-hover:text-white transition-colors"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <h3 class="font-bold text-sm md:text-base text-white mb-1 group-hover:text-orange-400 transition-colors uppercase tracking-wide">{{ $point['title'] }}</h3>
+                            <p class="text-blue-100/70 text-xs leading-relaxed">{{ $point['desc'] }}</p>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-            <!-- Point 1 -->
-            <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-slate-100 group" data-aos="fade-up" data-aos-delay="100">
-                <div class="w-12 h-12 bg-teal-50 text-teal-600 rounded-xl flex items-center justify-center mb-4 group-hover:bg-teal-600 group-hover:text-white transition-colors duration-300">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                    </svg>
-                </div>
-                <h3 class="font-bold text-gray-800 text-lg leading-tight mb-2">Sudah Berlegalitas PT</h3>
-                <p class="text-gray-500 text-sm">Keamanan transaksi terjamin dengan payung hukum resmi PT Justtrip Indonesia.</p>
+        <!-- Right Side: Visual Image/Slider -->
+        <div class="w-full lg:w-2/5 relative min-h-[450px] lg:min-h-full group overflow-hidden">
+            <!-- Text Overlay on Image -->
+            <div class="absolute inset-x-0 top-0 p-8 z-20 text-center bg-gradient-to-b from-black/60 to-transparent">
+                <p class="text-orange-400 font-bold text-xs md:text-sm uppercase tracking-[0.3em] mb-1">Kenapa Harus Pilih</p>
+                <h2 class="text-white text-3xl md:text-4xl font-black italic tracking-tighter uppercase mb-1">JustTrip Tour</h2>
+                <p class="text-orange-400 font-bold text-xs md:text-sm tracking-wide">Sebagai Travel & Event Organizer Anda?</p>
             </div>
 
-            <!-- Point 2 -->
-            <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-slate-100 group" data-aos="fade-up" data-aos-delay="150">
-                <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center mb-4 group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-300">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"></path>
-                    </svg>
+            <!-- Slider Container -->
+            <div class="absolute inset-0">
+                @foreach(range(1, 8) as $i)
+                <div class="why-slide-alt absolute inset-0 opacity-0 transition-opacity duration-1000 ease-in-out {{ $i == 1 ? 'active opacity-100' : '' }}">
+                    <img src="{{ asset('image/' . $i . '.jpg') }}" alt="JustTrip Moment {{ $i }}" class="w-full h-full object-cover grayscale-[15%] group-hover:grayscale-0 transition-all duration-700">
+                    <div class="absolute inset-0 bg-blue-900/10 mix-blend-multiply"></div>
                 </div>
-                <h3 class="font-bold text-gray-800 text-lg leading-tight mb-2">Tim Bersertifikat LSP & BNSP</h3>
-                <p class="text-gray-500 text-sm">Dikawal oleh tenaga ahli yang kompeten dan diakui secara nasional.</p>
+                @endforeach
             </div>
 
-            <!-- Point 3 -->
-            <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-slate-100 group" data-aos="fade-up" data-aos-delay="200">
-                <div class="w-12 h-12 bg-rose-50 text-rose-600 rounded-xl flex items-center justify-center mb-4 group-hover:bg-rose-600 group-hover:text-white transition-colors duration-300">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                    </svg>
-                </div>
-                <h3 class="font-bold text-gray-800 text-lg leading-tight mb-2">Trip Penuh Kesan & Makna</h3>
-                <p class="text-gray-500 text-sm">Fokus membangun hubungan dan kebersamaan, bukan sekadar jalan-jalan.</p>
-            </div>
-
-            <!-- Point 4 -->
-            <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-slate-100 group" data-aos="fade-up" data-aos-delay="250">
-                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                    </svg>
-                </div>
-                <h3 class="font-bold text-gray-800 text-lg leading-tight mb-2">Jaminan & Keuntungan di MOU</h3>
-                <p class="text-gray-500 text-sm">Kepastian layanan tertulis jelas dalam kontrak kerja sama yang transparan.</p>
-            </div>
-
-            <!-- Point 5 -->
-            <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-slate-100 group" data-aos="fade-up" data-aos-delay="300">
-                <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                    </svg>
-                </div>
-                <h3 class="font-bold text-gray-800 text-lg leading-tight mb-2">Tenaga Ahli Berkompeten</h3>
-                <p class="text-gray-500 text-sm">Tim fasilitator berpengalaman yang ahli di bidang manajemen acara dan SDM.</p>
-            </div>
-
-            <!-- Point 6 -->
-            <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-slate-100 group" data-aos="fade-up" data-aos-delay="350">
-                <div class="w-12 h-12 bg-cyan-50 text-cyan-600 rounded-xl flex items-center justify-center mb-4 group-hover:bg-cyan-600 group-hover:text-white transition-colors duration-300">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
-                    </svg>
-                </div>
-                <h3 class="font-bold text-gray-800 text-lg leading-tight mb-2">Fleksibel & Customizable</h3>
-                <p class="text-gray-500 text-sm">Program dapat disesuaikan sepenuhnya dengan budget dan kebutuhan Anda.</p>
-            </div>
-
-            <!-- Point 7 -->
-            <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-slate-100 group" data-aos="fade-up" data-aos-delay="400">
-                <div class="w-12 h-12 bg-sky-50 text-sky-600 rounded-xl flex items-center justify-center mb-4 group-hover:bg-sky-600 group-hover:text-white transition-colors duration-300">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                    </svg>
-                </div>
-                <h3 class="font-bold text-gray-800 text-lg leading-tight mb-2">Trip Kekinian & Up to Date</h3>
-                <p class="text-gray-500 text-sm">Destinasi dan konten acara yang selalu mengikuti tren terbaru (Instagrammable).</p>
-            </div>
-
-            <!-- Point 8 -->
-            <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-slate-100 group" data-aos="fade-up" data-aos-delay="450">
-                <div class="w-12 h-12 bg-violet-50 text-violet-600 rounded-xl flex items-center justify-center mb-4 group-hover:bg-violet-600 group-hover:text-white transition-colors duration-300">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                    </svg>
-                </div>
-                <h3 class="font-bold text-gray-800 text-lg leading-tight mb-2">Perencanaan Sistematis</h3>
-                <p class="text-gray-500 text-sm">Alur kerja yang rapi dan laporan berkala yang transparan kepada klien.</p>
-            </div>
-
-            <!-- Point 9 -->
-            <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-slate-100 group" data-aos="fade-up" data-aos-delay="500">
-                <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center mb-4 group-hover:bg-amber-600 group-hover:text-white transition-colors duration-300">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                    </svg>
-                </div>
-                <h3 class="font-bold text-gray-800 text-lg leading-tight mb-2">Mitra Terpercaya</h3>
-                <p class="text-gray-500 text-sm">Bekerja sama dengan vendor hotel, transport, dan katering pilihan terbaik.</p>
-            </div>
-
-            <!-- Point 10 -->
-            <div class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-slate-100 group" data-aos="fade-up" data-aos-delay="550">
-                <div class="w-12 h-12 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center mb-4 group-hover:bg-orange-600 group-hover:text-white transition-colors duration-300">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                    </svg>
-                </div>
-                <h3 class="font-bold text-gray-800 text-lg leading-tight mb-2">Harga Dapat Dinegosiasi</h3>
-                <p class="text-gray-500 text-sm">Penawaran harga yang kompetitif dan fleksibel sesuai kebutuhan paket Anda.</p>
+            <!-- Slider Indicators -->
+            <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 z-20">
+                @foreach(range(1, 8) as $i)
+                <button class="why-dot-alt h-1 rounded-full bg-white/30 transition-all duration-300 {{ $i == 1 ? 'active bg-orange-500 w-8' : 'w-2' }}" data-index="{{ $i - 1 }}"></button>
+                @endforeach
             </div>
         </div>
     </div>
 </section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const slides = document.querySelectorAll('.why-slide-alt');
+        const dots = document.querySelectorAll('.why-dot-alt');
+        let currentSlide = 0;
+        let slideInterval;
+
+        function showSlide(index) {
+            slides.forEach((s, i) => {
+                s.classList.toggle('active', i === index);
+                s.style.opacity = i === index ? '1' : '0';
+            });
+            dots.forEach((d, i) => {
+                d.classList.toggle('active', i === index);
+                if (i === index) {
+                    d.classList.add('bg-orange-500', 'w-8');
+                    d.classList.remove('bg-white/30', 'w-2');
+                } else {
+                    d.classList.add('bg-white/30', 'w-2');
+                    d.classList.remove('bg-orange-500', 'w-8');
+                }
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function startAutoplay() {
+            stopAutoplay();
+            slideInterval = setInterval(nextSlide, 4000);
+        }
+
+        function stopAutoplay() {
+            if (slideInterval) clearInterval(slideInterval);
+        }
+
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                currentSlide = index;
+                showSlide(currentSlide);
+                startAutoplay();
+            });
+        });
+
+        startAutoplay();
+    });
+</script>
+
+<!-- Customer Reviews Section -->
+@if(isset($reviews) && $reviews->count() > 0)
+<section id="customer-reviews" class="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-teal-50 to-cyan-50">
+    <div class="container mx-auto px-4">
+        <!-- Section Header -->
+        <div class="text-center mb-8 sm:mb-12 md:mb-16" data-aos="fade-up">
+            <p class="text-xs sm:text-sm font-semibold text-teal-600 uppercase tracking-widest mb-2">Testimoni Pelanggan</p>
+            <h2 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-3 sm:mb-4">Apa Kata Mereka?</h2>
+            <p class="text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto">Pengalaman nyata dari pelanggan yang telah menikmati perjalanan bersama JustTrip</p>
+        </div>
+
+        <!-- Reviews Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            @foreach($reviews as $index => $review)
+            <div class="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
+                <!-- Card Content -->
+                <div class="p-6 sm:p-8">
+                    <!-- Quote Icon -->
+                    <div class="mb-4">
+                        <svg class="w-8 h-8 sm:w-10 sm:h-10 text-teal-400/50" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+                        </svg>
+                    </div>
+                    
+                    <!-- Rating -->
+                    <div class="mb-4">
+                        <span class="text-yellow-400 text-lg sm:text-xl">{{ $review->formatted_rating }}</span>
+                    </div>
+
+                    <!-- Review Content -->
+                    <p class="text-gray-700 text-sm sm:text-base leading-relaxed mb-6 line-clamp-4">"{{ $review->content }}"</p>
+
+                    <!-- Customer Info -->
+                    <div class="flex items-center border-t border-gray-100 pt-6">
+                        <img src="{{ $review->avatar_url }}" alt="{{ $review->customer_name }}" class="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border-2 border-teal-100 mr-4 group-hover:border-teal-400 transition-colors">
+                        <div class="flex-1 min-w-0">
+                            <h4 class="font-bold text-gray-800 text-sm sm:text-base truncate">{{ $review->customer_name }}</h4>
+                            @if($review->customer_position)
+                                <p class="text-gray-500 text-xs sm:text-sm truncate">{{ $review->customer_position }}</p>
+                            @endif
+                        </div>
+                    </div>
+
+                    <!-- Destination Badge -->
+                    <div class="mt-4">
+                        <span class="inline-flex items-center gap-1.5 bg-gradient-to-r from-teal-50 to-cyan-50 text-teal-700 px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium border border-teal-100">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            {{ $review->destination }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+@endif
 
 <!-- Partner Slider Section -->
 <section id="partner-slider" class="py-10 sm:py-12 overflow-hidden">
@@ -457,15 +516,6 @@
 
                     <!-- Gradient Overlay -->
                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-300"></div>
-
-                    <!-- Featured Badge -->
-                    <!-- @if($gallery->featured)
-                        <div class="absolute top-2 sm:top-3 right-2 sm:right-3 z-10">
-                            <span class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full font-semibold shadow-lg">
-                                <i class="fas fa-star mr-0.5 sm:mr-1"></i>Featured
-                            </span>
-                        </div>
-                    @endif -->
 
                     <!-- Content Overlay -->
                     <div class="absolute bottom-0 left-0 right-0 p-3 sm:p-4 md:p-5 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
@@ -788,12 +838,10 @@
 
                                 // Promo belum dimulai
                                 if ($now->lt($validFrom)) {
-                                    $daysToStart = $validFrom->diffInDays($now);
+                                    $daysToStart = (int) $now->diffInDays($validFrom);
 
-                                    if ($daysToStart > 1) {
+                                    if ($daysToStart > 0) {
                                         $timeLeftLabel = 'Mulai dalam ' . $daysToStart . ' hari';
-                                    } elseif ($daysToStart === 1) {
-                                        $timeLeftLabel = 'Mulai besok';
                                     } else {
                                         $timeLeftLabel = 'Mulai hari ini';
                                     }
@@ -806,15 +854,10 @@
 
                                 // Promo sedang berjalan
                                 } else {
-                                    $daysLeft = $now->diffInDays($validUntil);
-                                    $hoursLeft = $now->copy()->addDays($daysLeft)->diffInHours($validUntil);
+                                    $daysLeft = (int) $now->diffInDays($validUntil);
 
-                                    if ($daysLeft >= 2) {
+                                    if ($daysLeft > 0) {
                                         $timeLeftLabel = $daysLeft . ' hari lagi';
-                                    } elseif ($daysLeft === 1) {
-                                        $timeLeftLabel = 'Berakhir besok';
-                                    } elseif ($daysLeft === 0 && $hoursLeft > 0) {
-                                        $timeLeftLabel = 'Berakhir dalam ' . $hoursLeft . ' jam';
                                     } else {
                                         $timeLeftLabel = 'Berakhir hari ini';
                                     }

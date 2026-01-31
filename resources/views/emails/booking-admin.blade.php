@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking Promo Baru - Jussttrip Admin</title>
+    <title>Booking Paket Baru - Jussttrip Admin</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8fafc;">
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width: 600px; margin: 0 auto; background-color: #ffffff;">
@@ -11,7 +11,7 @@
         <tr>
             <td style="background: linear-gradient(135deg, #1e293b 0%, #334155 100%); padding: 30px; text-align: center;">
                 <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 800;">
-                    🔔 Booking Promo Baru
+                    🔔 Booking Paket Baru
                 </h1>
                 <p style="color: #94a3b8; margin: 10px 0 0; font-size: 14px;">
                     {{ now()->format('d F Y, H:i') }} WIB
@@ -22,9 +22,9 @@
         <!-- Alert Badge -->
         <tr>
             <td style="padding: 20px 30px 0;">
-                <div style="background: linear-gradient(135deg, #dc2626 0%, #ec4899 100%); border-radius: 12px; padding: 15px 20px; text-align: center;">
+                <div style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); border-radius: 12px; padding: 15px 20px; text-align: center;">
                     <span style="color: white; font-size: 13px; font-weight: 700;">
-                        ⚡ PAKET PROMO: {{ strtoupper($specialOffer->title) }}
+                        📦 PAKET WISATA: {{ strtoupper($booking->layanan->nama_layanan ?? 'PAKET WISATA') }}
                     </span>
                 </div>
             </td>
@@ -109,7 +109,7 @@
                     <table width="100%" cellspacing="0" cellpadding="0" style="font-size: 14px;">
                         <tr>
                             <td style="padding: 5px 0; color: #94a3b8;">Subtotal:</td>
-                            <td style="padding: 5px 0; color: #ffffff; text-align: right;">Rp {{ number_format($booking->original_amount - $booking->discount_amount, 0, ',', '.') }}</td>
+                            <td style="padding: 5px 0; color: #ffffff; text-align: right;">Rp {{ number_format($booking->original_amount, 0, ',', '.') }}</td>
                         </tr>
                         @if($booking->discount_amount > 0)
                         <tr>
@@ -117,10 +117,6 @@
                             <td style="padding: 5px 0; color: #4ade80; text-align: right;">- Rp {{ number_format($booking->discount_amount, 0, ',', '.') }}</td>
                         </tr>
                         @endif
-                        <tr>
-                            <td style="padding: 5px 0; color: #94a3b8;">PPN (11%):</td>
-                            <td style="padding: 5px 0; color: #ffffff; text-align: right;">Rp {{ number_format($booking->tax_amount ?? 0, 0, ',', '.') }}</td>
-                        </tr>
                         <tr>
                             <td colspan="2" style="border-top: 1px solid #475569; padding-top: 12px; margin-top: 8px;"></td>
                         </tr>

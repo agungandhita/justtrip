@@ -448,7 +448,7 @@
     function sendInvoiceToWhatsApp(invoiceId) {
         if (!invoiceId || invoiceId === '0') {
              // Fallback to general CS if no invoice
-             window.open('https://wa.me/6281234567890?text=Halo JustTrip, saya ingin bertanya tentang booking #' + '{{ $booking->booking_id }}', '_blank');
+             window.open('https://wa.me/6282266478147?text=' + encodeURIComponent('Halo Admin JustTrip, saya ingin bertanya tentang booking #{{ $booking->booking_id }}. Bisakah Anda membantu saya?'), '_blank');
              return;
         }
 
