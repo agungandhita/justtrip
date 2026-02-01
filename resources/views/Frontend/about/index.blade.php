@@ -206,7 +206,7 @@
             <!-- Card 1 -->
             <div class="group bg-white rounded-[2.5rem] p-8 shadow-2xl shadow-slate-200/60 hover:shadow-teal-200/40 transition-all duration-500 border border-slate-100 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="100">
                 <div class="relative mb-10 w-full aspect-[4/3] rounded-3xl overflow-hidden shadow-inner bg-slate-50 border-[6px] border-white group-hover:border-teal-50 transition-all duration-500">
-                    <img src="{{ asset('img/IMG_0350.PNG') }}" 
+                    <img src="{{ asset('img/img_0350.png') }}" 
                          alt="Sertifikasi JustTrip" 
                          class="w-full h-full object-contain p-4 transform group-hover:scale-110 rotate-0 group-hover:-rotate-1 transition-transform duration-700">
                     <div class="absolute inset-0 bg-gradient-to-tr from-teal-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -223,7 +223,7 @@
             <!-- Card 2 -->
             <div class="group bg-white rounded-[2.5rem] p-8 shadow-2xl shadow-slate-200/60 hover:shadow-blue-200/40 transition-all duration-500 border border-slate-100 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="200">
                 <div class="relative mb-10 w-full aspect-[4/3] rounded-3xl overflow-hidden shadow-inner bg-slate-50 border-[6px] border-white group-hover:border-blue-50 transition-all duration-500">
-                    <img src="{{ asset('img/IMG_0351.PNG') }}" 
+                    <img src="{{ asset('img/img_0351.png') }}" 
                          alt="Kualitas Layanan" 
                          class="w-full h-full object-contain p-4 transform group-hover:scale-110 rotate-0 group-hover:rotate-1 transition-transform duration-700">
                     <div class="absolute inset-0 bg-gradient-to-tr from-blue-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -240,7 +240,7 @@
             <!-- Card 3 -->
             <div class="group bg-white rounded-[2.5rem] p-8 shadow-2xl shadow-slate-200/60 hover:shadow-emerald-200/40 transition-all duration-500 border border-slate-100 flex flex-col items-center text-center md:col-span-2 lg:col-span-1" data-aos="fade-up" data-aos-delay="300">
                 <div class="relative mb-10 w-full aspect-[4/3] rounded-3xl overflow-hidden shadow-inner bg-slate-50 border-[6px] border-white group-hover:border-emerald-50 transition-all duration-500">
-                    <img src="{{ asset('img/IMG_0352.PNG') }}" 
+                    <img src="{{ asset('img/img_0352.png') }}" 
                          alt="Mitra Kepercayaan" 
                          class="w-full h-full object-contain p-4 transform group-hover:scale-110 rotate-0 group-hover:-rotate-1 transition-transform duration-700">
                     <div class="absolute inset-0 bg-gradient-to-tr from-emerald-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>

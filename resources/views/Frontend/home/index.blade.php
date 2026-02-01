@@ -403,39 +403,24 @@
 
     <div class="partner-marquee">
         <div class="partner-track">
-            <img src="{{ asset('img/partner/IMG_0353.PNG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0354.JPG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0355.PNG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0356.PNG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0357.PNG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0358.JPG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0359.PNG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0360.PNG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0361.PNG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0362.PNG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0363.PNG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0364.PNG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0365.PNG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0366.PNG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0367.JPG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0368.JPG') }}" alt="Partner" class="partner-logo">
-            <!-- Duplicate for seamless loop -->
-            <img src="{{ asset('img/partner/IMG_0353.PNG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0354.JPG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0355.PNG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0356.PNG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0357.PNG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0358.JPG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0359.PNG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0360.PNG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0361.PNG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0362.PNG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0363.PNG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0364.PNG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0365.PNG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0366.PNG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0367.JPG') }}" alt="Partner" class="partner-logo">
-            <img src="{{ asset('img/partner/IMG_0368.JPG') }}" alt="Partner" class="partner-logo">
+            @php
+                $partners = [
+                    'img_0353.png', 'img_0354.jpg', 'img_0355.png', 'img_0356.png',
+                    'img_0357.png', 'img_0358.jpg', 'img_0359.png', 'img_0360.png',
+                    'img_0361.png', 'img_0362.png', 'img_0363.png', 'img_0364.png',
+                    'img_0365.png', 'img_0366.png', 'img_0367.jpg', 'img_0368.jpg'
+                ];
+            @endphp
+            
+            {{-- Original Set --}}
+            @foreach($partners as $partner)
+                <img src="{{ asset('img/' . $partner) }}" alt="Partner" class="partner-logo">
+            @endforeach
+            
+            {{-- Duplicate for seamless loop --}}
+            @foreach($partners as $partner)
+                <img src="{{ asset('img/' . $partner) }}" alt="Partner" class="partner-logo">
+            @endforeach
         </div>
     </div>
 </section>
