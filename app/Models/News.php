@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Support\Str;
 
 class News extends Model
 {
+    use HasUuids;
     protected $fillable = [
         'title',
         'slug',
@@ -48,12 +50,18 @@ class News extends Model
     // Auto-generated excerpt from content (first 150 characters)
     public function getExcerptAttribute(): string
     {
+        if (empty($this->content)) {
+            return '';
+        }
         return Str::limit(strip_tags($this->content), 150);
     }
 
     // Auto-calculated read time based on content length (avg 200 words/min)
     public function getReadTimeAttribute(): int
     {
+        if (empty($this->content)) {
+            return 1;
+        }
         $wordCount = str_word_count(strip_tags($this->content));
         return max(1, (int) ceil($wordCount / 200));
     }

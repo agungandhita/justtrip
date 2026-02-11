@@ -96,7 +96,7 @@
                                             @endif
                                             <div>
                                                 <div class="text-sm font-medium text-gray-900">{{ Str::limit($article->title, 50) }}</div>
-                                                <div class="text-sm text-gray-500">{{ Str::limit($article->excerpt, 80) }}</div>
+                                                <div class="text-sm text-gray-500">{{ $article->excerpt ? Str::limit($article->excerpt, 80) : 'No content preview available' }}</div>
                                             </div>
                                         </div>
                                     </td>

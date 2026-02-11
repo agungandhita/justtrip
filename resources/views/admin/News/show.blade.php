@@ -68,7 +68,7 @@
                         <!-- Auto-generated Excerpt -->
                         <div class="bg-gray-50 rounded-lg p-4">
                             <h3 class="text-sm font-medium text-gray-700 mb-2">Excerpt (Auto-generated)</h3>
-                            <p class="text-gray-600 italic">{{ $news->excerpt }}</p>
+                            <p class="text-gray-600 italic">{{ $news->excerpt ?: 'No content preview available' }}</p>
                         </div>
                     </div>
 

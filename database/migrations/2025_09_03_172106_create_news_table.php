@@ -12,26 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('news', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('title');
             $table->string('slug')->unique();
-            $table->text('excerpt');
             $table->longText('content');
             $table->string('featured_image');
-            $table->json('gallery_images')->nullable();
             $table->string('category'); // destinasi, tips, guide, etc.
-            $table->json('tags')->nullable();
             $table->string('author_name');
-            $table->string('author_image')->nullable();
-            $table->string('author_bio')->nullable();
-            $table->integer('read_time')->default(5); // in minutes
             $table->integer('views')->default(0);
             $table->boolean('is_featured')->default(false);
-            $table->boolean('is_published')->default(false);
-            $table->enum('status', ['draft', 'published'])->default('draft');
+            $table->string('status')->default('draft'); // 'draft' or 'published'
             $table->timestamp('published_at')->nullable();
-            $table->string('meta_title')->nullable();
-            $table->text('meta_description')->nullable();
+            
             $table->timestamps();
         });
     }

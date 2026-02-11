@@ -108,27 +108,7 @@
                         </div>
                     </div>
 
-                    <!-- Photo Gallery in Article -->
-                    @if($article->gallery_images && count($article->gallery_images) > 0)
-                    <div class="mt-16 pt-16 border-t border-gray-100" data-aos="fade-up">
-                        <h3 class="text-2xl font-black text-gray-900 mb-8 flex items-center">
-                            <i class="fas fa-camera-retro mr-3 text-teal-600"></i>
-                            Momen Perjalanan
-                        </h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            @foreach($article->gallery_images as $image)
-                            <div class="group relative overflow-hidden rounded-2xl cursor-pointer" onclick="openImageModal('{{ asset('storage/' . $image) }}')">
-                                <img src="{{ asset('storage/' . $image) }}" 
-                                     alt="Travel Gallery" 
-                                     class="w-full h-72 object-cover transform transition-transform duration-700 group-hover:scale-110">
-                                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                    <i class="fas fa-expand text-white text-3xl"></i>
-                                </div>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                    @endif
+                    <!-- Photo Gallery Section Removed - gallery_images field no longer exists -->
 
                     <!-- Bottom Tags & Share -->
                     <div class="mt-16 pt-12 border-t border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-8" data-aos="fade-up">
@@ -136,15 +116,7 @@
                         <div>
                             <h4 class="text-sm font-black uppercase tracking-wider text-gray-400 mb-4">Topik Terkait</h4>
                             <div class="flex flex-wrap gap-2">
-                                @if($article->tags && count($article->tags) > 0)
-                                    @foreach($article->tags as $tag)
-                                    <span class="bg-gray-100 text-gray-700 px-4 py-2 rounded-xl text-sm font-bold hover:bg-teal-500 hover:text-white transition-all cursor-pointer">
-                                        #{{ $tag }}
-                                    </span>
-                                    @endforeach
-                                @else
-                                    <span class="bg-gray-100 text-gray-700 px-4 py-2 rounded-xl text-sm font-bold uppercase">{{ $article->category }}</span>
-                                @endif
+                                <span class="bg-gray-100 text-gray-700 px-4 py-2 rounded-xl text-sm font-bold uppercase">{{ $article->category }}</span>
                             </div>
                         </div>
 
@@ -180,7 +152,7 @@
                         </div>
                         <p class="text-gray-500 text-sm font-bold uppercase tracking-wide">Travel Writer & Content Specialist</p>
                         <p class="text-gray-600 leading-relaxed text-sm">
-                            {{ $article->author_bio ?? 'Berdedikasi untuk memberikan inspirasi dan panduan perjalanan terbaik untuk Anda. Menjelajahi setiap sudut nusantara dengan penuh semangat.' }}
+                            Berdedikasi untuk memberikan inspirasi dan panduan perjalanan terbaik untuk Anda. Menjelajahi setiap sudut nusantara dengan penuh semangat.
                         </p>
                     </div>
                 </div>
