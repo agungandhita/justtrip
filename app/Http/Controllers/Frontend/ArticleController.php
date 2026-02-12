@@ -15,7 +15,7 @@ class ArticleController extends Controller
      */
     public function index(Request $request)
     {
-        $query = News::query();
+        $query = News::published();
 
         // Search functionality
         if ($request->filled('search')) {
@@ -53,13 +53,15 @@ class ArticleController extends Controller
         $articles = $query->paginate(12);
 
         // Get featured articles for hero section
-        $featuredArticles = News::where('is_featured', true)
+        $featuredArticles = News::published()
+                               ->where('is_featured', true)
                                ->latest()
                                ->take(3)
                                ->get();
 
         // Get filter options
-        $categoryStats = News::whereNotNull('category')
+        $categoryStats = News::published()
+                            ->whereNotNull('category')
                             ->selectRaw('category, COUNT(*) as total')
                             ->groupBy('category')
                             ->orderBy('category', 'asc')
@@ -73,14 +75,16 @@ class ArticleController extends Controller
      */
     public function show($slug)
     {
-        $article = News::where('slug', $slug)
+        $article = News::published()
+                      ->where('slug', $slug)
                       ->firstOrFail();
 
         // Increment views
         $article->increment('views');
 
         // Get related articles
-        $relatedArticles = News::where('id', '!=', $article->id)
+        $relatedArticles = News::published()
+                              ->where('id', '!=', $article->id)
                               ->where('category', $article->category)
                               ->latest()
                               ->take(3)

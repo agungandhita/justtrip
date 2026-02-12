@@ -283,8 +283,9 @@
 
             confirmBtn.addEventListener('click', function() {
                 if (pendingForm) {
+                    const formToSubmit = pendingForm;
                     closeModal();
-                    pendingForm.submit();
+                    formToSubmit.submit();
                 }
             });
         });

@@ -164,12 +164,10 @@ class GalleryController extends Controller
             $isStatusUpdate = $request->has('status') && count($request->all()) <= 3; // status, _token, _method
             
             if ($isStatusUpdate) {
-                // Simple status update validation
                 $request->validate([
                     'status' => 'required|string|in:active,inactive'
                 ]);
                 
-                $oldStatus = $gallery->status;
                 $gallery->update(['status' => $request->status]);
                 
                 $statusText = $request->status === 'active' ? 'diaktifkan' : 'dinonaktifkan';
@@ -188,7 +186,7 @@ class GalleryController extends Controller
                 'destination' => 'required|string|max:255',
                 'category' => 'required|string|max:100',
                 'images' => 'nullable|array|max:20',
-                'images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // Maksimal 2MB per foto
+                'images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
                 'trip_date' => 'required|date',
                 'participants_count' => 'nullable|integer|min:1',
                 'trip_highlights' => 'nullable|string',
@@ -214,7 +212,8 @@ class GalleryController extends Controller
             return back()->withInput();
         }
 
-        $data = $request->all();
+        // Build data, explicitly excluding image-related fields from the request
+        $data = $request->except(['images', 'main_image', 'delete_images', 'keep_existing_images']);
         $data['slug'] = Str::slug($request->title);
         $data['photographer'] = $request->photographer ?: $gallery->photographer;
 
@@ -228,26 +227,28 @@ class GalleryController extends Controller
             $data['tags'] = array_map('trim', explode(',', $request->tags));
         }
 
-        // Handle images upload
-        $oldImages = $gallery->images ?? [];
-        $oldMainImage = $gallery->main_image;
+        // Get current images from DB (these may have been modified by AJAX delete calls)
+        $gallery->refresh();
+        $currentImages = $gallery->images ?? [];
+        $currentMainImage = $gallery->main_image;
         
+        // Handle images upload
         if ($request->hasFile('images')) {
-            // Only delete old images if not keeping them
             if (!$request->boolean('keep_existing_images')) {
-                $this->deleteImages($oldImages);
-                if ($oldMainImage) {
-                    Storage::disk('public')->delete($oldMainImage);
+                // Replace all images
+                $this->deleteImages($currentImages);
+                if ($currentMainImage) {
+                    Storage::disk('public')->delete($currentMainImage);
                 }
                 $images = [];
                 $mainImage = null;
             } else {
                 // Keep existing images and add new ones
-                $images = $oldImages;
-                $mainImage = $oldMainImage;
+                $images = $currentImages;
+                $mainImage = $currentMainImage;
             }
 
-            // Process new images
+            // Process new uploads
             foreach ($request->file('images') as $index => $imageFile) {
                 if ($imageFile && $imageFile->isValid()) {
                     try {
@@ -255,13 +256,12 @@ class GalleryController extends Controller
                         $path = $imageFile->storeAs('galleries', $filename, 'public');
                         $images[] = $path;
 
-                        // Set first new image as main image if no existing main image
                         if (!$mainImage && $index === 0) {
                             $mainImage = $path;
                         }
                     } catch (\Exception $e) {
                         Log::error('Image upload failed in update', ['error' => $e->getMessage(), 'file_index' => $index]);
-                        Alert::error('Error', 'Failed to upload some images: ' . $e->getMessage());
+                        Alert::error('Error', 'Gagal mengupload gambar: ' . $e->getMessage());
                         return redirect()->back()->withInput();
                     }
                 }
@@ -269,19 +269,17 @@ class GalleryController extends Controller
 
             $data['images'] = $images;
             $data['main_image'] = $mainImage;
-        } else {
-            // No new images uploaded, keep existing images for full update
-            $data['images'] = $oldImages;
-            $data['main_image'] = $oldMainImage;
         }
+        // If no new images uploaded, don't touch images field at all
+        // (current images in DB are already correct from AJAX operations)
 
         $gallery->update($data);
 
         $imageCount = is_array($gallery->fresh()->images) ? count($gallery->fresh()->images) : 0;
-        Alert::success(
-            'Berhasil!', 
-            "Gallery '{$gallery->title}' berhasil diperbarui dengan {$imageCount} foto!"
-        )->autoClose(4000);
+        
+        $message = "Gallery '{$gallery->title}' berhasil diperbarui dengan total {$imageCount} foto!";
+        
+        Alert::success('Berhasil!', $message)->autoClose(4000);
         return redirect()->route('admin.galleries.index');
     }
 
@@ -306,7 +304,7 @@ class GalleryController extends Controller
 
 
     /**
-     * Delete individual image from gallery
+     * Delete individual image from gallery via AJAX
      */
     public function deleteImage(Gallery $gallery, Request $request)
     {
@@ -325,6 +323,14 @@ class GalleryController extends Controller
             ], 404);
         }
 
+        // Prevent deleting the last image
+        if (count($images) <= 1) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gallery harus memiliki minimal 1 foto. Tidak dapat menghapus foto terakhir.'
+            ], 422);
+        }
+
         // Remove image from array
         $updatedImages = array_values(array_filter($images, function($img) use ($imagePath) {
             return $img !== $imagePath;
@@ -333,6 +339,11 @@ class GalleryController extends Controller
         // Delete physical file
         if (Storage::disk('public')->exists($imagePath)) {
             Storage::disk('public')->delete($imagePath);
+            Log::info('Gallery image deleted', [
+                'gallery_id' => $gallery->id,
+                'deleted_image' => $imagePath,
+                'remaining_count' => count($updatedImages)
+            ]);
         }
 
         // Update main_image if deleted image was the main image
@@ -341,7 +352,7 @@ class GalleryController extends Controller
             $mainImage = !empty($updatedImages) ? $updatedImages[0] : null;
         }
 
-        // Update gallery
+        // Update gallery in database
         $gallery->update([
             'images' => $updatedImages,
             'main_image' => $mainImage

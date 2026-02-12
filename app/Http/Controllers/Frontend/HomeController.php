@@ -36,12 +36,14 @@ class HomeController extends Controller
                                  ->get();
 
         // Get latest news/articles
-        $latestNews = News::latest()
+        $latestNews = News::published()
+                         ->latest()
                          ->take(3)
                          ->get();
 
         // Get featured news
-        $featuredNews = News::where('is_featured', true)
+        $featuredNews = News::published()
+                           ->where('is_featured', true)
                            ->latest()
                            ->first();
 
@@ -63,7 +65,8 @@ class HomeController extends Controller
         ];
 
         // Get testimonials (using news as testimonials for now)
-        $testimonials = News::where('category', 'testimonial')
+        $testimonials = News::published()
+                           ->where('category', 'testimonial')
                            ->latest()
                            ->take(3)
                            ->get();

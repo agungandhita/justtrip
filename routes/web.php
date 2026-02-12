@@ -101,7 +101,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('galleries', GalleryController::class);
 
     // Additional gallery routes for image management
-    Route::delete('galleries/{gallery}/images/{imageIndex}', [GalleryController::class, 'deleteImage'])->name('galleries.delete-image');
+    Route::post('galleries/{gallery}/delete-image', [GalleryController::class, 'deleteImage'])->name('galleries.delete-image');
     Route::post('galleries/{gallery}/add-images', [GalleryController::class, 'addImages'])->name('galleries.add-images');
     Route::post('galleries/{gallery}/set-main-image', [GalleryController::class, 'setMainImage'])->name('galleries.set-main-image');
     Route::post('galleries/cleanup-orphaned', [GalleryController::class, 'cleanupOrphanedFiles'])->name('galleries.cleanup-orphaned');

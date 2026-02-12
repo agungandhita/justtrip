@@ -161,16 +161,18 @@ class NewsController extends Controller
                 'is_featured' => $request->boolean('is_featured')
             ];
             
-            // Set published_at if publishing for the first time
-            if ($validated['status'] === 'published' && !$news->published_at) {
-                $data['published_at'] = $validated['published_at'] ?? now();
-            } elseif (isset($validated['published_at'])) {
-                $data['published_at'] = $validated['published_at'];
+            if ($validated['status'] === 'published') {
+                if (isset($validated['published_at'])) {
+                    $data['published_at'] = $validated['published_at'];
+                }
+                elseif (!$news->published_at) {
+                    $data['published_at'] = now();
+                }
+            } elseif ($validated['status'] === 'draft') {
             }
             
-            // Handle featured image upload
+            
             if ($request->hasFile('featured_image')) {
-                // Delete old image
                 if ($news->featured_image) {
                     Storage::disk('public')->delete($news->featured_image);
                 }
