@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\LayananFormRequest;
 use App\Http\Controllers\Controller;
 use App\Models\Layanan;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -51,52 +51,9 @@ class LayananController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(LayananFormRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'nama_layanan' => 'required|string|max:255',
-            'jenis_layanan' => 'required|in:' . implode(',', array_keys(Layanan::getJenisLayananOptions())),
-            'deskripsi' => 'nullable|string',
-            'harga_mulai' => 'required|numeric|min:0',
-            'durasi_hari' => 'required|integer|min:1',
-            'maks_orang' => 'required|integer|min:1',
-            'lokasi_tujuan' => 'required|string|max:255',
-            'fasilitas' => 'nullable|array',
-            'gambar_destinasi.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'information_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'status' => 'required|in:aktif,nonaktif',
-            'catatan' => 'nullable|string',
-            // New fields
-            'start_time' => 'nullable|string|max:50',
-            'finish_time' => 'nullable|string|max:50',
-            'itinerary_note' => 'nullable|string',
-            'itinerary' => 'nullable|array',
-            'include_services' => 'nullable|array',
-            'exclude_services' => 'nullable|array',
-            'destinations' => 'nullable|array',
-            'pricing_types' => 'nullable|array',
-            'pricing_prices' => 'nullable|array',
-            'terms_registration' => 'nullable|array',
-            'terms_cancelation' => 'nullable|array',
-            'terms_not_responsible' => 'nullable|array',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        $data = $request->only([
-            'nama_layanan', 'jenis_layanan', 'deskripsi', 'harga_mulai',
-            'durasi_hari', 'maks_orang', 'lokasi_tujuan', 'status', 'catatan',
-            'start_time', 'finish_time', 'itinerary_note'
-        ]);
-
-        // Handle fasilitas (legacy)
-        if ($request->has('fasilitas')) {
-            $data['fasilitas'] = array_values(array_filter($request->fasilitas));
-        }
+        $data = $request->validated();
 
         // Handle gambar destinasi upload
         if ($request->hasFile('gambar_destinasi')) {
@@ -210,53 +167,11 @@ class LayananController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(LayananFormRequest $request, $id)
     {
         $layanan = Layanan::findOrFail($id);
 
-        $validator = Validator::make($request->all(), [
-            'nama_layanan' => 'required|string|max:255',
-            'jenis_layanan' => 'required|in:' . implode(',', array_keys(Layanan::getJenisLayananOptions())),
-            'deskripsi' => 'nullable|string',
-            'harga_mulai' => 'required|numeric|min:0',
-            'durasi_hari' => 'required|integer|min:1',
-            'maks_orang' => 'required|integer|min:1',
-            'lokasi_tujuan' => 'required|string|max:255',
-            'fasilitas' => 'nullable|array',
-            'gambar_destinasi.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'existing_images' => 'nullable|array',
-            'information_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'status' => 'required|in:aktif,nonaktif',
-            'catatan' => 'nullable|string',
-            'start_time' => 'nullable|string|max:50',
-            'finish_time' => 'nullable|string|max:50',
-            'itinerary_note' => 'nullable|string',
-            'itinerary' => 'nullable|array',
-            'include_services' => 'nullable|array',
-            'exclude_services' => 'nullable|array',
-            'destinations' => 'nullable|array',
-            'pricing_types' => 'nullable|array',
-            'pricing_prices' => 'nullable|array',
-            'terms_registration' => 'nullable|array',
-            'terms_cancelation' => 'nullable|array',
-            'terms_not_responsible' => 'nullable|array',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        $data = $request->only([
-            'nama_layanan', 'jenis_layanan', 'deskripsi', 'harga_mulai',
-            'durasi_hari', 'maks_orang', 'lokasi_tujuan', 'status', 'catatan',
-            'start_time', 'finish_time', 'itinerary_note'
-        ]);
-
-        if ($request->has('fasilitas')) {
-            $data['fasilitas'] = array_values(array_filter($request->fasilitas));
-        }
+        $data = $request->validated();
 
         // Handle gambar destinasi
         $finalGambarPaths = [];

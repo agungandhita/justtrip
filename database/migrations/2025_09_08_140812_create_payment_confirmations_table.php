@@ -12,22 +12,22 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('payment_confirmations', function (Blueprint $table) {
-            $table->id('payment_confirmation_id');
-            $table->unsignedBigInteger('booking_id');
-            $table->unsignedBigInteger('invoice_id');
-            $table->enum('destination_bank', ['mandiri', 'bca']); // Bank tujuan transfer PT TRISULA PANDU NUSANTARA
-            $table->string('sender_bank_name'); // Nama bank pengirim
-            $table->string('sender_account_number'); // Nomor rekening pengirim
-            $table->string('sender_account_holder'); // Nama pemilik rekening pengirim
-            $table->decimal('payment_amount', 15, 2); // Jumlah yang dibayar
-            $table->datetime('payment_date'); // Tanggal pembayaran
-            $table->string('payment_proof_path'); // Path file bukti pembayaran
-            $table->text('payment_notes')->nullable(); // Catatan dari user
-            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
-            $table->text('admin_notes')->nullable(); // Catatan dari admin
-            $table->unsignedBigInteger('confirmed_by')->nullable(); // Admin yang konfirmasi
+            $table->uuid('payment_confirmation_id')->primary();
+            $table->uuid('booking_id');
+            $table->uuid('invoice_id');
+            $table->string('destination_bank');
+            $table->string('sender_bank_name');
+            $table->string('sender_account_number');
+            $table->string('sender_account_holder');
+            $table->decimal('payment_amount', 15, 2);
+            $table->datetime('payment_date');
+            $table->string('payment_proof_path');
+            $table->text('payment_notes')->nullable();
+            $table->string('status')->default('pending');
+            $table->text('admin_notes')->nullable();
+            $table->unsignedBigInteger('confirmed_by')->nullable();
             $table->timestamp('confirmed_at')->nullable();
-            $table->unsignedBigInteger('processed_by')->nullable(); // Admin yang memproses
+            $table->unsignedBigInteger('processed_by')->nullable();
             $table->timestamp('processed_at')->nullable();
             $table->timestamps();
 

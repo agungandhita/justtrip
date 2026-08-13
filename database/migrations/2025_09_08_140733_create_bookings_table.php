@@ -12,17 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('bookings', function (Blueprint $table) {
-            $table->id('booking_id');
+            $table->uuid('booking_id')->primary();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('layanan_id')->nullable(false);
-            $table->unsignedBigInteger('special_offer_id')->nullable();
+            $table->uuid('layanan_id')->nullable(false);
+            $table->uuid('special_offer_id')->nullable();
             $table->string('booking_number')->unique();
             $table->datetime('booking_date');
             $table->decimal('original_amount', 15, 2);
             $table->decimal('discount_amount', 15, 2)->default(0);
             $table->decimal('total_amount', 15, 2);
-            $table->enum('status', ['pending', 'approved', 'rejected', 'awaiting_payment', 'payment_uploaded', 'confirmed', 'cancelled', 'completed'])->default('pending');
-            $table->json('customer_info'); // nama, email, phone, alamat, dll
+            $table->string('status')->default('pending');
+            $table->json('customer_info');
             $table->json('custom_booking_info')->nullable();
             $table->integer('jumlah_peserta')->default(1);
             $table->date('tanggal_keberangkatan');
@@ -45,8 +45,13 @@ return new class extends Migration
             $table->foreign('rejected_by')->references('id')->on('users')->onDelete('set null');
 
             // Indexes
+            $table->index('booking_number', 'idx_booking_number');
+            $table->index('user_id', 'idx_user_id');
+            $table->index('status', 'idx_status');
+            $table->index(['special_offer_id', 'status'], 'idx_special_offer_status');
+            $table->index('booking_date', 'idx_booking_date');
+            $table->index('tanggal_keberangkatan', 'idx_tanggal_keberangkatan');
             $table->index(['status', 'booking_date']);
-            $table->index('booking_number');
         });
     }
 

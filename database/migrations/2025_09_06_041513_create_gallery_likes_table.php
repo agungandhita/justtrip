@@ -12,12 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('gallery_likes', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('gallery_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->uuid('id')->primary();
+            $table->uuid('gallery_id');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
-            
-            // Ensure a user can only like a gallery once
+
+            $table->foreign('gallery_id')->references('id')->on('galleries')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
             $table->unique(['gallery_id', 'user_id']);
         });
     }

@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('special_offer_galleries', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('special_offer_id')->constrained()->onDelete('cascade');
+            $table->uuid('id')->primary();
+            $table->uuid('special_offer_id');
             $table->string('image_path');
             $table->string('title')->nullable();
             $table->text('description')->nullable();
@@ -21,7 +21,9 @@ return new class extends Migration
             $table->boolean('is_main')->default(false);
             $table->integer('sort_order')->default(0);
             $table->timestamps();
-            
+
+            $table->foreign('special_offer_id')->references('id')->on('special_offers')->onDelete('cascade');
+
             // Index for better performance
             $table->index(['special_offer_id', 'sort_order']);
         });

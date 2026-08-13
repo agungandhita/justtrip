@@ -26,8 +26,8 @@ class AdminMiddleware
 
         // Check if user has admin role
         if (Auth::user()->role !== 'admin') {
-            Alert::error('Akses Ditolak!', 'Anda tidak memiliki akses ke halaman ini');
-            return redirect('/');
+            Alert::error('Akses Ditolak!', 'Anda tidak memiliki akses halaman admin');
+            return redirect()->route('frontend.home');
         }
 
         return $next($request);

@@ -12,15 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('invoices', function (Blueprint $table) {
-            $table->id('invoice_id');
-            $table->unsignedBigInteger('booking_id');
+            $table->uuid('invoice_id')->primary();
+            $table->uuid('booking_id');
             $table->string('invoice_number')->unique();
             $table->date('invoice_date');
             $table->date('due_date');
             $table->decimal('subtotal', 15, 2);
             $table->decimal('discount_amount', 15, 2)->default(0);
             $table->decimal('total_amount', 15, 2);
-            $table->enum('status', ['draft', 'sent', 'awaiting_payment', 'payment_uploaded', 'payment_confirmed', 'paid', 'overdue', 'cancelled'])->default('draft');
+            $table->string('status')->default('draft');
             $table->string('pdf_path')->nullable();
             $table->timestamp('sent_at')->nullable();
             $table->timestamp('paid_at')->nullable();

@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('subscribe_users', function (Blueprint $table) {
-            $table->id();
-            $table->string("email");
-            $table->boolean("unsubcribe");
+            $table->uuid('id')->primary();
+            $table->string('email');
+            $table->boolean('unsubcribe');
             $table->timestamps();
         });
     }
