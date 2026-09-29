@@ -118,7 +118,15 @@
                             <input type="file" id="gambar_destinasi" name="gambar_destinasi[]" multiple accept="image/*" class="hidden" onchange="previewImages(this)">
                             <label for="gambar_destinasi" class="flex flex-col items-center justify-center w-full h-24 bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl cursor-pointer hover:bg-indigo-50/50 hover:border-indigo-200 transition-all">
                                 <span class="text-xs font-bold text-gray-400 uppercase">+ Tambah Foto</span>
+                                <span class="text-[10px] text-gray-300 mt-1">Maks. 5 foto total</span>
                             </label>
+                            <!-- Note ukuran gambar destinasi -->
+                            <div class="mt-2 flex items-start gap-2 px-3 py-2 bg-indigo-50 border border-indigo-100 rounded-xl">
+                                <svg class="w-4 h-4 text-indigo-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <div class="text-[10px] text-indigo-700 leading-relaxed">
+                                    <span class="font-black">Rekomendasi ukuran:</span> Lebar <span class="font-bold">1920 &times; 1080 px</span> (landscape/16:9) atau <span class="font-bold">1080 &times; 1080 px</span> (kotak). Format: JPG/PNG/WEBP. Maks. <span class="font-bold">2 MB</span> per foto.
+                                </div>
+                            </div>
                             <div id="image-preview" class="grid grid-cols-3 gap-2 mt-2"></div>
                         </div>
 
@@ -133,6 +141,13 @@
                             <label for="information_image" class="flex flex-col items-center justify-center w-full h-20 bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl cursor-pointer hover:bg-amber-50/50 hover:border-amber-200 transition-all">
                                 <span class="text-xs font-bold text-gray-400 uppercase">Ganti Gambar Info</span>
                             </label>
+                            <!-- Note ukuran gambar info -->
+                            <div class="mt-2 flex items-start gap-2 px-3 py-2 bg-amber-50 border border-amber-100 rounded-xl">
+                                <svg class="w-4 h-4 text-amber-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <div class="text-[10px] text-amber-700 leading-relaxed">
+                                    <span class="font-black">Gambar informasi</span> ditampilkan full-width di tab Informasi. Rekomendasi: <span class="font-bold">1200 &times; 600 px</span> (landscape/2:1). Format: JPG/PNG/WEBP. Maks. <span class="font-bold">2 MB</span>.
+                                </div>
+                            </div>
                             <div id="info-image-preview" class="mt-2"></div>
                         </div>
 

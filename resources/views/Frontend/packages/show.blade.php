@@ -357,13 +357,27 @@
                                     <p class="text-rose-500 text-[9px] font-black uppercase tracking-widest mt-4">Ends {{ $package->valid_until->format('d M') }}</p>
                                 </div>
                             @else
-                                <div class="mb-10">
+                                <div class="mb-6 w-full">
                                     <div class="text-[9px] text-gray-400 font-black uppercase tracking-widest mb-4">Start From</div>
                                     <div class="text-6xl md:text-7xl font-black text-indigo-950 tracking-tighter font-mono leading-none">
                                         <span class="text-xl md:text-2xl text-indigo-300 font-bold align-top">Rp</span>{{ number_format($package->harga_mulai / 1000, 0) }}<span class="text-2xl md:text-3xl text-indigo-400">k</span>
                                     </div>
                                     <p class="text-[10px] text-gray-400 font-bold mt-4 uppercase tracking-widest">Harga Per Orang</p>
                                 </div>
+
+                                @if(!empty($package->pricing_options) && count($package->pricing_options) > 0)
+                                <div class="w-full mb-6">
+                                    <p class="text-[9px] text-gray-400 font-black uppercase tracking-widest mb-3">Pilihan Harga</p>
+                                    <div class="space-y-2 w-full">
+                                        @foreach($package->pricing_options as $option)
+                                        <div class="flex items-center justify-between px-4 py-3 bg-indigo-50 border border-indigo-100 rounded-2xl">
+                                            <span class="text-xs font-bold text-indigo-800">{{ $option['type'] }}</span>
+                                            <span class="text-xs font-black text-indigo-600 font-mono">Rp{{ number_format($option['price'] / 1000, 0) }}k</span>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                @endif
                             @endif
 
                             <div class="w-full space-y-3 md:space-y-4">
