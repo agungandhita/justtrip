@@ -1,277 +1,512 @@
 @extends('Frontend.layouts.main')
 
 @section('container')
+<style>
+    .crisp-img {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+</style>
+
 <!-- Hero Section -->
-<section class="relative w-full">
-    <img src="{{ asset('image/TENTANG-JUSTTRIP.png') }}" alt="Paket Tour Background" class="w-full h-auto">
+<section class="relative w-full bg-slate-900 overflow-hidden">
+    <div class="relative w-full aspect-[21/9] sm:aspect-[24/9] md:max-h-[460px] overflow-hidden">
+        <img src="{{ asset('image/TENTANG-JUSTTRIP.png') }}" 
+             alt="Tentang JustTrip Indonesia - Partner Perjalanan & Tour Organizer" 
+             class="w-full h-full object-cover object-center transform hover:scale-[1.01] transition-transform duration-700">
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent pointer-events-none"></div>
+    </div>
 </section>
 
-<!-- About Us Section -->
-<section id="about-us" class="py-20 bg-white overflow-hidden">
-    <div class="container mx-auto px-4">
-        <div class="grid lg:grid-cols-2 gap-16 items-center">
-            <div data-aos="fade-right" data-aos-offset="200">
-                <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-6">Cerita Kami</h2>
-                <p class="text-lg text-gray-600 mb-6 leading-relaxed">
-                    JUSTTRIP hadir dari 2017 sebagai partner perjalanan untuk perusahaan dan keluarga besar yang percaya bahwa kebersamaan adalah fondasi kekuatan tim dan hubungan.
-                </p>
-                <p class="text-lg text-gray-600 mb-6 leading-relaxed">
-                    Lebih dari 200+ perusahaan yang bersama dengan kami, tidak hanya mengatur perjalanan, tetapi merancang pengalaman yang membangun semangat, memperkuat kolaborasi, dan menciptakan momen kebersamaan yang bermakna—baik untuk corporate gathering, outbound, maupun family gathering.
-                </p>
-                <p class="text-lg text-gray-600 mb-6 leading-relaxed">
-                    Dengan pengalaman menangani program perjalanan untuk perusahaan swasta, BUMN, instansi pemerintah, hingga keluarga besar, Justtrip telah dipercaya mengelola perjalanan dengan jumlah peserta mulai dari puluhan hingga ratusan orang dalam berbagai skala acara.
-                </p>
-                <p class="text-lg text-gray-600 mb-6 leading-relaxed">
-                    Kami memahami bahwa setiap perusahaan dan setiap keluarga memiliki karakter yang berbeda. Karena itu, seluruh program kami dirancang custom, bukan hasil copy–paste, dan disesuaikan dengan tujuan, budaya, serta kebutuhan peserta.
-                </p>
-                <p class="text-lg text-gray-600 mb-8 leading-relaxed">
-                    Melalui pendekatan berbasis HR experience, manajemen acara yang rapi, dan layanan menyeluruh dari awal hingga akhir, Justtrip siap membantu menciptakan perjalanan yang bukan hanya seru, tetapi juga berdampak dan berkesan.
-                </p>
-                <p class="text-xl text-gray-800 font-semibold mb-8 italic">
-                    Let's create meaningful journeys — not just itineraries.
-                </p>
-                <div class="grid grid-cols-2 gap-6">
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-teal-600 mb-2">200+</div>
-                        <div class="text-gray-600">Perusahaan</div>
+<!-- Story & About Us Section -->
+<section id="about-us" class="py-20 md:py-28 bg-white overflow-hidden">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+            
+            <!-- Left Column: Authentic Brand Story -->
+            <div class="lg:col-span-7" data-aos="fade-right">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-50 border border-teal-200/60 mb-6">
+                    <span class="w-2 h-2 rounded-full bg-teal-600 animate-pulse"></span>
+                    <span class="text-xs font-bold tracking-wider uppercase text-teal-800">Cerita & Komitmen Kami</span>
+                </div>
+
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight mb-6 leading-tight">
+                    Merancang Perjalanan Bermakna, <span class="text-teal-600">Bukan Sekadar Itinerary.</span>
+                </h2>
+
+                <div class="space-y-4 text-base sm:text-lg text-slate-600 leading-relaxed">
+                    <p>
+                        <strong class="text-slate-900 font-semibold">JUSTTRIP</strong> hadir sejak <span class="text-teal-700 font-bold">2017</span> sebagai partner perjalanan untuk perusahaan dan keluarga besar yang meyakini bahwa kebersamaan adalah fondasi terkuat bagi sinergi tim dan kehangatan hubungan.
+                    </p>
+                    <p>
+                        Lebih dari <span class="font-bold text-slate-900">200+ perusahaan</span> telah mempercayakan perjalanannya bersama kami. Kami tidak sekadar mengatur transportasi atau hotel, melainkan merancang pengalaman yang membakar semangat, memperkuat kolaborasi, dan menciptakan momen tak terlupakan—baik untuk <span class="text-slate-800 font-medium">corporate gathering, outbound training</span>, maupun <span class="text-slate-800 font-medium">family gathering</span>.
+                    </p>
+                    <p>
+                        Dari perusahaan swasta multinasional, BUMN, instansi pemerintahan, hingga reuni akbar keluarga, Justtrip terbiasa mengelola rombongan dengan jumlah puluhan hingga ratusan peserta dengan standar manajemen operasional yang presisi.
+                    </p>
+                    <p>
+                        Kami memahami setiap organisasi memiliki budaya dan ekspektasi yang unik. Oleh karena itu, seluruh rancangan program kami bersifat <strong class="text-slate-900 font-semibold">100% custom</strong>—bukan hasil copy-paste—dan disesuaikan dengan sasaran, karakter, serta nilai yang ingin dicapai klien.
+                    </p>
+                </div>
+
+                <!-- Editorial Quote Card -->
+                <div class="my-8 p-6 rounded-2xl bg-gradient-to-r from-teal-50/80 to-slate-50 border-l-4 border-teal-600 shadow-sm">
+                    <div class="flex items-start gap-4">
+                        <i class="fas fa-quote-left text-2xl text-teal-600/40 mt-1"></i>
+                        <div>
+                            <p class="text-lg font-bold text-slate-800 italic">
+                                "Let's create meaningful journeys — not just itineraries."
+                            </p>
+                            <p class="text-xs uppercase tracking-wider text-slate-500 mt-2 font-semibold">
+                                Filosofi Pelayanan Justtrip Indonesia
+                            </p>
+                        </div>
                     </div>
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-teal-600 mb-2">9+</div>
-                        <div class="text-gray-600">Tahun Pengalaman</div>
+                </div>
+
+                <!-- Unified Stats Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
+                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-teal-200 transition-colors">
+                        <div class="w-8 h-8 rounded-lg bg-teal-100/60 text-teal-700 flex items-center justify-center mb-2 text-sm">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div class="text-2xl sm:text-3xl font-extrabold text-slate-900">200+</div>
+                        <div class="text-xs sm:text-sm font-medium text-slate-500 mt-1">Klien Korporasi</div>
                     </div>
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-emerald-600 mb-2">100+</div>
-                        <div class="text-gray-600">Event Terselenggara</div>
+
+                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-teal-200 transition-colors">
+                        <div class="w-8 h-8 rounded-lg bg-teal-100/60 text-teal-700 flex items-center justify-center mb-2 text-sm">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="text-2xl sm:text-3xl font-extrabold text-slate-900">9+ Th</div>
+                        <div class="text-xs sm:text-sm font-medium text-slate-500 mt-1">Pengalaman</div>
                     </div>
-                    <div class="text-center">
-                        <div class="text-3xl font-bold text-emerald-600 mb-2">Ratusan</div>
-                        <div class="text-gray-600">Peserta Per Event</div>
+
+                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-teal-200 transition-colors">
+                        <div class="w-8 h-8 rounded-lg bg-teal-100/60 text-teal-700 flex items-center justify-center mb-2 text-sm">
+                            <i class="fas fa-flag-checkered"></i>
+                        </div>
+                        <div class="text-2xl sm:text-3xl font-extrabold text-slate-900">100+</div>
+                        <div class="text-xs sm:text-sm font-medium text-slate-500 mt-1">Event Sukses</div>
+                    </div>
+
+                    <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-teal-200 transition-colors">
+                        <div class="w-8 h-8 rounded-lg bg-teal-100/60 text-teal-700 flex items-center justify-center mb-2 text-sm">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="text-2xl sm:text-3xl font-extrabold text-slate-900">100%</div>
+                        <div class="text-xs sm:text-sm font-medium text-slate-500 mt-1">Custom Trip</div>
                     </div>
                 </div>
             </div>
-            <div data-aos="fade-left">
-                <div class="relative group">
-                    <img src="{{ asset('image/KOTAK.png') }}" alt="JustTrip Illustration" class="rounded-2xl shadow-2xl transform group-hover:scale-[1.02] transition-transform duration-500">
-                    <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-2xl flex items-center justify-center shadow-xl rotate-3">
-                        <div class="text-white text-center">
-                            <div class="text-2xl font-bold">2017</div>
-                            <div class="text-sm">Founded</div>
+
+            <!-- Right Column: Real-life Authentic Visual Showcase -->
+            <div class="lg:col-span-5" data-aos="fade-left">
+                <div class="relative">
+                    <!-- Main High-Res Image Card -->
+                    <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-slate-100">
+                        <img src="{{ asset('image/1.jpg') }}" 
+                             alt="Tim JustTrip memandu kegiatan gathering dan outbound" 
+                             class="w-full h-[440px] sm:h-[500px] object-cover object-center transform hover:scale-105 transition-transform duration-700">
+                        
+                        <!-- Overlay gradient bottom -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent"></div>
+
+                        <!-- Card caption overlay -->
+                        <div class="absolute bottom-6 left-6 right-6 text-white">
+                            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-500/90 text-white text-xs font-semibold mb-2 shadow-sm">
+                                <i class="fas fa-circle-check"></i>
+                                <span>Tim Fasilitator Bersertifikat</span>
+                            </div>
+                            <h3 class="text-xl font-bold leading-snug">
+                                Didampingi Tour Leader & Trainer Profesional
+                            </h3>
+                            <p class="text-xs text-slate-200 mt-1">
+                                Menjamin suasana hangat, seru, interaktif, dan terkoordinasi rapi sejak keberangkatan.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Established Floating Badge (Clean & Non-slop) -->
+                    <div class="absolute -top-5 -left-5 bg-white rounded-2xl p-4 shadow-xl border border-slate-100 flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-xl bg-teal-600 flex items-center justify-center text-white text-lg shadow-md shadow-teal-600/30">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs uppercase tracking-wider text-slate-500 font-semibold">Established</div>
+                            <div class="text-lg font-bold text-slate-900 leading-none mt-0.5">Sejak 2017</div>
+                        </div>
+                    </div>
+
+                    <!-- Secondary Floating Trust Chip -->
+                    <div class="absolute -bottom-5 -right-5 hidden sm:flex items-center gap-3 bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-xl border border-slate-100">
+                        <div class="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-base">
+                            <i class="fas fa-shield-halved"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-slate-800">PT Trisula Pandu Nusantara</div>
+                            <div class="text-[11px] text-teal-600 font-medium">Biro Perjalanan Wisata Resmi</div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </section>
 
+<!-- Core Pillars / Why Different Section -->
+<section class="py-16 bg-slate-50 border-y border-slate-200/70">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-12" data-aos="fade-up">
+            <span class="text-xs font-bold uppercase tracking-widest text-teal-700 bg-teal-100/60 px-3 py-1 rounded-full">
+                Keunggulan Layanan
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-3">
+                Mengapa Memilih Justtrip?
+            </h2>
+            <p class="text-slate-600 text-sm sm:text-base mt-2">
+                Empat pilar utama yang menjadi pembeda kami dalam setiap program perjalanan.
+            </p>
+        </div>
 
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Pillar 1 -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 hover:border-teal-500/60 hover:shadow-md transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
+                <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-xl mb-4">
+                    <i class="fas fa-users-gear"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 mb-2">HR & Team Experience</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    Dirancang dengan pemahaman human capital untuk memperkuat chemistry, engagement, dan kolaborasi antar karyawan.
+                </p>
+            </div>
 
+            <!-- Pillar 2 -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 hover:border-teal-500/60 hover:shadow-md transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
+                <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-xl mb-4">
+                    <i class="fas fa-sliders"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 mb-2">Customized Itinerary</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    Setiap rencana rute, aktivitas, dan menu konsumsi disesuaikan dengan kebutuhan dan karakteristik unik rombongan Anda.
+                </p>
+            </div>
+
+            <!-- Pillar 3 -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 hover:border-teal-500/60 hover:shadow-md transition-all duration-300" data-aos="fade-up" data-aos-delay="300">
+                <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-xl mb-4">
+                    <i class="fas fa-shield-halved"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 mb-2">Legalitas PT & MOU</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    Jaminan keamanan dan transparansi anggaran dengan ikatan perjanjian kerja sama resmi (MOU) dan invoice profesional.
+                </p>
+            </div>
+
+            <!-- Pillar 4 -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 hover:border-teal-500/60 hover:shadow-md transition-all duration-300" data-aos="fade-up" data-aos-delay="400">
+                <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-xl mb-4">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 mb-2">Layanan End-to-End</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    Dukungan menyeluruh dari survey destinasi, perizinan, reservasi armada bus, akomodasi, hingga pelaporan dokumentasi pasca event.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
 
 <!-- Our Services Section -->
-<section id="our-services" class="py-20 bg-white overflow-hidden">
-    <div class="container mx-auto px-4">
-        <div class="flex flex-col md:flex-row justify-between items-end mb-16" data-aos="fade-up" data-aos-offset="200">
+<section id="our-services" class="py-20 md:py-28 bg-white overflow-hidden">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Section Header -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6" data-aos="fade-up">
             <div class="max-w-2xl">
-                <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Layanan Kami</h2>
-                <p class="text-xl text-gray-600">Solusi perjalanan menyeluruh yang dirancang khusus untuk memenuhi setiap kebutuhan unik Anda.</p>
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-50 border border-teal-200/60 mb-3">
+                    <span class="text-xs font-bold tracking-wider uppercase text-teal-800">Portofolio Layanan</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
+                    Layanan Unggulan Justtrip
+                </h2>
+                <p class="text-base sm:text-lg text-slate-600 mt-3 leading-relaxed">
+                    Solusi perjalanan dan manajemen acara menyeluruh yang dirancang terukur untuk memenuhi setiap ekspektasi Anda.
+                </p>
             </div>
-            <div class="hidden md:block">
-                <div class="w-32 h-1 bg-teal-500 rounded-full mb-2"></div>
+            
+            <div>
+                <a href="https://wa.me/6282266478147" target="_blank" 
+                   class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-teal-600 text-white font-bold text-sm hover:bg-teal-700 shadow-md shadow-teal-600/20 transition-all">
+                    <i class="fab fa-whatsapp text-lg"></i>
+                    <span>Konsultasi Kebutuhan Trip</span>
+                </a>
             </div>
         </div>
 
+        <!-- 6 Cohesive Service Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Service 1 -->
-            <div class="group relative bg-slate-50 rounded-3xl p-8 hover:bg-teal-600 transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up">
-                <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-500">
-                    <svg class="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                    </svg>
+            
+            <!-- Service 1: Corporate & Family Gathering -->
+            <div class="group bg-white rounded-3xl p-8 border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-teal-500/50 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between" data-aos="fade-up">
+                <div>
+                    <div class="w-14 h-14 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-teal-600 group-hover:text-white transition-colors duration-300">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-teal-700 transition-colors">
+                        Corporate & Family Gathering
+                    </h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                        Membangun kebersamaan dan keceriaan lewat konsep acara gathering kreatif yang berkesan mendalam bagi karyawan maupun anggota keluarga besar.
+                    </p>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-4 group-hover:text-white transition-colors duration-300">Corporate & Family Gathering</h3>
-                <p class="text-gray-600 group-hover:text-teal-50 transition-colors duration-300">Membangun kebersamaan dan keceriaan melalui acara gathering yang berkesan bagi karyawan maupun keluarga.</p>
-                <div class="absolute top-4 right-4 text-slate-200 group-hover:text-teal-500/30 transition-colors duration-300">
-                    <svg class="w-24 h-24" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3.005 3.005 0 013.25-2.906z"></path>
-                    </svg>
-                </div>
-            </div>
-
-            <!-- Service 2 -->
-            <div class="group relative bg-slate-50 rounded-3xl p-8 hover:bg-teal-600 transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up">
-                <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-500">
-                    <svg class="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                    </svg>
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-4 group-hover:text-white transition-colors duration-300">Capacity Building & Outbound</h3>
-                <p class="text-gray-600 group-hover:text-teal-50 transition-colors duration-300">Program pengembangan diri dan kerjasama tim melalui aktivitas luar ruangan yang menantang dan edukatif.</p>
-                <div class="absolute top-4 right-4 text-slate-200 group-hover:text-teal-500/30 transition-colors duration-300">
-                    <svg class="w-24 h-24" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"></path>
-                    </svg>
+                <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-teal-600">
+                    <span>Program Custom & Tematik</span>
+                    <i class="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
                 </div>
             </div>
 
-            <!-- Service 3 -->
-            <div class="group relative bg-slate-50 rounded-3xl p-8 hover:bg-teal-600 transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="300">
-                <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-500">
-                    <svg class="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                    </svg>
+            <!-- Service 2: Capacity Building & Outbound -->
+            <div class="group bg-white rounded-3xl p-8 border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-teal-500/50 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between" data-aos="fade-up" data-aos-delay="100">
+                <div>
+                    <div class="w-14 h-14 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-teal-600 group-hover:text-white transition-colors duration-300">
+                        <i class="fas fa-compass"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-teal-700 transition-colors">
+                        Capacity Building & Outbound
+                    </h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                        Pengembangan kapasitas kepemimpinan, komunikasi, dan sinergi tim melalui simulasi outdoor yang mendidik, menantang, dan penuh inspirasi.
+                    </p>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-4 group-hover:text-white transition-colors duration-300">MICE</h3>
-                <p class="text-gray-600 group-hover:text-teal-50 transition-colors duration-300">Layanan profesional untuk Meeting, Incentive, Convention, dan Exhibition dengan manajemen acara yang teliti.</p>
-                <div class="absolute top-4 right-4 text-slate-200 group-hover:text-teal-500/30 transition-colors duration-300">
-                    <svg class="w-24 h-24" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z" clip-rule="evenodd"></path>
-                    </svg>
-                </div>
-            </div>
-
-            <!-- Service 4 -->
-            <div class="group relative bg-slate-50 rounded-3xl p-8 hover:bg-teal-600 transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="400">
-                <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-500">
-                    <svg class="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 002 2h1.5m1.5-1.5V13a2.5 2.5 0 01-2.5 2.5h-1.5a2 2 0 01-2-2v-1a2 2 0 00-2-2H9"></path>
-                    </svg>
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-4 group-hover:text-white transition-colors duration-300">International Tour</h3>
-                <p class="text-gray-600 group-hover:text-teal-50 transition-colors duration-300">Eksplorasi destinasi mancanegara dengan paket perjalanan yang terorganisir, aman, dan penuh petualangan.</p>
-                <div class="absolute top-4 right-4 text-slate-200 group-hover:text-teal-500/30 transition-colors duration-300">
-                    <svg class="w-24 h-24" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z" clip-rule="evenodd"></path>
-                    </svg>
+                <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-teal-600">
+                    <span>Fasilitator Bersertifikat</span>
+                    <i class="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
                 </div>
             </div>
 
-            <!-- Service 5 -->
-            <div class="group relative bg-slate-50 rounded-3xl p-8 hover:bg-teal-600 transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="500">
-                <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-500">
-                    <svg class="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                    </svg>
+            <!-- Service 3: MICE -->
+            <div class="group bg-white rounded-3xl p-8 border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-teal-500/50 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between" data-aos="fade-up" data-aos-delay="200">
+                <div>
+                    <div class="w-14 h-14 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-teal-600 group-hover:text-white transition-colors duration-300">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-teal-700 transition-colors">
+                        MICE Professional
+                    </h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                        Manajemen profesional untuk kebutuhan Meeting, Incentive, Convention, dan Exhibition dengan koordinasi teknis yang matang dan berkelas.
+                    </p>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-4 group-hover:text-white transition-colors duration-300">Heritage, Retreat & Executive Camp</h3>
-                <p class="text-gray-600 group-hover:text-teal-50 transition-colors duration-300">Pengalaman eksklusif yang memadukan sejarah, ketenangan, dan kenyamanan fasilitas premium.</p>
-                <div class="absolute top-4 right-4 text-slate-200 group-hover:text-teal-500/30 transition-colors duration-300">
-                    <svg class="w-24 h-24" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
-                    </svg>
+                <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-teal-600">
+                    <span>Full Event Organizer</span>
+                    <i class="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
                 </div>
             </div>
 
-            <!-- Service 6 -->
-            <div class="group relative bg-slate-50 rounded-3xl p-8 hover:bg-teal-600 transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="600">
-                <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-500">
-                    <svg class="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
-                    </svg>
+            <!-- Service 4: International Tour -->
+            <div class="group bg-white rounded-3xl p-8 border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-teal-500/50 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between" data-aos="fade-up" data-aos-delay="300">
+                <div>
+                    <div class="w-14 h-14 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-teal-600 group-hover:text-white transition-colors duration-300">
+                        <i class="fas fa-earth-americas"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-teal-700 transition-colors">
+                        International Tour
+                    </h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                        Eksplorasi destinasi mancanegara dengan kepastian jadwal, tiket, akomodasi berbintang, dan pendampingan tour leader berpengalaman global.
+                    </p>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-4 group-hover:text-white transition-colors duration-300">Sewa Bus Pariwisata</h3>
-                <p class="text-gray-600 group-hover:text-teal-50 transition-colors duration-300">Penyediaan armada bus pariwisata modern dengan standar kenyamanan dan keamanan tinggi untuk perjalanan Anda.</p>
-                <div class="absolute top-4 right-4 text-slate-200 group-hover:text-teal-500/30 transition-colors duration-300">
-                    <svg class="w-24 h-24" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M19,15c0,1.1-0.9,2-2,2h-1c-1.1,0-2-0.9-2-2s0.9-2,2-2h1C18.1,13,19,13.9,19,15z M7,13H6c-1.1,0-2,0.9-2,2s0.9,2,2,2h1 c1.1,0,2-0.9,2-2S8.1,13,7,13z M22,11v6c0,1.1-0.9,2-2,2H4c-1.1,0-2-0.9-2-2v-6c0-1.1,0.9-2,2-2h1V4c0-1.1,0.9-2,2-2H17c1.1,0,2,0.9,2,2v5 h1C21.1,9,22,9.9,22,11z M17.5,10V4h-11v6H17.5z M4,11v6h1.2c-0.1-0.3-0.2-0.6-0.2-1c0-1.7,1.3-3,3-3s3,1.3,3,3 c0,0.4-0.1,0.7-0.2,1h2.4c-0.1-0.3-0.2-0.6-0.2-1c0-1.7,1.3-3,3-3s3,1.3,3,3c0,0.4-0.1,0.7-0.2,1H20v-6H4z"/>
-                    </svg>
+                <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-teal-600">
+                    <span>Asia & Destinasi Global</span>
+                    <i class="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
                 </div>
             </div>
+
+            <!-- Service 5: Heritage, Retreat & Executive Camp -->
+            <div class="group bg-white rounded-3xl p-8 border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-teal-500/50 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between" data-aos="fade-up" data-aos-delay="400">
+                <div>
+                    <div class="w-14 h-14 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-teal-600 group-hover:text-white transition-colors duration-300">
+                        <i class="fas fa-mountain-sun"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-teal-700 transition-colors">
+                        Heritage, Retreat & Camp
+                    </h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                        Pengalaman eksklusif yang memadukan napak tilas sejarah, ketenangan alam, dan fasilitas executive camp untuk relaksasi dan refleksi mendalam.
+                    </p>
+                </div>
+                <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-teal-600">
+                    <span>Eksklusif & Private</span>
+                    <i class="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </div>
+
+            <!-- Service 6: Sewa Bus Pariwisata -->
+            <div class="group bg-white rounded-3xl p-8 border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-teal-500/50 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between" data-aos="fade-up" data-aos-delay="500">
+                <div>
+                    <div class="w-14 h-14 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-teal-600 group-hover:text-white transition-colors duration-300">
+                        <i class="fas fa-bus"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-teal-700 transition-colors">
+                        Sewa Bus Pariwisata
+                    </h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-6">
+                        Penyediaan armada bus pariwisata modern (Medium & Big Bus) dengan kru pengemudi terlatih, standar keselamatan tinggi, dan fasilitas premium.
+                    </p>
+                </div>
+                <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-teal-600">
+                    <span>Armada Terbaru & Terawat</span>
+                    <i class="fas fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </div>
+
         </div>
     </div>
 </section>
 
-<!-- Awards & Recognition -->
-<section id="awards" class="relative py-20 sm:py-28 bg-slate-50 overflow-hidden">
-    <!-- Decorative Premium Background Elements -->
-    <div class="absolute top-0 left-0 w-72 h-72 bg-teal-200/20 rounded-full -translate-x-1/2 -translate-y-1/2 blur-[100px]"></div>
-    <div class="absolute bottom-0 right-0 w-96 h-96 bg-blue-200/20 rounded-full translate-x-1/3 translate-y-1/3 blur-[120px]"></div>
-    
-    <div class="container mx-auto px-4 relative z-10">
-        <div class="text-center mb-16 sm:mb-24" data-aos="fade-up">
-            <span class="inline-block px-4 py-1.5 mb-6 text-xs sm:text-sm font-bold tracking-[0.2em] text-teal-600 uppercase bg-teal-50 rounded-full border border-teal-100">
-                Kredibilitas & Kepercayaan
+<!-- Official Accreditation & Legal Credentials (Clean & Crisp, No AI Slop) -->
+<section id="awards" class="py-20 md:py-28 bg-slate-50 border-t border-slate-200/70">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Header -->
+        <div class="text-center max-w-3xl mx-auto mb-16" data-aos="fade-up">
+            <span class="inline-flex items-center gap-1.5 px-4 py-1.5 text-xs font-bold tracking-widest text-teal-800 uppercase bg-teal-100/70 rounded-full border border-teal-200/60 mb-4">
+                <i class="fas fa-shield-halved text-teal-600"></i>
+                Kredibilitas & Legalitas Resmi
             </span>
-            <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 mb-6 tracking-tight">
-                Penghargaan & <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-blue-600">Sertifikasi</span>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
+                Akreditasi & Sertifikasi Profesi
             </h2>
-            <div class="w-24 h-1.5 bg-gradient-to-r from-teal-500 to-blue-500 mx-auto rounded-full mb-8"></div>
-            <p class="text-base sm:text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed px-4">
-                JustTrip berkomitmen penuh pada legalitas dan standar kualitas internasional demi memberikan pengalaman perjalanan yang aman, nyaman, dan tak terlupakan.
+            <p class="text-slate-600 text-base sm:text-lg mt-4 leading-relaxed">
+                JustTrip berkomitmen penuh pada legalitas usaha berbadan hukum PT serta pengakuan sertifikasi nasional demi menjamin keamanan dan mutu pelayanan terbaik.
             </p>
         </div>
         
-        <!-- Awards Premium Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
-            <!-- Card 1 -->
-            <div class="group bg-white rounded-[2.5rem] p-8 shadow-2xl shadow-slate-200/60 hover:shadow-teal-200/40 transition-all duration-500 border border-slate-100 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="100">
-                <div class="relative mb-10 w-full aspect-[4/3] rounded-3xl overflow-hidden shadow-inner bg-slate-50 border-[6px] border-white group-hover:border-teal-50 transition-all duration-500">
-                    <img src="{{ asset('img/img_0350.png') }}" 
-                         alt="Sertifikasi JustTrip" 
-                         class="w-full h-full object-contain p-4 transform group-hover:scale-110 rotate-0 group-hover:-rotate-1 transition-transform duration-700">
-                    <div class="absolute inset-0 bg-gradient-to-tr from-teal-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <!-- Accreditation Cards: Crisp Sizing, No Blurry Scaled Raster -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <!-- Card 1: ASITA -->
+            <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-xl hover:border-teal-500/50 transition-all duration-300 flex flex-col items-center text-center group" data-aos="fade-up" data-aos-delay="100">
+                <div class="w-full h-28 bg-slate-50 rounded-2xl flex items-center justify-center p-4 border border-slate-100 mb-6 group-hover:border-teal-100 transition-colors">
+                    <img src="{{ asset('img/IMG_0350.PNG') }}" 
+                         alt="Logo ASITA - Association of the Indonesian Tours and Travel Agencies" 
+                         class="h-16 w-auto max-w-[200px] object-contain crisp-img">
                 </div>
-                <div class="w-16 h-16 bg-teal-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-teal-600 group-hover:rotate-6 transition-all duration-500">
-                    <i class="fas fa-shield-check text-2xl text-teal-600 group-hover:text-white transition-colors duration-300"></i>
+                
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 text-teal-700 text-xs font-bold mb-3 border border-teal-100">
+                    <i class="fas fa-shield-halved"></i>
+                    <span>Anggota Resmi ASITA</span>
                 </div>
-                <h3 class="text-2xl font-bold text-slate-800 mb-3">Legalitas Resmi</h3>
-                <p class="text-slate-500 text-sm sm:text-base leading-relaxed">
-                    Terdaftar secara resmi sebagai penyelenggara perjalanan wisata dengan izin usaha lengkap dan terverifikasi.
+                <h3 class="text-xl font-bold text-slate-900 mb-2">Legalitas Biro Perjalanan</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    Terdaftar resmi dalam Asosiasi Perusahaan Perjalanan Wisata Indonesia (ASITA) dengan kepatuhan penuh terhadap kode etik dan standar mutu nasional.
                 </p>
             </div>
             
-            <!-- Card 2 -->
-            <div class="group bg-white rounded-[2.5rem] p-8 shadow-2xl shadow-slate-200/60 hover:shadow-blue-200/40 transition-all duration-500 border border-slate-100 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="200">
-                <div class="relative mb-10 w-full aspect-[4/3] rounded-3xl overflow-hidden shadow-inner bg-slate-50 border-[6px] border-white group-hover:border-blue-50 transition-all duration-500">
-                    <img src="{{ asset('img/img_0351.png') }}" 
-                         alt="Kualitas Layanan" 
-                         class="w-full h-full object-contain p-4 transform group-hover:scale-110 rotate-0 group-hover:rotate-1 transition-transform duration-700">
-                    <div class="absolute inset-0 bg-gradient-to-tr from-blue-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <!-- Card 2: AITTA -->
+            <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-xl hover:border-teal-500/50 transition-all duration-300 flex flex-col items-center text-center group" data-aos="fade-up" data-aos-delay="200">
+                <div class="w-full h-28 bg-slate-50 rounded-2xl flex items-center justify-center p-4 border border-slate-100 mb-6 group-hover:border-teal-100 transition-colors">
+                    <img src="{{ asset('img/IMG_0351.PNG') }}" 
+                         alt="Logo AITTA - Alliance of Indonesia Tours and Travel Agencies" 
+                         class="h-14 w-auto max-w-[200px] object-contain crisp-img">
                 </div>
-                <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:-rotate-6 transition-all duration-500">
-                    <i class="fas fa-award text-2xl text-blue-600 group-hover:text-white transition-colors duration-300"></i>
+                
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 text-teal-700 text-xs font-bold mb-3 border border-teal-100">
+                    <i class="fas fa-award"></i>
+                    <span>Aliansi Mitra Strategis</span>
                 </div>
-                <h3 class="text-2xl font-bold text-slate-800 mb-3">Sertifikasi Mutu</h3>
-                <p class="text-slate-500 text-sm sm:text-base leading-relaxed">
-                    Pengakuan atas standar manajemen mutu layanan yang konsisten dan berorientasi pada kepuasan pelanggan.
+                <h3 class="text-xl font-bold text-slate-900 mb-2">Jaringan Agen Wisata</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    Tergabung dalam aliansi agen perjalanan terpercaya untuk memperluas akses armada transportasi, akomodasi, dan kemudahan logistik di setiap destinasi.
                 </p>
             </div>
             
-            <!-- Card 3 -->
-            <div class="group bg-white rounded-[2.5rem] p-8 shadow-2xl shadow-slate-200/60 hover:shadow-emerald-200/40 transition-all duration-500 border border-slate-100 flex flex-col items-center text-center md:col-span-2 lg:col-span-1" data-aos="fade-up" data-aos-delay="300">
-                <div class="relative mb-10 w-full aspect-[4/3] rounded-3xl overflow-hidden shadow-inner bg-slate-50 border-[6px] border-white group-hover:border-emerald-50 transition-all duration-500">
-                    <img src="{{ asset('img/img_0352.png') }}" 
-                         alt="Mitra Kepercayaan" 
-                         class="w-full h-full object-contain p-4 transform group-hover:scale-110 rotate-0 group-hover:-rotate-1 transition-transform duration-700">
-                    <div class="absolute inset-0 bg-gradient-to-tr from-emerald-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <!-- Card 3: BNSP -->
+            <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm hover:shadow-xl hover:border-teal-500/50 transition-all duration-300 flex flex-col items-center text-center group" data-aos="fade-up" data-aos-delay="300">
+                <div class="w-full h-28 bg-slate-50 rounded-2xl flex items-center justify-center p-4 border border-slate-100 mb-6 group-hover:border-teal-100 transition-colors">
+                    <img src="{{ asset('img/IMG_0352.PNG') }}" 
+                         alt="Logo BNSP - Badan Nasional Sertifikasi Profesi" 
+                         class="h-14 w-auto max-w-[220px] object-contain crisp-img">
                 </div>
-                <div class="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-emerald-600 group-hover:rotate-6 transition-all duration-500">
-                    <i class="fas fa-handshake text-2xl text-emerald-600 group-hover:text-white transition-colors duration-300"></i>
+                
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 text-teal-700 text-xs font-bold mb-3 border border-teal-100">
+                    <i class="fas fa-circle-check"></i>
+                    <span>Sertifikasi Kompetensi BNSP</span>
                 </div>
-                <h3 class="text-2xl font-bold text-slate-800 mb-3">Partner Terpercaya</h3>
-                <p class="text-slate-500 text-sm sm:text-base leading-relaxed">
-                    Bekerjasama dengan jaringan mitra global untuk memastikan kemudahan dan kenyamanan akses di setiap destinasi.
+                <h3 class="text-xl font-bold text-slate-900 mb-2">Pemandu Berlisensi Resmi</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">
+                    Tenaga Tour Leader dan instruktur lapangan kami tersertifikasi kompetensi resmi oleh Badan Nasional Sertifikasi Profesi untuk standar keselamatan tinggi.
                 </p>
             </div>
         </div>
         
-        <!-- Trust Indicators Footer -->
-        <div class="mt-20 pt-12 border-t border-slate-200/60 flex flex-wrap justify-center items-center gap-8 opacity-70" data-aos="fade-up">
-            <div class="flex items-center space-x-2 grayscale hover:grayscale-0 transition-all duration-300">
-                <i class="fas fa-check-circle text-teal-600"></i>
-                <span class="font-semibold text-slate-700">Verified Travel Agency</span>
+        <!-- Trust Indicators Badge Bar (Consistent Brand Colors) -->
+        <div class="mt-16 pt-10 border-t border-slate-200 flex flex-wrap justify-center items-center gap-6 sm:gap-12 text-slate-700 text-sm font-semibold" data-aos="fade-up">
+            <div class="flex items-center gap-2.5">
+                <div class="w-7 h-7 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs">
+                    <i class="fas fa-shield-halved"></i>
+                </div>
+                <span>PT Berbadan Hukum Resmi</span>
             </div>
-            <div class="flex items-center space-x-2 grayscale hover:grayscale-0 transition-all duration-300">
-                <i class="fas fa-lock text-blue-600"></i>
-                <span class="font-semibold text-slate-700">Secure Booking</span>
+            <div class="flex items-center gap-2.5">
+                <div class="w-7 h-7 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs">
+                    <i class="fas fa-file-contract"></i>
+                </div>
+                <span>Perjanjian Kerjasama (MOU) Jelas</span>
             </div>
-            <div class="flex items-center space-x-2 grayscale hover:grayscale-0 transition-all duration-300">
-                <i class="fas fa-headset text-emerald-600"></i>
-                <span class="font-semibold text-slate-700">24/7 Support</span>
+            <div class="flex items-center gap-2.5">
+                <div class="w-7 h-7 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs">
+                    <i class="fas fa-circle-check"></i>
+                    </div>
+                <span>Kru & Driver Berpengalaman</span>
+            </div>
+            <div class="flex items-center gap-2.5">
+                <div class="w-7 h-7 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <span>Konsultasi & Support Cepat</span>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- Call to Action Banner -->
+<section class="py-16 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="relative rounded-3xl overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-teal-950 p-8 sm:p-12 lg:p-16 text-white shadow-2xl">
+            <!-- Subtle background pattern -->
+            <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 24px 24px;"></div>
+            
+            <div class="relative z-10 max-w-3xl">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-500/20 text-teal-300 text-xs font-bold mb-4 border border-teal-400/30">
+                    <i class="fas fa-paper-plane"></i>
+                    Konsultasi Gratis Bersama Kami
+                </span>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
+                    Rencanakan Agenda Perjalanan Terbaik Untuk Tim Anda
+                </h2>
+                <p class="text-slate-300 text-base sm:text-lg mt-4 leading-relaxed max-w-2xl">
+                    Mulai dari gathering tahunan, outbound team building, study tour, hingga sewa bus pariwisata. Hubungi kami untuk penawaran proposal dan rute terbaik.
+                </p>
+
+                <div class="flex flex-wrap items-center gap-4 mt-8">
+                    <a href="https://wa.me/6282266478147" target="_blank"
+                       class="inline-flex items-center gap-3 px-6 py-3.5 rounded-xl bg-teal-500 text-slate-950 font-bold hover:bg-teal-400 shadow-lg shadow-teal-500/25 transition-all">
+                        <i class="fab fa-whatsapp text-xl"></i>
+                        <span>Chat WhatsApp Konsultan</span>
+                    </a>
+                    <a href="{{ route('paket-tour') }}"
+                       class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold border border-white/20 backdrop-blur-sm transition-all">
+                        <span>Lihat Paket Tour</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </section>
-
 
 @endsection

@@ -327,6 +327,43 @@
                         </form>
                     </div>
                 @endif
+
+                {{-- Selected Options Detail Card --}}
+                @if($booking->selected_options && count($booking->selected_options) > 0)
+                <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8 md:p-10">
+                    <div class="flex items-center space-x-4 mb-6">
+                        <div class="p-3 bg-amber-50 text-amber-600 rounded-2xl">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-black text-gray-900">Layanan Tambahan Dipilih</h2>
+                            <p class="text-gray-500 font-medium text-sm">Harga opsional yang Anda tambahkan pada booking ini</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        @foreach($booking->selected_options as $opt)
+                        <div class="flex items-center justify-between p-5 bg-amber-50 border-2 border-amber-100 rounded-2xl">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-amber-900">{{ $opt['type'] }}</p>
+                                    <p class="text-xs text-amber-600">Rp {{ number_format($opt['price_per_person'] ?? 0, 0, ',', '.') }} × {{ $booking->jumlah_peserta }} orang</p>
+                                </div>
+                            </div>
+                            <p class="font-black text-amber-700 text-lg">Rp {{ number_format($opt['total_price'] ?? 0, 0, ',', '.') }}</p>
+                        </div>
+                        @endforeach
+
+                        <div class="flex justify-between items-center px-5 py-4 bg-amber-100 rounded-2xl mt-2">
+                            <span class="font-black text-amber-900 text-sm uppercase tracking-widest">Total Biaya Tambahan</span>
+                            <span class="font-black text-amber-700 text-xl">Rp {{ number_format($booking->options_amount, 0, ',', '.') }}</span>
+                        </div>
+                    </div>
+                </div>
+                @endif
             </div>
 
             <!-- Right Side: Sidebar -->
@@ -349,9 +386,31 @@
                             </div>
                         @endif
 
+                        @if($booking->options_amount > 0)
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-amber-600 font-bold uppercase tracking-widest text-[10px]">Biaya Tambahan Opsional</span>
+                                <span class="text-amber-600 font-black">+Rp {{ number_format($booking->options_amount, 0, ',', '.') }}</span>
+                            </div>
+                            @if($booking->selected_options && count($booking->selected_options) > 0)
+                                <div class="bg-amber-50 border border-amber-100 rounded-2xl p-4 space-y-2">
+                                    @foreach($booking->selected_options as $opt)
+                                        <div class="flex justify-between items-center text-xs">
+                                            <span class="text-amber-800 font-bold flex items-center gap-1">
+                                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                                                {{ $opt['type'] }}
+                                            </span>
+                                            <span class="text-amber-700 font-black">Rp {{ number_format($opt['total_price'] ?? 0, 0, ',', '.') }}</span>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+                        @endif
+
                         <div class="flex justify-between items-center text-sm border-t border-dashed border-gray-100 pt-4">
-                            <span class="text-gray-900 font-bold uppercase tracking-widest text-[10px]">Subtotal (Setelah Diskon)</span>
-                            <span class="text-gray-900 font-black">{{ $booking->formatted_subtotal }}</span>
+                            <span class="text-gray-900 font-bold uppercase tracking-widest text-[10px]">
+                                Subtotal Paket{{ $booking->options_amount > 0 ? ' + Tambahan' : '' }}
+                            </span>
+                            <span class="text-gray-900 font-black">{{ $booking->formatted_total_amount }}</span>
                         </div>
 
 

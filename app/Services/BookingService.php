@@ -72,8 +72,11 @@ class BookingService
      */
     public function createRegularBooking(array $data, Layanan $layanan, ?SpecialOffer $specialOffer = null): Booking
     {
+        // Parse selected options from request data
+        $selectedOptions = $data['selected_options'] ?? [];
+        
         // Calculate pricing
-        $pricing = $this->calculateRegularPricing($layanan, $data['jumlah_peserta'], $specialOffer);
+        $pricing = $this->calculateRegularPricing($layanan, $data['jumlah_peserta'], $specialOffer, $selectedOptions);
 
         $user = auth()->user();
 
@@ -86,6 +89,7 @@ class BookingService
             'booking_date' => now(),
             'original_amount' => $pricing['original_amount'],
             'discount_amount' => $pricing['discount_amount'],
+            'options_amount' => $pricing['options_amount'],
             'total_amount' => $pricing['total_amount'],
             'status' => 'pending',
             'customer_info' => [
@@ -94,6 +98,7 @@ class BookingService
                 'phone' => $user->phone,
                 'address' => $user->address
             ],
+            'selected_options' => $pricing['selected_options_detail'],
             'jumlah_peserta' => $data['jumlah_peserta'],
             'tanggal_keberangkatan' => $data['tanggal_keberangkatan'],
             'catatan_khusus' => $data['catatan_khusus'] ?? null
@@ -149,7 +154,7 @@ class BookingService
     /**
      * Calculate pricing for regular booking
      */
-    public function calculateRegularPricing(Layanan $layanan, int $participants, ?SpecialOffer $specialOffer = null): array
+    public function calculateRegularPricing(Layanan $layanan, int $participants, ?SpecialOffer $specialOffer = null, array $selectedOptionTypes = []): array
     {
         $originalAmount = $layanan->harga_mulai * $participants;
         $discountAmount = 0;
@@ -158,13 +163,34 @@ class BookingService
             $discountAmount = ($originalAmount * $specialOffer->discount_percentage) / 100;
         }
 
+        // Calculate optional pricing additions
+        $optionsAmount = 0;
+        $selectedOptionsDetail = [];
+        $availablePricingOptions = $layanan->pricing_options ?? [];
+
+        if (!empty($selectedOptionTypes) && !empty($availablePricingOptions)) {
+            foreach ($availablePricingOptions as $option) {
+                if (in_array($option['type'], $selectedOptionTypes)) {
+                    $optionPrice = (float) $option['price'];
+                    $optionsAmount += $optionPrice * $participants;
+                    $selectedOptionsDetail[] = [
+                        'type' => $option['type'],
+                        'price_per_person' => $optionPrice,
+                        'total_price' => $optionPrice * $participants,
+                    ];
+                }
+            }
+        }
+
         $amountAfterDiscount = $originalAmount - $discountAmount;
-        $totalAmount = $amountAfterDiscount; // No PPN
+        $totalAmount = $amountAfterDiscount + $optionsAmount; // Base + options, no PPN
 
         return [
             'original_amount' => $originalAmount,
             'discount_amount' => $discountAmount,
+            'options_amount' => $optionsAmount,
             'total_amount' => $totalAmount,
+            'selected_options_detail' => $selectedOptionsDetail,
         ];
     }
 

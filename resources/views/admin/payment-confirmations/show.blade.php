@@ -34,14 +34,14 @@
             </div>
             <div class="flex space-x-3">
                 @if($paymentConfirmation->status === 'pending')
-                    <button onclick="approvePayment({{ $paymentConfirmation->payment_confirmation_id }})" 
+                    <button onclick="approvePayment('{{ $paymentConfirmation->payment_confirmation_id }}')" 
                             class="bg-green-600 text-white px-6 py-2.5 rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M11,16.5L6.5,12L7.91,10.59L11,13.67L16.59,8.09L18,9.5L11,16.5Z"/>
                         </svg>
                         Setujui Pembayaran
                     </button>
-                    <button onclick="rejectPayment({{ $paymentConfirmation->payment_confirmation_id }})" 
+                    <button onclick="rejectPayment('{{ $paymentConfirmation->payment_confirmation_id }}')" 
                             class="bg-red-600 text-white px-6 py-2.5 rounded-lg hover:bg-red-700 transition-colors flex items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M14.5,9L13.09,7.59L12,8.67L10.91,7.59L9.5,9L10.59,10.09L9.5,11.17L10.91,12.59L12,11.5L13.09,12.59L14.5,11.17L13.41,10.09L14.5,9Z"/>

@@ -143,21 +143,43 @@ class PaymentConfirmation extends Model
             'admin_notes' => $notes
         ]);
 
-        // Update related invoice status
-        $this->invoice->update([
-            'status' => 'paid',
-            'paid_at' => now()
-        ]);
+        // Reload invoice relationship
+        $this->load('invoice');
 
-        // Delete old PDF so it will be regenerated with 'PAID' status
-        if ($this->invoice->pdf_path) {
-            \Illuminate\Support\Facades\Storage::disk('public')->delete($this->invoice->pdf_path);
-            $this->invoice->update(['pdf_path' => null]);
+        // Update related invoice status if exists
+        if ($this->invoice) {
+            $this->invoice->update([
+                'status' => 'paid',
+                'paid_at' => now()
+            ]);
+
+            // Delete old PDF so it will be regenerated with 'PAID' status
+            if ($this->invoice->pdf_path) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($this->invoice->pdf_path);
+                $this->invoice->update(['pdf_path' => null]);
+            }
+        } else {
+            // Create invoice if it doesn't exist
+            $booking = $this->booking;
+            if ($booking) {
+                $subtotal = ((float)$booking->original_amount - (float)$booking->discount_amount) + (float)($booking->options_amount ?? 0);
+                \App\Models\Invoice::create([
+                    'booking_id'     => $booking->booking_id,
+                    'invoice_number' => \App\Models\Invoice::generateInvoiceNumber(),
+                    'invoice_date'   => now(),
+                    'due_date'       => now()->addDays(7),
+                    'subtotal'       => $subtotal,
+                    'discount_amount'=> $booking->discount_amount,
+                    'total_amount'   => $booking->total_amount,
+                    'status'         => 'paid',
+                    'paid_at'        => now(),
+                ]);
+            }
         }
 
-        // Update booking status to completed
+        // Update booking status to confirmed
         $this->booking->update([
-            'status' => 'completed'
+            'status' => 'confirmed'
         ]);
     }
 
@@ -170,20 +192,25 @@ class PaymentConfirmation extends Model
             'admin_notes' => $notes
         ]);
 
-        // Update invoice status back to awaiting payment
-        $this->invoice->update([
-            'status' => 'awaiting_payment'
-        ]);
+        // Reload invoice relationship
+        $this->load('invoice');
 
-        // Delete old PDF so it will be regenerated with correct status
-        if ($this->invoice->pdf_path) {
-            \Illuminate\Support\Facades\Storage::disk('public')->delete($this->invoice->pdf_path);
-            $this->invoice->update(['pdf_path' => null]);
+        // Update invoice status back to awaiting payment if exists
+        if ($this->invoice) {
+            $this->invoice->update([
+                'status' => 'awaiting_payment'
+            ]);
+
+            // Delete old PDF
+            if ($this->invoice->pdf_path) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($this->invoice->pdf_path);
+                $this->invoice->update(['pdf_path' => null]);
+            }
         }
 
         // Update booking status back to approved (so user can upload again)
         $this->booking->update([
-            'status' => 'approved'
+            'status' => 'awaiting_payment'
         ]);
     }
 

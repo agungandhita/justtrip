@@ -525,6 +525,18 @@
                     <td class="text-right">Rp {{ number_format($pricePerPax, 0, ',', '.') }}</td>
                     <td class="text-right">Rp {{ number_format($booking->original_amount ?? $invoice->subtotal, 0, ',', '.') }}</td>
                 </tr>
+                @if($booking->selected_options && count($booking->selected_options) > 0)
+                    @foreach($booking->selected_options as $option)
+                    <tr>
+                        <td>
+                            <span style="color: #4b5563;">+ Opsi Tambahan: <strong>{{ $option['type'] }}</strong></span>
+                        </td>
+                        <td class="text-center">{{ $booking->jumlah_peserta ?? 1 }}</td>
+                        <td class="text-right">Rp {{ number_format($option['price_per_person'] ?? 0, 0, ',', '.') }}</td>
+                        <td class="text-right">Rp {{ number_format($option['total_price'] ?? 0, 0, ',', '.') }}</td>
+                    </tr>
+                    @endforeach
+                @endif
             </tbody>
         </table>
 
@@ -536,6 +548,12 @@
                     <tr>
                         <td class="summary-label">Diskon</td>
                         <td class="summary-value">- Rp {{ number_format($invoice->discount_amount, 0, ',', '.') }}</td>
+                    </tr>
+                    @endif
+                    @if(isset($booking->options_amount) && $booking->options_amount > 0)
+                    <tr>
+                        <td class="summary-label">Biaya Tambahan</td>
+                        <td class="summary-value">+ Rp {{ number_format($booking->options_amount, 0, ',', '.') }}</td>
                     </tr>
                     @endif
                     <tr class="summary-total-row">

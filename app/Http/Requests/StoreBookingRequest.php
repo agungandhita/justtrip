@@ -30,7 +30,9 @@ class StoreBookingRequest extends FormRequest
             'customer_name' => 'nullable|string|max:255',
             'customer_email' => 'nullable|email|max:255',
             'customer_phone' => 'nullable|string|max:20',
-            'customer_address' => 'nullable|string|max:1000'
+            'customer_address' => 'nullable|string|max:1000',
+            'selected_options' => 'nullable|array',
+            'selected_options.*' => 'nullable|string',
         ];
     }
 

@@ -2,11 +2,11 @@
 <div id="confirmModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
     <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
         <!-- Backdrop Blur -->
-        <div class="fixed inset-0 transition-opacity bg-indigo-950/60 backdrop-blur-sm" aria-hidden="true"></div>
+        <div class="fixed inset-0 transition-opacity bg-indigo-950/60 backdrop-blur-sm" aria-hidden="true" onclick="closeModal('confirmModal')"></div>
 
         <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
         
-        <div class="inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-[2rem] shadow-2xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-10 border border-gray-100">
+        <div class="relative z-10 inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-[2rem] shadow-2xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-10 border border-gray-100">
             <form id="confirmForm" method="POST" class="relative z-10">
                 @csrf
                 @method('PATCH')
@@ -16,15 +16,15 @@
                         <svg class="w-10 h-10 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
                     </div>
                     
-                    <h3 class="text-2xl font-black text-gray-900 leading-tight mb-2" id="modal-title">Konfirmasi Wisata</h3>
-                    <p class="text-sm text-gray-500 font-medium px-4">Apakah Anda yakin ingin menyetujui pesanan ini? Aksi ini akan mengubah status menjadi <span class="text-emerald-600 font-bold uppercase tracking-widest text-[10px]">Confirmed</span>.</p>
+                    <h3 class="text-2xl font-black text-gray-900 leading-tight mb-2" id="modal-title">Setujui Pesanan</h3>
+                    <p class="text-sm text-gray-500 font-medium px-4">Apakah Anda yakin ingin menyetujui pesanan ini? Status akan berubah menjadi <span class="text-emerald-600 font-bold uppercase tracking-widest text-[10px]">Approved</span> dan customer dapat melakukan pembayaran.</p>
                 </div>
 
                 <div class="mt-8">
-                    <label for="confirm_notes" class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 ml-1">Internal Notes (Opsional)</label>
-                    <textarea name="notes" id="confirm_notes" rows="3" 
+                    <label for="confirm_notes" class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 ml-1">Catatan Admin (Opsional)</label>
+                    <textarea name="admin_notes" id="confirm_notes" rows="3" 
                               class="w-full px-5 py-4 bg-gray-50 border-gray-100 rounded-2xl focus:bg-white focus:ring-4 focus:ring-emerald-100 focus:border-emerald-400 transition-all text-sm font-medium resize-none shadow-sm" 
-                              placeholder="Tambahkan catatan jika diperlukan..."></textarea>
+                              placeholder="Tambahkan catatan untuk customer jika diperlukan..."></textarea>
                 </div>
 
                 <div class="mt-10 grid grid-cols-2 gap-4">
@@ -34,7 +34,7 @@
                     </button>
                     <button type="submit" 
                             class="w-full px-6 py-4 text-xs font-black uppercase tracking-widest text-white bg-emerald-600 rounded-2xl hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-100">
-                        Konfirmasi
+                        Ya, Setujui
                     </button>
                 </div>
             </form>
@@ -46,11 +46,11 @@
 <div id="rejectModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
     <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
         <!-- Backdrop Blur -->
-        <div class="fixed inset-0 transition-opacity bg-indigo-950/60 backdrop-blur-sm" aria-hidden="true"></div>
+        <div class="fixed inset-0 transition-opacity bg-indigo-950/60 backdrop-blur-sm" aria-hidden="true" onclick="closeModal('rejectModal')"></div>
 
         <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
         
-        <div class="inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-[2rem] shadow-2xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-10 border border-gray-100">
+        <div class="relative z-10 inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-[2rem] shadow-2xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-10 border border-gray-100">
             <form id="rejectForm" method="POST" class="relative z-10">
                 @csrf
                 @method('PATCH')
@@ -66,9 +66,9 @@
 
                 <div class="mt-8">
                     <label for="reject_notes" class="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3 ml-1">Alasan Penolakan <span class="text-rose-500">*</span></label>
-                    <textarea name="notes" id="reject_notes" rows="4" required
+                    <textarea name="rejection_reason" id="reject_notes" rows="4" required
                               class="w-full px-5 py-4 bg-gray-50 border-gray-100 rounded-2xl focus:bg-white focus:ring-4 focus:ring-rose-100 focus:border-rose-400 transition-all text-sm font-medium resize-none shadow-sm" 
-                              placeholder="Sebutkan alasan penolakan..."></textarea>
+                              placeholder="Sebutkan alasan penolakan yang jelas..."></textarea>
                 </div>
 
                 <div class="mt-10 grid grid-cols-2 gap-4">
@@ -78,7 +78,7 @@
                     </button>
                     <button type="submit" 
                             class="w-full px-6 py-4 text-xs font-black uppercase tracking-widest text-white bg-rose-600 rounded-2xl hover:bg-rose-700 transition-all shadow-lg shadow-rose-100">
-                        Batalkan Trip
+                        Ya, Tolak Pesanan
                     </button>
                 </div>
             </form>
@@ -90,11 +90,11 @@
 <div id="completeModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
     <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
         <!-- Backdrop Blur -->
-        <div class="fixed inset-0 transition-opacity bg-indigo-950/60 backdrop-blur-sm" aria-hidden="true"></div>
+        <div class="fixed inset-0 transition-opacity bg-indigo-950/60 backdrop-blur-sm" aria-hidden="true" onclick="closeModal('completeModal')"></div>
 
         <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
         
-        <div class="inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-[2rem] shadow-2xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-10 border border-gray-100">
+        <div class="relative z-10 inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-[2rem] shadow-2xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-10 border border-gray-100">
             <form id="completeForm" method="POST" class="relative z-10">
                 @csrf
                 @method('PATCH')

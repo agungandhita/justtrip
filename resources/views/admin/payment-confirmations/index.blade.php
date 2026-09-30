@@ -192,12 +192,12 @@
                                             </a>
                                             @if($confirmation->status === 'pending')
                                                 <span class="text-gray-300">|</span>
-                                                <button onclick="approvePayment({{ $confirmation->payment_confirmation_id }})" 
+                                                <button onclick="approvePayment('{{ $confirmation->payment_confirmation_id }}')" 
                                                         class="text-green-600 hover:text-green-900">
                                                     Setujui
                                                 </button>
                                                 <span class="text-gray-300">|</span>
-                                                <button onclick="rejectPayment({{ $confirmation->payment_confirmation_id }})" 
+                                                <button onclick="rejectPayment('{{ $confirmation->payment_confirmation_id }}')" 
                                                         class="text-red-600 hover:text-red-900">
                                                     Tolak
                                                 </button>

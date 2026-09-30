@@ -23,10 +23,12 @@ class Booking extends Model
         'booking_date',
         'original_amount',
         'discount_amount',
+        'options_amount',
         'total_amount',
         'status',
         'customer_info',
         'custom_booking_info',
+        'selected_options',
         'jumlah_peserta',
         'tanggal_keberangkatan',
         'catatan_khusus',
@@ -45,9 +47,11 @@ class Booking extends Model
         'tanggal_keberangkatan' => 'date',
         'original_amount' => 'decimal:2',
         'discount_amount' => 'decimal:2',
+        'options_amount' => 'decimal:2',
         'total_amount' => 'decimal:2',
         'customer_info' => 'array',
         'custom_booking_info' => 'array',
+        'selected_options' => 'array',
         'confirmed_at' => 'datetime',
         'cancelled_at' => 'datetime',
         'approved_at' => 'datetime',
@@ -159,6 +163,7 @@ class Booking extends Model
 
     public function getSubtotalAttribute()
     {
+        // subtotal = base price after discount
         return (float)$this->original_amount - (float)$this->discount_amount;
     }
 
@@ -274,13 +279,19 @@ class Booking extends Model
         ]);
     }
 
-    public function approve($adminId)
+    public function approve($adminId, $adminNotes = null)
     {
-        $this->update([
+        $updateData = [
             'status' => 'approved',
             'approved_at' => now(),
-            'approved_by' => $adminId
-        ]);
+            'approved_by' => $adminId,
+        ];
+
+        if ($adminNotes) {
+            $updateData['admin_notes'] = $adminNotes;
+        }
+
+        $this->update($updateData);
 
         // Update invoice status to awaiting payment
         if ($this->invoice) {
@@ -319,6 +330,6 @@ class Booking extends Model
 
     public function calculateTotal()
     {
-        return $this->original_amount - $this->discount_amount;
+        return $this->original_amount - $this->discount_amount + (float)($this->options_amount ?? 0);
     }
 }

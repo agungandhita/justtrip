@@ -81,11 +81,12 @@ class PaymentConfirmationController extends Controller
         try {
             $paymentConfirmation->approve(Auth::id(), $request->admin_notes);
 
-            Alert::success('Berhasil', 'Pembayaran telah dikonfirmasi dan booking diselesaikan.');
+            Alert::success('Berhasil', 'Pembayaran telah dikonfirmasi dan booking berhasil diperbarui.');
             return redirect()->route('admin.payment-confirmations.index');
 
         } catch (\Exception $e) {
-            Alert::error('Error', 'Terjadi kesalahan saat memproses konfirmasi pembayaran.');
+            \Illuminate\Support\Facades\Log::error('Error approving payment confirmation: ' . $e->getMessage());
+            Alert::error('Error', 'Terjadi kesalahan saat memproses konfirmasi pembayaran: ' . $e->getMessage());
             return redirect()->back();
         }
     }
@@ -112,7 +113,8 @@ class PaymentConfirmationController extends Controller
             return redirect()->route('admin.payment-confirmations.index');
 
         } catch (\Exception $e) {
-            Alert::error('Error', 'Terjadi kesalahan saat memproses penolakan pembayaran.');
+            \Illuminate\Support\Facades\Log::error('Error rejecting payment confirmation: ' . $e->getMessage());
+            Alert::error('Error', 'Terjadi kesalahan saat memproses penolakan pembayaran: ' . $e->getMessage());
             return redirect()->back();
         }
     }

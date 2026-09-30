@@ -214,7 +214,8 @@ class BookingController extends Controller
             $customerData = [
                 'jumlah_peserta' => $request->jumlah_peserta,
                 'tanggal_keberangkatan' => $request->tanggal_keberangkatan,
-                'catatan_khusus' => $request->catatan_khusus
+                'catatan_khusus' => $request->catatan_khusus,
+                'selected_options' => $request->input('selected_options', []),
             ];
 
             // Use BookingService for clean separation
@@ -456,12 +457,15 @@ class BookingController extends Controller
      */
     private function createInvoice(Booking $booking)
     {
+        // subtotal = base price after discount + options
+        $subtotal = ((float)$booking->original_amount - (float)$booking->discount_amount) + (float)($booking->options_amount ?? 0);
+
         return Invoice::create([
             'booking_id' => $booking->booking_id,
             'invoice_number' => Invoice::generateInvoiceNumber(),
             'invoice_date' => now(),
             'due_date' => now()->addDays(7), // 7 days payment term
-            'subtotal' => $booking->original_amount - $booking->discount_amount,
+            'subtotal' => $subtotal,
             'discount_amount' => $booking->discount_amount,
             'total_amount' => $booking->total_amount,
             'status' => 'draft'

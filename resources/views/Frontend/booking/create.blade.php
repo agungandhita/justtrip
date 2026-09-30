@@ -188,7 +188,53 @@
                         </div>
                     </div>
 
-                    <!-- Terms & Submit -->
+                    @if(!empty($layanan->pricing_options) && count($layanan->pricing_options) > 0)
+                    {{-- Section: Optional Pricing --}}
+                    <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8 md:p-10 transition-all hover:shadow-md">
+                        <div class="flex items-center space-x-4 mb-8">
+                            <div class="p-3 bg-amber-50 text-amber-600 rounded-2xl">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            </div>
+                            <div>
+                                <h2 class="text-2xl font-black text-gray-900">Harga Opsional</h2>
+                                <p class="text-gray-500 font-medium">Pilih layanan tambahan sesuai kebutuhan Anda</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            @foreach($layanan->pricing_options as $index => $option)
+                            <label for="option_{{ $index }}" class="group flex items-center justify-between p-5 bg-gray-50 hover:bg-amber-50 border-2 border-gray-100 hover:border-amber-200 rounded-2xl cursor-pointer transition-all">
+                                <div class="flex items-center space-x-4">
+                                    <div class="relative">
+                                        <input type="checkbox"
+                                               id="option_{{ $index }}"
+                                               name="selected_options[]"
+                                               value="{{ $option['type'] }}"
+                                               data-price="{{ $option['price'] }}"
+                                               onchange="calculateTotal()"
+                                               class="w-5 h-5 text-amber-500 border-2 border-gray-300 rounded-lg focus:ring-amber-400 cursor-pointer">
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-gray-900 group-hover:text-amber-700 transition-colors">{{ $option['type'] }}</p>
+                                        <p class="text-xs text-gray-500 mt-0.5">Per orang per booking</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-black text-amber-600 text-lg">Rp {{ number_format($option['price'], 0, ',', '.') }}</p>
+                                    <p class="text-xs text-gray-400">/ orang</p>
+                                </div>
+                            </label>
+                            @endforeach
+                        </div>
+
+                        <div id="options-total-banner" class="hidden mt-6 p-4 bg-amber-50 border border-amber-200 rounded-2xl flex items-center justify-between">
+                            <span class="text-amber-800 font-bold text-sm">Total Biaya Tambahan:</span>
+                            <span id="options-total-text" class="font-black text-amber-700 text-lg">Rp 0</span>
+                        </div>
+                    </div>
+                    @endif
+
+                    {{-- Terms & Submit --}}
                     <div class="bg-blue-50 rounded-[2rem] p-8 border border-blue-100 space-y-6">
                         <div class="flex items-start">
                             <div class="flex items-center h-6">
@@ -256,6 +302,15 @@
                                     <span class="text-gray-900 font-bold" id="summary-subtotal">Rp {{ number_format($layanan->harga_mulai, 0, ',', '.') }}</span>
                                 </div>
 
+                                {{-- Options amount row (hidden by default) --}}
+                                <div id="summary-options-row" class="hidden flex justify-between items-center p-3 bg-amber-50 rounded-xl border border-amber-100">
+                                    <div class="flex flex-col">
+                                        <span class="text-amber-800 text-[10px] font-black uppercase tracking-tight">Biaya Tambahan</span>
+                                        <span class="text-xs text-amber-600 font-bold" id="summary-options-label">Opsi Pilihan</span>
+                                    </div>
+                                    <span class="text-amber-700 font-black" id="summary-options-amount">+ Rp 0</span>
+                                </div>
+
                                 @if($specialOffer)
                                     <div class="flex justify-between items-center p-3 bg-green-50 rounded-xl border border-green-100">
                                         <div class="flex flex-col">
@@ -300,6 +355,9 @@
 </div>
 
 <script>
+// Pricing options data from server
+const pricingOptions = @json($layanan->pricing_options ?? []);
+
 function changeParticipants(delta) {
     const input = document.getElementById('jumlah_peserta');
     let value = parseInt(input.value) + delta;
@@ -316,7 +374,21 @@ function calculateTotal() {
 
     const subtotal = basePrice * participants;
     const discountAmount = subtotal * (discountPercentage / 100);
-    const total = subtotal - discountAmount; // No PPN
+    const baseAfterDiscount = subtotal - discountAmount;
+
+    // Calculate options
+    let optionsAmount = 0;
+    const selectedOptionNames = [];
+    const checkboxes = document.querySelectorAll('input[name="selected_options[]"]');
+    checkboxes.forEach(cb => {
+        if (cb.checked) {
+            const price = parseFloat(cb.getAttribute('data-price')) || 0;
+            optionsAmount += price * participants;
+            selectedOptionNames.push(cb.value);
+        }
+    });
+
+    const total = baseAfterDiscount + optionsAmount;
 
     // Format utility
     const fmt = (num) => 'Rp ' + num.toLocaleString('id-ID');
@@ -324,13 +396,39 @@ function calculateTotal() {
     // Update Summary Side
     document.getElementById('summary-participants').textContent = participants + ' Orang';
     document.getElementById('summary-subtotal').textContent = fmt(subtotal);
-    
+
     if (document.getElementById('summary-discount')) {
         document.getElementById('summary-discount').textContent = '- ' + fmt(discountAmount);
     }
 
+    // Show/hide options row in sidebar
+    const optionsRow = document.getElementById('summary-options-row');
+    const optionsAmountEl = document.getElementById('summary-options-amount');
+    const optionsLabelEl = document.getElementById('summary-options-label');
+    const optionsBanner = document.getElementById('options-total-banner');
+    const optionsBannerText = document.getElementById('options-total-text');
+
+    if (optionsRow) {
+        if (optionsAmount > 0) {
+            optionsRow.classList.remove('hidden');
+            optionsAmountEl.textContent = '+ ' + fmt(optionsAmount);
+            if (optionsLabelEl) optionsLabelEl.textContent = selectedOptionNames.join(', ');
+        } else {
+            optionsRow.classList.add('hidden');
+        }
+    }
+
+    if (optionsBanner) {
+        if (optionsAmount > 0) {
+            optionsBanner.classList.remove('hidden');
+            optionsBannerText.textContent = fmt(optionsAmount);
+        } else {
+            optionsBanner.classList.add('hidden');
+        }
+    }
+
     document.getElementById('summary-total').textContent = fmt(Math.round(total));
-    
+
     // Animate total update
     const totalEl = document.getElementById('summary-total');
     totalEl.classList.remove('scale-110', 'text-blue-400');

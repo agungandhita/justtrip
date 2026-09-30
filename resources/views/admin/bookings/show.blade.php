@@ -283,7 +283,7 @@
                 
                 <div class="space-y-4">
                     @if($booking->status === 'pending')
-                    <button type="button" onclick="confirmBooking({{ $booking->booking_id }})" class="w-full flex items-center justify-between p-4 bg-emerald-50 rounded-2xl border border-emerald-100 text-emerald-700 hover:bg-emerald-100 transition-all duration-300 group">
+                    <button type="button" onclick="confirmBooking('{{ $booking->booking_id }}')" class="w-full flex items-center justify-between p-4 bg-emerald-50 rounded-2xl border border-emerald-100 text-emerald-700 hover:bg-emerald-100 transition-all duration-300 group">
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 bg-emerald-500 text-white rounded-xl shadow-lg shadow-emerald-100 flex items-center justify-center group-hover:rotate-12 transition-transform">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
@@ -297,8 +297,8 @@
                     </button>
                     @endif
                     
-                    @if(in_array($booking->status, ['pending', 'confirmed']))
-                    <button type="button" onclick="rejectBooking({{ $booking->booking_id }})" class="w-full flex items-center justify-between p-4 bg-rose-50 rounded-2xl border border-rose-100 text-rose-700 hover:bg-rose-100 transition-all duration-300 group">
+                    @if(in_array($booking->status, ['pending', 'approved', 'awaiting_payment']))
+                    <button type="button" onclick="rejectBooking('{{ $booking->booking_id }}')" class="w-full flex items-center justify-between p-4 bg-rose-50 rounded-2xl border border-rose-100 text-rose-700 hover:bg-rose-100 transition-all duration-300 group">
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 bg-rose-500 text-white rounded-xl shadow-lg shadow-rose-100 flex items-center justify-center group-hover:rotate-12 transition-transform">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -313,7 +313,7 @@
                     @endif
                     
                     @if($booking->status === 'confirmed')
-                    <button type="button" onclick="completeBooking({{ $booking->booking_id }})" class="w-full flex items-center justify-between p-4 bg-blue-50 rounded-2xl border border-blue-100 text-blue-700 hover:bg-blue-100 transition-all duration-300 group">
+                    <button type="button" onclick="completeBooking('{{ $booking->booking_id }}')" class="w-full flex items-center justify-between p-4 bg-blue-50 rounded-2xl border border-blue-100 text-blue-700 hover:bg-blue-100 transition-all duration-300 group">
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 bg-blue-500 text-white rounded-xl shadow-lg shadow-blue-100 flex items-center justify-center group-hover:rotate-12 transition-transform">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>

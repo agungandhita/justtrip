@@ -372,7 +372,7 @@
                                         @foreach($package->pricing_options as $option)
                                         <div class="flex items-center justify-between px-4 py-3 bg-indigo-50 border border-indigo-100 rounded-2xl">
                                             <span class="text-xs font-bold text-indigo-800">{{ $option['type'] }}</span>
-                                            <span class="text-xs font-black text-indigo-600 font-mono">Rp{{ number_format($option['price'] / 1000, 0) }}k</span>
+                                            <span class="text-xs font-black text-indigo-600 font-mono">Rp{{ number_format((float) $option['price'], 0, ',', '.') }}</span>
                                         </div>
                                         @endforeach
                                     </div>

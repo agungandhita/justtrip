@@ -220,21 +220,21 @@
                                     </a>
                                     
                                     @if($booking->status === 'pending')
-                                    <button type="button" onclick="confirmBooking({{ $booking->booking_id }})" 
-                                            class="p-2 text-emerald-600 hover:bg-emerald-50 rounded-xl transition-all" title="Konfirmasi">
+                                    <button type="button" onclick="confirmBooking('{{ $booking->booking_id }}')" 
+                                            class="p-2 text-emerald-600 hover:bg-emerald-50 rounded-xl transition-all" title="Setujui">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                                     </button>
                                     @endif
 
-                                    @if(in_array($booking->status, ['pending', 'confirmed']))
-                                    <button type="button" onclick="rejectBooking({{ $booking->booking_id }})" 
+                                    @if(in_array($booking->status, ['pending', 'approved', 'awaiting_payment']))
+                                    <button type="button" onclick="rejectBooking('{{ $booking->booking_id }}')" 
                                             class="p-2 text-rose-600 hover:bg-rose-50 rounded-xl transition-all" title="Tolak">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                                     </button>
                                     @endif
 
                                     @if($booking->status === 'confirmed')
-                                    <button type="button" onclick="completeBooking({{ $booking->booking_id }})" 
+                                    <button type="button" onclick="completeBooking('{{ $booking->booking_id }}')" 
                                             class="p-2 text-blue-600 hover:bg-blue-50 rounded-xl transition-all" title="Selesaikan">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                     </button>

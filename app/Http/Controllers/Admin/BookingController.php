@@ -192,38 +192,35 @@ class BookingController extends Controller
     }
     
     /**
-     * Reject booking (new flow)
+     * Reject booking
      */
     public function reject(Request $request, Booking $booking)
     {
         $request->validate([
             'rejection_reason' => 'required|string|max:500'
         ]);
-        
-        if ($booking->status !== 'pending') {
-            Alert::error('Gagal!', 'Booking ini tidak dapat ditolak.');
+
+        if (!in_array($booking->status, ['pending', 'approved', 'awaiting_payment'])) {
+            Alert::error('Gagal!', 'Booking ini tidak dapat ditolak dari status saat ini.');
             return back();
         }
-        
+
         DB::beginTransaction();
-        
+
         try {
             $booking->reject(Auth::id(), $request->rejection_reason);
-            
+
             // Log audit trail
             $this->logBookingChange($booking, 'rejected', [], [], $request->rejection_reason);
-            
-            // Send notification (implement later)
-            // $this->sendBookingNotification($booking, 'rejected');
-            
+
             DB::commit();
-            
+
             Alert::success('Berhasil!', 'Booking berhasil ditolak.');
             return back();
-            
+
         } catch (\Exception $e) {
             DB::rollback();
-            Alert::error('Gagal!', 'Terjadi kesalahan saat menolak booking.');
+            Alert::error('Gagal!', 'Terjadi kesalahan saat menolak booking: ' . $e->getMessage());
             return back();
         }
     }
@@ -429,40 +426,11 @@ class BookingController extends Controller
     }
     
     /**
-     * Reject booking
+     * Reject booking (alias - kept for compatibility)
      */
     public function rejectBooking(Request $request, Booking $booking)
     {
-        $request->validate([
-            'rejection_reason' => 'required|string|max:500'
-        ]);
-        
-        if ($booking->status !== 'pending') {
-            Alert::error('Gagal!', 'Booking ini tidak dapat ditolak.');
-            return back();
-        }
-        
-        DB::beginTransaction();
-        
-        try {
-            $booking->reject(Auth::id(), $request->rejection_reason);
-            
-            // Log audit trail
-            $this->logBookingChange($booking, 'rejected', [], [], $request->rejection_reason);
-            
-            // Send notification to user
-            // $this->sendBookingNotification($booking, 'rejected');
-            
-            DB::commit();
-            
-            Alert::success('Berhasil!', 'Booking berhasil ditolak.');
-            return back();
-            
-        } catch (\Exception $e) {
-            DB::rollback();
-            Alert::error('Gagal!', 'Terjadi kesalahan saat menolak booking.');
-            return back();
-        }
+        return $this->reject($request, $booking);
     }
     
     /**
