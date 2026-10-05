@@ -25,8 +25,9 @@
     <section class="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
         <!-- Dynamic Background -->
         <div class="absolute inset-0 z-0">
-            @if($specialOffer->main_image)
-                <img src="{{ Storage::url($specialOffer->main_image) }}" alt="{{ $specialOffer->title }}" class="object-cover w-full h-full scale-105 animate-slow-zoom">
+            @php $displayImageUrl = $specialOffer->display_image_url; @endphp
+            @if($displayImageUrl)
+                <img src="{{ $displayImageUrl }}" alt="{{ $specialOffer->title }}" class="object-cover w-full h-full scale-105 animate-slow-zoom">
             @else
                 <div class="w-full h-full bg-gradient-to-br from-slate-900 via-red-900 to-black"></div>
             @endif
@@ -313,8 +314,9 @@
                 @foreach($relatedOffers as $related)
                 <div class="group relative bg-white rounded-[3rem] border border-slate-100 overflow-hidden hover:shadow-2xl transition-all duration-700 shadow-xl shadow-slate-200/50" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
                     <div class="aspect-[1.2/1] overflow-hidden">
-                        @if($related->main_image)
-                            <img src="{{ Storage::url($related->main_image) }}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
+                        @php $relatedImageUrl = $related->display_image_url; @endphp
+                        @if($relatedImageUrl)
+                            <img src="{{ $relatedImageUrl }}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
                         @else
                             <div class="w-full h-full bg-slate-100"></div>
                         @endif

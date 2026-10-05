@@ -124,6 +124,41 @@ class SpecialOffer extends Model
         return $this->main_image;
     }
 
+    /**
+     * Get the best available image path for display.
+     * Falls back to layanan's gambar_destinasi if main_image is missing.
+     */
+    public function getDisplayImageAttribute(): ?string
+    {
+        // Check if main_image exists in storage
+        if ($this->main_image && \Illuminate\Support\Facades\Storage::disk('public')->exists($this->main_image)) {
+            return $this->main_image;
+        }
+
+        // Fallback: use layanan's first gambar_destinasi if available
+        if ($this->layanan) {
+            $gambar = $this->layanan->gambar_destinasi;
+            if (!empty($gambar) && is_array($gambar)) {
+                foreach ($gambar as $img) {
+                    if (\Illuminate\Support\Facades\Storage::disk('public')->exists($img)) {
+                        return $img;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Get the full URL for display image.
+     */
+    public function getDisplayImageUrlAttribute(): ?string
+    {
+        $path = $this->display_image;
+        return $path ? \Illuminate\Support\Facades\Storage::url($path) : null;
+    }
+
     // Method to calculate discounted price from original price and percentage
     public function calculateDiscountedPrice()
     {

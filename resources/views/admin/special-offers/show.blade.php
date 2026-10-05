@@ -141,11 +141,12 @@
                 <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 p-6">
                     <p class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-4 text-center">Visual Penawaran</p>
                     <div class="aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl shadow-indigo-100">
-                        @if($specialOffer->main_image)
-                            <img src="{{ asset('storage/' . $specialOffer->main_image) }}" alt="{{ $specialOffer->title }}" class="w-full h-full object-cover">
+                        @php $adminPreviewUrl = $specialOffer->display_image_url; @endphp
+                        @if($adminPreviewUrl)
+                            <img src="{{ $adminPreviewUrl }}" alt="{{ $specialOffer->title }}" class="w-full h-full object-cover">
                         @else
                             <div class="w-full h-full bg-gray-50 flex flex-col items-center justify-center text-gray-300 italic p-6 text-center">
-                                <span class="text-xs">Gambar penawaran tidak tersedia</span>
+                                <span class="text-xs">Gambar penawaran tidak tersedia. Upload gambar melalui form Edit.</span>
                             </div>
                         @endif
                     </div>

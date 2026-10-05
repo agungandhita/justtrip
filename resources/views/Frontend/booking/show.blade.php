@@ -57,7 +57,7 @@
                         ['id' => 'approved', 'label' => 'Disetujui', 'icon' => 'check-circle'],
                         ['id' => 'awaiting_payment', 'label' => 'Bayar', 'icon' => 'credit-card'],
                         ['id' => 'payment_uploaded', 'label' => 'Verifikasi', 'icon' => 'search'],
-                        ['id' => 'confirmed', 'label' => 'Dikonfirmasi', 'icon' => 'shield-check'],
+                        ['id' => 'confirmed', 'label' => 'Dikonfirmasi', 'icon' => 'check-double'],
                         ['id' => 'completed', 'label' => 'Selesai', 'icon' => 'flag']
                     ];
                     
@@ -84,6 +84,18 @@
                         <div class="w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-500 {{ $isActive ? 'bg-blue-600 text-white shadow-xl shadow-blue-200 scale-110' : ($isCompleted ? 'bg-green-500 text-white' : 'bg-gray-100 text-gray-400') }}">
                             @if($isCompleted)
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                            @elseif($step['id'] === 'pending')
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            @elseif($step['id'] === 'approved')
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            @elseif($step['id'] === 'awaiting_payment')
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                            @elseif($step['id'] === 'payment_uploaded')
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                            @elseif($step['id'] === 'confirmed')
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                            @elseif($step['id'] === 'completed')
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"/></svg>
                             @else
                                 <i class="fas fa-{{ $step['icon'] }} text-lg"></i>
                             @endif

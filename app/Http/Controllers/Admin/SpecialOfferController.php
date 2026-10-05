@@ -114,8 +114,8 @@ class SpecialOfferController extends Controller
      */
     public function show(SpecialOffer $specialOffer)
     {
-        // Load galleries for standalone offers
-        $specialOffer->load(['galleries' => function($query) {
+        // Load galleries and layanan for image fallback
+        $specialOffer->load(['layanan', 'galleries' => function($query) {
             $query->orderedBySort();
         }]);
         

@@ -78,8 +78,9 @@
                     <div class="flex flex-col md:flex-row h-full">
                         <!-- Image Container -->
                         <div class="md:w-2/5 relative h-64 md:h-auto overflow-hidden">
-                            @if($offer->main_image)
-                                <img src="{{ Storage::url($offer->main_image) }}" alt="{{ $offer->title }}" 
+                            @php $displayImageUrl = $offer->display_image_url; @endphp
+                        @if($displayImageUrl)
+                                <img src="{{ $displayImageUrl }}" alt="{{ $offer->title }}" 
                                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                             @else
                                 <div class="w-full h-full bg-gradient-to-br from-red-400 to-pink-500 flex items-center justify-center">
@@ -176,8 +177,9 @@
                     
                     <!-- Top Container -->
                     <div class="relative h-56 overflow-hidden">
-                        @if($offer->main_image)
-                            <img src="{{ Storage::url($offer->main_image) }}" alt="{{ $offer->title }}" 
+                        @php $displayImageUrl = $offer->display_image_url; @endphp
+                        @if($displayImageUrl)
+                            <img src="{{ $displayImageUrl }}" alt="{{ $offer->title }}" 
                                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                         @else
                             <div class="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
