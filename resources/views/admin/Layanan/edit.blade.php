@@ -29,8 +29,11 @@
             
             @foreach(['Info Dasar', 'Itinerary', 'Services', 'Terms'] as $i => $label)
             <div class="wizard-step {{ $i === 0 ? 'active' : '' }} relative z-10 flex flex-col items-center cursor-pointer" onclick="goToStep({{ $i + 1 }})">
-                <div class="step-circle w-12 h-12 rounded-full {{ $i === 0 ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-500' }} flex items-center justify-center font-black text-lg shadow-lg">{{ $i + 1 }}</div>
-                <span class="mt-2 text-xs font-bold {{ $i === 0 ? 'text-indigo-600' : 'text-gray-400' }} uppercase tracking-wider hidden sm:block">{{ $label }}</span>
+                <div class="step-circle w-12 h-12 rounded-2xl flex items-center justify-center font-black text-base shadow-sm transition-all duration-300">
+                    <span class="step-num">{{ $i + 1 }}</span>
+                    <i class="fa-solid fa-check hidden text-base"></i>
+                </div>
+                <span class="step-label mt-2 text-xs font-bold uppercase tracking-wider hidden sm:block">{{ $label }}</span>
             </div>
             @endforeach
         </div>
@@ -372,10 +375,67 @@
 </div>
 
 <style>
-    .wizard-step.active .step-circle { background-color: #4f46e5; color: white; }
-    .wizard-step.completed .step-circle { background-color: #10b981; color: white; }
-    .wizard-step.active span { color: #4f46e5; }
-    .wizard-step.completed span { color: #10b981; }
+    /* Inactive / Default Step Circle */
+    .wizard-step .step-circle {
+        background-color: #ffffff !important;
+        border: 2.5px solid #cbd5e1 !important;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+    .wizard-step .step-circle .step-num {
+        color: #1e293b !important;
+        font-weight: 900 !important;
+        font-size: 1.1rem !important;
+        display: block !important;
+        line-height: 1 !important;
+        -webkit-font-smoothing: antialiased;
+    }
+    .wizard-step .step-circle i {
+        display: none !important;
+    }
+    .wizard-step .step-label {
+        color: #64748b !important;
+        font-weight: 700 !important;
+    }
+
+    /* Active Step Circle */
+    .wizard-step.active .step-circle {
+        background: #4f46e5 !important;
+        border-color: #4338ca !important;
+        box-shadow: 0 10px 25px -4px rgba(79, 70, 229, 0.5), 0 0 0 5px rgba(99, 102, 241, 0.2) !important;
+        transform: scale(1.08);
+    }
+    .wizard-step.active .step-circle .step-num {
+        color: #ffffff !important;
+        font-weight: 900 !important;
+        font-size: 1.15rem !important;
+        display: block !important;
+        line-height: 1 !important;
+    }
+    .wizard-step.active .step-label {
+        color: #4338ca !important;
+        font-weight: 900 !important;
+    }
+
+    /* Completed Step Circle */
+    .wizard-step.completed .step-circle {
+        background: #059669 !important;
+        border-color: #047857 !important;
+        box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3) !important;
+        transform: scale(1);
+    }
+    .wizard-step.completed .step-circle .step-num {
+        display: none !important;
+    }
+    .wizard-step.completed .step-circle i {
+        display: block !important;
+        color: #ffffff !important;
+        font-size: 1rem !important;
+        line-height: 1 !important;
+    }
+    .wizard-step.completed .step-label {
+        color: #059669 !important;
+        font-weight: 800 !important;
+    }
 </style>
 
 <script>

@@ -1,247 +1,421 @@
 @extends('admin.layouts.main')
 
 @section('container')
-    <div class="mt-20 pb-10 antialiased text-gray-900 px-4 md:px-8">
-        <!-- Header Section -->
-        <div class="mb-8">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <div>
-                    <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight mb-2">Manajemen Layanan</h1>
-                    <p class="text-gray-500 font-medium">Kelola seluruh paket perjalanan dan layanan travel JustTrip.</p>
+<div class="mt-20 pb-16 antialiased text-gray-900 px-4 md:px-8">
+    <!-- Breadcrumb & Top Bar -->
+    <div class="mb-8">
+        <div class="flex items-center gap-2 text-xs text-gray-400 font-bold uppercase tracking-wider mb-3">
+            <a href="{{ route('admin.dashboard') }}" class="hover:text-indigo-600 transition-colors flex items-center gap-1.5">
+                <i class="fa-solid fa-house text-xs"></i>
+                Dashboard
+            </a>
+            <svg class="w-3.5 h-3.5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+            <span class="text-indigo-600 font-extrabold">Manajemen Layanan</span>
+        </div>
+
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 bg-white p-6 md:p-8 rounded-3xl border border-gray-100 shadow-sm">
+            <div class="space-y-1.5">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-500 text-white flex items-center justify-center shadow-md shadow-indigo-100">
+                        <i class="fa-solid fa-layer-group text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-black text-gray-900 tracking-tight">Manajemen Layanan & Paket Tour</h1>
+                    </div>
                 </div>
-                <a href="{{ route('admin.layanan.create') }}" class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-2xl font-bold transition-all duration-300 shadow-lg shadow-indigo-100 group">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-                    Tambah Layanan Baru
+                <p class="text-gray-500 text-sm font-medium pl-14">
+                    Kelola paket wisata, spesifikasi perjalanan, status publikasi, dan skema harga travel JustTrip.
+                </p>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3">
+                <a href="{{ route('layanan.index') }}" target="_blank" class="inline-flex items-center gap-2 px-4 py-3 rounded-2xl bg-gray-50 hover:bg-gray-100 text-gray-700 font-bold text-sm border border-gray-200 transition-all">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-400"></i>
+                    <span>Katalog</span>
+                </a>
+                <button type="button" onclick="openImportModal()" class="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-black text-sm border border-emerald-200 transition-all shadow-sm">
+                    <i class="fa-solid fa-file-excel text-emerald-600 text-base"></i>
+                    <span>Import Excel</span>
+                </button>
+                <a href="{{ route('admin.layanan.create') }}" class="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white px-5 py-3 rounded-2xl font-black text-sm transition-all duration-300 shadow-lg shadow-indigo-200 hover:shadow-indigo-300 group">
+                    <i class="fa-solid fa-plus text-xs group-hover:rotate-90 transition-transform duration-300"></i>
+                    <span>Tambah Layanan Baru</span>
                 </a>
             </div>
         </div>
+    </div>
 
-        <!-- Quick Stats -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex items-center gap-4">
-                <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-                </div>
-                <div>
-                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Total Layanan</p>
-                    <p class="text-2xl font-black text-gray-900 leading-none">{{ $layanan->total() }}</p>
-                </div>
+    <!-- Alert / Feedback Hasil Import jika ada baris dilewati -->
+    @if(session('import_errors') && count(session('import_errors')) > 0)
+    <div class="mb-6 p-5 rounded-3xl bg-amber-50 border border-amber-200/80 text-amber-950 text-xs shadow-sm">
+        <div class="flex items-center gap-2.5 font-black text-sm text-amber-900 mb-2">
+            <i class="fa-solid fa-triangle-exclamation text-amber-600 text-base"></i>
+            <span>Catatan Baris yang Dilewati / Butuh Penyesuaian:</span>
+        </div>
+        <ul class="list-disc list-inside space-y-1 text-amber-800 pl-1 font-medium">
+            @foreach(session('import_errors') as $err)
+                <li>{{ $err }}</li>
+            @endforeach
+        </ul>
+        <p class="mt-2 text-[11px] text-amber-700 font-bold">
+            Tips: Anda dapat mengedit paket yang berhasil diimpor kapan saja melalui tombol Edit pada daftar tabel di bawah.
+        </p>
+    </div>
+    @endif
+
+    <!-- Metrics KPI Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <!-- Card 1: Total Layanan -->
+        <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100/80 flex items-center justify-between hover:shadow-md transition-shadow">
+            <div class="space-y-1">
+                <span class="text-[11px] font-black uppercase tracking-wider text-gray-400">Total Paket Tour</span>
+                <h3 class="text-3xl font-black text-gray-900 font-mono tracking-tight">{{ $stats['total'] ?? $layanan->total() }}</h3>
+                <span class="text-xs text-gray-400 font-medium">Terdaftar di sistem</span>
             </div>
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex items-center gap-4">
-                <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                </div>
-                <div>
-                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Layanan Aktif</p>
-                    <p class="text-2xl font-black text-gray-900 leading-none">
-                        {{ $layanan->filter(fn($item) => $item->status == 'aktif')->count() }}
-                        <span class="text-xs font-medium text-gray-400">di halaman ini</span>
-                    </p>
-                </div>
-            </div>
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex items-center gap-4">
-                <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                </div>
-                <div>
-                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Jenis Layanan</p>
-                    <p class="text-2xl font-black text-gray-900 leading-none">{{ count($jenisLayananOptions) }}</p>
-                </div>
-            </div>
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex items-center gap-4">
-                <div class="w-12 h-12 bg-rose-50 text-rose-600 rounded-2xl flex items-center justify-center">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                </div>
-                <div>
-                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Avg. Harga Mulai</p>
-                    <p class="text-2xl font-black text-gray-900 leading-none">
-                        Rp {{ number_format($layanan->avg('harga_mulai') / 1000000, 1) }}jt
-                    </p>
-                </div>
+            <div class="w-14 h-14 rounded-2xl bg-indigo-50/80 text-indigo-600 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-suitcase-rolling"></i>
             </div>
         </div>
 
-        <!-- Search & Filters -->
-        <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 mb-8">
-            <form action="{{ route('admin.layanan.index') }}" method="GET" class="space-y-4">
-                <div class="flex flex-col lg:flex-row gap-4">
-                    <div class="flex-1 relative">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                        </div>
-                        <input type="text" name="search" value="{{ request('search') }}" 
-                               class="block w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-100 text-gray-900 text-sm rounded-2xl focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none" 
-                               placeholder="Cari nama layanan, destinasi, atau deskripsi...">
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:flex gap-4">
-                        <select name="jenis_layanan" class="bg-gray-50 border border-gray-100 text-gray-900 text-sm rounded-2xl focus:ring-indigo-500 focus:border-indigo-500 block w-full lg:w-48 p-3 outline-none appearance-none">
-                            <option value="">Semua Jenis</option>
-                            @foreach($jenisLayananOptions as $key => $label)
-                                <option value="{{ $key }}" {{ request('jenis_layanan') == $key ? 'selected' : '' }}>{{ $label }}</option>
-                            @endforeach
-                        </select>
-                        <select name="status" class="bg-gray-50 border border-gray-100 text-gray-900 text-sm rounded-2xl focus:ring-indigo-500 focus:border-indigo-500 block w-full lg:w-40 p-3 outline-none appearance-none">
-                            <option value="">Semua Status</option>
-                            <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
-                            <option value="nonaktif" {{ request('status') == 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
-                        </select>
-                        <div class="flex gap-2">
-                            <button type="submit" class="flex-1 lg:flex-none inline-flex items-center justify-center gap-2 bg-gray-900 hover:bg-black text-white px-6 py-3 rounded-2xl font-bold transition-all duration-300">
-                                Filter
-                            </button>
-                            @if(request()->anyFilled(['search', 'jenis_layanan', 'status']))
-                            <a href="{{ route('admin.layanan.index') }}" class="inline-flex items-center justify-center w-12 h-12 bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-2xl transition-all duration-300" title="Reset Filter">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                            </a>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            </form>
+        <!-- Card 2: Layanan Aktif -->
+        <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100/80 flex items-center justify-between hover:shadow-md transition-shadow">
+            <div class="space-y-1">
+                <span class="text-[11px] font-black uppercase tracking-wider text-emerald-600 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Paket Aktif (Live)
+                </span>
+                <h3 class="text-3xl font-black text-emerald-600 font-mono tracking-tight">{{ $stats['aktif'] ?? 0 }}</h3>
+                <span class="text-xs text-gray-400 font-medium">Tampil di website</span>
+            </div>
+            <div class="w-14 h-14 rounded-2xl bg-emerald-50/80 text-emerald-600 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
         </div>
 
-        <!-- Services Table -->
-        <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-gray-50/50">
-                            <th class="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">INFO LAYANAN</th>
-                            <th class="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">KATEGORI & DURASI</th>
-                            <th class="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 text-right">HARGA MULAI</th>
-                            <th class="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 text-center">STATUS</th>
-                            <th class="px-6 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 text-right">AKSI</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-50">
-                        @forelse($layanan as $index => $item)
-                        <tr class="group hover:bg-indigo-50/30 transition-colors duration-300">
-                            <td class="px-6 py-6">
-                                <div class="flex items-center gap-4">
-                                    <div class="relative w-16 h-16 rounded-2xl overflow-hidden border-2 border-white shadow-sm flex-shrink-0">
-                                        @if($item->gambar_utama)
-                                            <img src="{{ asset('storage/' . $item->gambar_utama) }}" alt="{{ $item->nama_layanan }}" class="w-full h-full object-cover">
-                                        @elseif($item->gambar_destinasi && count($item->gambar_destinasi) > 0)
-                                            <img src="{{ asset('storage/' . $item->gambar_destinasi[0]) }}" alt="{{ $item->nama_layanan }}" class="w-full h-full object-cover">
-                                        @else
-                                            <div class="w-full h-full bg-indigo-50 flex items-center justify-center">
-                                                <svg class="w-6 h-6 text-indigo-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                                            </div>
-                                        @endif
-                                    </div>
-                                    <div>
-                                        <a href="{{ route('admin.layanan.show', $item) }}" class="text-sm font-bold text-gray-900 hover:text-indigo-600 transition-colors block mb-1">
-                                            {{ $item->nama_layanan }}
-                                        </a>
-                                        <div class="flex items-center gap-2 text-[11px] text-gray-400 font-bold uppercase tracking-wider">
-                                            <svg class="w-3 h-3 text-amber-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
-                                            {{ $item->lokasi_tujuan }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-6">
-                                <div class="flex flex-col gap-2">
-                                    <span class="inline-flex w-fit px-3 py-1 bg-blue-50 text-blue-600 text-[10px] font-black uppercase tracking-wider rounded-full border border-blue-100">
-                                        {{ $item->jenis_layanan_label }}
-                                    </span>
-                                    <div class="flex items-center gap-3 text-gray-500 font-medium text-xs">
-                                        <span class="flex items-center gap-1">
-                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                            {{ $item->durasi_format }}
-                                        </span>
-                                        <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                                        <span class="flex items-center gap-1">
-                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-                                            {{ $item->maks_orang }} Pax
-                                        </span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-6 text-right font-mono tracking-tight font-black text-indigo-700">
-                                {{ $item->harga_format }}
-                            </td>
-                            <td class="px-6 py-6 text-center">
-                                <span class="px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wider border {{ $item->status == 'aktif' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-rose-50 text-rose-600 border-rose-100' }}">
-                                    {{ $item->status }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-6 text-right">
-                                <div class="flex items-center justify-end gap-2">
-                                    <a href="{{ route('admin.layanan.show', $item) }}" class="w-10 h-10 flex items-center justify-center bg-gray-50 text-gray-400 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-all duration-300" title="Detail">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                    </a>
-                                    <a href="{{ route('admin.layanan.edit', $item) }}" class="w-10 h-10 flex items-center justify-center bg-gray-50 text-gray-400 hover:bg-amber-50 hover:text-amber-600 rounded-xl transition-all duration-300" title="Edit">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 00 2 2h11a2 2 0 00 2-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                                    </a>
-                                    <form action="{{ route('admin.layanan.destroy', $item) }}" method="POST" onsubmit="return confirm('Hapus layanan ini?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="w-10 h-10 flex items-center justify-center bg-gray-50 text-gray-400 hover:bg-rose-50 hover:text-rose-600 rounded-xl transition-all duration-300" title="Hapus">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="5" class="px-6 py-24 text-center">
-                                <div class="flex flex-col items-center justify-center">
-                                    <div class="w-20 h-20 bg-gray-50 text-gray-200 rounded-full flex items-center justify-center mb-4">
-                                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4a2 2 0 012-2m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>
-                                    </div>
-                                    <h3 class="text-lg font-bold text-gray-900 mb-1">Tidak ada layanan ditemukan</h3>
-                                    <p class="text-gray-400 text-sm max-w-xs mx-auto font-medium">Coba sesuaikan kata kunci pencarian atau filter Anda untuk menemukan hasil lain.</p>
-                                    <a href="{{ route('admin.layanan.index') }}" class="mt-6 text-sm font-bold text-indigo-600 hover:text-indigo-700 underline underline-offset-4">Reset Semua Filter</a>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+        <!-- Card 3: Layanan Nonaktif -->
+        <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100/80 flex items-center justify-between hover:shadow-md transition-shadow">
+            <div class="space-y-1">
+                <span class="text-[11px] font-black uppercase tracking-wider text-rose-500">Draft / Nonaktif</span>
+                <h3 class="text-3xl font-black text-rose-600 font-mono tracking-tight">{{ $stats['nonaktif'] ?? 0 }}</h3>
+                <span class="text-xs text-gray-400 font-medium">Disembunyikan</span>
             </div>
+            <div class="w-14 h-14 rounded-2xl bg-rose-50/80 text-rose-500 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-pause"></i>
+            </div>
+        </div>
 
-            <!-- Pagination -->
-            @if($layanan->hasPages())
-            <div class="px-8 py-6 bg-gray-50/50 border-t border-gray-50">
-                {{ $layanan->appends(request()->query())->links() }}
+        <!-- Card 4: Kategori Tersedia -->
+        <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100/80 flex items-center justify-between hover:shadow-md transition-shadow">
+            <div class="space-y-1">
+                <span class="text-[11px] font-black uppercase tracking-wider text-gray-400">Jenis Layanan</span>
+                <h3 class="text-3xl font-black text-gray-900 font-mono tracking-tight">{{ count($jenisLayananOptions) }}</h3>
+                <span class="text-xs text-indigo-600 font-bold">Termasuk Adventure</span>
             </div>
-            @endif
+            <div class="w-14 h-14 rounded-2xl bg-amber-50/80 text-amber-600 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-shapes"></i>
+            </div>
         </div>
     </div>
 
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap');
-        
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #f8fafc;
-        }
+    <!-- Category Tabs Navigation -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-3 mb-4 scrollbar-none">
+        <a href="{{ route('admin.layanan.index', array_merge(request()->except(['jenis_layanan', 'page']))) }}"
+           class="px-5 py-2.5 rounded-2xl text-xs font-black transition-all flex items-center gap-2 shrink-0 {{ !request('jenis_layanan') ? 'bg-indigo-600 text-white shadow-md shadow-indigo-100' : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-200/80' }}">
+            <i class="fa-solid fa-globe text-xs"></i>
+            <span>Semua Layanan</span>
+        </a>
 
-        /* Custom Pagination Styling */
-        .pagination {
-            display: flex;
-            gap: 0.5rem;
-            justify-content: center;
-        }
-        .page-item .page-link {
-            border-radius: 0.75rem;
-            border: 1px solid #f1f5f9;
-            color: #64748b;
-            padding: 0.5rem 1rem;
-            font-weight: 700;
-            transition: all 0.3s ease;
-        }
-        .page-item.active .page-link {
-            background-color: #4f46e5;
-            border-color: #4f46e5;
-            color: white;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
-        }
-        .page-link:hover {
-            background-color: #f8fafc;
-            color: #4f46e5;
-        }
-    </style>
+        <!-- Corporate -->
+        <a href="{{ route('admin.layanan.index', array_merge(request()->except('page'), ['jenis_layanan' => 'corporate_trip'])) }}"
+           class="px-5 py-2.5 rounded-2xl text-xs font-black transition-all flex items-center gap-2 shrink-0 {{ request('jenis_layanan') == 'corporate_trip' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-100' : 'bg-white text-gray-600 hover:bg-emerald-50 hover:text-emerald-700 border border-gray-200/80' }}">
+            <i class="fa-solid fa-building text-xs"></i>
+            <span>Corporate (Per orang)</span>
+        </a>
+
+        <!-- Adventure -->
+        <a href="{{ route('admin.layanan.index', array_merge(request()->except('page'), ['jenis_layanan' => 'adventure_trip'])) }}"
+           class="px-5 py-2.5 rounded-2xl text-xs font-black transition-all flex items-center gap-2 shrink-0 {{ request('jenis_layanan') == 'adventure_trip' ? 'bg-amber-600 text-white shadow-md shadow-amber-100' : 'bg-white text-gray-600 hover:bg-amber-50 hover:text-amber-700 border border-gray-200/80' }}">
+            <i class="fa-solid fa-mountain-sun text-xs"></i>
+            <span>Adventure (Per orang)</span>
+        </a>
+
+        <!-- Edukasi -->
+        <a href="{{ route('admin.layanan.index', array_merge(request()->except('page'), ['jenis_layanan' => 'edu_trip'])) }}"
+           class="px-5 py-2.5 rounded-2xl text-xs font-black transition-all flex items-center gap-2 shrink-0 {{ request('jenis_layanan') == 'edu_trip' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-100' : 'bg-white text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 border border-gray-200/80' }}">
+            <i class="fa-solid fa-graduation-cap text-xs"></i>
+            <span>Edukasi (Per orang / Kelompok*)</span>
+        </a>
+
+        <!-- Open Trip -->
+        <a href="{{ route('admin.layanan.index', array_merge(request()->except('page'), ['jenis_layanan' => 'open_trip'])) }}"
+           class="px-5 py-2.5 rounded-2xl text-xs font-black transition-all flex items-center gap-2 shrink-0 {{ request('jenis_layanan') == 'open_trip' ? 'bg-purple-600 text-white shadow-md shadow-purple-100' : 'bg-white text-gray-600 hover:bg-purple-50 hover:text-purple-700 border border-gray-200/80' }}">
+            <i class="fa-solid fa-users text-xs"></i>
+            <span>Open Trip (Per orang)</span>
+        </a>
+    </div>
+
+    <!-- Search & Filter Bar -->
+    <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-5 mb-6">
+        <form action="{{ route('admin.layanan.index') }}" method="GET" class="space-y-3">
+            @if(request('jenis_layanan'))
+                <input type="hidden" name="jenis_layanan" value="{{ request('jenis_layanan') }}">
+            @endif
+
+            <div class="flex flex-col md:flex-row items-center gap-3">
+                <!-- Search Field -->
+                <div class="flex-1 w-full relative">
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+                        <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                    </span>
+                    <input type="text" name="search" value="{{ request('search') }}"
+                           class="w-full pl-11 pr-10 py-3 bg-gray-50/70 border border-gray-200 rounded-2xl text-sm font-medium outline-none focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all"
+                           placeholder="Cari berdasarkan nama layanan, destinasi, atau deskripsi...">
+                    @if(request('search'))
+                        <a href="{{ route('admin.layanan.index', request()->except('search')) }}" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                            <i class="fa-solid fa-circle-xmark text-sm"></i>
+                        </a>
+                    @endif
+                </div>
+
+                <!-- Status Filter -->
+                <div class="w-full md:w-48 relative">
+                    <select name="status" onchange="this.form.submit()"
+                            class="w-full px-4 py-3 bg-gray-50/70 border border-gray-200 text-gray-700 text-sm font-bold rounded-2xl outline-none focus:bg-white focus:border-indigo-500 transition-all appearance-none cursor-pointer">
+                        <option value="">Semua Status</option>
+                        <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>🟢 Aktif</option>
+                        <option value="nonaktif" {{ request('status') == 'nonaktif' ? 'selected' : '' }}>🔴 Nonaktif</option>
+                    </select>
+                    <span class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 text-xs">
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </span>
+                </div>
+
+                <!-- Submit / Filter Button -->
+                <button type="submit" class="w-full md:w-auto px-6 py-3 bg-gray-900 hover:bg-black text-white text-sm font-black rounded-2xl transition-all shadow-sm flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-filter text-xs"></i>
+                    <span>Terapkan</span>
+                </button>
+
+                <!-- Reset Filter Button -->
+                @if(request()->anyFilled(['search', 'jenis_layanan', 'status']))
+                <a href="{{ route('admin.layanan.index') }}" class="w-full md:w-auto px-4 py-3 bg-rose-50 hover:bg-rose-100 text-rose-600 text-sm font-black rounded-2xl transition-all flex items-center justify-center gap-1.5" title="Reset Semua Filter">
+                    <i class="fa-solid fa-rotate-left text-xs"></i>
+                    <span>Reset</span>
+                </a>
+                @endif
+            </div>
+
+            <!-- Active Filter Chips -->
+            @if(request()->anyFilled(['search', 'jenis_layanan', 'status']))
+            <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-gray-100 text-xs">
+                <span class="text-gray-400 font-bold">Filter Aktif:</span>
+                @if(request('search'))
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-gray-100 text-gray-700 rounded-xl font-medium">
+                        Cari: "{{ request('search') }}"
+                        <a href="{{ route('admin.layanan.index', request()->except('search')) }}" class="hover:text-rose-500"><i class="fa-solid fa-xmark text-[10px]"></i></a>
+                    </span>
+                @endif
+                @if(request('jenis_layanan'))
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-indigo-50 text-indigo-700 rounded-xl font-bold">
+                        Kategori: {{ $jenisLayananOptions[request('jenis_layanan')] ?? request('jenis_layanan') }}
+                        <a href="{{ route('admin.layanan.index', request()->except('jenis_layanan')) }}" class="hover:text-rose-500"><i class="fa-solid fa-xmark text-[10px]"></i></a>
+                    </span>
+                @endif
+                @if(request('status'))
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-700 rounded-xl font-bold">
+                        Status: {{ ucfirst(request('status')) }}
+                        <a href="{{ route('admin.layanan.index', request()->except('status')) }}" class="hover:text-rose-500"><i class="fa-solid fa-xmark text-[10px]"></i></a>
+                    </span>
+                @endif
+            </div>
+            @endif
+        </form>
+    </div>
+
+    <!-- Services Table Card -->
+    <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-gray-50/70 border-b border-gray-100">
+                        <th class="px-6 py-4 text-[11px] font-black uppercase tracking-wider text-gray-400">Identitas Layanan</th>
+                        <th class="px-6 py-4 text-[11px] font-black uppercase tracking-wider text-gray-400">Kategori & Durasi</th>
+                        <th class="px-6 py-4 text-[11px] font-black uppercase tracking-wider text-gray-400 text-right">Harga Mulai</th>
+                        <th class="px-6 py-4 text-[11px] font-black uppercase tracking-wider text-gray-400 text-center">Status Publikasi</th>
+                        <th class="px-6 py-4 text-[11px] font-black uppercase tracking-wider text-gray-400 text-right">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 text-sm">
+                    @forelse($layanan as $item)
+                    <tr class="hover:bg-slate-50/60 transition-colors duration-200 group">
+                        <!-- Identitas Paket -->
+                        <td class="px-6 py-5">
+                            <div class="flex items-center gap-4">
+                                <div class="relative w-20 h-14 rounded-2xl overflow-hidden border border-gray-200/80 shadow-sm shrink-0 bg-gray-100 group-hover:scale-105 transition-transform duration-300">
+                                    @if($item->gambar_utama)
+                                        <img src="{{ asset('storage/' . $item->gambar_utama) }}" alt="{{ $item->nama_layanan }}" class="w-full h-full object-cover">
+                                    @elseif($item->gambar_destinasi && count($item->gambar_destinasi) > 0)
+                                        <img src="{{ asset('storage/' . $item->gambar_destinasi[0]) }}" alt="{{ $item->nama_layanan }}" class="w-full h-full object-cover">
+                                    @else
+                                        <div class="w-full h-full flex items-center justify-center text-gray-300">
+                                            <i class="fa-solid fa-mountain-city text-lg"></i>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div>
+                                    <a href="{{ route('admin.layanan.show', $item) }}" class="font-extrabold text-gray-900 hover:text-indigo-600 transition-colors block text-sm leading-snug">
+                                        {{ $item->nama_layanan }}
+                                    </a>
+                                    <div class="flex items-center gap-2 mt-1 text-xs text-gray-400 font-medium">
+                                        <span class="flex items-center gap-1 text-rose-500 font-semibold">
+                                            <i class="fa-solid fa-location-dot text-[11px]"></i>
+                                            {{ $item->lokasi_tujuan }}
+                                        </span>
+                                        <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                                        <span>Dibuat {{ $item->created_at->format('d M Y') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <!-- Kategori & Spesifikasi -->
+                        <td class="px-6 py-5">
+                            <div class="space-y-1.5">
+                                @php
+                                    $badgeStyles = [
+                                        'corporate_trip' => 'bg-emerald-50 text-emerald-700 border-emerald-200/80',
+                                        'adventure_trip' => 'bg-amber-50 text-amber-800 border-amber-200/80',
+                                        'edu_trip' => 'bg-indigo-50 text-indigo-700 border-indigo-200/80',
+                                        'open_trip' => 'bg-purple-50 text-purple-700 border-purple-200/80',
+                                    ];
+                                    $badgeIcons = [
+                                        'corporate_trip' => 'fa-building',
+                                        'adventure_trip' => 'fa-mountain-sun',
+                                        'edu_trip' => 'fa-graduation-cap',
+                                        'open_trip' => 'fa-users',
+                                    ];
+                                    $currentStyle = $badgeStyles[$item->jenis_layanan] ?? 'bg-blue-50 text-blue-700 border-blue-200';
+                                    $currentIcon = $badgeIcons[$item->jenis_layanan] ?? 'fa-compass';
+                                @endphp
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-bold border {{ $currentStyle }}">
+                                    <i class="fa-solid {{ $currentIcon }} text-[11px]"></i>
+                                    {{ $item->jenis_layanan_label }}
+                                </span>
+
+                                <div class="flex items-center gap-2 text-xs text-gray-500 font-medium">
+                                    <span class="flex items-center gap-1">
+                                        <i class="fa-regular fa-clock text-gray-400 text-[11px]"></i>
+                                        {{ $item->durasi_format }}
+                                    </span>
+                                    <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+                                    <span class="flex items-center gap-1">
+                                        <i class="fa-solid fa-user-group text-gray-400 text-[11px]"></i>
+                                        Maks {{ $item->maks_orang }} Pax
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+
+                        <!-- Harga Mulai -->
+                        <td class="px-6 py-5 text-right">
+                            <div class="font-mono font-black text-indigo-700 text-base">
+                                {{ $item->harga_format }}
+                            </div>
+                            <span class="text-[11px] text-gray-400 font-medium">
+                                @if($item->jenis_layanan === 'edu_trip')
+                                    Tarif dasar paket
+                                @else
+                                    Per orang
+                                @endif
+                            </span>
+                        </td>
+
+                        <!-- Status Publikasi & Quick Toggle -->
+                        <td class="px-6 py-5 text-center">
+                            <form action="{{ route('admin.layanan.toggle-status', $item) }}" method="POST" class="inline-block">
+                                @csrf
+                                <button type="submit"
+                                        class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-black transition-all cursor-pointer {{ $item->status == 'aktif' ? 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200' : 'bg-gray-100 text-gray-600 hover:bg-gray-200 border border-gray-200' }}"
+                                        title="Klik untuk mengubah status">
+                                    <span class="w-2 h-2 rounded-full {{ $item->status == 'aktif' ? 'bg-emerald-500 animate-pulse' : 'bg-gray-400' }}"></span>
+                                    <span>{{ $item->status == 'aktif' ? 'AKTIF' : 'NONAKTIF' }}</span>
+                                    <i class="fa-solid fa-repeat text-[10px] opacity-60"></i>
+                                </button>
+                            </form>
+                        </td>
+
+                        <!-- Aksi -->
+                        <td class="px-6 py-5 text-right">
+                            <div class="flex items-center justify-end gap-1.5">
+                                <!-- Detail -->
+                                <a href="{{ route('admin.layanan.show', $item) }}"
+                                   class="w-9 h-9 rounded-xl flex items-center justify-center text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 transition-all border border-transparent hover:border-indigo-100"
+                                   title="Lihat Detail Lengkap">
+                                    <i class="fa-regular fa-eye text-sm"></i>
+                                </a>
+
+                                <!-- Edit -->
+                                <a href="{{ route('admin.layanan.edit', $item) }}"
+                                   class="w-9 h-9 rounded-xl flex items-center justify-center text-gray-400 hover:text-amber-600 hover:bg-amber-50 transition-all border border-transparent hover:border-amber-100"
+                                   title="Edit Paket">
+                                    <i class="fa-regular fa-pen-to-square text-sm"></i>
+                                </a>
+
+                                <!-- Hapus -->
+                                <form action="{{ route('admin.layanan.destroy', $item) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus paket layanan ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                            class="w-9 h-9 rounded-xl flex items-center justify-center text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition-all border border-transparent hover:border-rose-100"
+                                            title="Hapus Paket">
+                                        <i class="fa-regular fa-trash-can text-sm"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="5" class="px-6 py-20 text-center">
+                            <div class="max-w-md mx-auto space-y-4">
+                                <div class="w-16 h-16 rounded-3xl bg-gray-50 text-gray-300 flex items-center justify-center mx-auto text-2xl border border-gray-100">
+                                    <i class="fa-solid fa-map-location-dot"></i>
+                                </div>
+                                <div class="space-y-1">
+                                    <h4 class="text-base font-black text-gray-800">Tidak ada paket layanan ditemukan</h4>
+                                    <p class="text-xs text-gray-400 font-medium">
+                                        Sesuaikan kata kunci pencarian atau bersihkan filter kategori Anda.
+                                    </p>
+                                </div>
+                                <div class="flex items-center justify-center gap-2 pt-2">
+                                    <a href="{{ route('admin.layanan.index') }}" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold rounded-xl transition-all">
+                                        Reset Filter
+                                    </a>
+                                    <a href="{{ route('admin.layanan.create') }}" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition-all">
+                                        + Buat Paket Baru
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination Section -->
+        @if($layanan->hasPages())
+        <div class="px-8 py-5 bg-gray-50/60 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="text-xs text-gray-500 font-medium">
+                Menampilkan <span class="font-bold text-gray-900">{{ $layanan->firstItem() }}</span> - <span class="font-bold text-gray-900">{{ $layanan->lastItem() }}</span> dari <span class="font-bold text-gray-900">{{ $layanan->total() }}</span> paket tour
+            </div>
+            <div>
+                {{ $layanan->appends(request()->query())->links() }}
+            </div>
+        </div>
+        @endif
+    </div>
+</div>
+
+@include('admin.Layanan.partials.import-modal')
 @endsection

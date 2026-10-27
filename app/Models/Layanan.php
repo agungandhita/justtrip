@@ -103,9 +103,13 @@ class Layanan extends Model
     public function getJenisLayananLabelAttribute()
     {
         $labels = [
-            'open_trip' => 'Open Trip',
-            'corporate_trip' => 'Corporate Trip',
-            'edu_trip' => 'Edu Trip',
+            'corporate_trip' => 'Corporate (Per orang)',
+            'adventure_trip' => 'Adventure (Per orang)',
+            'edu_trip' => 'Edukasi (Per orang / Per Kelompok*)',
+            'open_trip' => 'Open Trip (Per orang)',
+            'corporate' => 'Corporate (Per orang)',
+            'adventure' => 'Adventure (Per orang)',
+            'edu' => 'Edukasi (Per orang / Per Kelompok*)',
         ];
 
         return $labels[$this->jenis_layanan] ?? $this->jenis_layanan;
@@ -139,9 +143,10 @@ class Layanan extends Model
     public static function getJenisLayananOptions()
     {
         return [
-            'open_trip' => 'Open Trip',
-            'corporate_trip' => 'Corporate Trip',
-            'edu_trip' => 'Edu Trip',
+            'corporate_trip' => 'Corporate (Per orang)',
+            'adventure_trip' => 'Adventure (Per orang)',
+            'edu_trip' => 'Edukasi (Per orang / Per Kelompok*)',
+            'open_trip' => 'Open Trip (Per orang)',
         ];
     }
 

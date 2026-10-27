@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\LayananFormRequest;
 use App\Http\Controllers\Controller;
 use App\Models\Layanan;
+use App\Services\LayananImportService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -36,7 +37,14 @@ class LayananController extends Controller
         $layanan = $query->latest()->paginate(10);
         $jenisLayananOptions = Layanan::getJenisLayananOptions();
 
-        return view('admin.Layanan.index', compact('layanan', 'jenisLayananOptions'));
+        $stats = [
+            'total' => Layanan::count(),
+            'aktif' => Layanan::where('status', 'aktif')->count(),
+            'nonaktif' => Layanan::where('status', 'nonaktif')->count(),
+            'avg_price' => Layanan::avg('harga_mulai') ?? 0,
+        ];
+
+        return view('admin.Layanan.index', compact('layanan', 'jenisLayananOptions', 'stats'));
     }
 
     /**
@@ -121,6 +129,55 @@ class LayananController extends Controller
                 }
             }
             $data['pricing_options'] = $pricingOptions;
+        }
+
+        // Handle Edukasi special pricing
+        if ($request->jenis_layanan === 'edu_trip') {
+            $eduPricing = [];
+            if ($request->filled('edu_harga_per_orang')) {
+                $eduPricing[] = [
+                    'type' => 'Per Orang',
+                    'price' => (float) $request->edu_harga_per_orang
+                ];
+            }
+            if ($request->filled('edu_harga_per_kelompok')) {
+                $note = $request->filled('edu_catatan_kelompok') ? ' (' . trim($request->edu_catatan_kelompok) . ')' : '';
+                $eduPricing[] = [
+                    'type' => 'Per Kelompok' . $note,
+                    'price' => (float) $request->edu_harga_per_kelompok
+                ];
+            }
+            if (!empty($eduPricing)) {
+                $existing = $data['pricing_options'] ?? [];
+                $existingTypes = array_column($existing, 'type');
+                foreach ($eduPricing as $ep) {
+                    if (!in_array($ep['type'], $existingTypes)) {
+                        $existing[] = $ep;
+                    }
+                }
+                $data['pricing_options'] = $existing;
+            }
+        }
+
+        // Handle Adventure trip metadata
+        if ($request->jenis_layanan === 'adventure_trip') {
+            $advNotes = [];
+            if ($request->filled('adventure_difficulty')) {
+                $advNotes[] = "Tingkat Kesulitan: " . $request->adventure_difficulty;
+            }
+            if ($request->filled('adventure_activity_type')) {
+                $advNotes[] = "Aktivitas: " . $request->adventure_activity_type;
+            }
+            if ($request->filled('adventure_gear')) {
+                $advNotes[] = "Perlengkapan Wajib: " . $request->adventure_gear;
+            }
+            if ($request->filled('adventure_meeting_point')) {
+                $advNotes[] = "Titik Kumpul: " . $request->adventure_meeting_point;
+            }
+            if (!empty($advNotes)) {
+                $advMeta = "[Adventure Trip Info] " . implode(" | ", $advNotes);
+                $data['catatan'] = !empty($data['catatan']) ? $data['catatan'] . "\n\n" . $advMeta : $advMeta;
+            }
         }
 
         // Handle terms & conditions
@@ -246,6 +303,55 @@ class LayananController extends Controller
             $data['pricing_options'] = $pricingOptions;
         }
 
+        // Handle Edukasi special pricing
+        if ($request->jenis_layanan === 'edu_trip') {
+            $eduPricing = [];
+            if ($request->filled('edu_harga_per_orang')) {
+                $eduPricing[] = [
+                    'type' => 'Per Orang',
+                    'price' => (float) $request->edu_harga_per_orang
+                ];
+            }
+            if ($request->filled('edu_harga_per_kelompok')) {
+                $note = $request->filled('edu_catatan_kelompok') ? ' (' . trim($request->edu_catatan_kelompok) . ')' : '';
+                $eduPricing[] = [
+                    'type' => 'Per Kelompok' . $note,
+                    'price' => (float) $request->edu_harga_per_kelompok
+                ];
+            }
+            if (!empty($eduPricing)) {
+                $existing = $data['pricing_options'] ?? [];
+                $existingTypes = array_column($existing, 'type');
+                foreach ($eduPricing as $ep) {
+                    if (!in_array($ep['type'], $existingTypes)) {
+                        $existing[] = $ep;
+                    }
+                }
+                $data['pricing_options'] = $existing;
+            }
+        }
+
+        // Handle Adventure trip metadata
+        if ($request->jenis_layanan === 'adventure_trip') {
+            $advNotes = [];
+            if ($request->filled('adventure_difficulty')) {
+                $advNotes[] = "Tingkat Kesulitan: " . $request->adventure_difficulty;
+            }
+            if ($request->filled('adventure_activity_type')) {
+                $advNotes[] = "Aktivitas: " . $request->adventure_activity_type;
+            }
+            if ($request->filled('adventure_gear')) {
+                $advNotes[] = "Perlengkapan Wajib: " . $request->adventure_gear;
+            }
+            if ($request->filled('adventure_meeting_point')) {
+                $advNotes[] = "Titik Kumpul: " . $request->adventure_meeting_point;
+            }
+            if (!empty($advNotes)) {
+                $advMeta = "[Adventure Trip Info] " . implode(" | ", $advNotes);
+                $data['catatan'] = !empty($data['catatan']) ? $data['catatan'] . "\n\n" . $advMeta : $advMeta;
+            }
+        }
+
         // Handle terms & conditions
         $termsConditions = [];
         if ($request->has('terms_registration')) {
@@ -296,5 +402,59 @@ class LayananController extends Controller
 
         return redirect()->route('admin.layanan.index')
             ->with('success', 'Status layanan berhasil diubah!');
+    }
+
+    /**
+     * Download Excel Import Template
+     */
+    public function downloadTemplate(LayananImportService $importService)
+    {
+        while (ob_get_level()) {
+            ob_end_clean();
+        }
+
+        $tempPath = $importService->generateTemplate();
+        $filename = 'template_import_layanan_justtrip_' . date('Ymd_His') . '.xlsx';
+
+        return response()->download($tempPath, $filename, [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+            'Cache-Control' => 'max-age=0',
+        ])->deleteFileAfterSend(true);
+    }
+
+    /**
+     * Import Layanan from Excel File
+     */
+    public function importExcel(Request $request, LayananImportService $importService)
+    {
+        $request->validate([
+            'excel_file' => 'required|file|mimes:xlsx,xls,csv|max:20480',
+        ], [
+            'excel_file.required' => 'Silakan pilih berkas Excel (.xlsx / .xls) untuk diimpor.',
+            'excel_file.mimes' => 'Format berkas harus berupa Excel (.xlsx, .xls) atau CSV.',
+            'excel_file.max' => 'Ukuran berkas maksimal 20 MB.',
+        ]);
+
+        try {
+            $result = $importService->importFromExcel($request->file('excel_file'));
+
+            if ($result['success_count'] > 0) {
+                $msg = "Berhasil mengimpor {$result['success_count']} paket layanan baru!";
+                if ($result['skipped_count'] > 0) {
+                    $msg .= " ({$result['skipped_count']} baris dilewati karena format tidak sesuai).";
+                }
+                Alert::success('Import Berhasil', $msg);
+            } else {
+                $errorMsg = !empty($result['errors']) ? implode('<br>', array_slice($result['errors'], 0, 3)) : 'Tidak ada data valid yang dapat diimpor.';
+                Alert::warning('Tidak Ada Data Diimpor', $errorMsg);
+            }
+
+            return redirect()->route('admin.layanan.index')
+                ->with('import_errors', $result['errors'] ?? []);
+        } catch (\Throwable $e) {
+            Alert::error('Gagal Import', 'Terjadi kesalahan saat memproses berkas Excel: ' . $e->getMessage());
+            return redirect()->back();
+        }
     }
 }

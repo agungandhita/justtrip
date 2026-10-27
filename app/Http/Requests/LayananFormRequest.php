@@ -34,10 +34,19 @@ class LayananFormRequest extends FormRequest
             'maks_orang' => 'required|integer|min:1',
             'lokasi_tujuan' => 'required|string|max:255',
             'fasilitas' => 'nullable|array',
-            'gambar_destinasi.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'information_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'gambar_destinasi.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'information_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'status' => 'required|in:aktif,nonaktif',
             'catatan' => 'nullable|string',
+            // Adventure trip fields
+            'adventure_difficulty' => 'nullable|string|max:100',
+            'adventure_activity_type' => 'nullable|string|max:100',
+            'adventure_gear' => 'nullable|string|max:255',
+            'adventure_meeting_point' => 'nullable|string|max:255',
+            // Edukasi trip pricing fields
+            'edu_harga_per_orang' => 'nullable|numeric|min:0',
+            'edu_harga_per_kelompok' => 'nullable|numeric|min:0',
+            'edu_catatan_kelompok' => 'nullable|string|max:255',
             // New fields
             'start_time' => 'nullable|string|max:50',
             'finish_time' => 'nullable|string|max:50',

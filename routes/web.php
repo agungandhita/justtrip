@@ -1,4 +1,3 @@
-
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -111,7 +110,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('users', UserController::class);
     Route::post('users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggle-status');
 
-    // Layanan CRUD routes
+    // Layanan CRUD & Import routes
+    Route::get('layanan-import/template', [LayananController::class, 'downloadTemplate'])->name('layanan.download-template');
+    Route::post('layanan-import', [LayananController::class, 'importExcel'])->name('layanan.import-excel');
     Route::resource('layanan', LayananController::class);
     Route::post('layanan/{layanan}/toggle-status', [LayananController::class, 'toggleStatus'])->name('layanan.toggle-status');
 
