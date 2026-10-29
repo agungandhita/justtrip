@@ -192,10 +192,13 @@
                     </div>
 
                     <div class="mb-6 md:mb-8 flex flex-wrap gap-2">
-                        @if($package->fasilitas && is_array($package->fasilitas))
-                            @foreach(array_slice($package->fasilitas, 0, 2) as $fasilitas)
+                        @php
+                            $featureList = !empty($package->include_services) ? $package->include_services : ($package->fasilitas ?? []);
+                        @endphp
+                        @if(is_array($featureList))
+                            @foreach(array_slice($featureList, 0, 2) as $f)
                                 <span class="px-3 py-1 bg-gray-50 text-gray-500 text-[9px] md:text-[10px] font-black uppercase rounded-lg border border-gray-100 italic">
-                                    {{ trim($fasilitas) }}
+                                    {{ trim($f) }}
                                 </span>
                             @endforeach
                         @endif

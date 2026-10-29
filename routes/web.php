@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\LayananController;
 use App\Http\Controllers\Admin\BookingController as AdminBookingController;
 use App\Http\Controllers\Frontend\BookingController;
 use App\Http\Controllers\Frontend\InvoiceController;
+use App\Http\Controllers\Frontend\InquiryController;
 use App\Http\Controllers\Frontend\PaymentController;
 use App\Http\Controllers\Frontend\SpecialOfferController as FrontendSpecialOfferController;
 use App\Http\Controllers\GuestBookingController;
@@ -60,15 +61,22 @@ Route::prefix('guest-booking')->name('guest-booking.')->group(function () {
     Route::get('/success/{booking_number}', [GuestBookingController::class, 'success'])->name('success');
 });
 
-// Authentication routes (guest only)
+// ─────────────────────────────────────────────────────────────────────────────
+// INQUIRY: Kirim form pemesanan ke WhatsApp admin (tanpa login)
+// ─────────────────────────────────────────────────────────────────────────────
+Route::post('/inquiry/send', [InquiryController::class, 'send'])->name('inquiry.send');
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Authentication routes — HIDDEN (diaktifkan kembali jika diperlukan)
+// ─────────────────────────────────────────────────────────────────────────────
 Route::middleware('guest')->group(function () {
-    // Login routes
+    // Login routes (tersembunyi dari menu publik, masih bisa diakses via URL langsung)
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 
-    // Register routes
-    Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-    Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
+    // Register routes (disembunyikan — aktifkan kembali jika diperlukan)
+    // Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+    // Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
 });
 
 // Logout route (authenticated users only)

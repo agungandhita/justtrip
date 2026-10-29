@@ -125,6 +125,76 @@
                         <div class="prose prose-slate max-w-none text-slate-600 leading-loose text-lg font-medium">
                             {!! nl2br(e($specialOffer->description)) !!}
                         </div>
+
+                        {{-- Destinasi & Fasilitas Layanan yang ditautkan --}}
+                        @if($specialOffer->layanan)
+                            @if(!empty($specialOffer->layanan->destinations) && count($specialOffer->layanan->destinations) > 0)
+                            <div class="space-y-4 pt-4 border-t border-slate-100">
+                                <h3 class="text-[10px] font-black uppercase tracking-[0.3em] text-red-600 flex items-center gap-3">
+                                    <span class="w-6 h-[2px] bg-red-600"></span>
+                                    Destinasi & Spot yang Dikunjungi
+                                </h3>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                                    @foreach($specialOffer->layanan->destinations as $dest)
+                                    <div class="flex items-center gap-3 p-4 bg-slate-50 border border-slate-100 rounded-2xl">
+                                        <div class="w-8 h-8 rounded-xl bg-red-600 text-white flex items-center justify-center text-xs shrink-0 shadow-sm">
+                                            <i class="fas fa-map-pin"></i>
+                                        </div>
+                                        <span class="text-xs md:text-sm font-bold text-slate-800">{{ $dest }}</span>
+                                    </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                            @endif
+
+                            @if(!empty($specialOffer->layanan->include_services) || !empty($specialOffer->layanan->exclude_services))
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-100">
+                                @if(!empty($specialOffer->layanan->include_services))
+                                <div class="space-y-3">
+                                    <h4 class="text-[10px] font-black text-emerald-600 uppercase tracking-widest flex items-center gap-2">
+                                        <i class="fas fa-check-circle"></i> Fasilitas Included
+                                    </h4>
+                                    <ul class="space-y-2">
+                                        @foreach($specialOffer->layanan->include_services as $inc)
+                                        <li class="flex items-start gap-2.5 text-xs text-slate-700 font-semibold p-3 bg-emerald-50/60 border border-emerald-100 rounded-xl">
+                                            <i class="fas fa-check text-emerald-500 mt-0.5 text-xs"></i>
+                                            <span>{{ $inc }}</span>
+                                        </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                @endif
+
+                                @if(!empty($specialOffer->layanan->exclude_services))
+                                <div class="space-y-3">
+                                    <h4 class="text-[10px] font-black text-rose-500 uppercase tracking-widest flex items-center gap-2">
+                                        <i class="fas fa-times-circle"></i> Excluded
+                                    </h4>
+                                    <ul class="space-y-2">
+                                        @foreach($specialOffer->layanan->exclude_services as $exc)
+                                        <li class="flex items-start gap-2.5 text-xs text-slate-700 font-semibold p-3 bg-rose-50/60 border border-rose-100 rounded-xl">
+                                            <i class="fas fa-times text-rose-400 mt-0.5 text-xs"></i>
+                                            <span>{{ $exc }}</span>
+                                        </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                @endif
+                            </div>
+                            @endif
+
+                            @if($specialOffer->layanan->catatan)
+                            <div class="p-6 rounded-2xl bg-amber-50/80 border border-amber-200/70 flex items-start gap-4 shadow-sm">
+                                <div class="w-8 h-8 rounded-xl bg-amber-400 text-amber-950 flex items-center justify-center shrink-0 text-sm shadow-sm">
+                                    <i class="fas fa-info-circle"></i>
+                                </div>
+                                <div>
+                                    <h5 class="text-xs font-black uppercase tracking-widest text-amber-900 mb-1">Catatan Trip</h5>
+                                    <p class="text-xs text-amber-900/80 font-medium leading-relaxed whitespace-pre-line">{!! nl2br(e($specialOffer->layanan->catatan)) !!}</p>
+                                </div>
+                            </div>
+                            @endif
+                        @endif
                     </div>
 
                     <!-- Trust Signals Bar -->
@@ -251,21 +321,13 @@
                                         </div>
                                     </div>
 
-                                    @auth
-                                        <a href="{{ route('booking.promo', $specialOffer->slug) }}" 
-                                           id="btn-promo-booking"
-                                           onclick="savePreviewData()"
-                                           class="flex items-center justify-center w-full py-6 bg-red-600 hover:bg-red-700 text-white font-black uppercase tracking-[0.2em] text-[10px] rounded-[2rem] shadow-2xl shadow-red-200 transition-all transform hover:-translate-y-1 active:scale-95">
-                                            <i class="fas fa-shopping-cart mr-3"></i>
-                                            Lanjutkan Pemesanan
-                                        </a>
-                                    @else
-                                        <a href="{{ route('login', ['redirect' => url()->current()]) }}" 
-                                           class="flex items-center justify-center w-full py-6 bg-slate-900 hover:bg-black text-white font-black uppercase tracking-[0.2em] text-[10px] rounded-[2rem] transition-all">
-                                            <i class="fas fa-sign-in-alt mr-3"></i>
-                                            Login untuk Reservasi
-                                        </a>
-                                    @endauth
+                                    <button type="button" 
+                                       id="btn-promo-booking"
+                                       onclick="openInquiryModal()"
+                                       class="flex items-center justify-center w-full py-6 bg-red-600 hover:bg-red-700 text-white font-black uppercase tracking-[0.2em] text-[10px] rounded-[2rem] shadow-2xl shadow-red-200 transition-all transform hover:-translate-y-1 active:scale-95">
+                                        <i class="fab fa-whatsapp mr-3 text-lg"></i>
+                                        Pesan Promo via WhatsApp
+                                    </button>
                                 </div>
 
                                 <div class="pt-8 border-t border-slate-100 flex items-center justify-between">
@@ -449,4 +511,268 @@
         cursor: pointer;
     }
 </style>
+
+    <!-- Modal Inquiry Pemesanan Promo WhatsApp -->
+    <div id="inquiry-modal"
+        class="fixed inset-0 z-[120] bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+        <div id="inquiry-panel"
+            class="bg-white rounded-[2.5rem] max-w-2xl w-full max-h-[92vh] overflow-y-auto shadow-2xl border border-slate-100 transform scale-95 transition-all duration-300">
+            
+            {{-- Modal Header --}}
+            <div class="sticky top-0 bg-white/95 backdrop-blur-md px-8 py-6 border-b border-slate-100 flex items-center justify-between z-10">
+                <div>
+                    <span class="text-[9px] font-black uppercase tracking-widest text-red-600">Pemesanan Promo Tanpa Login</span>
+                    <h3 class="text-xl md:text-2xl font-black text-slate-900 leading-tight">{{ $specialOffer->title }}</h3>
+                </div>
+                <button type="button" onclick="closeInquiryModal()"
+                    class="w-10 h-10 rounded-2xl bg-slate-100 hover:bg-red-50 hover:text-red-600 text-slate-500 flex items-center justify-center transition-colors">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            {{-- Form Inquiry --}}
+            <form action="{{ route('inquiry.send') }}" method="POST" class="p-8 space-y-6">
+                @csrf
+                <input type="hidden" name="special_offer_id" value="{{ $specialOffer->id }}">
+                @if($specialOffer->layanan)
+                    <input type="hidden" name="layanan_id" value="{{ $specialOffer->layanan->layanan_id }}">
+                @endif
+
+                {{-- Section 1: Biodata Pemesan --}}
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs font-black">1</span>
+                        <h4 class="text-xs font-black uppercase tracking-widest text-slate-800">Biodata Pemesan</h4>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">
+                                Nama Lengkap <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" name="nama_lengkap" required
+                                placeholder="Contoh: Budi Santoso"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:border-red-500 focus:ring-4 focus:ring-red-500/10 outline-none text-sm font-semibold transition-all">
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">
+                                Nomor WhatsApp <span class="text-red-500">*</span>
+                            </label>
+                            <input type="tel" name="nomor_whatsapp" required
+                                placeholder="Contoh: 081234567890"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:border-red-500 focus:ring-4 focus:ring-red-500/10 outline-none text-sm font-semibold transition-all">
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">
+                                Email (Opsional)
+                            </label>
+                            <input type="email" name="email"
+                                placeholder="email@domain.com"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:border-red-500 focus:ring-4 focus:ring-red-500/10 outline-none text-sm font-semibold transition-all">
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">
+                                Kota / Alamat Asal
+                            </label>
+                            <input type="text" name="alamat"
+                                placeholder="Contoh: Surabaya"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:border-red-500 focus:ring-4 focus:ring-red-500/10 outline-none text-sm font-semibold transition-all">
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Section 2: Jadwal & Peserta --}}
+                <div class="space-y-4 pt-4 border-t border-slate-100">
+                    <div class="flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs font-black">2</span>
+                        <h4 class="text-xs font-black uppercase tracking-widest text-slate-800">Jadwal & Peserta</h4>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">
+                                Tanggal Keberangkatan <span class="text-red-500">*</span>
+                            </label>
+                            <input type="date" name="tanggal_keberangkatan" id="inquiry-tanggal" required
+                                min="{{ \Carbon\Carbon::parse($specialOffer->valid_from)->format('Y-m-d') }}"
+                                max="{{ \Carbon\Carbon::parse($specialOffer->valid_until)->format('Y-m-d') }}"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:border-red-500 focus:ring-4 focus:ring-red-500/10 outline-none text-sm font-semibold transition-all">
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">
+                                Jumlah Peserta <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <select name="jumlah_peserta" id="inquiry-peserta" required onchange="updatePromoPricePreview()"
+                                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:border-red-500 focus:ring-4 focus:ring-red-500/10 outline-none text-sm font-semibold transition-all appearance-none cursor-pointer">
+                                    @for($i = 1; $i <= 20; $i++)
+                                        <option value="{{ $i }}">{{ $i }} Orang</option>
+                                    @endfor
+                                </select>
+                                <i class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Section 3: Add-on & Service Tambahan --}}
+                @if($specialOffer->layanan && !empty($specialOffer->layanan->pricing_options))
+                <div class="space-y-4 pt-4 border-t border-slate-100">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs font-black">3</span>
+                            <h4 class="text-xs font-black uppercase tracking-widest text-slate-800">Add-On & Service Tambahan</h4>
+                        </div>
+                        <span class="text-[9px] text-slate-400 uppercase font-black tracking-widest">Opsional</span>
+                    </div>
+
+                    <div class="space-y-2">
+                        @foreach($specialOffer->layanan->pricing_options as $option)
+                        <label class="promo-addon-option flex items-center justify-between p-4 rounded-2xl border border-slate-100 hover:border-red-200 hover:bg-red-50/30 cursor-pointer transition-all"
+                            data-price="{{ $option['price'] }}">
+                            <div class="flex items-center gap-3">
+                                <input type="checkbox" name="selected_options[]" value="{{ $option['type'] }}"
+                                    class="promo-addon-checkbox w-4 h-4 rounded text-red-600 focus:ring-red-500 border-slate-300"
+                                    onchange="updatePromoPricePreview()">
+                                <div>
+                                    <span class="text-sm font-bold text-slate-800 block">{{ $option['type'] }}</span>
+                                    <span class="text-[10px] text-slate-400">Harga per orang</span>
+                                </div>
+                            </div>
+                            <span class="text-sm font-black font-mono text-red-600">
+                                +Rp{{ number_format($option['price'], 0, ',', '.') }}
+                            </span>
+                        </label>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+
+                {{-- Section 4: Request Service Tambahan & Catatan --}}
+                <div class="space-y-4 pt-4 border-t border-slate-100">
+                    <div class="flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs font-black">4</span>
+                        <h4 class="text-xs font-black uppercase tracking-widest text-slate-800">Request Service Tambahan</h4>
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">
+                            Request Khusus (Contoh: Sewa Drone, Upgrade Hotel, Menu Vegetarian, dll.)
+                        </label>
+                        <textarea name="request_tambahan" rows="2"
+                            placeholder="Tuliskan permintaan layanan atau fasilitas khusus yang Anda inginkan..."
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:border-red-500 focus:ring-4 focus:ring-red-500/10 outline-none text-sm transition-all"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1">
+                            Catatan Lainnya
+                        </label>
+                        <textarea name="catatan_tambahan" rows="2"
+                            placeholder="Catatan tambahan untuk tim Justtrip..."
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:border-red-500 focus:ring-4 focus:ring-red-500/10 outline-none text-sm transition-all"></textarea>
+                    </div>
+                </div>
+
+                {{-- Estimasi Harga --}}
+                <div class="rounded-3xl bg-slate-900 text-white p-6">
+                    <p class="text-[9px] font-black uppercase tracking-widest text-red-400 mb-4">Estimasi Total Biaya Promo</p>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-slate-300">Harga Promo / orang</span>
+                            <span class="font-black font-mono text-red-400" id="promo-preview-base">
+                                Rp{{ number_format($specialOffer->discounted_price, 0, ',', '.') }}
+                            </span>
+                        </div>
+                        <div id="promo-preview-addons-row" class="hidden justify-between">
+                            <span class="text-slate-300">Add-On</span>
+                            <span class="font-black font-mono text-amber-400" id="promo-preview-addons">Rp0</span>
+                        </div>
+                    </div>
+                    <div class="border-t border-white/10 pt-3 mt-4 flex justify-between items-center">
+                        <span class="text-white font-black text-sm">Total Estimasi</span>
+                        <span class="font-black font-mono text-2xl text-amber-300" id="promo-preview-total">
+                            Rp{{ number_format($specialOffer->discounted_price, 0, ',', '.') }}
+                        </span>
+                    </div>
+                    <p class="text-[9px] text-slate-400 text-center mt-3">*Harga final akan dikonfirmasi oleh admin via WhatsApp</p>
+                </div>
+
+                {{-- Submit --}}
+                <button type="submit"
+                    class="w-full py-5 rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-white font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 shadow-xl shadow-emerald-200 transition-all">
+                    <i class="fab fa-whatsapp text-xl"></i>
+                    Kirim Pesanan ke WhatsApp Admin
+                </button>
+                <p class="text-center text-[9px] text-slate-400 font-medium pb-2">
+                    Langsung terhubung dengan Admin Justtrip di WhatsApp tanpa perlu login.
+                </p>
+            </form>
+        </div>
+    </div>
+
+<script>
+// Modal Inquiry Special Offer
+const inquiryModal = document.getElementById('inquiry-modal');
+const inquiryPanel = document.getElementById('inquiry-panel');
+const PROMO_BASE_PRICE = {{ (int) $specialOffer->discounted_price }};
+
+function openInquiryModal() {
+    // Sync preview values if filled
+    const prevTgl = document.getElementById('preview_tanggal')?.value;
+    const prevPeserta = document.getElementById('preview_peserta')?.value;
+    if (prevTgl) document.getElementById('inquiry-tanggal').value = prevTgl;
+    if (prevPeserta) document.getElementById('inquiry-peserta').value = prevPeserta;
+
+    inquiryModal.classList.remove('opacity-0', 'pointer-events-none');
+    inquiryModal.classList.add('opacity-100');
+    inquiryPanel.classList.remove('scale-95');
+    inquiryPanel.classList.add('scale-100');
+    document.body.style.overflow = 'hidden';
+    updatePromoPricePreview();
+}
+
+function closeInquiryModal() {
+    inquiryModal.classList.remove('opacity-100');
+    inquiryModal.classList.add('opacity-0', 'pointer-events-none');
+    inquiryPanel.classList.remove('scale-100');
+    inquiryPanel.classList.add('scale-95');
+    document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeInquiryModal(); });
+
+function updatePromoPricePreview() {
+    const peserta = parseInt(document.getElementById('inquiry-peserta')?.value) || 1;
+    const totalBase = PROMO_BASE_PRICE * peserta;
+
+    let totalAddons = 0;
+    document.querySelectorAll('.promo-addon-checkbox:checked').forEach(cb => {
+        const label = cb.closest('.promo-addon-option');
+        const price = parseFloat(label?.dataset.price || 0);
+        totalAddons += price * peserta;
+    });
+
+    const total = totalBase + totalAddons;
+    const fmt = (n) => 'Rp' + Math.round(n).toLocaleString('id-ID');
+
+    document.getElementById('promo-preview-base').innerHTML = fmt(PROMO_BASE_PRICE) + '<span class="text-slate-400 text-xs"> / orang</span>';
+    document.getElementById('promo-preview-total').textContent = fmt(total);
+
+    const addonRow = document.getElementById('promo-preview-addons-row');
+    if (totalAddons > 0) {
+        document.getElementById('promo-preview-addons').textContent = fmt(totalAddons);
+        addonRow.classList.remove('hidden');
+        addonRow.classList.add('flex');
+    } else {
+        addonRow.classList.add('hidden');
+        addonRow.classList.remove('flex');
+    }
+}
+</script>
+
 @endsection

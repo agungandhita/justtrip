@@ -116,13 +116,12 @@
                     </div>
                 </div>
                 @else
-                <!-- Login/Register Buttons for Guest -->
                 <div class="items-center hidden space-x-2 md:flex">
-                    <a href="{{ route('login') }}" class="px-4 py-2 font-medium text-gray-700 transition-colors duration-200 hover:text-blue-600">
-                        Masuk
-                    </a>
-                    <a href="{{ route('register') }}" class="px-4 py-2 font-medium text-white transition-colors duration-200 bg-blue-600 rounded-lg hover:bg-blue-700">
-                        Daftar
+                    <a href="https://wa.me/6282266478147?text={{ urlencode('Halo Admin Justtrip, saya ingin konsultasi mengenai paket wisata.') }}"
+                       target="_blank"
+                       class="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-full shadow-md shadow-emerald-100 hover:scale-105 active:scale-95 transition-all">
+                        <i class="fab fa-whatsapp text-sm"></i>
+                        <span>Chat WhatsApp</span>
                     </a>
                 </div>
                 @endauth
@@ -198,15 +197,12 @@
                 </form>
             </div>
             @else
-            <!-- Simple Login/Register for Mobile -->
-            <div class="pt-3 mt-3 space-y-2 border-t border-gray-200">
-                <a href="{{ route('login') }}" class="block px-3 py-2 font-medium text-gray-700 transition-colors duration-200 rounded-lg hover:text-blue-600">
-                    <i class="mr-2 fas fa-sign-in-alt"></i>
-                    Masuk
-                </a>
-                <a href="{{ route('register') }}" class="block px-3 py-2 font-medium text-white transition-colors duration-200 bg-blue-600 rounded-lg hover:bg-blue-700">
-                    <i class="mr-2 fas fa-user-plus"></i>
-                    Daftar
+            <div class="pt-3 mt-3 border-t border-gray-100">
+                <a href="https://wa.me/6282266478147?text={{ urlencode('Halo Admin Justtrip, saya ingin konsultasi mengenai paket wisata.') }}"
+                   target="_blank"
+                   class="flex items-center justify-center gap-2 px-4 py-3 text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-sm transition-all">
+                    <i class="fab fa-whatsapp text-base"></i>
+                    <span>Chat WhatsApp Admin</span>
                 </a>
             </div>
             @endauth
