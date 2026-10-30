@@ -92,10 +92,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('special-offers', SpecialOfferController::class, ['names' => 'special-offers']);
 
     // Subscribe Users CRUD routes
-    Route::resource('subscribe-users', \App\Http\Controllers\SubscribeUserController::class, ['names' => 'subscribe-users']);
+    Route::resource('subscribe-users', SubscribeUserController::class, ['names' => 'subscribe-users']);
 
     // Mass unsubscribe
-    Route::post('subscribe-users/mass-unsubscribe', [\App\Http\Controllers\SubscribeUserController::class, 'massUnsubscribe'])->name('subscribe-users.mass-unsubscribe');
+    Route::post('subscribe-users/mass-unsubscribe', [SubscribeUserController::class, 'massUnsubscribe'])->name('subscribe-users.mass-unsubscribe');
 
     // Standalone Special Offers routes
     Route::get('special-offers-standalone/create', [SpecialOfferController::class, 'createStandalone'])->name('special-offers.create-standalone');

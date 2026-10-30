@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Invoice;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -167,19 +168,18 @@ class WhatsAppService
             }
 
             // Simulate API call to WhatsApp Business API
-            $response = Http::timeout(30)->post($this->apiUrl . '/messages', [
-                'messaging_product' => 'whatsapp',
-                'to' => $this->formatPhoneNumber($phoneNumber),
-                'type' => 'document',
-                'document' => [
-                    'link' => Storage::disk('public')->path($documentPath),
-                    'caption' => $message,
-                    'filename' => basename($documentPath)
-                ]
-            ], [
-                'Authorization' => 'Bearer ' . $this->token,
-                'Content-Type' => 'application/json'
-            ]);
+            $response = Http::withToken($this->token)
+                ->timeout(30)
+                ->post($this->apiUrl . '/messages', [
+                    'messaging_product' => 'whatsapp',
+                    'to' => $this->formatPhoneNumber($phoneNumber),
+                    'type' => 'document',
+                    'document' => [
+                        'link' => Storage::disk('public')->path($documentPath),
+                        'caption' => $message,
+                        'filename' => basename($documentPath)
+                    ]
+                ]);
 
             if ($response->successful()) {
                 return ['success' => true, 'data' => $response->json()];
@@ -202,17 +202,16 @@ class WhatsAppService
     {
         try {
             // Simulate API call to WhatsApp Business API
-            $response = Http::timeout(30)->post($this->apiUrl . '/messages', [
-                'messaging_product' => 'whatsapp',
-                'to' => $this->formatPhoneNumber($phoneNumber),
-                'type' => 'text',
-                'text' => [
-                    'body' => $message
-                ]
-            ], [
-                'Authorization' => 'Bearer ' . $this->token,
-                'Content-Type' => 'application/json'
-            ]);
+            $response = Http::withToken($this->token)
+                ->timeout(30)
+                ->post($this->apiUrl . '/messages', [
+                    'messaging_product' => 'whatsapp',
+                    'to' => $this->formatPhoneNumber($phoneNumber),
+                    'type' => 'text',
+                    'text' => [
+                        'body' => $message
+                    ]
+                ]);
 
             if ($response->successful()) {
                 return ['success' => true, 'data' => $response->json()];
@@ -241,7 +240,7 @@ class WhatsAppService
         $message .= "📋 *Detail Invoice:*\n";
         $message .= "• Invoice: {$invoice->invoice_number}\n";
         $message .= "• Booking: {$booking->booking_number}\n";
-        $message .= "• Tanggal: " . $invoice->invoice_date->format('d/m/Y H:i') . "\n\n";
+        $message .= "• Tanggal: " . Carbon::parse($invoice->invoice_date)->format('d/m/Y H:i') . "\n\n";
 
         $message .= "👤 *Data Customer:*\n";
         $message .= "• Nama: {$customer['name']}\n";
@@ -251,17 +250,17 @@ class WhatsAppService
         $message .= "🏖️ *Detail Layanan:*\n";
         $message .= "• Destinasi: {$layanan->nama_layanan}\n";
         $message .= "• Jumlah Peserta: {$booking->jumlah_peserta} orang\n";
-        $message .= "• Tanggal Keberangkatan: " . $booking->tanggal_keberangkatan->format('d/m/Y') . "\n\n";
+        $message .= "• Tanggal Keberangkatan: " . Carbon::parse($booking->tanggal_keberangkatan)->format('d/m/Y') . "\n\n";
 
         $message .= "💰 *Detail Pembayaran:*\n";
-        $message .= "• Subtotal: Rp " . number_format($invoice->subtotal, 0, ',', '.') . "\n";
+        $message .= "• Subtotal: Rp " . number_format((float) $invoice->subtotal, 0, ',', '.') . "\n";
 
-        if ($invoice->discount_amount > 0) {
-            $message .= "• Diskon: Rp " . number_format($invoice->discount_amount, 0, ',', '.') . "\n";
+        if ((float) $invoice->discount_amount > 0) {
+            $message .= "• Diskon: Rp " . number_format((float) $invoice->discount_amount, 0, ',', '.') . "\n";
         }
 
-        $message .= "• Pajak (11%): Rp " . number_format($invoice->tax_amount, 0, ',', '.') . "\n";
-        $message .= "• *Total: Rp " . number_format($invoice->total_amount, 0, ',', '.') . "*\n\n";
+        $message .= "• Pajak (11%): Rp " . number_format((float) ($invoice->tax_amount ?? 0), 0, ',', '.') . "\n";
+        $message .= "• *Total: Rp " . number_format((float) $invoice->total_amount, 0, ',', '.') . "*\n\n";
 
         $message .= "📄 Invoice PDF terlampir di atas.\n\n";
         $message .= "Silakan proses booking ini segera. Terima kasih! 🙏";
@@ -284,8 +283,8 @@ class WhatsAppService
         $message .= "• Booking ID: {$booking->booking_number}\n";
         $message .= "• Destinasi: {$layanan->nama_layanan}\n";
         $message .= "• Jumlah Peserta: {$booking->jumlah_peserta} orang\n";
-        $message .= "• Tanggal Keberangkatan: " . $booking->tanggal_keberangkatan->format('d/m/Y') . "\n";
-        $message .= "• Total Pembayaran: Rp " . number_format($booking->total_amount, 0, ',', '.') . "\n\n";
+        $message .= "• Tanggal Keberangkatan: " . Carbon::parse($booking->tanggal_keberangkatan)->format('d/m/Y') . "\n";
+        $message .= "• Total Pembayaran: Rp " . number_format((float) $booking->total_amount, 0, ',', '.') . "\n\n";
 
         $message .= "📧 Invoice akan segera dikirim ke email Anda.\n\n";
         $message .= "Tim kami akan segera menghubungi Anda untuk konfirmasi lebih lanjut.\n\n";
@@ -308,8 +307,8 @@ class WhatsAppService
         $message .= "📋 *Detail:*\n";
         $message .= "• Invoice: {$invoice->invoice_number}\n";
         $message .= "• Booking: {$booking->booking_number}\n";
-        $message .= "• Total: Rp " . number_format($invoice->total_amount, 0, ',', '.') . "\n";
-        $message .= "• Jatuh Tempo: " . $invoice->due_date->format('d/m/Y') . "\n\n";
+        $message .= "• Total: Rp " . number_format((float) $invoice->total_amount, 0, ',', '.') . "\n";
+        $message .= "• Jatuh Tempo: " . Carbon::parse($invoice->due_date)->format('d/m/Y') . "\n\n";
 
         $message .= "💳 Silakan lakukan pembayaran sebelum tanggal jatuh tempo.\n\n";
         $message .= "Jika sudah melakukan pembayaran, mohon konfirmasi ke kami.\n\n";
@@ -340,11 +339,11 @@ class WhatsAppService
         $message .= "📋 *Detail Booking:*\n";
         $message .= "• Booking ID: {$booking->booking_number}\n";
         $message .= "• Jumlah Peserta: {$booking->jumlah_peserta} orang\n";
-        $message .= "• Tanggal Berangkat: " . $booking->tanggal_keberangkatan->format('d/m/Y') . "\n";
+        $message .= "• Tanggal Berangkat: " . Carbon::parse($booking->tanggal_keberangkatan)->format('d/m/Y') . "\n";
         $message .= "• Status: PENDING\n\n";
 
         $message .= "💰 *Total Pembayaran:*\n";
-        $message .= "• Rp " . number_format($booking->total_amount, 0, ',', '.') . "\n\n";
+        $message .= "• Rp " . number_format((float) $booking->total_amount, 0, ',', '.') . "\n\n";
 
         if ($booking->catatan_khusus) {
             $message .= "📝 *Catatan:* {$booking->catatan_khusus}\n\n";
