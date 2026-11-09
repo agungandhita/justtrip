@@ -124,12 +124,14 @@
                     </div>
                 </form>
 
+                @if (Route::has('register'))
                 <p class="text-gray-800 text-sm !mt-8 text-center">
                     Belum punya akun?
                     <a href="{{ route('register') }}" class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 ml-1 whitespace-nowrap font-semibold transition-all duration-300">
                         Bergabung sekarang
                     </a>
                 </p>
+                @endif
             </div>
         </div>
     </div>
