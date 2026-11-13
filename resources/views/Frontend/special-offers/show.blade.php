@@ -1,5 +1,15 @@
 @extends('Frontend.layouts.main')
 
+@php
+    $offerImg = !empty($specialOffer->main_image)
+        ? asset('storage/' . $specialOffer->main_image)
+        : asset('image/logo6.png');
+@endphp
+
+@section('title', Str::limit($specialOffer->title, 45) . ' | JustTrip')
+@section('description', Str::limit(strip_tags($specialOffer->description), 150))
+@section('og_image', $offerImg)
+
 @section('container')
 <div class="antialiased text-slate-900 font-['Plus_Jakarta_Sans',sans-serif] bg-white">
     <!-- Breadcrumbs & Back Button -->

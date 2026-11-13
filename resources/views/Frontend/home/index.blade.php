@@ -1,5 +1,8 @@
 @extends('Frontend.layouts.main')
 
+@section('title', 'JustTrip — Paket Tour & Open Trip Terbaik di Indonesia')
+@section('description', 'Nikmati liburan seru dan hemat bersama JustTrip. Temukan paket tour wisata domestik, open trip, family gathering, dan sewa bus dengan pelayanan terbaik.')
+
 @section('container')
 
 @if($pendingBooking)
@@ -116,7 +119,7 @@
                 <div class="absolute -inset-1 bg-gradient-to-r from-orange-500/20 to-blue-500/20 rounded-[2.5rem] blur-2xl opacity-75 group-hover:opacity-100 transition duration-1000"></div>
                 
                 <div class="relative bg-white/10 backdrop-blur-2xl border border-white/20 rounded-[2.5rem] p-5 sm:p-6 md:p-8 shadow-2xl transition-all duration-500 hover:bg-white/[0.15]">
-                    <h2 class="text-lg sm:text-xl font-bold text-white mb-6 text-center tracking-wide">Cari Perjalanan Impian Anda</h2>
+                    <h1 class="text-lg sm:text-xl font-bold text-white mb-6 text-center tracking-wide">Cari Perjalanan Impian Anda</h1>
                     
                     <form action="{{ route('guest-booking.search') }}" method="POST">
                         @csrf

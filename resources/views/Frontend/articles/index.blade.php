@@ -1,5 +1,8 @@
 @extends('Frontend.layouts.main')
 
+@section('title', 'Blog & Tips Panduan Wisata Indonesia Terkini | JustTrip')
+@section('description', 'Temukan artikel, tips liburan, rekomendasi destinasi, dan panduan wisata terbaru dari JustTrip untuk mempersiapkan petualangan seru Anda di Indonesia.')
+
 @section('container')
 <!-- Hero Section -->
 <section class="relative w-full">
@@ -13,7 +16,7 @@
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6" data-aos="fade-up">
             <div>
                 <span class="text-orange-500 font-black uppercase tracking-[0.2em] text-xs mb-3 block">Top Picks</span>
-                <h2 class="text-4xl md:text-5xl font-black text-gray-900 tracking-tight">Artikel Pilihan</h2>
+                <h1 class="text-4xl md:text-5xl font-black text-gray-900 tracking-tight">Artikel Pilihan</h1>
             </div>
             <p class="text-gray-500 font-medium max-w-md md:text-right">
                 Inspirasi dan panduan terbaik yang kami kurasi khusus untuk petualangan Anda selanjutnya.
@@ -153,7 +156,11 @@
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6" data-aos="fade-up">
             <div>
                 <span class="text-orange-500 font-black uppercase tracking-[0.2em] text-xs mb-3 block">Freshly Published</span>
-                <h2 class="text-4xl md:text-5xl font-black text-gray-900 tracking-tight">Artikel Terbaru</h2>
+                @if($featuredArticles->count() === 0)
+                    <h1 class="text-4xl md:text-5xl font-black text-gray-900 tracking-tight">Artikel Terbaru</h1>
+                @else
+                    <h2 class="text-4xl md:text-5xl font-black text-gray-900 tracking-tight">Artikel Terbaru</h2>
+                @endif
             </div>
             @if(request('category'))
                 <div class="bg-teal-100 text-teal-700 px-6 py-2 rounded-2xl font-black uppercase text-sm flex items-center gap-3">

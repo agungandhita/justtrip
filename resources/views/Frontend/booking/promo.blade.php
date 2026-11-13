@@ -1,6 +1,7 @@
 @extends('Frontend.layouts.main')
 
-@section('title', 'Booking Promo - ' . $specialOffer->title)
+@section('title', 'Booking Promo - ' . $specialOffer->title . ' | JustTrip')
+@section('robots', 'noindex,nofollow')
 
 @section('container')
 <div class="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100">

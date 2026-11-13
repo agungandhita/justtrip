@@ -1,5 +1,8 @@
 @extends('Frontend.layouts.main')
 
+@section('title', 'Tentang JustTrip — Partner Perjalanan & Tour Organizer')
+@section('description', 'Mengenal JustTrip, partner perjalanan terpercaya sejak 2017 untuk corporate gathering, family trip, dan open trip dengan komitmen pelayanan berkualitas tinggi.')
+
 @section('container')
 <style>
     .crisp-img {
@@ -30,9 +33,9 @@
                     <span class="text-xs font-bold tracking-wider uppercase text-teal-800">Cerita & Komitmen Kami</span>
                 </div>
 
-                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight mb-6 leading-tight">
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight mb-6 leading-tight">
                     Merancang Perjalanan Bermakna, <span class="text-teal-600">Bukan Sekadar Itinerary.</span>
-                </h2>
+                </h1>
 
                 <div class="space-y-4 text-base sm:text-lg text-slate-600 leading-relaxed">
                     <p>

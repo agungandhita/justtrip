@@ -1,9 +1,13 @@
 @extends('Frontend.layouts.main')
 
+@section('title', 'Galeri Foto & Dokumentasi Liburan Seru | JustTrip Tour')
+@section('description', 'Lihat keseruan dokumentasi perjalanan para traveler dan rombongan wisata bersama JustTrip di berbagai destinasi menarik seluruh Indonesia secara nyata.')
+
 @section('container')
 <!-- Hero Section -->
 <section class="relative w-full">
-    <img src="{{ asset('image/GALLERY.png') }}" alt="Paket Tour Background" class="w-full h-auto">
+    <h1 class="sr-only">Galeri Foto & Dokumentasi Perjalanan Wisata JustTrip</h1>
+    <img src="{{ asset('image/GALLERY.png') }}" alt="Galeri Foto & Dokumentasi Wisata JustTrip" class="w-full h-auto">
 </section>
 
 <!-- Search & Filter Section -->

@@ -1,6 +1,7 @@
 @extends('Frontend.layouts.main')
 
-@section('title', 'My Bookings')
+@section('title', 'Daftar Booking Saya | JustTrip')
+@section('robots', 'noindex,nofollow')
 
 @section('container')
 <div class="container mx-auto px-4 py-8">

@@ -1,5 +1,8 @@
 @extends('Frontend.layouts.main')
 
+@section('title', 'Cari & Pesan Paket Wisata Praktis Cepat | JustTrip')
+@section('description', 'Cari dan pesan tiket perjalanan wisata favorit Anda secara instan tanpa ribet melalui layanan Guest Booking JustTrip dengan konfirmasi cepat via WhatsApp.')
+
 @section('container')
 <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12">
     <div class="container mx-auto px-4">

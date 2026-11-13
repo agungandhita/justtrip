@@ -1,5 +1,8 @@
 @extends('Frontend.layouts.main')
 
+@section('title', 'Promo Paket Wisata & Liburan Murah Hemat | JustTrip')
+@section('description', 'Dapatkan diskon promo spesial paket tour dan open trip hemat dari JustTrip. Booking sekarang sebelum kuota habis dan nikmati liburan impian lebih hemat.')
+
 @section('container')
 <!-- Hero Section -->
 <section class="relative w-full">
@@ -56,9 +59,9 @@
         <div class="container mx-auto">
             <div class="flex items-end justify-between mb-10" data-aos="fade-up">
                 <div>
-                    <h2 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
+                    <h1 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
                         <span class="text-red-500 leading-tight">PROMO</span> UNGGULAN
-                    </h2>
+                    </h1>
                     <p class="text-slate-500 mt-2 font-medium">Penawaran terbaik pilihan kami hanya untuk Anda</p>
                 </div>
                 <div class="hidden md:block">
@@ -164,7 +167,11 @@
         <div class="container mx-auto">
             <div class="flex items-center gap-4 mb-10" data-aos="fade-up">
                 <span class="h-px bg-gray-200 flex-1"></span>
-                <h2 class="text-2xl font-black text-slate-800 tracking-tight uppercase">Semua Promo Spesial</h2>
+                @if(!isset($featuredOffers) || $featuredOffers->count() === 0)
+                    <h1 class="text-2xl font-black text-slate-800 tracking-tight uppercase">Semua Promo Spesial</h1>
+                @else
+                    <h2 class="text-2xl font-black text-slate-800 tracking-tight uppercase">Semua Promo Spesial</h2>
+                @endif
                 <span class="h-px bg-gray-200 flex-1"></span>
             </div>
 

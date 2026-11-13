@@ -27,7 +27,24 @@
     <!-- Vite Assets -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     
-    <title>Justtrip - #TripGagalMoveOn</title>
+    <title>@yield('title', 'JustTrip — Paket Tour & Open Trip Indonesia')</title>
+    <meta name="description" content="@yield('description', 'JustTrip menyediakan paket tour wisata, open trip, gathering kantor, dan sewa transportasi terbaik di Indonesia dengan harga hemat dan layanan profesional.')">
+    <meta name="robots" content="@yield('robots', 'index,follow')">
+    <link rel="canonical" href="{{ \App\Helpers\SeoHelper::canonicalUrl() }}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="@yield('og_type', 'website')">
+    <meta property="og:site_name" content="JustTrip">
+    <meta property="og:title" content="@yield('title', 'JustTrip — Paket Tour & Open Trip Indonesia')">
+    <meta property="og:description" content="@yield('description', 'JustTrip menyediakan paket tour wisata, open trip, gathering kantor, dan sewa transportasi terbaik di Indonesia dengan harga hemat dan layanan profesional.')">
+    <meta property="og:url" content="{{ \App\Helpers\SeoHelper::canonicalUrl() }}">
+    <meta property="og:image" content="@yield('og_image', asset('image/logo6.png'))">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('title', 'JustTrip — Paket Tour & Open Trip Indonesia')">
+    <meta name="twitter:description" content="@yield('description', 'JustTrip menyediakan paket tour wisata, open trip, gathering kantor, dan sewa transportasi terbaik di Indonesia dengan harga hemat dan layanan profesional.')">
+    <meta name="twitter:image" content="@yield('og_image', asset('image/logo6.png'))">
     
     <!-- Fallback: mount a small Alpine guestBookingSearch component when bundled assets are not available (helps dev without running Vite) -->
     <script>

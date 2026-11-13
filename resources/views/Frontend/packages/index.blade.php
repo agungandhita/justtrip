@@ -1,5 +1,8 @@
 @extends('Frontend.layouts.main')
 
+@section('title', 'Paket Tour & Wisata Indonesia Paling Lengkap | JustTrip')
+@section('description', 'Pilihan paket wisata dan liburan terbaik di Indonesia bersama JustTrip. Dapatkan itinerary lengkap, fasilitas nyaman, dan penawaran harga paling terjangkau.')
+
 @section('container')
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');

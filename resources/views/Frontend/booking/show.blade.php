@@ -1,6 +1,7 @@
 @extends('Frontend.layouts.main')
 
-@section('title', 'Detail Booking #' . $booking->booking_id)
+@section('title', 'Detail Booking #' . $booking->booking_id . ' | JustTrip')
+@section('robots', 'noindex,nofollow')
 
 @section('container')
 <div class="min-h-screen bg-[#f8fafc]">

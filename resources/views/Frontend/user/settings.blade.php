@@ -1,6 +1,7 @@
 @extends('Frontend.layouts.main')
 
-@section('title', 'Pengaturan - JustTrip')
+@section('title', 'Pengaturan Akun | JustTrip')
+@section('robots', 'noindex,nofollow')
 
 @section('content')
 <div class="min-h-screen bg-gray-50 py-8">

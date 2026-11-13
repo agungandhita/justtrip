@@ -1,5 +1,15 @@
 @extends('Frontend.layouts.main')
 
+@php
+    $galleryImg = !empty($gallery->main_image)
+        ? Storage::url($gallery->main_image)
+        : asset('image/logo6.png');
+@endphp
+
+@section('title', Str::limit($gallery->title, 45) . ' | JustTrip')
+@section('description', Str::limit(strip_tags($gallery->description ?? 'Dokumentasi momen perjalanan dan liburan seru bersama JustTrip.'), 150))
+@section('og_image', $galleryImg)
+
 @section('container')
 
 <!-- Minimalist Hero Banner -->
@@ -26,7 +36,7 @@
                     
                     <div class="absolute bottom-6 left-6 md:bottom-10 md:left-10 text-white">
                         <p class="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] opacity-70 mb-2">Wonderful Journey</p>
-                        <p class="text-xl md:text-3xl font-black tracking-tight">{{ $gallery->title }}</p>
+                        <h1 class="text-xl md:text-3xl font-black tracking-tight">{{ $gallery->title }}</h1>
                     </div>
 
                     <div class="absolute bottom-6 right-6 md:bottom-10 md:right-10 flex items-center gap-3">

@@ -1,5 +1,15 @@
 @extends('Frontend.layouts.main')
 
+@php
+    $articleImg = !empty($article->featured_image)
+        ? asset('storage/' . $article->featured_image)
+        : asset('image/logo6.png');
+@endphp
+
+@section('title', Str::limit($article->title, 45) . ' | JustTrip')
+@section('description', Str::limit(strip_tags($article->excerpt ?? $article->content), 150))
+@section('og_image', $articleImg)
+
 @section('container')
 <!-- Hero Section -->
 <section class="relative min-h-[60vh] md:min-h-[75vh] flex items-end overflow-hidden">

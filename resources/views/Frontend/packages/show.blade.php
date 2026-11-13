@@ -1,5 +1,19 @@
 @extends('Frontend.layouts.main')
 
+@php
+    $packageName = $type === 'special_offer' ? $package->title : $package->nama_layanan;
+    $packageDesc = $type === 'special_offer' ? $package->description : ($package->deskripsi ?? 'Paket wisata seru bersama JustTrip');
+    $ogImg = !empty($package->information_image)
+        ? asset('storage/' . $package->information_image)
+        : (!empty($package->main_image)
+            ? asset('storage/' . $package->main_image)
+            : (!empty($package->gambar) ? asset('storage/' . $package->gambar) : asset('image/logo6.png')));
+@endphp
+
+@section('title', Str::limit($packageName, 45) . ' | JustTrip')
+@section('description', Str::limit(strip_tags($packageDesc), 150))
+@section('og_image', $ogImg)
+
 @section('container')
 <!-- Lightbox CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />

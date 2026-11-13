@@ -1,6 +1,7 @@
 @extends('Frontend.layouts.main')
 
-@section('title', 'Daftar Booking Saya')
+@section('title', 'Daftar Booking Saya | JustTrip')
+@section('robots', 'noindex,nofollow')
 
 @section('container')
 <div class="min-h-screen bg-gray-50/50">

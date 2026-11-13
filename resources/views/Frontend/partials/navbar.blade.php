@@ -9,7 +9,7 @@
                         <img src="{{ asset('image/LOGO TOSCA.png') }}" alt="JustTrip Logo" class="object-contain w-10 h-10">
                     </div>
                     <div class="hidden sm:block">
-                        <h1 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-900 to-blue-900">Justtrip</h1>
+                        <span class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-900 to-blue-900">Justtrip</span>
                         <p class="-mt-1 text-xs text-gray-500">#TripGagalMoveOn</p>
                     </div>
                 </a>
