@@ -7,7 +7,7 @@
 <!-- Hero Section -->
 <section class="relative w-full">
     <h1 class="sr-only">Galeri Foto & Dokumentasi Perjalanan Wisata JustTrip</h1>
-    <img src="{{ asset('image/GALLERY.png') }}" alt="Galeri Foto & Dokumentasi Wisata JustTrip" class="w-full h-auto">
+    <img src="{{ asset('image/GALLERY.webp') }}" alt="Galeri Foto & Dokumentasi Wisata JustTrip" fetchpriority="high" class="w-full h-auto">
 </section>
 
 <!-- Search & Filter Section -->

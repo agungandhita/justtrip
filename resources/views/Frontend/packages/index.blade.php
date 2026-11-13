@@ -56,7 +56,7 @@
 <!-- Refined Responsive Hero Section -->
 <section class="relative min-h-[85vh] md:h-[80vh] flex items-center justify-center overflow-hidden bg-gray-900 pt-20">
     <div class="absolute inset-0 z-0">
-        <img src="{{ asset('img/paket.png') }}" alt="Explorer" class="w-full h-full object-cover scale-105">
+        <img src="{{ asset('img/paket.webp') }}" alt="Explorer" fetchpriority="high" class="w-full h-full object-cover scale-105">
         <div class="absolute inset-0 bg-gradient-to-b from-indigo-900/60 via-indigo-950/85 to-indigo-950"></div>
     </div>
 
@@ -161,9 +161,9 @@
                  <!-- Image Wrapper -->
                  <div class="relative h-60 md:h-72 overflow-hidden">
                     @if($package->gambar_destinasi && count($package->gambar_destinasi) > 0)
-                        <img src="{{ asset('storage/' . $package->gambar_destinasi[0]) }}" alt="{{ $package->nama_layanan }}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
+                        <img src="{{ asset('storage/' . $package->gambar_destinasi[0]) }}" alt="{{ $package->nama_layanan }}" loading="lazy" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
                     @else
-                        <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Destination" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
+                        <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Destination" loading="lazy" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
                     @endif
                     
                     <!-- Badges on Image -->

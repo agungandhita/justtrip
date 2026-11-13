@@ -14,8 +14,9 @@
 <!-- Hero Section -->
 <section class="relative w-full bg-slate-900 overflow-hidden">
     <div class="relative w-full aspect-[21/9] sm:aspect-[24/9] md:max-h-[460px] overflow-hidden">
-        <img src="{{ asset('image/TENTANG-JUSTTRIP.png') }}" 
+        <img src="{{ asset('image/TENTANG-JUSTTRIP.webp') }}" 
              alt="Tentang JustTrip Indonesia - Partner Perjalanan & Tour Organizer" 
+             fetchpriority="high"
              class="w-full h-full object-cover object-center transform hover:scale-[1.01] transition-transform duration-700">
         <div class="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent pointer-events-none"></div>
     </div>

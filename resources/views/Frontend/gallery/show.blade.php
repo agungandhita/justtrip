@@ -15,7 +15,7 @@
 <!-- Minimalist Hero Banner -->
 <!-- Hero Section -->
 <section class="relative w-full">
-    <img src="{{ asset('image/GALLERY.png') }}" alt="Paket Tour Background" class="w-full h-auto">
+    <img src="{{ asset('image/GALLERY.webp') }}" alt="Paket Tour Background" class="w-full h-auto">
 </section>
 
 

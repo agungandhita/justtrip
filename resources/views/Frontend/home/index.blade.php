@@ -51,9 +51,9 @@
 
         <!-- Slider Images -->
         <div class="slider-container h-full relative overflow-hidden">
-            <div class="slide active bg-cover bg-center" style="background-image: url('{{ asset('image/1-SLIDE.png') }}')"></div>
-            <div class="slide bg-cover bg-center" style="background-image: url('{{ asset('image/2-SLIDE.png') }}')"></div>
-            <div class="slide bg-cover bg-center" style="background-image: url('{{ asset('image/3-SLIDE.png') }}')"></div>
+            <div class="slide active bg-cover bg-center" style="background-image: url('{{ asset('image/1-SLIDE.webp') }}')"></div>
+            <div class="slide bg-cover bg-center" style="background-image: url('{{ asset('image/2-SLIDE.webp') }}')"></div>
+            <div class="slide bg-cover bg-center" style="background-image: url('{{ asset('image/3-SLIDE.webp') }}')"></div>
         </div>
 
         <!-- Modern Slider Navigation Dots -->
@@ -87,8 +87,11 @@
         <div class="max-w-4xl mx-auto text-center mb-4 md:mb-10">
             <div class="flex flex-col items-center">
                 <div class="relative inline-block mt-12" data-aos="fade-down" data-aos-duration="1200">
-                    <img src="{{ asset('image/TITLE.png') }}" 
+                    <img src="{{ asset('image/TITLE.webp') }}" 
                          alt="Justtrip Title" 
+                         width="280"
+                         height="280"
+                         fetchpriority="high"
                          class="w-full max-w-[200px] sm:max-w-[240px] md:max-w-[280px] h-auto drop-shadow-[0_5px_10px_rgba(0,0,0,0.2)] hover:scale-105 transition-all duration-500">
                 </div>
                 <p class="text-sm sm:text-base md:text-lg text-blue-50/90 font-medium max-w-2xl mx-auto leading-relaxed" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
@@ -270,7 +273,7 @@
             <div class="absolute inset-0">
                 @foreach(range(1, 8) as $i)
                 <div class="why-slide-alt absolute inset-0 opacity-0 transition-opacity duration-1000 ease-in-out {{ $i == 1 ? 'active opacity-100' : '' }}">
-                    <img src="{{ asset('image/' . $i . '.jpg') }}" alt="JustTrip Moment {{ $i }}" class="w-full h-full object-cover grayscale-[15%] group-hover:grayscale-0 transition-all duration-700">
+                    <img src="{{ asset('image/' . $i . '.webp') }}" alt="JustTrip Moment {{ $i }}" loading="lazy" class="w-full h-full object-cover grayscale-[15%] group-hover:grayscale-0 transition-all duration-700">
                     <div class="absolute inset-0 bg-blue-900/10 mix-blend-multiply"></div>
                 </div>
                 @endforeach
@@ -370,7 +373,7 @@
 
                     <!-- Customer Info -->
                     <div class="flex items-center border-t border-gray-100 pt-6">
-                        <img src="{{ $review->avatar_url }}" alt="{{ $review->customer_name }}" class="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border-2 border-teal-100 mr-4 group-hover:border-teal-400 transition-colors">
+                        <img loading="lazy" src="{{ $review->avatar_url }}" alt="{{ $review->customer_name }}" class="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border-2 border-teal-100 mr-4 group-hover:border-teal-400 transition-colors">
                         <div class="flex-1 min-w-0">
                             <h4 class="font-bold text-gray-800 text-sm sm:text-base truncate">{{ $review->customer_name }}</h4>
                             @if($review->customer_position)
@@ -417,12 +420,12 @@
             
             {{-- Original Set --}}
             @foreach($partners as $partner)
-                <img src="{{ asset('img/' . $partner) }}" alt="Partner" class="partner-logo">
+                <img loading="lazy" src="{{ asset('img/' . $partner) }}" alt="Partner" class="partner-logo">
             @endforeach
             
             {{-- Duplicate for seamless loop --}}
             @foreach($partners as $partner)
-                <img src="{{ asset('img/' . $partner) }}" alt="Partner" class="partner-logo">
+                <img loading="lazy" src="{{ asset('img/' . $partner) }}" alt="Partner" class="partner-logo">
             @endforeach
         </div>
     </div>
@@ -491,7 +494,7 @@
                    class="gallery-card group relative overflow-hidden rounded-xl sm:rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 {{ $index === 0 ? 'sm:col-span-2 sm:row-span-2' : '' }}">
                     <!-- Image -->
                     @if($gallery->main_image)
-                        <img src="{{ asset('storage/' . $gallery->main_image) }}" 
+                        <img loading="lazy" src="{{ asset('storage/' . $gallery->main_image) }}" 
                              alt="{{ $gallery->title }}" 
                              class="w-full {{ $index === 0 ? 'h-48 sm:h-full sm:min-h-[400px]' : 'h-40 sm:h-48 md:h-52' }} object-cover group-hover:scale-110 transition-transform duration-700">
                     @else
@@ -558,7 +561,7 @@
             @foreach($testimonials as $testimonial)
                 <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-8 shadow-lg" data-aos="fade-up" data-aos-delay="{{ ($loop->index + 1) * 100 }}">
                     <div class="flex items-center mb-6">
-                        <img src="{{ $testimonial->featured_image ? asset('storage/' . $testimonial->featured_image) : 'https://ui-avatars.com/api/?name='.urlencode($testimonial->title) }}" alt="{{ $testimonial->title }}" class="w-16 h-16 rounded-full object-cover mr-4">
+                        <img loading="lazy" src="{{ $testimonial->featured_image ? asset('storage/' . $testimonial->featured_image) : 'https://ui-avatars.com/api/?name='.urlencode($testimonial->title) }}" alt="{{ $testimonial->title }}" class="w-16 h-16 rounded-full object-cover mr-4">
                         <div>
                             <h4 class="font-bold text-gray-800">{{ $testimonial->title }}</h4>
                             <p class="text-gray-600">{{ $testimonial->excerpt ?? 'Pelanggan Setia' }}</p>
@@ -606,9 +609,9 @@
                 <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
                     <div class="relative overflow-hidden">
                         @if($pkg->gambar_utama)
-                            <img src="{{ asset('storage/' . $pkg->gambar_utama) }}" alt="{{ $pkg->nama_layanan }}" class="w-full h-48 sm:h-56 md:h-64 object-cover group-hover:scale-110 transition-transform duration-500">
+                            <img loading="lazy" src="{{ asset('storage/' . $pkg->gambar_utama) }}" alt="{{ $pkg->nama_layanan }}" class="w-full h-48 sm:h-56 md:h-64 object-cover group-hover:scale-110 transition-transform duration-500">
                         @else
-                            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="{{ $pkg->nama_layanan }}" class="w-full h-48 sm:h-56 md:h-64 object-cover group-hover:scale-110 transition-transform duration-500">
+                            <img loading="lazy" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="{{ $pkg->nama_layanan }}" class="w-full h-48 sm:h-56 md:h-64 object-cover group-hover:scale-110 transition-transform duration-500">
                         @endif
                         <div class="absolute top-3 left-3 sm:top-4 sm:left-4">
                             <span class="bg-gradient-to-r from-teal-500 to-teal-600 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-semibold">Open Trip</span>
@@ -651,9 +654,9 @@
                 <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
                     <div class="relative overflow-hidden">
                         @if($pkg->gambar_utama)
-                            <img src="{{ asset('storage/' . $pkg->gambar_utama) }}" alt="{{ $pkg->nama_layanan }}" class="w-full h-48 sm:h-56 md:h-64 object-cover group-hover:scale-110 transition-transform duration-500">
+                            <img loading="lazy" src="{{ asset('storage/' . $pkg->gambar_utama) }}" alt="{{ $pkg->nama_layanan }}" class="w-full h-48 sm:h-56 md:h-64 object-cover group-hover:scale-110 transition-transform duration-500">
                         @else
-                            <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="{{ $pkg->nama_layanan }}" class="w-full h-48 sm:h-56 md:h-64 object-cover group-hover:scale-110 transition-transform duration-500">
+                            <img loading="lazy" src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="{{ $pkg->nama_layanan }}" class="w-full h-48 sm:h-56 md:h-64 object-cover group-hover:scale-110 transition-transform duration-500">
                         @endif
                         <div class="absolute top-3 left-3 sm:top-4 sm:left-4">
                             <span class="bg-gradient-to-r from-indigo-500 to-indigo-600 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-semibold">Corporate</span>
@@ -696,9 +699,9 @@
                 <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
                     <div class="relative overflow-hidden">
                         @if($pkg->gambar_utama)
-                            <img src="{{ asset('storage/' . $pkg->gambar_utama) }}" alt="{{ $pkg->nama_layanan }}" class="w-full h-48 sm:h-56 md:h-64 object-cover group-hover:scale-110 transition-transform duration-500">
+                            <img loading="lazy" src="{{ asset('storage/' . $pkg->gambar_utama) }}" alt="{{ $pkg->nama_layanan }}" class="w-full h-48 sm:h-56 md:h-64 object-cover group-hover:scale-110 transition-transform duration-500">
                         @else
-                            <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="{{ $pkg->nama_layanan }}" class="w-full h-48 sm:h-56 md:h-64 object-cover group-hover:scale-110 transition-transform duration-500">
+                            <img loading="lazy" src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="{{ $pkg->nama_layanan }}" class="w-full h-48 sm:h-56 md:h-64 object-cover group-hover:scale-110 transition-transform duration-500">
                         @endif
                         <div class="absolute top-3 left-3 sm:top-4 sm:left-4">
                             <span class="bg-gradient-to-r from-amber-500 to-amber-600 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-semibold">Edu Trip</span>
@@ -773,7 +776,7 @@
 
                         {{-- Offer Image --}}
                         @if($offer->image)
-                            <img src="{{ asset('storage/' . $offer->image) }}"
+                            <img loading="lazy" src="{{ asset('storage/' . $offer->image) }}"
                                  alt="{{ $offer->title }}"
                                  class="w-full h-64 object-cover">
                         @else
@@ -905,9 +908,9 @@
             <article class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
                 <div class="relative overflow-hidden">
                     @if($article->featured_image)
-                        <img src="{{ asset('storage/' . $article->featured_image) }}" alt="{{ $article->title }}" class="w-full h-64 object-cover hover:scale-110 transition-transform duration-500">
+                        <img loading="lazy" src="{{ asset('storage/' . $article->featured_image) }}" alt="{{ $article->title }}" class="w-full h-64 object-cover hover:scale-110 transition-transform duration-500">
                     @else
-                        <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="{{ $article->title }}" class="w-full h-64 object-cover hover:scale-110 transition-transform duration-500">
+                        <img loading="lazy" src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="{{ $article->title }}" class="w-full h-64 object-cover hover:scale-110 transition-transform duration-500">
                     @endif
                     <div class="absolute top-4 left-4">
                         <span class="bg-teal-500 text-white px-3 py-1 rounded-full text-sm font-semibold">{{ $article->category ?? 'Travel' }}</span>
@@ -931,9 +934,9 @@
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
                             @if($article->author_image)
-                                <img src="{{ asset('storage/' . $article->author_image) }}" alt="{{ $article->author }}" class="w-8 h-8 rounded-full object-cover mr-3">
+                                <img loading="lazy" src="{{ asset('storage/' . $article->author_image) }}" alt="{{ $article->author }}" class="w-8 h-8 rounded-full object-cover mr-3">
                             @else
-                                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80" alt="{{ $article->author }}" class="w-8 h-8 rounded-full object-cover mr-3">
+                                <img loading="lazy" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80" alt="{{ $article->author }}" class="w-8 h-8 rounded-full object-cover mr-3">
                             @endif
                             <span class="text-gray-600 text-sm">{{ $article->author ?? 'Admin' }}</span>
                         </div>

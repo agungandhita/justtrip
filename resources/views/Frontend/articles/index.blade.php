@@ -6,7 +6,7 @@
 @section('container')
 <!-- Hero Section -->
 <section class="relative w-full">
-    <img src="{{ asset('image/TRAVEL-BLOG.png') }}" alt="Paket Tour Background" class="w-full h-auto">
+    <img src="{{ asset('image/TRAVEL-BLOG.webp') }}" alt="Paket Tour Background" fetchpriority="high" class="w-full h-auto">
 </section>
 
 <!-- Featured Article Section -->
