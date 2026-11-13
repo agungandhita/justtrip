@@ -11,9 +11,17 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Trust Cloudflare and reverse proxies to get actual client IP
+        $middleware->trustProxies(at: '*');
+
+        // Security headers middleware for all web requests
+        $middleware->web(append: [
+            \App\Http\Middleware\SecurityHeadersMiddleware::class,
+        ]);
+
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
-            'user' => \App\Http\Middleware\UserMiddleware::class,
+            'user'  => \App\Http\Middleware\UserMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

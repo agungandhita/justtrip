@@ -2,60 +2,75 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\DTOs\Auth\LoginDTO;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Services\Auth\AuthServiceInterface;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use App\Models\User;
+use Illuminate\View\View;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class LoginController extends Controller
 {
+    public function __construct(
+        private readonly AuthServiceInterface $authService
+    ) {}
+
     /**
      * Show the login form
      */
-    public function showLoginForm(Request $request)
+    public function showLoginForm(Request $request): View
     {
         // Store redirect URL if provided (for special offers booking)
         if ($request->has('redirect')) {
             $request->session()->put('url.intended', $request->redirect);
         }
-        
+
         return view('auth.Login.login');
     }
 
     /**
      * Handle login request
      */
-    public function login(Request $request)
+    public function login(LoginRequest $request): RedirectResponse
     {
-        // Validasi input
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:6'
-        ], [
-            'email.required' => 'Email wajib diisi',
-            'email.email' => 'Format email tidak valid',
-            'password.required' => 'Password wajib diisi',
-            'password.min' => 'Password minimal 6 karakter'
-        ]);
+        $ip = (string) $request->ip();
+        $email = (string) $request->validated('email');
 
-        $credentials = $request->only('email', 'password');
+        // Check if locked out before attempting
+        if ($this->authService->isLockedOut($email, $ip)) {
+            $seconds = $this->authService->availableIn($email, $ip);
+            Alert::error('Akun Terkunci!', "Terlalu banyak percobaan login gagal. Silakan coba lagi dalam {$seconds} detik.");
 
-        // Attempt to login
-        if (Auth::attempt($credentials, $request->filled('remember'))) {
-            $request->session()->regenerate();
-            
+            return back()->withInput($request->only('email'))->withErrors([
+                'email' => "Terlalu banyak percobaan login gagal. Silakan coba lagi dalam {$seconds} detik.",
+            ])->setStatusCode(429);
+        }
+
+        $dto = LoginDTO::fromRequest($request);
+
+        if ($this->authService->login($dto, $ip)) {
             $user = Auth::user();
-            
-            // Redirect based on role
-            if ($user->role === 'admin') {
+
+            if ($user && $user->role === 'admin') {
                 Alert::success('Berhasil!', 'Selamat datang Admin ' . $user->name);
                 return redirect()->intended('/admin/dashboard');
-            } else {
-                Alert::success('Berhasil!', 'Selamat datang ' . $user->name);
-                return redirect()->intended('/');
             }
+
+            Alert::success('Berhasil!', 'Selamat datang ' . ($user?->name ?? ''));
+            return redirect()->intended('/');
+        }
+
+        // If locked out after this failed attempt
+        if ($this->authService->isLockedOut($email, $ip)) {
+            $seconds = $this->authService->availableIn($email, $ip);
+            Alert::error('Akun Terkunci!', "Terlalu banyak percobaan login gagal. Akun dikunci sementara selama {$seconds} detik.");
+
+            return back()->withInput($request->only('email'))->withErrors([
+                'email' => "Terlalu banyak percobaan login gagal. Akun dikunci sementara selama {$seconds} detik.",
+            ])->setStatusCode(429);
         }
 
         // Login failed
@@ -66,13 +81,10 @@ class LoginController extends Controller
     /**
      * Handle logout request
      */
-    public function logout(Request $request)
+    public function logout(): RedirectResponse
     {
-        Auth::logout();
-        
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        
+        $this->authService->logout();
+
         Alert::success('Berhasil!', 'Anda telah logout');
         return redirect('/login');
     }

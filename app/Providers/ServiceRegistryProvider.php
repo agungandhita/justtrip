@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Auth\AuthService;
+use App\Services\Auth\AuthServiceInterface;
 use App\Services\Inquiry\InquiryInterface;
 use App\Services\Inquiry\InquiryService;
 use App\Services\Inquiry\InquiryServiceInterface;
@@ -16,6 +18,7 @@ class ServiceRegistryProvider extends ServiceProvider
      */
     public array $bindings = [
         InquiryServiceInterface::class => InquiryService::class,
+        AuthServiceInterface::class    => AuthService::class,
     ];
 
     /**

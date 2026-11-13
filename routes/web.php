@@ -57,32 +57,21 @@ Route::prefix('guest-booking')->name('guest-booking.')->group(function () {
     Route::get('/', [GuestBookingController::class, 'index'])->name('index');
     Route::post('/search', [GuestBookingController::class, 'search'])->name('search');
     Route::get('/form', [GuestBookingController::class, 'showForm'])->name('form');
-    Route::post('/store', [GuestBookingController::class, 'store'])->name('store');
+    Route::post('/store', [GuestBookingController::class, 'store'])->name('store')->middleware('throttle:booking');
     Route::get('/success/{booking_number}', [GuestBookingController::class, 'success'])->name('success');
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// INQUIRY: Kirim form pemesanan ke WhatsApp admin (tanpa login)
-// ─────────────────────────────────────────────────────────────────────────────
-Route::post('/inquiry/send', [InquiryController::class, 'send'])->name('inquiry.send');
+Route::post('/inquiry/send', [InquiryController::class, 'send'])->name('inquiry.send')->middleware('throttle:inquiry');
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Authentication routes — HIDDEN (diaktifkan kembali jika diperlukan)
-// ─────────────────────────────────────────────────────────────────────────────
 Route::middleware('guest')->group(function () {
-    // Login routes (tersembunyi dari menu publik, masih bisa diakses via URL langsung)
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-    Route::post('/login', [LoginController::class, 'login'])->name('login.post');
-
-    // Register routes
+    Route::post('/login', [LoginController::class, 'login'])->name('login.post')->middleware('throttle:login');
     Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-    Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
+    Route::post('/register', [RegisterController::class, 'register'])->name('register.post')->middleware('throttle:register');
 });
 
-// Logout route (authenticated users only)
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
 
-// Admin routes (admin role only)
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/statistics', [DashboardController::class, 'getStatistics'])->name('dashboard.statistics');

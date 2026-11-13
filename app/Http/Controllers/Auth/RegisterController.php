@@ -2,19 +2,25 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\DTOs\Auth\RegisterUserDTO;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User;
+use App\Http\Requests\Auth\RegisterRequest;
+use App\Services\Auth\AuthServiceInterface;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use RealRashid\SweetAlert\Facades\Alert;
+use Throwable;
 
 class RegisterController extends Controller
 {
+    public function __construct(
+        private readonly AuthServiceInterface $authService
+    ) {}
+
     /**
      * Show the registration form
      */
-    public function showRegistrationForm()
+    public function showRegistrationForm(): View
     {
         return view('auth.Register.register');
     }
@@ -22,48 +28,15 @@ class RegisterController extends Controller
     /**
      * Handle registration request
      */
-    public function register(Request $request)
+    public function register(RegisterRequest $request): RedirectResponse
     {
-        // Validasi input - menggunakan 'name' sesuai dengan form field
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email',
-            'phone' => 'required|string|max:20',
-            'address' => 'required|string|max:500',
-            'password' => 'required|string|min:6|confirmed',
-        ], [
-            'name.required' => 'Nama lengkap wajib diisi',
-            'name.max' => 'Nama maksimal 255 karakter',
-            'email.required' => 'Email wajib diisi',
-            'email.email' => 'Format email tidak valid',
-            'email.unique' => 'Email sudah terdaftar, gunakan email lain atau login',
-            'phone.required' => 'Nomor WhatsApp/Telepon wajib diisi',
-            'phone.max' => 'Nomor telepon maksimal 20 karakter',
-            'address.required' => 'Alamat lengkap wajib diisi',
-            'address.max' => 'Alamat maksimal 500 karakter',
-            'password.required' => 'Password wajib diisi',
-            'password.min' => 'Password minimal 6 karakter',
-            'password.confirmed' => 'Konfirmasi password tidak cocok',
-        ]);
-
         try {
-            // Create new user
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'address' => $request->address,
-                'password' => Hash::make($request->password),
-                'role' => 'user',
-            ]);
-
-            // Auto login after registration
-            Auth::login($user);
+            $dto = RegisterUserDTO::fromRequest($request);
+            $user = $this->authService->register($dto);
 
             Alert::success('Selamat Datang!', 'Akun berhasil dibuat. Selamat bergabung di JustTrip, ' . $user->name . '!');
             return redirect()->intended('/');
-            
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             Alert::error('Gagal!', 'Terjadi kesalahan saat membuat akun. Silakan coba lagi.');
             return back()->withInput($request->except('password', 'password_confirmation'));
         }
