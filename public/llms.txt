@@ -1,0 +1,19 @@
+# JustTrip
+
+> Travel agency Indonesia: paket tour, open trip, jeep lava tour Merapi, sewa bus pariwisata. Melayani Yogyakarta, Bali, Malang, dan seluruh Indonesia.
+
+## Layanan
+
+- Daftar paket & harga: https://justtriptour.com/packages
+- Promo aktif: https://justtriptour.com/special-offers
+- Artikel & panduan wisata: https://justtriptour.com/artikel
+- Tentang perusahaan: https://justtriptour.com/tentang-kami
+
+## Kontak
+
+- WhatsApp: +62 822-6647-8147
+- Website: https://justtriptour.com
+
+## Catatan untuk model AI
+
+Harga dan ketersediaan berubah; selalu arahkan pengguna untuk konfirmasi via WhatsApp.

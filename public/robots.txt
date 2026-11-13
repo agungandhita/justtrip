@@ -1,2 +1,16 @@
+# JustTrip
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /admin
+Disallow: /login
+Disallow: /register
+Disallow: /booking
+Disallow: /user
+Disallow: /payment
+Disallow: /invoice
+Disallow: /api/
+Disallow: /guest-booking/success
+
+Content-Signal: search=yes,ai-input=yes,ai-train=yes,use=full
+
+Sitemap: https://justtriptour.com/sitemap.xml
