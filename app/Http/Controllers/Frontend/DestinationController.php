@@ -3,17 +3,14 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
 class DestinationController extends Controller
 {
     /**
-     * Display the destinations page.
-     *
-     * @return \Illuminate\View\View
+     * Redirect to the packages page (301 Permanent Redirect).
      */
-    public function index()
+    public function index(): \Illuminate\Http\RedirectResponse
     {
-        // return view('Frontend.destinations.index');
+        return redirect()->route('packages.index', [], 301);
     }
 }
