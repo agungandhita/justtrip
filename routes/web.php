@@ -34,6 +34,7 @@ Route::get('/paket-tour', [PackageController::class, 'index'])->name('paket-tour
 Route::get('/packages', [PackageController::class, 'index'])->name('packages.index');
 Route::get('/packages/{slug}', [PackageController::class, 'show'])->name('packages.show');
 Route::get('/tentang-kami', [AboutController::class, 'index'])->name('tentang-kami');
+Route::view('/corporate-gathering', 'Frontend.corporate-gathering.index')->name('corporate.gathering');
 Route::get('/artikel', [ArticleController::class, 'index'])->name('articles.index');
 Route::get('/artikel/{slug}', [ArticleController::class, 'show'])->name('articles.show');
 
