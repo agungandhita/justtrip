@@ -1,6 +1,7 @@
 @include('Frontend.partials.start')
 
 <body class="font-sans antialiased bg-gray-50">
+    @include('Frontend.partials.tracking-body')
     @include('Frontend.partials.navbar')
     
     <!-- Main Content -->
