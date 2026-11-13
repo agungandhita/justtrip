@@ -59,6 +59,18 @@ Kami merancang cerita, bukan hanya destinasi.
                             Tentang Kami
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('privacy-policy') }}" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center">
+                            <i class="fas fa-shield-alt w-4 mr-3"></i>
+                            Kebijakan Privasi
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('terms-of-service') }}" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center">
+                            <i class="fas fa-file-contract w-4 mr-3"></i>
+                            Syarat &amp; Ketentuan
+                        </a>
+                    </li>
                 </ul>
             </div>
 
@@ -91,10 +103,14 @@ Kami merancang cerita, bukan hanya destinasi.
         </div>
 
         <!-- Footer Bottom -->
-        <div class="border-t border-white/10 mt-8 pt-8 text-center">
-            <p class="text-gray-400 text-sm">
+        <div class="border-t border-white/10 mt-8 pt-8 flex flex-col sm:flex-row items-center justify-between text-sm text-gray-400 gap-4">
+            <p>
                 © {{ date('Y') }} Justtrip. All rights reserved. Made with ❤️ for your journey.
             </p>
+            <div class="flex items-center space-x-6 text-xs text-gray-300">
+                <a href="{{ route('privacy-policy') }}" class="hover:text-white transition-colors underline">Kebijakan Privasi</a>
+                <a href="{{ route('terms-of-service') }}" class="hover:text-white transition-colors underline">Syarat &amp; Ketentuan</a>
+            </div>
         </div>
     </div>
 </footer>
