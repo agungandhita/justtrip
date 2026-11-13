@@ -1,31 +1,32 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Frontend\HomeController;
-use App\Http\Controllers\Frontend\DestinationController;
-use App\Http\Controllers\Frontend\PackageController;
-use App\Http\Controllers\Frontend\AboutController;
-use App\Http\Controllers\Frontend\ArticleController;
-use App\Http\Controllers\Frontend\GalleryController as FrontendGalleryController;
+use App\Http\Controllers\Admin\BookingController as AdminBookingController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\GalleryController;
+use App\Http\Controllers\Admin\LayananController;
+use App\Http\Controllers\Admin\NewsController;
+use App\Http\Controllers\Admin\SpecialOfferController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\SpecialOfferController;
-use App\Http\Controllers\Admin\NewsController;
-use App\Http\Controllers\Admin\GalleryController;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\LayananController;
-use App\Http\Controllers\Admin\BookingController as AdminBookingController;
+use App\Http\Controllers\Frontend\AboutController;
+use App\Http\Controllers\Frontend\ArticleController;
 use App\Http\Controllers\Frontend\BookingController;
-use App\Http\Controllers\Frontend\InvoiceController;
+use App\Http\Controllers\Frontend\DestinationController;
+use App\Http\Controllers\Frontend\GalleryController as FrontendGalleryController;
+use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\InquiryController;
+use App\Http\Controllers\Frontend\InvoiceController;
+use App\Http\Controllers\Frontend\PackageController;
 use App\Http\Controllers\Frontend\PaymentController;
+use App\Http\Controllers\Frontend\SitemapController;
 use App\Http\Controllers\Frontend\SpecialOfferController as FrontendSpecialOfferController;
 use App\Http\Controllers\GuestBookingController;
 use App\Http\Controllers\SubscribeUserController;
+use Illuminate\Support\Facades\Route;
 
 // Public routes
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home', [HomeController::class, 'index'])->name('beranda');
 Route::get('/destinasi', [DestinationController::class, 'index'])->name('destinasi');
@@ -132,7 +133,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::get('/statistics', [GuestBookingController::class, 'getStatistics'])->name('statistics');
     });
 
-
     // Payment confirmation management
     Route::resource('payment-confirmations', \App\Http\Controllers\Admin\PaymentConfirmationController::class)->only(['index', 'show']);
     Route::patch('payment-confirmations/{paymentConfirmation}/approve', [\App\Http\Controllers\Admin\PaymentConfirmationController::class, 'approve'])->name('payment-confirmations.approve');
@@ -182,7 +182,6 @@ Route::middleware(['auth', 'user'])->prefix('user')->name('user.')->group(functi
         return view('Frontend.user.profile');
     })->name('profile');
 
-
     Route::get('/settings', function () {
         return view('Frontend.user.settings');
     })->name('settings');
@@ -215,7 +214,7 @@ if (app()->environment(['local', 'development'])) {
             'catatan_khusus' => 'Prefer kamar ocean view dan jadwal santai.',
             'nomor_telepon' => '0823-2119-2919',
             'email' => 'customer@example.com',
-            'alamat' => 'Jl. Pesisir No. 10, Denpasar'
+            'alamat' => 'Jl. Pesisir No. 10, Denpasar',
         ];
 
         return view('emails.guest-booking-confirmation', compact('guestBooking'));
@@ -236,7 +235,7 @@ if (app()->environment(['local', 'development'])) {
             'catatan_khusus' => 'Prefer kamar ocean view dan jadwal santai.',
             'nomor_telepon' => '0823-2119-2919',
             'email' => 'customer@example.com',
-            'alamat' => 'Jl. Pesisir No. 10, Denpasar'
+            'alamat' => 'Jl. Pesisir No. 10, Denpasar',
         ];
 
         // Pass both keys to support either $guestBooking or $datas['guestBooking'] in the view
