@@ -138,4 +138,22 @@
             }
         }
     </script>
+    
+    <!-- Schema JSON-LD: TravelAgency (Global) -->
+    @php
+        $travelAgencySchema = [
+            '@context'    => 'https://schema.org',
+            '@type'       => 'TravelAgency',
+            'name'        => 'JustTrip',
+            'url'         => \App\Helpers\SeoHelper::canonicalUrl('/'),
+            'logo'        => \App\Helpers\SeoHelper::absoluteUrl('/image/logo6.png'),
+            'telephone'   => '+62-822-6647-8147',
+            'description' => 'Travel agency Indonesia yang menyediakan paket tour wisata, open trip, jeep lava tour Merapi, family gathering, dan sewa transportasi pariwisata.',
+            'areaServed'  => ['Yogyakarta', 'Bali', 'Jawa Tengah', 'Jawa Timur', 'Indonesia'],
+        ];
+    @endphp
+    <script type="application/ld+json">
+    {!! json_encode($travelAgencySchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}
+    </script>
+    @stack('schema')
 </head>

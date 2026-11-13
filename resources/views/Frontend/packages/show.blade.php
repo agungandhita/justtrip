@@ -769,4 +769,39 @@ document.querySelectorAll('.addon-checkbox').forEach(cb => {
     });
 });
 </script>
+
+@push('schema')
+@if(isset($type) && $type === 'layanan' && isset($package))
+    @php
+        $productPrice = (string) (int) ($package->harga_mulai ?? 0);
+        $productImg = !empty($package->information_image)
+            ? \App\Helpers\SeoHelper::absoluteUrl('/storage/' . $package->information_image)
+            : (!empty($package->gambar)
+                ? \App\Helpers\SeoHelper::absoluteUrl('/storage/' . $package->gambar)
+                : \App\Helpers\SeoHelper::absoluteUrl('/image/logo6.png'));
+
+        $productSchema = [
+            '@context'    => 'https://schema.org',
+            '@type'       => 'Product',
+            'name'        => $package->nama_layanan,
+            'description' => \Illuminate\Support\Str::limit(strip_tags($package->deskripsi ?? $package->nama_layanan), 160),
+            'image'       => $productImg,
+            'brand'       => [
+                '@type' => 'Brand',
+                'name'  => 'JustTrip',
+            ],
+            'offers'      => [
+                '@type'         => 'Offer',
+                'url'           => \App\Helpers\SeoHelper::canonicalUrl('/packages/' . $package->slug),
+                'priceCurrency' => 'IDR',
+                'price'         => $productPrice,
+                'availability'  => 'https://schema.org/InStock',
+            ],
+        ];
+    @endphp
+    <script type="application/ld+json">
+    {!! json_encode($productSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}
+    </script>
+@endif
+@endpush
 @endsection
