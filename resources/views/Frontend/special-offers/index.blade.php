@@ -33,6 +33,7 @@
                                 <option value="all">Semua Kategori</option>
                                 <option value="open_trip">Open Trip</option>
                                 <option value="corporate_trip">Corporate Trip</option>
+                                <option value="adventure_trip">Adventure Trip</option>
                                 <option value="edu_trip">Edu Trip</option>
                             </select>
                             <i class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
@@ -180,7 +181,7 @@
                 <div class="offer-card group bg-white rounded-[2rem] shadow-lg shadow-gray-100 border border-transparent hover:border-red-100 hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col" 
                     data-aos="fade-up" 
                     data-aos-delay="{{ $loop->index * 50 }}"
-                    data-category="{{ $offer->category }}">
+                    data-category="{{ $offer->layanan?->jenis_layanan ?? $offer->category }}">
                     
                     <!-- Top Container -->
                     <div class="relative h-56 overflow-hidden">
@@ -271,7 +272,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const cardCategory = card.getAttribute('data-category');
 
             const matchesSearch = title.includes(searchTerm) || location.includes(searchTerm);
-            const matchesCategory = selectedCategory === 'all' || cardCategory === selectedCategory;
+            const matchesCategory = selectedCategory === 'all' || 
+                                    cardCategory === selectedCategory ||
+                                    (selectedCategory === 'adventure_trip' && (cardCategory === 'adventure_trip' || cardCategory === 'adventure')) ||
+                                    (selectedCategory === 'corporate_trip' && (cardCategory === 'corporate_trip' || cardCategory === 'corporate')) ||
+                                    (selectedCategory === 'edu_trip' && (cardCategory === 'edu_trip' || cardCategory === 'edu')) ||
+                                    (selectedCategory === 'open_trip' && (cardCategory === 'open_trip' || cardCategory === 'open'));
 
             if (matchesSearch && matchesCategory) {
                 card.style.display = 'flex';

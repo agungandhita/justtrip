@@ -103,43 +103,56 @@
             <p class="text-gray-500 font-medium max-w-sm text-sm md:text-base">Dapatkan pengalaman yang disesuaikan dengan kebutuhan Anda, dari rombongan besar hingga wisata edukasi.</p>
         </div>
 
-        <div class="grid gap-6 md:gap-8 grid-cols-1 md:grid-cols-3">
+        <div class="grid gap-6 md:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             <!-- Open Trip -->
-            <a href="{{ route('packages.index', ['category' => 'open_trip']) }}#paket-wisata" class="group p-8 md:p-10 rounded-3xl md:rounded-[2.5rem] {{ $currentCategory == 'open_trip' ? 'bg-indigo-600 ring-4 ring-indigo-200' : 'bg-indigo-50 border border-indigo-100 hover:bg-indigo-600' }} transition-all duration-500 block" data-aos="fade-up">
+            <a href="{{ route('packages.index', ['category' => 'open_trip']) }}#paket-wisata" class="group p-8 md:p-10 rounded-3xl md:rounded-[2.5rem] {{ in_array($currentCategory, ['open_trip', 'open']) ? 'bg-indigo-600 ring-4 ring-indigo-200' : 'bg-indigo-50 border border-indigo-100 hover:bg-indigo-600' }} transition-all duration-500 block" data-aos="fade-up">
                 <div class="w-14 h-14 md:w-16 md:h-16 bg-white rounded-2xl flex items-center justify-center text-indigo-600 mb-6 md:mb-8 shadow-sm group-hover:scale-110 transition-transform">
                     <i class="fas fa-users text-xl md:text-2xl"></i>
                 </div>
-                <h3 class="text-xl md:text-2xl font-black {{ $currentCategory == 'open_trip' ? 'text-white' : 'text-indigo-950' }} mb-4 group-hover:text-white transition-colors">Open Trip</h3>
-                <p class="text-sm md:text-base {{ $currentCategory == 'open_trip' ? 'text-indigo-100' : 'text-indigo-900/60' }} mb-6 md:mb-8 group-hover:text-indigo-100 transition-colors">Bergabunglah dengan sesama penjelajah dan temukan teman baru di destinasi impian.</p>
-                <div class="flex items-center justify-between pt-6 border-t {{ $currentCategory == 'open_trip' ? 'border-white/20' : 'border-indigo-200/50' }} group-hover:border-white/20">
-                    <span class="text-[10px] font-black {{ $currentCategory == 'open_trip' ? 'text-indigo-200' : 'text-indigo-400' }} uppercase tracking-widest group-hover:text-indigo-200">Mulai Dari</span>
-                    <span class="text-lg md:text-xl font-black {{ $currentCategory == 'open_trip' ? 'text-white' : 'text-indigo-600' }} group-hover:text-white">Rp 1.5jt</span>
+                <h3 class="text-xl md:text-2xl font-black {{ in_array($currentCategory, ['open_trip', 'open']) ? 'text-white' : 'text-indigo-950' }} mb-4 group-hover:text-white transition-colors">Open Trip</h3>
+                <p class="text-sm md:text-base {{ in_array($currentCategory, ['open_trip', 'open']) ? 'text-indigo-100' : 'text-indigo-900/60' }} mb-6 md:mb-8 group-hover:text-indigo-100 transition-colors">Bergabunglah dengan sesama penjelajah dan temukan teman baru di destinasi impian.</p>
+                <div class="flex items-center justify-between pt-6 border-t {{ in_array($currentCategory, ['open_trip', 'open']) ? 'border-white/20' : 'border-indigo-200/50' }} group-hover:border-white/20">
+                    <span class="text-[10px] font-black {{ in_array($currentCategory, ['open_trip', 'open']) ? 'text-indigo-200' : 'text-indigo-400' }} uppercase tracking-widest group-hover:text-indigo-200">Mulai Dari</span>
+                    <span class="text-lg md:text-xl font-black {{ in_array($currentCategory, ['open_trip', 'open']) ? 'text-white' : 'text-indigo-600' }} group-hover:text-white">Rp 1.5jt</span>
                 </div>
             </a>
 
             <!-- Corporate Trip -->
-            <a href="{{ route('packages.index', ['category' => 'corporate_trip']) }}#paket-wisata" class="group p-8 md:p-10 rounded-3xl md:rounded-[2.5rem] {{ $currentCategory == 'corporate_trip' ? 'bg-emerald-600 ring-4 ring-emerald-200' : 'bg-emerald-50 border border-emerald-100 hover:bg-emerald-600' }} transition-all duration-500 block" data-aos="fade-up" data-aos-delay="100">
+            <a href="{{ route('packages.index', ['category' => 'corporate_trip']) }}#paket-wisata" class="group p-8 md:p-10 rounded-3xl md:rounded-[2.5rem] {{ in_array($currentCategory, ['corporate_trip', 'corporate']) ? 'bg-emerald-600 ring-4 ring-emerald-200' : 'bg-emerald-50 border border-emerald-100 hover:bg-emerald-600' }} transition-all duration-500 block" data-aos="fade-up" data-aos-delay="100">
                 <div class="w-14 h-14 md:w-16 md:h-16 bg-white rounded-2xl flex items-center justify-center text-emerald-600 mb-6 md:mb-8 shadow-sm group-hover:scale-110 transition-transform">
                     <i class="fas fa-building text-xl md:text-2xl"></i>
                 </div>
-                <h3 class="text-xl md:text-2xl font-black {{ $currentCategory == 'corporate_trip' ? 'text-white' : 'text-emerald-950' }} mb-4 group-hover:text-white transition-colors">Corporate</h3>
-                <p class="text-sm md:text-base {{ $currentCategory == 'corporate_trip' ? 'text-emerald-100' : 'text-emerald-900/60' }} mb-6 md:mb-8 group-hover:text-emerald-100 transition-colors">Solusi gathering dan outbound profesional untuk meningkatkan produktivitas tim Anda.</p>
-                <div class="flex items-center justify-between pt-6 border-t {{ $currentCategory == 'corporate_trip' ? 'border-white/20' : 'border-emerald-200/50' }} group-hover:border-white/20">
-                    <span class="text-[10px] font-black {{ $currentCategory == 'corporate_trip' ? 'text-emerald-200' : 'text-emerald-400' }} uppercase tracking-widest group-hover:text-emerald-200">Mulai Dari</span>
-                    <span class="text-lg md:text-xl font-black {{ $currentCategory == 'corporate_trip' ? 'text-white' : 'text-emerald-600' }} group-hover:text-white">Rp 2.5jt</span>
+                <h3 class="text-xl md:text-2xl font-black {{ in_array($currentCategory, ['corporate_trip', 'corporate']) ? 'text-white' : 'text-emerald-950' }} mb-4 group-hover:text-white transition-colors">Corporate</h3>
+                <p class="text-sm md:text-base {{ in_array($currentCategory, ['corporate_trip', 'corporate']) ? 'text-emerald-100' : 'text-emerald-900/60' }} mb-6 md:mb-8 group-hover:text-emerald-100 transition-colors">Solusi gathering dan outbound profesional untuk meningkatkan produktivitas tim Anda.</p>
+                <div class="flex items-center justify-between pt-6 border-t {{ in_array($currentCategory, ['corporate_trip', 'corporate']) ? 'border-white/20' : 'border-emerald-200/50' }} group-hover:border-white/20">
+                    <span class="text-[10px] font-black {{ in_array($currentCategory, ['corporate_trip', 'corporate']) ? 'text-emerald-200' : 'text-emerald-400' }} uppercase tracking-widest group-hover:text-emerald-200">Mulai Dari</span>
+                    <span class="text-lg md:text-xl font-black {{ in_array($currentCategory, ['corporate_trip', 'corporate']) ? 'text-white' : 'text-emerald-600' }} group-hover:text-white">Rp 2.5jt</span>
+                </div>
+            </a>
+
+            <!-- Adventure Trip -->
+            <a href="{{ route('packages.index', ['category' => 'adventure_trip']) }}#paket-wisata" class="group p-8 md:p-10 rounded-3xl md:rounded-[2.5rem] {{ in_array($currentCategory, ['adventure_trip', 'adventure']) ? 'bg-orange-600 ring-4 ring-orange-200' : 'bg-orange-50 border border-orange-100 hover:bg-orange-600' }} transition-all duration-500 block" data-aos="fade-up" data-aos-delay="150">
+                <div class="w-14 h-14 md:w-16 md:h-16 bg-white rounded-2xl flex items-center justify-center text-orange-600 mb-6 md:mb-8 shadow-sm group-hover:scale-110 transition-transform">
+                    <i class="fas fa-mountain-sun text-xl md:text-2xl"></i>
+                </div>
+                <h3 class="text-xl md:text-2xl font-black {{ in_array($currentCategory, ['adventure_trip', 'adventure']) ? 'text-white' : 'text-orange-950' }} mb-4 group-hover:text-white transition-colors">Adventure</h3>
+                <p class="text-sm md:text-base {{ in_array($currentCategory, ['adventure_trip', 'adventure']) ? 'text-orange-100' : 'text-orange-900/60' }} mb-6 md:mb-8 group-hover:text-orange-100 transition-colors">Petualangan alam, pendakian seru, dan aktivitas outdoor memacu adrenalin.</p>
+                <div class="flex items-center justify-between pt-6 border-t {{ in_array($currentCategory, ['adventure_trip', 'adventure']) ? 'border-white/20' : 'border-orange-200/50' }} group-hover:border-white/20">
+                    <span class="text-[10px] font-black {{ in_array($currentCategory, ['adventure_trip', 'adventure']) ? 'text-orange-200' : 'text-orange-400' }} uppercase tracking-widest group-hover:text-orange-200">Mulai Dari</span>
+                    <span class="text-lg md:text-xl font-black {{ in_array($currentCategory, ['adventure_trip', 'adventure']) ? 'text-white' : 'text-orange-600' }} group-hover:text-white">Rp 1jt</span>
                 </div>
             </a>
 
             <!-- Edu Trip -->
-            <a href="{{ route('packages.index', ['category' => 'edu_trip']) }}#paket-wisata" class="group p-8 md:p-10 rounded-3xl md:rounded-[2.5rem] {{ $currentCategory == 'edu_trip' ? 'bg-amber-600 ring-4 ring-amber-200' : 'bg-amber-50 border border-amber-100 hover:bg-amber-600' }} transition-all duration-500 block" data-aos="fade-up" data-aos-delay="200">
+            <a href="{{ route('packages.index', ['category' => 'edu_trip']) }}#paket-wisata" class="group p-8 md:p-10 rounded-3xl md:rounded-[2.5rem] {{ in_array($currentCategory, ['edu_trip', 'edu']) ? 'bg-amber-600 ring-4 ring-amber-200' : 'bg-amber-50 border border-amber-100 hover:bg-amber-600' }} transition-all duration-500 block" data-aos="fade-up" data-aos-delay="200">
                 <div class="w-14 h-14 md:w-16 md:h-16 bg-white rounded-2xl flex items-center justify-center text-amber-600 mb-6 md:mb-8 shadow-sm group-hover:scale-110 transition-transform">
                     <i class="fas fa-graduation-cap text-xl md:text-2xl"></i>
                 </div>
-                <h3 class="text-xl md:text-2xl font-black {{ $currentCategory == 'edu_trip' ? 'text-white' : 'text-amber-950' }} mb-4 group-hover:text-white transition-colors">Edu Trip</h3>
-                <p class="text-sm md:text-base {{ $currentCategory == 'edu_trip' ? 'text-amber-100' : 'text-amber-900/60' }} mb-6 md:mb-8 group-hover:text-amber-100 transition-colors">Pembelajaran di luar kelas yang edukatif dan menyenangkan untuk siswa & mahasiswa.</p>
-                <div class="flex items-center justify-between pt-6 border-t {{ $currentCategory == 'edu_trip' ? 'border-white/20' : 'border-amber-200/50' }} group-hover:border-white/20">
-                    <span class="text-[10px] font-black {{ $currentCategory == 'edu_trip' ? 'text-amber-200' : 'text-amber-400' }} uppercase tracking-widest group-hover:text-amber-200">Mulai Dari</span>
-                    <span class="text-lg md:text-xl font-black {{ $currentCategory == 'edu_trip' ? 'text-white' : 'text-amber-600' }} group-hover:text-white">Rp 800rb</span>
+                <h3 class="text-xl md:text-2xl font-black {{ in_array($currentCategory, ['edu_trip', 'edu']) ? 'text-white' : 'text-amber-950' }} mb-4 group-hover:text-white transition-colors">Edu Trip</h3>
+                <p class="text-sm md:text-base {{ in_array($currentCategory, ['edu_trip', 'edu']) ? 'text-amber-100' : 'text-amber-900/60' }} mb-6 md:mb-8 group-hover:text-amber-100 transition-colors">Pembelajaran di luar kelas yang edukatif dan menyenangkan untuk siswa & mahasiswa.</p>
+                <div class="flex items-center justify-between pt-6 border-t {{ in_array($currentCategory, ['edu_trip', 'edu']) ? 'border-white/20' : 'border-amber-200/50' }} group-hover:border-white/20">
+                    <span class="text-[10px] font-black {{ in_array($currentCategory, ['edu_trip', 'edu']) ? 'text-amber-200' : 'text-amber-400' }} uppercase tracking-widest group-hover:text-amber-200">Mulai Dari</span>
+                    <span class="text-lg md:text-xl font-black {{ in_array($currentCategory, ['edu_trip', 'edu']) ? 'text-white' : 'text-amber-600' }} group-hover:text-white">Rp 800rb</span>
                 </div>
             </a>
         </div>
@@ -153,6 +166,23 @@
             <h4 class="text-indigo-600 font-bold uppercase tracking-[0.3em] text-[10px] mb-4">Must-Visit Destinations</h4>
             <h2 class="text-3xl md:text-6xl font-black text-indigo-950 mb-6">Paket Tour <span class="italic text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-600">Terlaris</span></h2>
             <div class="w-16 md:w-24 h-1.5 bg-amber-400 mx-auto rounded-full"></div>
+            @if($currentCategory)
+                <div class="mt-6 inline-flex items-center gap-3 px-4 py-2 bg-indigo-50 border border-indigo-100 rounded-full text-xs">
+                    <span class="text-gray-500 font-medium">Kategori:</span>
+                    <span class="font-bold text-indigo-700">
+                        {{ match($currentCategory) {
+                            'open_trip', 'open' => 'Open Trip',
+                            'corporate_trip', 'corporate' => 'Corporate',
+                            'adventure_trip', 'adventure' => 'Adventure',
+                            'edu_trip', 'edu' => 'Edu Trip',
+                            default => ucfirst($currentCategory)
+                        } }}
+                    </span>
+                    <a href="{{ route('packages.index') }}#paket-wisata" class="text-red-500 hover:text-red-700 font-bold ml-1 flex items-center gap-1 transition-colors">
+                        <i class="fas fa-times-circle"></i> Tampilkan Semua
+                    </a>
+                </div>
+            @endif
         </div>
 
         <div class="grid gap-6 md:gap-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">

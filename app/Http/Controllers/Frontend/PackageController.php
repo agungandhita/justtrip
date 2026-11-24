@@ -82,7 +82,18 @@ class PackageController extends Controller
         // Filter by category
         $currentCategory = $request->get('category');
         if ($request->filled('category')) {
-            $regularPackagesQuery->where('jenis_layanan', $request->category);
+            $category = $request->category;
+            if (in_array($category, ['adventure_trip', 'adventure'])) {
+                $regularPackagesQuery->whereIn('jenis_layanan', ['adventure_trip', 'adventure']);
+            } elseif (in_array($category, ['corporate_trip', 'corporate'])) {
+                $regularPackagesQuery->whereIn('jenis_layanan', ['corporate_trip', 'corporate']);
+            } elseif (in_array($category, ['edu_trip', 'edu'])) {
+                $regularPackagesQuery->whereIn('jenis_layanan', ['edu_trip', 'edu']);
+            } elseif (in_array($category, ['open_trip', 'open'])) {
+                $regularPackagesQuery->whereIn('jenis_layanan', ['open_trip', 'open']);
+            } else {
+                $regularPackagesQuery->where('jenis_layanan', $category);
+            }
         }
 
         $regularPackages = $regularPackagesQuery->latest()

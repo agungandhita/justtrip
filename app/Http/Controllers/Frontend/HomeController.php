@@ -32,7 +32,6 @@ class HomeController extends Controller
         // Get popular travel packages (Layanan)
         $popularPackages = Layanan::where('status', 'aktif')
                                  ->latest()
-                                 ->take(6)
                                  ->get();
 
         // Get latest news/articles

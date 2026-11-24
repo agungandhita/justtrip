@@ -592,14 +592,16 @@
             <div class="bg-white rounded-full p-2 shadow-lg flex flex-wrap justify-center gap-1">
                 <button class="tab-btn active px-4 sm:px-6 py-2 sm:py-3 rounded-full font-semibold transition-all duration-300 text-sm sm:text-base" data-tab="open-trip">Open Trip</button>
                 <button class="tab-btn px-4 sm:px-6 py-2 sm:py-3 rounded-full font-semibold transition-all duration-300 text-sm sm:text-base" data-tab="corporate">Corporate Trip</button>
+                <button class="tab-btn px-4 sm:px-6 py-2 sm:py-3 rounded-full font-semibold transition-all duration-300 text-sm sm:text-base" data-tab="adventure">Adventure</button>
                 <button class="tab-btn px-4 sm:px-6 py-2 sm:py-3 rounded-full font-semibold transition-all duration-300 text-sm sm:text-base" data-tab="edu">Edu Trip</button>
             </div>
         </div>
 
         @php
-            $openTripPackages = $popularPackages->filter(fn($p) => $p->jenis_layanan === 'open_trip');
-            $corporateTripPackages = $popularPackages->filter(fn($p) => $p->jenis_layanan === 'corporate_trip');
-            $eduTripPackages = $popularPackages->filter(fn($p) => $p->jenis_layanan === 'edu_trip');
+            $openTripPackages = $popularPackages->filter(fn($p) => in_array($p->jenis_layanan, ['open_trip', 'open']));
+            $corporateTripPackages = $popularPackages->filter(fn($p) => in_array($p->jenis_layanan, ['corporate_trip', 'corporate']));
+            $adventureTripPackages = $popularPackages->filter(fn($p) => in_array($p->jenis_layanan, ['adventure_trip', 'adventure']));
+            $eduTripPackages = $popularPackages->filter(fn($p) => in_array($p->jenis_layanan, ['edu_trip', 'edu']));
         @endphp
 
         <!-- Open Trip Destinations -->
@@ -688,6 +690,51 @@
                 </div>
                 @empty
                 <div class="col-span-full text-center text-gray-600">Belum ada paket Corporate Trip populer.</div>
+                @endforelse
+            </div>
+        </div>
+
+        <!-- Adventure Trip Destinations -->
+        <div id="adventure" class="tab-content hidden">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+                @forelse($adventureTripPackages->take(3) as $index => $pkg)
+                <div class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
+                    <div class="relative overflow-hidden">
+                        @if($pkg->gambar_utama)
+                            <img loading="lazy" src="{{ asset('storage/' . $pkg->gambar_utama) }}" alt="{{ $pkg->nama_layanan }}" class="w-full h-48 sm:h-56 md:h-64 object-cover group-hover:scale-110 transition-transform duration-500">
+                        @else
+                            <img loading="lazy" src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="{{ $pkg->nama_layanan }}" class="w-full h-48 sm:h-56 md:h-64 object-cover group-hover:scale-110 transition-transform duration-500">
+                        @endif
+                        <div class="absolute top-3 left-3 sm:top-4 sm:left-4">
+                            <span class="bg-gradient-to-r from-orange-500 to-amber-600 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-semibold">Adventure</span>
+                        </div>
+                        @if($pkg->hasActiveSpecialOffers())
+                            <div class="absolute top-3 right-3 sm:top-4 sm:right-4">
+                                <span class="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-semibold">Promo</span>
+                            </div>
+                        @endif
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <div class="p-4 sm:p-5 md:p-6">
+                        <h3 class="text-base sm:text-lg md:text-xl font-bold text-gray-800 mb-1 sm:mb-2">{{ $pkg->nama_layanan }}</h3>
+                        <p class="text-xs sm:text-sm md:text-base text-gray-600 mb-3 sm:mb-4">{{ $pkg->durasi_format }} • {{ $pkg->lokasi_tujuan }}</p>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                @php $offer = $pkg->getCurrentSpecialOffer(); @endphp
+                                @if($offer)
+                                    <span class="text-gray-400 line-through text-xs sm:text-sm md:text-base">Rp {{ number_format($pkg->harga_mulai, 0, ',', '.') }}</span>
+                                    <span class="text-lg sm:text-xl md:text-2xl font-bold text-blue-600 ml-2">Rp {{ number_format($pkg->getDiscountedPrice(), 0, ',', '.') }}</span>
+                                @else
+                                    <span class="text-lg sm:text-xl md:text-2xl font-bold text-blue-600">Rp {{ number_format($pkg->harga_mulai, 0, ',', '.') }}</span>
+                                @endif
+                                <span class="text-gray-500 text-xs sm:text-sm">/person</span>
+                            </div>
+                            <a href="{{ route('packages.show', $pkg->slug) }}" class="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-3 py-1 sm:px-4 sm:py-2 md:px-6 md:py-2 rounded-full text-xs sm:text-sm md:text-base font-semibold transition-all duration-300 transform hover:scale-105">Detail</a>
+                        </div>
+                    </div>
+                </div>
+                @empty
+                <div class="col-span-full text-center text-gray-600">Belum ada paket Adventure populer.</div>
                 @endforelse
             </div>
         </div>
